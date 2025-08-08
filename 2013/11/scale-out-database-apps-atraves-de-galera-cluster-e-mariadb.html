@@ -1,9 +1,103 @@
 <!DOCTYPE html>
-<html lang="pt"><head><meta charset="UTF-8"><title>Scale-Out Database apps através de Galera Cluster e MariaDb</title>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scale-Out Database apps através de Galera Cluster e MariaDb</title>
 <meta name="description" content="Scale-Out Database apps através de Galera Cluster e MariaDb">
-<meta name="robots" content="index, follow"></head><body>
-  <div class="container"><h1>Scale-Out Database apps através de Galera Cluster e MariaDb</h1><p><em>Publicado em 2013-11-06 11:29:00</em></p>
-  <div style="background-color: white; font-family: Verdana, sans-serif; font-size: 14px; line-height: 1.5; margin-right: 1.5em; margin-top: 1.5em;"><span style="background-color: #f6f6f6; font-family: Tahoma, Verdana, 'DejaVu Sans', sans-serif; line-height: 22.390625px;">O <a style="background-image: url('http://www.softelabs.com/skins/common/icons/icon-lock.gif'); background-position: 100% 50%; background-repeat: no-repeat no-repeat; color: #956220; padding-right: 16px;" title="https://mariadb.org/en/" href="https://mariadb.org/en/" target="_blank" rel="external nofollow noopener">MariaDB </a>é o fork da base de dados relacional MySQL de código aberto mais popular. </span><span style="background-color: #f6f6f6; font-family: Tahoma, Verdana, 'DejaVu Sans', sans-serif; line-height: 22.390625px;">A comunidade MariaDB tem crescido exponencialmente nos últimos anos, e esta tornou-se a BD relacional padrão em muitas distribuições Linux e tem sido activamente promovida por algumas das maiores empresas globais do mundo.</span></div>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 860px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 40px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: center; /* centra todo o conteúdo do post */
+}
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: center; /* centra texto e imagens */
+}
+.post-content p { margin: 0 0 1.05em; }
+.post-content h2, .post-content h3, .post-content h4 {
+  font-family: "Merriweather", Georgia, serif;
+  margin: 1.4em 0 0.6em;
+}
+.post-content a { color: var(--link); text-decoration: none; }
+.post-content a:hover { text-decoration: underline; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Scale-Out Database apps através de Galera Cluster e MariaDb</h1>
+      <p class="meta">Publicado em 2013-11-06 11:29:00</p>
+      
+      <div class="post-content">
+        <div style="background-color: white; font-family: Verdana, sans-serif; font-size: 14px; line-height: 1.5; margin-right: 1.5em; margin-top: 1.5em;"><span style="background-color: #f6f6f6; font-family: Tahoma, Verdana, 'DejaVu Sans', sans-serif; line-height: 22.390625px;">O <a style="background-image: url('http://www.softelabs.com/skins/common/icons/icon-lock.gif'); background-position: 100% 50%; background-repeat: no-repeat no-repeat; color: #956220; padding-right: 16px;" title="https://mariadb.org/en/" href="https://mariadb.org/en/" target="_blank" rel="external nofollow noopener">MariaDB </a>é o fork da base de dados relacional MySQL de código aberto mais popular. </span><span style="background-color: #f6f6f6; font-family: Tahoma, Verdana, 'DejaVu Sans', sans-serif; line-height: 22.390625px;">A comunidade MariaDB tem crescido exponencialmente nos últimos anos, e esta tornou-se a BD relacional padrão em muitas distribuições Linux e tem sido activamente promovida por algumas das maiores empresas globais do mundo.</span></div>
 <div style="background-color: white; font-family: Verdana, sans-serif; font-size: 14px; line-height: 1.5; margin-right: 1.5em; margin-top: 1.5em;">O <a style="background-image: url('http://www.softelabs.com/skins/common/icons/icon-lock.gif'); background-position: 100% 50%; background-repeat: no-repeat no-repeat; color: #956220; padding-right: 16px;" title="https://downloads.mariadb.org/mariadb-galera/" href="https://downloads.mariadb.org/mariadb-galera/" target="_blank" rel="external nofollow noopener">MariaDB Galera Cluster</a> fornece tecnologia assente em replicação síncrona multi-master. Usando o MariaDB Galera Cluster <img class="size-full wp-image-121 alignright" src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/mariadblogo.jpg" alt="" width="160" height="160" />significa que seus dados estão mais seguros do que na replicação master-slave tradicional, porque estes são replicados imediatamente como parte do "commit", semqualquer atraso. Além disso, na replicação "master-slave" tradicional, só pode efectuar "scale-out" para leitura, mas com MariaDB Galera Cluster pode ler e gravar em qualquer nó. Isso torna a vida mais fácil para os programadores, porque estes não precisam de separar transações de leitura e escrita, nas transações a submeter à BD. O seu código não precisa sequer ser alterado!</div>
 <div style="background-color: white; font-family: Verdana, sans-serif; font-size: 14px; line-height: 1.5; margin-right: 1.5em; margin-top: 1.5em;"><strong>As principais características do Galera Cluster são :</strong></div>
 <div style="background-color: white; font-family: Verdana, sans-serif; font-size: 14px; line-height: 1.5; margin-right: 1.5em; margin-top: 1.5em;">Não há requisitos de failover - os nós estão todos os activos e são todos "master" nodes.</div>
@@ -48,4 +142,8 @@
 <div style="background-color: white; font-family: Verdana, sans-serif; font-size: 14px; line-height: 1.5; margin-right: 1.5em; margin-top: 1.5em;"></div>
 <div style="background-color: white; font-family: Verdana, sans-serif; font-size: 14px; line-height: 1.5; margin-right: 1.5em; margin-top: 1.5em;">O site a que acede é confiável e está no domínio da Softelabs <img class="internal rwrap" style="border: 0px; float: right; margin: 0px; padding: 2px;" src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/softelabs-smaller.jpg" alt="Softelabs-smaller.gif" align="right" /></div>
 <div style="background-color: white; font-family: Verdana, sans-serif; font-size: 14px; line-height: 1.5; margin-right: 1.5em; margin-top: 1.5em;">Para mais informações não hesite em contactar-nos através do e-mail <a style="background-image: url('http://www.softelabs.com/skins/common/icons/icon-mail.gif'); background-position: 100% 50%; background-repeat: no-repeat no-repeat; color: #956220; padding-right: 18px;" title="mailto:info@softelabs.com" href="mailto:info@softelabs.com" target="_blank" rel="external nofollow noopener">info@softelabs.com</a></div>
-<div style="background-color: white; font-family: Verdana, sans-serif; font-size: 14px; line-height: 1.5; margin-right: 1.5em; margin-top: 1.5em;">Por Francisco Gonçalves em 05 Nov 2013</div></div></body></html>
+<div style="background-color: white; font-family: Verdana, sans-serif; font-size: 14px; line-height: 1.5; margin-right: 1.5em; margin-top: 1.5em;">Por Francisco Gonçalves em 05 Nov 2013</div>
+      </div>
+    </article>
+  </div>
+</body></html>
