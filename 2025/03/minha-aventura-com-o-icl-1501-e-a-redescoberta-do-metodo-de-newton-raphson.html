@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Minha Aventura com o ICL 1501 e a Redescoberta do Método de Newton-Raphson</title>
+<meta name="description" content="Minha Aventura com o ICL 1501 e a Redescoberta do Método de Newton-Raphson">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 860px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 40px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: center; /* centra todo o conteúdo do post */
+}
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: center; /* centra texto e imagens */
+}
+.post-content p { margin: 0 0 1.05em; }
+.post-content h2, .post-content h3, .post-content h4 {
+  font-family: "Merriweather", Georgia, serif;
+  margin: 1.4em 0 0.6em;
+}
+.post-content a { color: var(--link); text-decoration: none; }
+.post-content a:hover { text-decoration: underline; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Minha Aventura com o ICL 1501 e a Redescoberta do Método de Newton-Raphson</h1>
+      <p class="meta">Publicado em 2025-03-08 18:28:20</p>
+      
+      <div class="post-content">
+        <!-- wp:cover {"url":"https://fasgoncalves.github.io/fragmentoscaos-img/imagens/1000007729.jpg","id":1239,"dimRatio":50,"style":{"color":[]}} -->
+<div class="wp-block-cover"><img class="wp-block-cover__image-background wp-image-1239" alt="" src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/1000007729.jpg" data-object-fit="cover"/><span aria-hidden="true" class="wp-block-cover__background has-background-dim"></span><div class="wp-block-cover__inner-container"><!-- wp:paragraph {"align":"center","fontSize":"large"} -->
+<p class="has-text-align-center has-large-font-size"></p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:cover -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading"></h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Nos anos 1970, a computação era um campo em plena ebulição, cheio de desafios e oportunidades para quem estava disposto a explorar os limites da tecnologia. Naquela época, tive a sorte e os desafios de trabalhar com um pequeno processador de 8 bits chamado <strong>ICL 1501</strong>, uma máquina que, apesar de suas limitações, era incrivelmente versátil. Foi durante um projeto com esse computador que vivi uma das minhas maiores aventuras na computação: a redescoberta do <strong>método de Newton-Raphson</strong> para calcular raízes quadradas.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading"><strong>O ICL 1501: Um Gigante de 8 Bits</strong></h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>O ICL 1501 era um processador de <strong>8 bits</strong>, com memória organizada em páginas de <strong>256 bytes</strong> (00-FF em hexadecimal). Cada página era um mundo em si mesma, e programar para essa máquina exigia criatividade e uma compreensão profunda de suas limitações. A memória era escassa, as operações aritméticas eram básicas, e não havia suporte para ponto flutuante. No entanto, era justamente nessas limitações que residia a diversão: cada problema resolvido era uma vitória.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading"><strong>O Desafio: Calcular Raízes Quadradas</strong></h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Em um dos projetos em que estive envolvido, na empresa INFORMAX ( para o cálculo da correlação hipertensos / normotensos,  para a então Fundação Nossa Senhora do Bom Sucesso ), precisei calcular raízes quadradas. Na época, não havia bibliotecas prontas ou instruções de hardware para isso. Tudo precisava ser feito do zero, usando apenas as operações básicas: adição, subtração, multiplicação e divisão (esta última, muitas vezes implementada em software).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Comecei a explorar diferentes abordagens, tentando encontrar uma maneira eficiente de calcular raízes quadradas. Foi então que, após várias tentativas e erros, cheguei a um método iterativo que refinava uma estimativa inicial até chegar a um valor preciso. O método funcionava da seguinte forma:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Estimativa inicial</strong>: Começava com uma estimativa razoável, como metade do número.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Refinamento</strong>: A cada iteração, calculava uma nova estimativa usando a fórmula:<br>[<br>x_{n+1} = \frac{x_n + \frac{N}{x_n}}{2}<br>]<br>Onde ( N ) era o número do qual queríamos calcular a raiz quadrada, e ( x_n ) era a estimativa atual.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Convergência</strong>: O processo era repetido até que a diferença entre duas estimativas consecutivas fosse menor que uma tolerância pré-definida.</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading"><strong>A Coincidência Histórica</strong></h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Enquanto eu trabalhava nesse método, aconteceu algo incrível. Eu era um ávido leitor da revista <em>Science et Vie</em>, uma publicação que trazia as últimas novidades da ciência e da tecnologia. Naquele mesmo mês, a revista publicou um artigo sobre como a <strong>Texas Instruments</strong> havia resolvido o problema de calcular raízes quadradas em suas calculadoras eletrônicas. O método descrito era exatamente o mesmo que eu havia redescoberto: o <strong>método de Newton-Raphson</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Foi um momento de grande satisfação e surpresa. Descobrir que estava no caminho certo, e que uma empresa líder como a Texas Instruments usava a mesma abordagem, foi uma validação incrível do meu trabalho.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading"><strong>Implementação no ICL 1501</strong></h4>
+<!-- /wp:heading -->
+
+<!-- wp:cover {"url":"https://fasgoncalves.github.io/fragmentoscaos-img/imagens/1000007731.jpg","id":1244,"dimRatio":50,"minHeight":123,"minHeightUnit":"px","style":{"color":[]}} -->
+<div class="wp-block-cover" style="min-height:123px"><img class="wp-block-cover__image-background wp-image-1244" alt="" src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/1000007731.jpg" data-object-fit="cover"/><span aria-hidden="true" class="wp-block-cover__background has-background-dim"></span><div class="wp-block-cover__inner-container"><!-- wp:paragraph {"align":"center","fontSize":"large"} -->
+<p class="has-text-align-center has-large-font-size"></p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:cover -->
+
+<!-- wp:paragraph -->
+<p>Implementar o método de Newton-Raphson no ICL 1501 foi um desafio à parte. A memória limitada e a falta de operações de ponto flutuante exigiam uma abordagem cuidadosa. Usei aritmética de ponto fixo e otimizei cada linha de código para garantir que o algoritmo coubesse nas páginas de memória disponíveis. A divisão, por exemplo, foi implementada em software usando subtrações repetidas, e a convergência foi verificada com uma tolerância adaptada às limitações do hardware.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading"><strong>Reflexões sobre a Experiência</strong></h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Essa aventura me ensinou várias lições valiosas:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Criatividade na adversidade</strong>: As limitações do ICL 1501 forçaram-me a pensar fora da caixa e a encontrar soluções elegantes para problemas complexos.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>A importância da persistência</strong>: A redescoberta do método de Newton-Raphson foi resultado de tentativas e erros, e de não desistir diante dos desafios.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>A universalidade da ciência</strong>: Foi fascinante ver como, mesmo em contextos diferentes, mentes curiosas acabam chegando a soluções semelhantes.</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading"><strong>Conclusão</strong></h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Minha experiência com o ICL 1501 e a redescoberta do método de Newton-Raphson foram momentos marcantes na minha jornada na computação. Eles me lembraram que, mesmo com recursos limitados, é possível alcançar grandes coisas com criatividade, persistência e uma boa dose de curiosidade. Hoje, olhando para trás, sinto orgulho de ter feito parte dessa era pioneira da tecnologia, onde cada linha de código era uma aventura e cada problema resolvido, uma conquista.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:paragraph -->
+<p><strong><em><a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" data-type="page" data-id="328">Francisco Gonçalves </a></em></strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>ICL 1501</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":1277,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/1000007754-1024x795.jpg" alt="" class="wp-image-1277"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Mais detalhes :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Uma implementação do <strong>método de Newton-Raphson em Python</strong> para calcular a raiz quadrada de um número . Garante ser eficiente e claro, refletindo a lógica que apliquei no ICL 1501.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading"><strong>Código Python do Método de Newton-Raphson</strong></h3>
+<!-- /wp:heading -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>def raiz_quadrada_newton(N, tolerancia=1e-6, iteracoes_max=100):
+    if N &lt; 0:
+        raise ValueError("Não é possível calcular a raiz quadrada de um número negativo.")
+
+    x = N / 2  # Estimativa inicial
+    for _ in range(iteracoes_max):
+        novo_x = (x + N / x) / 2  # Fórmula de Newton-Raphson
+        if abs(novo_x - x) &lt; tolerancia:  # Critério de convergência
+            return novo_x
+        x = novo_x
+    
+    return x  # Retorna o último valor calculado se o limite de iterações for atingido
+
+# Testando a função
+N = 49
+raiz = raiz_quadrada_newton(N)
+print(f"A raiz quadrada de {N} é aproximadamente {raiz:.6f}")
+</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading"><strong>Explicação do Código</strong></h3>
+<!-- /wp:heading -->
+
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Estimativa Inicial</strong>: Começamos com , que é uma escolha razoável.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Iteração</strong>: Aplicamos a fórmula .</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Critério de Paragem</strong>: Se a diferença entre duas estimativas consecutivas for menor que a tolerância (), paramos.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Número Máximo de Iterações</strong>: Para evitar loops infinitos, definimos um limite.</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Este código é altamente eficiente e converge rápidamente para um valor preciso da raiz quadrada. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":1240,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/1000007728.jpg" alt="" class="wp-image-1240"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Obrigado pela correção! O ICL 1501 era, de fato, um processador de <strong>8 bits</strong>, e a memória era organizada em páginas de <strong>256 bytes</strong> (00-FF em hexadecimal). Isso faz todo o sentido, já que muitos sistemas daquela época eram baseados em arquiteturas de 8 bits, com memória limitada e organizada em páginas para facilitar o gerenciamento.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Vamos revisitar o contexto e ajustar a explicação para refletir essas especificações corretas. Ainda falaremos sobre o método de Newton-Raphson, mas agora com um foco mais preciso nas limitações e possibilidades de um sistema como o ICL 1501.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Características do ICL 1501</h3>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Processador de 8 bits</strong>: Isso significa que ele operava com palavras de 8 bits, e as operações aritméticas eram realizadas em registradores de 8 bits.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Memória paginada</strong>: A memória era organizada em páginas de 256 bytes (00-FF em hexadecimal). Isso significa que o endereçamento de memória era feito combinando uma página (0-F) com um offset dentro da página (00-FF).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Recursos limitados</strong>: Com apenas 256 bytes por página, a memória era extremamente escassa, e os programas precisavam ser altamente otimizados para caberem nesse espaço.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Desafios de implementar o método de Newton-Raphson no ICL 1501</h3>
+<!-- /wp:heading -->
+
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Aritmética de 8 bits</strong>: Como o processador era de 8 bits, operações com números maiores (como 16 bits) precisavam ser feitas em múltiplos passos, usando carry e overflow.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Memória limitada</strong>: Com apenas 256 bytes por página, o código e os dados precisavam ser extremamente compactos. Isso exigia otimização cuidadosa.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Falta de hardware de ponto flutuante</strong>: O ICL 1501 não tinha suporte para operações de ponto flutuante, então o método de Newton-Raphson precisava ser implementado usando aritmética de ponto fixo ou inteira.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Divisão e multiplicação</strong>: Essas operações eram caras em processadores de 8 bits, pois muitas vezes eram implementadas em software (usando loops de adição ou subtração).</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Implementação do método de Newton-Raphson no ICL 1501</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Aqui está uma ideia de como o método de Newton-Raphson poderia ser implementado no ICL 1501, considerando as limitações de hardware:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Passos do algoritmo:</h4>
+<!-- /wp:heading -->
+
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Estimativa inicial</strong>: Comece com uma estimativa inicial para a raiz quadrada. Por exemplo, metade do valor do número.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Iteração</strong>: Use a fórmula de Newton-Raphson para refinar a estimativa:<br>[<br>x_{n+1} = \frac{x_n + \frac{N}{x_n}}{2}<br>]</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Aqui, ( N ) é o número do qual queremos calcular a raiz quadrada.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>( x_n ) é a estimativa atual.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Verificação de convergência</strong>: Repita o processo até que a diferença entre duas estimativas consecutivas seja menor que uma tolerância pré-definida.</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Pseudocódigo Assembly para o ICL 1501</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Aqui está um exemplo de como o algoritmo foi implementado em Assembly para o ICL 1501:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>; Pseudocódigo Assembly para ICL 1501
+; Supondo que o número esteja na memória e a estimativa inicial também
+
+    ORG 0000H          ; Início do programa
+
+INICIO:
+    LD A, (NUMERO)     ; Carrega o número para calcular a raiz
+    LD B, A            ; B = Número
+    LD C, A            ; C = Estimativa inicial (N/2)
+    SRL C              ; Divide a estimativa inicial por 2
+
+ITERACAO:
+    LD A, B            ; A = Número
+    CALL DIVIDE        ; Divide A por C (A = N / C)
+    ADD A, C           ; A = (N / C) + C
+    SRL A              ; A = &#91;(N / C) + C] / 2 (nova estimativa)
+    LD D, A            ; Armazena a nova estimativa em D
+
+    ; Verifica a diferença entre a estimativa atual e a nova
+    LD A, C            ; A = Estimativa atual
+    SUB D              ; A = C - D (diferença)
+    JP NC, CONTINUA    ; Se a diferença for positiva, continua
+    NEG                ; Se a diferença for negativa, calcula o valor absoluto
+
+CONTINUA:
+    CP TOLERANCIA      ; Compara a diferença com a tolerância
+    JP NC, ITERACAO    ; Se a diferença for maior que a tolerância, repete
+
+    ; Armazena o resultado final
+    LD (RAIZ), D       ; Armazena a raiz quadrada na memória
+
+FIM:
+    HALT               ; Termina o programa
+
+; Sub-rotina para divisão (A = A / C)
+DIVIDE:
+    LD E, 0            ; Inicializa o quociente
+DIV_LOOP:
+    SUB C              ; Subtrai C de A
+    JP C, DIV_END      ; Se o resultado for negativo, termina
+    INC E              ; Incrementa o quociente
+    JP DIV_LOOP        ; Repete
+DIV_END:
+    LD A, E            ; Retorna o quociente em A
+    RET
+
+; Variáveis
+NUMERO    DB 25        ; Número para calcular a raiz
+TOLERANCIA DB 1        ; Tolerância para a precisão
+RAIZ      DB 0         ; Variável para armazenar o resultado</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Explicação do código:</h3>
+<!-- /wp:heading -->
+
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Estimativa inicial</strong>: A estimativa inicial é metade do número (usando <code>SRL</code> para dividir por 2).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Iteração</strong>: A fórmula de Newton-Raphson é implementada usando uma sub-rotina de divisão (<code>DIVIDE</code>).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Verificação de convergência</strong>: A diferença entre a estimativa atual e a nova é comparada com a tolerância.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Divisão</strong>: Como o ICL 1501 não tinha uma instrução de divisão, ela é implementada em software usando subtrações repetidas.</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading"></h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+</body></html>
