@@ -14,7 +14,7 @@
   --link: #1a56db;
   --card: #ffffff;
   --ring: rgba(26,86,219,0.15);
-  --maxw: 860px;
+  --maxw: 1040px;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
@@ -23,12 +23,12 @@ body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Ar
 .wrap {
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 28px 40px 80px; /* margem extra à esquerda e direita */
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
 }
 .post {
   background: var(--card);
   border-radius: 14px;
-  padding: 28px;
+  padding: 24px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.06);
   border: 1px solid rgba(0,0,0,0.05);
   text-align: left; /* alinha conteúdo à esquerda */
@@ -77,6 +77,40 @@ body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Ar
   box-shadow: 0 4px 14px rgba(0,0,0,0.08);
 }
 
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
 blockquote {
   border-left: 4px solid var(--ring);
   padding: 0.1em 1em;
@@ -92,11 +126,28 @@ blockquote {
     padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
   }
   .post {
-    padding: 14px; /* era 28px; mais área para o texto */
+    padding: 12px; /* era 28px; mais área para o texto */
   }
   .post-content {
     font-size: 1.06rem; /* ligeiro ajuste de leitura */
   }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1160px; }
 }
 
 @media (prefers-color-scheme: dark) {
