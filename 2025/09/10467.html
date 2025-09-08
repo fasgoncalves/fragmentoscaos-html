@@ -31,8 +31,11 @@ body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Ar
   padding: 28px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.06);
   border: 1px solid rgba(0,0,0,0.05);
-  text-align: center; /* centra todo o conteúdo do post */
+  text-align: left; /* alinha conteúdo à esquerda */
 }
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
 
 .post-title {
   font-family: "Merriweather", Georgia, "Times New Roman", serif;
@@ -50,15 +53,18 @@ body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Ar
 .post-content {
   font-size: 1.08rem;
   letter-spacing: 0.01em;
-  text-align: left; /* centra texto e imagens */
+  text-align: left; /* texto do artigo à esquerda */
 }
-.post-content p { margin: 0 0 1.05em; }
-.post-content h2, .post-content h3, .post-content h4 {
-  font-family: "Merriweather", Georgia, serif;
-  margin: 1.4em 0 0.6em;
-}
-.post-content a { color: var(--link); text-decoration: none; }
-.post-content a:hover { text-decoration: underline; }
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
 
 .post-content img,
 .post-content .wp-block-image img,
@@ -66,7 +72,7 @@ body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Ar
   max-width: 100%;
   height: auto;
   display: block;
-  margin: 16px auto;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
   border-radius: 10px;
   box-shadow: 0 4px 14px rgba(0,0,0,0.08);
 }
@@ -80,6 +86,19 @@ blockquote {
   border-radius: 6px;
 }
 
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 14px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
@@ -87,19 +106,6 @@ blockquote {
   .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
   blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
 }
-
-
-@media (max-width: 640px) {
-  .wrap {
-    padding: 24px 16px 72px; /* menos padding lateral (40px → 16px) = mais largura útil */
-  }
-  .post {
-    padding: 18px; /* era 28px; mais área para o texto */
-  }
-}
-
-
-
 </style>
 </head>
 <body>
