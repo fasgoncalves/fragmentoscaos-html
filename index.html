@@ -6,209 +6,83 @@
 <title>Índice de Artigos</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root {{
-  --bg: #fafafa;
-  --fg: #141414;
-  --muted: #6b7280;
-  --link: #1a56db;
-  --card: #ffffff;
-  --maxw: 1100px;
-}}
-html, body {{ margin:0; padding:0; background:var(--bg); color:var(--fg); font-family:"Inter", system-ui, sans-serif; }}
-body {{ display:flex; min-height:100vh; }}
-
-.sidebar {{
-  width:260px; background:indigo; color:#fff; padding:20px;
-  overflow-y:auto; position:fixed; height:100vh;
-}}
-.sidebar h2 {{
-  font-family:"Merriweather", Georgia, serif;
-  font-size:1.4em; margin-bottom:1em;
-}}
-.sidebar ul {{ list-style:none; padding-left:15px; }}
-.sidebar li {{ margin:4px 0; }}
-.sidebar a {{
-  color:#80cbc4; text-decoration:none; display:block; padding:4px; border-radius:4px;
-}}
-.sidebar a:hover {{ background:rgba(255,255,255,0.15); }}
-
-.content {{
-  flex:1; margin-left:260px; padding:40px 20px; max-width:var(--maxw);
-}}
-.content h1 {{
-  font-family:"Merriweather", Georgia, serif;
-  font-size:2rem; margin-bottom:0.5rem; text-align:center;
-}}
-
-.update-banner {{
-  margin: 0 auto 1.25rem; max-width: 800px; text-align:center;
-  background: rgba(26,86,219,0.08); color:#1f2a44; 
-  border: 1px solid rgba(26,86,219,0.20); 
-  padding: 10px 14px; border-radius: 10px;
-  font-size: 0.98rem;
-}}
-@media (prefers-color-scheme: dark) {{
-  .update-banner {{
-    background: rgba(122,162,255,0.12);
-    color: #e5e9f2;
-    border-color: rgba(122,162,255,0.35);
-  }}
-}}
-
-.year-title {{
-  text-align:center; font-family:"Merriweather", Georgia, serif;
-  margin: 2rem 0 1rem; font-size: 1.35rem; color: var(--muted);
-}}
-
-.post-block {{
-  background:var(--card); padding:20px; margin:0 auto 20px;
-  border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.06);
-  max-width:800px; text-align:center;
-}}
-.post-block h2 {{
-  margin:0 0 10px 0; font-family:"Merriweather", Georgia, serif;
-}}
-.post-block a {{
-  color:var(--link); text-decoration:none;
-}}
-.post-block a:hover {{ text-decoration:underline; }}
-.post-block p {{ margin: 0.25rem 0; }}
-
-@media (prefers-color-scheme: dark) {{
-  :root {{
-    --bg:#0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff;
-  }}
-  .post-block {{ box-shadow:0 4px 16px rgba(0,0,0,0.5); }}
-}}
+:root {
+  --bg: #0b0b0f;
+  --fg: #e8eef4;
+  --muted: #9aa3b2;
+  --link: #ffcc66;
+  --card: #11131a;
+  --sidebar-w: 280px;
+  --gap: 16px;
+  --topbar-h: 0px;
+}
+html, body { margin:0; padding:0; background:var(--bg); color:var(--fg); font-family:"Inter", system-ui, sans-serif; }
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  backdrop-filter: blur(6px);
+  background: rgba(0,0,0,0.65);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.topbar-inner { max-width: 1400px; margin: 0 auto; padding: 12px 16px; }
+.topbar h1 {
+  font-family: "Merriweather", Georgia, serif;
+  font-size: 1.8rem; margin: 0 0 8px 0; text-align: center;
+}
+.topbar .update-banner {
+  margin: 0; border-radius: 10px;
+  background: rgba(122,162,255,0.12);
+  border: 1px solid rgba(122,162,255,0.35);
+  padding: 10px 14px;
+}
+.topbar .update-banner h3 { margin: 0 0 8px 0; font-size: 1rem; color: var(--fg); }
+.topbar .main-links { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0; margin: 8px 0 0 0; }
+.topbar .main-links a { color: var(--link); text-decoration: none; font-weight: 600; }
+.topbar .ebooks-link { margin-top: 8px; }
+.topbar .ebooks-link a {
+  display:inline-block; padding:6px 10px; border-radius:8px;
+  border:1px solid rgba(255,204,102,0.5); text-decoration:none; color:var(--link);
+}
+.layout {
+  display: grid; grid-template-columns: var(--sidebar-w) 1fr; gap: var(--gap);
+  padding-top: var(--topbar-h);
+}
+.sidebar {
+  position: sticky; top: calc(var(--topbar-h) + var(--gap)); align-self: start;
+  height: calc(100vh - var(--topbar-h) - var(--gap)*2);
+  overflow-y: auto; background: var(--card);
+  border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 14px;
+}
+.content {
+  height: calc(100vh - var(--topbar-h) - var(--gap));
+  overflow-y: auto; background: transparent; padding: 0 6px 24px 2px;
+}
+.content .post-block {
+  background: var(--card); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px; padding: 16px; margin: 0 0 16px 0;
+}
+.sidebar a { color: #9ad5ff; text-decoration:none; }
+.sidebar a:hover { text-decoration: underline; }
+@media (max-width: 860px) {
+  :root { --sidebar-w: 100%; }
+  .layout { grid-template-columns: 1fr; gap: 10px; }
+  .sidebar { position: static; height: auto; padding: 12px; }
+  .content { height: auto; overflow: visible; padding: 0 10px 24px; }
+  .topbar h1 { font-size: 1.4rem; }
+}
 </style>
-</head>
-<body>
-<style>
-
-.post-block {{
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}}
-.post-block pre,
-.post-block table {{
-  display: block;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  max-width: 100%;
-}}
-
-@media (max-width: 900px) {{
-  .sidebar {{ width: 200px; }}
-  .content {{ margin-left: 200px; }}
-}}
-@media (max-width: 700px) {{
-  .sidebar {{ position: static; width: auto; height: auto; padding: 12px 10px; }}
-  .content {{ margin-left: 0; padding: 24px 12px; }}
-  .post-block {{ padding: 14px; }}
-}}
-
-
- .update-banner {
-    background: linear-gradient(135deg, #f3f0ff, #e6e0fa);
-    border: 2px solid #4B0082;
-    border-radius: 12px;
-    padding: 5px;
-    margin: 3px 0;
-    top: 5px;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-  }
-
-  .update-banner h3 {
-    color: #4B0082;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin-bottom: 15px;
-    text-align: center;
-  }
-
-  .update-banner nav ul.main-links {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 25px;
-    margin: 0;
-    padding: 0;
-  }
-
-  .update-banner nav ul.main-links li a,
-  .update-banner .ebooks-link a {
-    text-decoration: none;
-    color: #4B0082;
-    font-weight: bold;
-    font-size: 16px;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .update-banner nav ul.main-links li a:hover,
-  .update-banner .ebooks-link a:hover {
-    color: #fff;
-    background-color: #4B0082;
-    padding: 6px 12px;
-    border-radius: 8px;
-  }
-
-  .ebooks-link {
-    text-align: center;
-    margin-top: 15px;
-  }
-
-  /* 📱 Responsividade para telemóveis */
-  @media (max-width: 600px) {
-    .update-banner nav ul.main-links {
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .update-banner nav ul.main-links li a,
-    .update-banner .ebooks-link a {
-      display: block;
-      width: 90%;
-      text-align: center;
-      padding: 10px;
-      border: 1px solid #4B0082;
-      border-radius: 8px;
-    }
-  }
-
-</style>
-<div class="sidebar"><h2>Arquivo</h2><ul><li><strong>2025</strong><ul><li><a href='#mes-2025-09'>09</a></li><li><a href='#mes-2025-08'>08</a></li><li><a href='#mes-2025-07'>07</a></li><li><a href='#mes-2025-06'>06</a></li><li><a href='#mes-2025-05'>05</a></li><li><a href='#mes-2025-04'>04</a></li><li><a href='#mes-2025-03'>03</a></li><li><a href='#mes-2025-02'>02</a></li><li><a href='#mes-2025-01'>01</a></li></ul></li><li><strong>2016</strong><ul><li><a href='#mes-2016-09'>09</a></li></ul></li><li><strong>2014</strong><ul><li><a href='#mes-2014-09'>09</a></li><li><a href='#mes-2014-04'>04</a></li></ul></li><li><strong>2013</strong><ul><li><a href='#mes-2013-12'>12</a></li><li><a href='#mes-2013-11'>11</a></li></ul></li><li><strong>2012</strong><ul><li><a href='#mes-2012-09'>09</a></li></ul></li><li><strong>2011</strong><ul><li><a href='#mes-2011-09'>09</a></li></ul></li><li><strong>2009</strong><ul><li><a href='#mes-2009-12'>12</a></li><li><a href='#mes-2009-10'>10</a></li><li><a href='#mes-2009-09'>09</a></li><li><a href='#mes-2009-07'>07</a></li><li><a href='#mes-2009-02'>02</a></li><li><a href='#mes-2009-01'>01</a></li></ul></li><li><strong>2007</strong><ul><li><a href='#mes-2007-02'>02</a></li></ul></li></ul></div><div class='content'>
-<div class="update-banner">Última atualização: 24 de setembro de 2025, 17:17</div>
-<h1>🔥🌌💫  Blog Fragmentos de Caos - Francisco Gonçalves</h1>
-<div class="update-banner">
-  <h3>ℹ️ Info sobre Autores e acerca do Blogue</h3>
-
-  <!-- Secção autores + blogue -->
-  <nav>
-    <ul class="main-links">
-      <li><a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/sobre-francisco-goncalves.html">✍️ Francisco Gonçalves</a></li>
-      <li><a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/sobre-augustus-veritas.html">✍️ Augustus Veritas</a></li>
-      <li><a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/aletheia-veritas-guardia-da-verdade-desvelada.html">✍️ Aletheia Veritas</a></li>
-      <li><a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/o-blog-de-fragmentos-do-caos.html">🌍 Blogue</a></li>
-    </ul>
-  </nav>
-
-  <!-- Secção eBooks em linha abaixo -->
-  <div class="ebooks-link">
-    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/biblioteca-fragmentos-do-caos.html">📚 eBooks</a>
-  </div>
+<header class="topbar"><div class="topbar-inner"><h1>Índice de Artigos de Francisco Gonçalves</h1>
 </div>
 
 <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
   <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
   <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
-    }
+    function googleTranslateElementInit() {{
+      new google.translate.TranslateElement({{pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}}, 'google_translate_element');
+    }}
   </script>
   <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   <style>
-    #translate-button {
+    #translate-button {{
       position: fixed;
       top: 20px;
       right: 20px;
@@ -220,7 +94,7 @@ body {{ display:flex; min-height:100vh; }}
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       z-index: 9999;
-    }
+    }}
   </style>
 <div class='year-title' id='mes-2025-09'>2025/09</div>
             <div class='post-block'>
@@ -12010,4 +11884,5 @@ O WaveMaker é uma ferramenta  WYSIWYG de desenvolvimento para as plataforma de
               <p>A adopção do Linux, principalmente ao nível dos servidores, quer de sistemas de tipo departamental, quer mesmo na substituição de "mainframes", continuará e acentuar-se-á, devendo constituir um "cami...</p>
               <p><a href="https://fasgoncalves.github.io/fragmentoscaos-pdf/2007/02/focalizacao-de-tecnologias-ti-para-2007-2009.pdf">📄 Ver PDF</a></p>
             </div>
-            </div></body></html>
+            </main></div>
+<script>(function(){function H(){const tb=document.querySelector('.topbar');if(!tb)return;const h=tb.getBoundingClientRect().height;document.documentElement.style.setProperty('--topbar-h', h+'px');}window.addEventListener('load',H,{once:true});let t;window.addEventListener('resize',()=>{clearTimeout(t);t=setTimeout(H,120);});})();</script></body></html>
