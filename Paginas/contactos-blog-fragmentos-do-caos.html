@@ -246,6 +246,41 @@ blockquote {
 <p style="color:#7a89ff;">
 Responderemos com a mesma atenção com que nos escreveu.
 </p>
+<script>
+ async function enviar() {
+  const nome = document.getElementById('nome').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const mensagem = "📌 GitPages Source - " + document.getElementById('mensagem').value.trim();
+  
+  const resposta = document.getElementById('resposta');
+  resposta.innerText = "A enviar...";
+
+  try {
+  
+    const resp = await fetch("https://snd.softelabs.pt/api/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ nome, email, mensagem })
+    });
+ 
+    const data = await resp.json();
+
+    if (data.status === "sucesso") {
+      resposta.innerText = "Mensagem enviada com sucesso!";
+      resposta.style.color = "green";
+    } else {
+      resposta.innerText = "Erro: " + data.mensagem;
+      resposta.style.color = "red";
+    }
+
+  } catch (e) {
+    resposta.innerText = "Erro de rede ao enviar.";
+    resposta.style.color = "red";
+  }
+}
+</script>
 </article>
 
       </div>
@@ -275,41 +310,6 @@ Responderemos com a mesma atenção com que nos escreveu.
     }
   </style>
   
- <script>
-          async function enviar() {
-  const nome = document.getElementById('nome').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const mensagem = document.getElementById('mensagem').value.trim();
-  email = " Fonte GitPages : " + email;
-
-  const resposta = document.getElementById('resposta');
-  resposta.innerText = "A enviar...";
-
-  try {
-    const resp = await fetch("https://snd.softelabs.pt/api/contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ nome, email, mensagem })
-    });
-
-    const data = await resp.json();
-
-    if (data.status === "sucesso") {
-      resposta.innerText = "Mensagem enviada com sucesso!";
-      resposta.style.color = "green";
-    } else {
-      resposta.innerText = "Erro: " + data.mensagem;
-      resposta.style.color = "red";
-    }
-
-  } catch (e) {
-    resposta.innerText = "Erro de rede ao enviar.";
-    resposta.style.color = "red";
-  }
-}
-</script>
 
   <footer>
     &copy; 2025 SofteLabs. Desenvolvido por Francisco Gonçalves.
