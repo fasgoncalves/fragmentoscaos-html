@@ -227,6 +227,32 @@ blockquote {
      style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
      Carrossel
   </a>
+  
+  <div style="background: #f5f5f5; padding: 10px 15px; border-radius: 8px; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #333;">...</span> vezes.
+</div>
+
+<script>
+  function contarVisitas() {
+    const path = window.location.pathname;
+    const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+    fetch(`http://teu-servidor:5000/api/visitas/${pagina}`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('visitas').innerText = data.visitas;
+      })
+      .catch(err => {
+        console.error('Erro no contador:', err);
+        document.getElementById('visitas').innerText = 'erro';
+      });
+  }
+
+  contarVisitas();  // chamada automática
+</script>
+  
+  
+  
 </div>
       </div>
     </article>
