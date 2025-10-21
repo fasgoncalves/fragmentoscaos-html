@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O SNS e a incompetência lusa</title>
+<meta name="description" content="O SNS e a incompetência lusa">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 800px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O SNS e a incompetência lusa</h1>
+      <p class="meta">Publicado em 2025-09-28 13:17:49</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/sns-incompetencia.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background-color:#000000; color:#e8eef4; padding:24px; font-family:Georgia,serif; line-height:1.7;">
+
+  <h1 style="color:#ffcc66 !important;">🏥 SNS em Ruínas: A Saúde Pública Agora é Pendência Fatal</h1>
+
+  <p><strong>"Doentes urgentes com tempo de espera de 16 horas nas urgências do Amadora‑Sintra. Pacientes pouco urgentes com espera de 18 horas."</strong></p>
+
+  <p>Essa manchete não é exagero alarmista — é a face sombria de um colapso que já devia ter sido revertido. Quando o sistema concebido para salvar vidas passa a repassar dor, espera e desespero, assumimos que o SNS deixou de ser serviço público funcional e converteu-se em tradução de incompetência institucional.</p>
+
+  <h2 style="color:#ffcc66 !important;">📉 Evidências do Abandono</h2>
+
+  <ul>
+    <li>Tempos médios de resposta hospitalar (consultas especialidades) ultrapassam os prazos legais em mais de <strong>53,1 %</strong> dos casos (<a href="https://www.ers.pt/pt/atividade/supervisao/selecionar/informacao-de-monitorizacao/informacoes/informa%C3%A7%C3%A3o-de-monitoriza%C3%A7%C3%A3o-sobre-tempos-de-espera-no-sns-2%C2%BA-semestre-2024/?utm_source=chatgpt.com" style="color:#ffcc66 !important;" target="_blank">ERS</a>).</li>
+    <li>Profissionais denunciam que o "caos" é efeito do <em>enfraquecimento deliberado</em> do SNS (<a href="https://www.sabado.pt/ciencia---saude/detalhe/caos-na-saude-e-resultado-do-enfraquecimento-do-sns-acusam-medicos-e-enfermeiros?utm_source=chatgpt.com" style="color:#ffcc66 !important;" target="_blank">Sábado</a>).</li>
+    <li>Fechamento de urgências, pessoal exausto, triagens demoradas, filas intermináveis (<a href="https://pt.euronews.com/2025/02/11/urgencias-fechadas-falta-de-profissionais-e-filas-de-espera-hospitais-portugueses-por-um-f?utm_source=chatgpt.com" style="color:#ffcc66 !important;" target="_blank">Euronews</a>).</li>
+    <li>Apesar de existir portal com tempos de espera, muitos hospitais têm sistemas obsoletos, dificultando dados em tempo real (<a href="https://www.spms.min-saude.pt/2025/09/urgencias-em-tempo-real-mais-transparencia-no-portal-de-tempos-de-espera/?utm_source=chatgpt.com" style="color:#ffcc66 !important;" target="_blank">SPMS</a>).</li>
+  </ul>
+
+  <h2 style="color:#ffcc66 !important;">🧩 Causas da Derrocada</h2>
+
+  <ol>
+    <li><strong>Desvalorização dos Profissionais:</strong> salários baixos, contratos precários, fuga para o privado e para o estrangeiro.</li>
+    <li><strong>Gestão ineficaz:</strong> decisões descoordenadas, falta de liderança técnica, politização da máquina de saúde.</li>
+    <li><strong>Subfinanciamento crónico:</strong> orçamentos abaixo do necessário, investimentos adiados, dívidas escondidas.</li>
+    <li><strong>Urgências congestionadas:</strong> falta de cuidados primários empurra tudo para o hospital, mesmo casos menores.</li>
+    <li><strong>Falta de tecnologia e transparência:</strong> sistemas obsoletos, relatórios desatualizados, cidadãos no escuro.</li>
+  </ol>
+
+  <h2 style="color:#ffcc66 !important;">⚖ Consequências para o cidadão</h2>
+
+  <ul>
+    <li><strong>Violação do direito à saúde:</strong> a Constituição é desrespeitada quando se espera 10, 15 ou 18 horas por socorro.</li>
+    <li><strong>Doenças agravadas:</strong> diagnósticos tardios que viram urgências reais.</li>
+    <li><strong>Aprofundamento da desigualdade:</strong> quem pode paga no privado; quem não pode, espera e sofre.</li>
+    <li><strong>Quebra de confiança institucional:</strong> um Estado que falha na saúde não é Estado — é simulacro.</li>
+  </ul>
+
+  <h2 style="color:#ffcc66 !important;">🛠 O que fazer: Propostas urgentes</h2>
+
+  <p><strong>1. Valorizar os profissionais</strong> com salários dignos, progressão na carreira e incentivos regionais.</p>
+  <p><strong>2. Reforçar os cuidados primários</strong>, reabrindo centros de saúde e investindo em medicina familiar.</p>
+  <p><strong>3. Garantir gestão técnica e responsabilizável</strong>, não partidária.</p>
+  <p><strong>4. Orçamento realista</strong>, com compromisso plurianual e prioridade à saúde.</p>
+  <p><strong>5. Transparência radical</strong>: dashboards públicos em tempo real, metas mensais e auditoria cidadã.</p>
+  <p><strong>6. Reorganização das urgências</strong>: filtrar corretamente, reforçar triagem e descentralizar centros de atendimento.</p>
+
+  <h2 style="color:#ffcc66 !important;">🖋 Epílogo: A saúde como barómetro da vergonha</h2>
+
+  <p>Quando um idoso passa a noite numa maca a gemer,  
+  quando uma criança febril é ignorada 12 horas,  
+  quando uma grávida é redirecionada de hospital em hospital sem vaga —  
+  a democracia já está em coma.</p>
+
+  <p>O SNS não precisa de discursos.  
+  Precisa de ação, coragem e humanidade.  
+  Ou tornamo-nos todos cúmplices —  
+  Da espera.  
+  Do desamparo.  
+  Da morte evitável.</p>
+
+  <blockquote style="color:#ffcc66 !important; font-style:italic; border-left: 3px solid #ffcc66; padding-left: 12px; margin-left: 0;">
+    Se um país não cuida dos seus doentes…  
+    não é um país — é um laboratório de crueldade institucional.
+  </blockquote>
+
+  <div style="margin-top: 40px; border-top: 1px solid #444; padding-top: 10px;">
+    <p style="font-size: 14px;">✍️ <em>Artigo escrito por Augustus Veritas e Francisco Gonçalves, com dados públicos de 2024-2025.</em></p>
+    <p style="font-size: 14px;">🩺 <a href="https://healthnews.pt/2025/09/28/tempo-de-espera-atinge-16-horas-para-urgencias-no-hospital-amadora-sintra/?utm_source=chatgpt.com" target="_blank" style="color:#ffcc66 !important;">Fonte: HealthNews</a></p>
+    <p style="font-size: 14px;">📢 <a href="#" style="color:#ffcc66 !important;">Partilhar nas redes</a></p>
+  </div>
+
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+</body></html>

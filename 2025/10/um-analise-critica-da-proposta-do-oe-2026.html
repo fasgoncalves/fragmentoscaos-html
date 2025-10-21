@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Um análise critica da Proposta do OE 2026</title>
+<meta name="description" content="Um análise critica da Proposta do OE 2026">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 800px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Um análise critica da Proposta do OE 2026</h1>
+      <p class="meta">Publicado em 2025-10-11 09:00:16</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_000000002a6861f4ba74890aebf49c8d.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background-color:#000000; color:#e8eef4; padding:20px; font-family:Georgia,serif; line-height:1.6;">
+
+<!-- BOX DE FACTOS -->
+<div style="border:1px solid #444; padding:15px; margin-bottom:25px; background-color:#111;">
+<h3 style="color:#ffcc66 !important; text-align:center;">📜 Box de Factos</h3>
+<ul>
+<li><strong>Documento:</strong> Proposta de Orçamento do Estado 2026 (Proposta de Lei n.º 37/XVII/1.ª)</li>
+<li><strong>Fonte oficial:</strong> <a href="https://www.eo.gov.pt/politicaorcamental/Paginas/OrcamentosEstado.aspx?Ano=2026&TipoOE=Proposta+de+Orçamento+do+Estado" style="color:#ffcc66 !important;">Entidade Orçamental</a></li>
+<li><strong>Principais valores:</strong> Saúde 17.300 M€, Educação 7.543,1 M€, PRR 9.367,1 M€</li>
+<li><strong>Saldo previsto:</strong> Excedente orçamental de 0,1% do PIB</li>
+<li><strong>Dívida pública:</strong> <90% do PIB — primeira vez desde 2009</li>
+</ul>
+</div>
+
+<h1 style="text-align:center; color:#ffcc66 !important;">Orçamento de Estado 2026: Prudência, PRR e o País em Espera</h1>
+
+<h2 style="color:#ffcc66 !important;">I. O retrato do documento</h2>
+
+<p>O Governo apresentou um Orçamento que promete equilíbrio, mas entrega apenas sobrevivência.  
+Com crescimento projetado de 2,3% e dívida pública abaixo de 90%, o discurso é o da prudência e da consolidação.  
+Mas na prática, é um orçamento que mais observa do que transforma — contabilisticamente correto, politicamente confortável, economicamente tímido.</p>
+
+<h2 style="color:#ffcc66 !important;">II. Saúde: o aumento que não cura</h2>
+
+<p>A despesa consolidada com Saúde sobe para <strong>17.300 milhões de euros</strong> em 2026 — um aumento de apenas 1,5% face a 2025.  
+Com o custo dos medicamentos, energia e recursos humanos em alta, o acréscimo é, na verdade, um paliativo.  
+O SNS continua a perder capacidade estrutural, e o orçamento parece apenas tentar estancar a hemorragia sem curar a ferida.</p>
+
+<div style="text-align:center; margin:25px 0;">
+<img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/screenshot_20251011_095442.jpg" alt="Gráfico Saúde OE2026" style="max-width:100%; border:1px solid #333; border-radius:8px;">
+<p style="font-size:0.9em; color:#ccc;">Comparação das dotações de Saúde 2025 → 2026 (milhões de euros)</p>
+</div>
+
+<h2 style="color:#ffcc66 !important;">III. Educação: números que não ensinam</h2>
+
+<p>A Educação apresenta uma dotação de <strong>7.543,1 milhões de euros</strong>, um crescimento de 4,5%.  
+Porém, 82,3% deste valor destina-se a despesa com pessoal — pouco sobra para infraestruturas, inovação ou modernização pedagógica.  
+Aparentemente generoso, o aumento revela-se insuficiente quando ajustado à inflação e à degradação material das escolas.</p>
+
+<h2 style="color:#ffcc66 !important;">IV. Investimento e PRR: a máquina europeia</h2>
+
+<p>O Plano de Recuperação e Resiliência (PRR) é o verdadeiro pulmão do investimento público em 2026, com <strong>9.367,1 milhões de euros</strong>.  
+Desses, <strong>68,5%</strong> serão canalizados para quatro ministérios: Economia, Finanças, Ambiente/Energia e Infraestruturas/Habitação.  
+O restante distribui-se por áreas menores — investigação, agricultura, cultura —, mas com impacto marginal na produtividade.</p>
+
+<div style="text-align:center; margin:25px 0;">
+<img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/screenshot_20251011_095410.jpg" alt="Distribuição do PRR 2026" style="max-width:100%; border:1px solid #333; border-radius:8px;">
+<p style="font-size:0.9em; color:#ccc;">Distribuição do PRR 2026 por ministérios</p>
+</div>
+
+<p>Quanto à estrutura de financiamento, o PRR mantém a divisão clássica entre <strong>subvenções (6.789 M€)</strong> e <strong>empréstimos (2.578,1 M€)</strong>, o que reforça a dependência de fundos externos e empréstimos futuros — uma espada de Dâmocles sobre as próximas gerações.</p>
+
+<div style="text-align:center; margin:25px 0;">
+<img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/screenshot_20251011_095423.jpg" alt="Estrutura de financiamento PRR 2026" style="max-width:100%; border:1px solid #333; border-radius:8px;">
+<p style="font-size:0.9em; color:#ccc;">Estrutura de financiamento do PRR 2026</p>
+</div>
+
+<h2 style="color:#ffcc66 !important;">V. Quadro comparativo 2025 → 2026</h2>
+
+<table style="width:100%; border-collapse:collapse; font-size:0.95em;">
+<thead>
+<tr style="background-color:#111;">
+<th style="color:#ffcc66 !important; border:1px solid #333; padding:6px;">Missão / Categoria</th>
+<th style="border:1px solid #333; padding:6px;">Valor 2025</th>
+<th style="border:1px solid #333; padding:6px;">Valor 2026</th>
+<th style="border:1px solid #333; padding:6px;">Variação</th>
+<th style="border:1px solid #333; padding:6px;">Observações</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="border:1px solid #333; padding:6px;">Saúde</td>
+<td style="border:1px solid #333; padding:6px;">≈ 17.043 M€</td>
+<td style="border:1px solid #333; padding:6px;">17.300 M€</td>
+<td style="border:1px solid #333; padding:6px;">+1,5 %</td>
+<td style="border:1px solid #333; padding:6px;">Aumento nominal modesto, impacto real nulo</td>
+</tr>
+<tr>
+<td style="border:1px solid #333; padding:6px;">Educação</td>
+<td style="border:1px solid #333; padding:6px;">—</td>
+<td style="border:1px solid #333; padding:6px;">7.543,1 M€</td>
+<td style="border:1px solid #333; padding:6px;">+4,5 %</td>
+<td style="border:1px solid #333; padding:6px;">82,3 % em despesas de pessoal</td>
+</tr>
+<tr>
+<td style="border:1px solid #333; padding:6px;">Investimento (PRR)</td>
+<td style="border:1px solid #333; padding:6px;">—</td>
+<td style="border:1px solid #333; padding:6px;">9.367,1 M€</td>
+<td style="border:1px solid #333; padding:6px;">—</td>
+<td style="border:1px solid #333; padding:6px;">68,5 % concentrado em 4 ministérios</td>
+</tr>
+</tbody>
+</table>
+<!-- SECÇÃO: PENSÕES E REFORMAS -->
+<div style="background-color:#000000; color:#e8eef4; padding:20px; font-family:Georgia,serif; line-height:1.6; margin-top:30px; border-top:1px solid #333;">
+
+<h2 style="color:#ffcc66 !important; text-align:center;">🧓 Pensões e Reformas — O Alívio que Mal se Sente</h2>
+
+<p>O Governo anuncia para 2026 um aumento médio de <strong>4,2%</strong> nas pensões, sustentado pela fórmula legal de atualização (inflação + PIB médio).  
+O <strong>Complemento Solidário para Idosos</strong> sobe 40 €, e mantém-se a isenção de IRS para rendimentos até 12 880 €.  
+Mas o alívio é mais estatístico do que real — e o sistema continua estruturalmente em risco.</p>
+
+<h3 style="color:#ffcc66 !important;">📊 O que está no OE 2026</h3>
+<ul>
+<li>Atualização automática das pensões, sem reforço extraordinário.</li>
+<li>Complemento Solidário para Idosos (+40 € mensais).</li>
+<li>Pensões mínimas e sociais indexadas ao salário mínimo (~920 €).</li>
+<li>Manutenção da isenção de IRS até 12 880 € anuais.</li>
+</ul>
+
+<h3 style="color:#ffcc66 !important;">⚠️ O que falta (e é grave)</h3>
+<ul>
+<li>Sem plano de <strong>sustentabilidade</strong> da Segurança Social a médio prazo.</li>
+<li>Ausência de <strong>reforma para as pensões futuras</strong> e regime de capitalização parcial.</li>
+<li>Nenhuma estratégia para <strong>pensões de viuvez e invalidez</strong>.</li>
+<li>Falta de <strong>incentivos fiscais</strong> ao prolongamento voluntário da vida ativa.</li>
+</ul>
+
+<p>O sistema vive do presente e para o presente — sem poupança geracional, sem reforma estrutural, sem bússola.  
+Cada euro pago é um ato de fé num modelo que envelhece mais depressa do que a sua população.</p>
+
+</div>
+
+
+<!-- SECÇÃO: HABITAÇÃO -->
+<div style="background-color:#000000; color:#e8eef4; padding:20px; font-family:Georgia,serif; line-height:1.6; margin-top:30px; border-top:1px solid #333;">
+
+<h2 style="color:#ffcc66 !important; text-align:center;">🏠 Habitação — O Problema Adiado Mais um Ano</h2>
+
+<p>O Orçamento de Estado 2026 reforça o <strong>Programa de Infraestruturas e Habitação</strong> em 33,8 %, mas grande parte desse aumento é mera transferência do PRR.  
+Prolongam-se subsídios e incentivos, mas não há ruptura, nem visão urbanística.  
+Portugal continua a tratar a habitação como um problema financeiro, não social.</p>
+
+<h3 style="color:#ffcc66 !important;">🧱 O que está no OE 2026</h3>
+<ul>
+<li>Reforço do Programa de Infraestruturas e Habitação (+33,8 %).</li>
+<li>Extensão dos <strong>apoios à renda</strong> até 2026, com majoração para famílias com crianças.</li>
+<li><strong>Isenção de IMT e IMI</strong> para arrendamento acessível.</li>
+<li><strong>Isenção de mais-valias</strong> na venda de imóveis destinados a amortizar crédito próprio.</li>
+<li>Transferência de imóveis rústicos do Estado para os municípios.</li>
+</ul>
+
+<h3 style="color:#ffcc66 !important;">⚠️ O que falta (e compromete tudo)</h3>
+<ul>
+<li>Ausência de <strong>política pública de solos</strong> e licenciamento simplificado.</li>
+<li>Nenhum <strong>controlo de preços</strong> no arrendamento especulativo.</li>
+<li>Sem medidas contra o <strong>abandono habitacional</strong> (700 000 casas vazias).</li>
+<li>Dependência quase total do <strong>PRR</strong> para investimento habitacional.</li>
+<li>Falta de <strong>crédito público acessível</strong> para jovens e classes médias.</li>
+</ul>
+
+<p>O mercado dita as regras, e o Estado assiste — tímido, lento, resignado.  
+A crise da habitação é o espelho da própria nação: um país onde a casa é sonho, não direito.</p>
+
+<div style="text-align:center; margin-top:30px;">
+<em>"O país equilibra as contas, mas desequilibra as vidas."</em>
+</div>
+
+</div>
+<h2 style="color:#ffcc66 !important;">VI. Conclusão crítica</h2>
+
+<p>O Orçamento de Estado 2026 é, em essência, um documento de contenção.  
+Evita o risco, preserva o rating, mas abdica da ambição.  
+A saúde não sara, a educação não aprende, e o investimento depende do oxigénio europeu.  
+É um orçamento que <strong>governa o presente, mas não prepara o futuro</strong>.</p>
+
+<p>Entre o rigor contabilístico e a visão de país há um abismo — e Portugal continua, serenamente, a contemplá-lo do lado errado. Em suma sem qualquer novidade ou a mínima orientação para o futuro. A "mesmice" do costume e uma navegação à vista. ZERO preocupações e legislação sobre transparência governativa,  fuga a impostos,  paraísos fiscais,  e a corrupção que vai erodindo o país.</p>
+
+
+<h3 style="color:#ffcc66";>🧩 O que isto revela</h3>
+<p style="color:#c58031";>
+Significa que o Governo optou por manter o <strong>status quo</strong> — cumprir metas macroeconómicas e deixar a luta contra a corrupção fora do orçamento, como se fosse um tema moral e não económico.
+<strong>Mas é um erro profundo</strong>
+
+A corrupção não é uma questão ética — é uma questão fiscal.
+Cada euro desviado é um euro que falta na saúde, na educação e na inovação.
+Sem mecanismos de rastreabilidade, transparência e penalização efetiva, o Estado continua a operar num nevoeiro contabilístico onde o dinheiro circula sem responsabilidade visível.</p>
+<p>
+<strong>⚠️ Em resumo</strong>
+
+👉 Não há medidas novas anticorrupção.
+👉 Não há política de combate a offshores.
+👉 Não há plano de integridade pública com metas ou fiscalização.
+👉 E não há sequer compromisso público com transparência em tempo real.
+
+O OE2026 é, em matéria de ética financeira, uma tábua rasa — um orçamento prudente nas contas, mas omisso na moral.</p>
+
+<div style="text-align:right; margin-top:30px;">
+<em>— Augustus Veritas Lumen · Fragmentos do Caos</em>
+</div>
+<!-- ANEXO LEGISLATIVO -->
+<div style="background-color:#0a0a0a; color:#e8eef4; padding:20px; font-family:Georgia,serif; line-height:1.6; margin-top:40px; border-top:2px solid #ffcc66;">
+
+<h2 style="color:#ffcc66 !important; text-align:center;">📎 Anexo Legislativo — <strong>Proposta de Medidas Anticorrupção e Antifuga Fiscal</strong></h2>
+
+<p style="text-align:center; font-style:italic; color:#bbb;">
+Proposta elaborada por Augustus Veritas Lumen · Fragmentos do Caos  
+<br>Baseada na ausência de medidas concretas no Orçamento de Estado 2026
+</p>
+
+<h3 style="color:#ffcc66 !important;">Artigo 1.º — Princípio de Transparência e Responsabilização Fiscal</h3>
+<p>O Estado e todas as suas entidades devem garantir a identificação pública do <strong>beneficiário efetivo</strong> em cada contrato, subvenção ou despesa pública.  
+Nenhum pagamento poderá ser efetuado a entidades cuja estrutura de propriedade não seja totalmente transparente.</p>
+
+<h3 style="color:#ffcc66 !important;">Artigo 2.º — Proibição de Contratação com Entidades de Jurisdições Não Cooperantes</h3>
+<p>É vedada a contratação pública com empresas sediadas em <strong>paraísos fiscais</strong> ou jurisdições não cooperantes, salvo autorização expressa e publicada em Diário da República.  
+A violação implica nulidade contratual e responsabilidade disciplinar do dirigente.</p>
+
+<h3 style="color:#ffcc66 !important;">Artigo 3.º — Cláusula de Beneficiário Efetivo</h3>
+<p>Todos os contratos públicos deverão incluir cláusula obrigatória de declaração do <strong>beneficiário efetivo</strong>, sujeita a auditoria da AT e do Tribunal de Contas.  
+A falsificação ou omissão constitui crime punível com pena de prisão até cinco anos.</p>
+
+<h3 style="color:#ffcc66 !important;">Artigo 4.º — Metas Anuais e Relatório Público de Combate à Evasão</h3>
+<p>O Governo fixará metas anuais de receita obtida por combate à evasão fiscal e publicará, trimestralmente, os resultados num <strong>painel digital público</strong> com número de inspeções, valores recuperados e processos-crime instaurados.</p>
+
+<h3 style="color:#ffcc66 !important;">Artigo 5.º — Reforço da Cláusula Geral Anti-Abuso</h3>
+<p>A AT poderá requalificar operações artificiais destinadas a transferir lucros para jurisdições de baixa tributação, aplicando tributação de acordo com a <strong>substância económica</strong>.  
+Cria-se um <em>Conselho Técnico Independente</em> para uniformização de critérios.</p>
+
+<h3 style="color:#ffcc66 !important;">Artigo 6.º — Regime CFC (Controlled Foreign Companies) Reforçado</h3>
+<p>Os residentes portugueses com participações em empresas offshore passam a ser tributados sobre os lucros dessas entidades, independentemente de distribuição.  
+A AT publicará anualmente o <strong>mapa de rendimentos imputados</strong> por jurisdição.</p>
+
+<h3 style="color:#ffcc66 !important;">Artigo 7.º — Testes de Integridade e Declaração Patrimonial Alargada</h3>
+<p>Todos os titulares de cargos políticos e dirigentes públicos ficam sujeitos a <strong>testes de integridade periódicos</strong> e à divulgação de património, incluindo ativos no estrangeiro e participações indiretas.  
+Omissões implicam perda imediata de mandato.</p>
+
+<h3 style="color:#ffcc66 !important;">Artigo 8.º — Cooperação Internacional e e-Invoicing Total</h3>
+<p>Portugal adere integralmente à <strong>troca automática de informação fiscal</strong> (OCDE-CRS e UE-DAC) e impõe a obrigatoriedade de fatura eletrónica universal até 2027, garantindo rastreabilidade de todos os fluxos económicos.</p>
+
+<h3 style="color:#ffcc66 !important;">Artigo 9.º — Disposições Finais</h3>
+<p>O Governo regulamentará as presentes medidas no prazo máximo de 180 dias, com entrada em vigor a 1 de janeiro de 2027.</p>
+
+<hr style="border-color:#ffcc66; margin:30px 0;">
+
+<p style="text-align:center; color:#ffcc66 !important; font-style:italic;">
+"Cada euro recuperado da sombra vale por mil poupados em austeridade."  
+<br>— Augustus Veritas Lumen
+</p>
+
+</div>
+</div>
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+</body></html>

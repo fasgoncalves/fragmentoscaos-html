@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Ilusão da Transparência: Justiça e Corrupção em Portugal</title>
+<meta name="description" content="A Ilusão da Transparência: Justiça e Corrupção em Portugal">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 800px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Ilusão da Transparência: Justiça e Corrupção em Portugal</h1>
+      <p class="meta">Publicado em 2025-03-05 11:22:06</p>
+      
+      <div class="post-content">
+        <!-- wp:cover {"url":"https://fasgoncalves.github.io/fragmentoscaos-img/imagens/1000007642.jpg","id":1119,"dimRatio":50,"style":{"color":{}}} -->
+<div class="wp-block-cover"><span aria-hidden="true" class="wp-block-cover__background has-background-dim"></span><img class="wp-block-cover__image-background wp-image-1119" alt="" src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/1000007642.jpg" data-object-fit="cover"/><div class="wp-block-cover__inner-container"><!-- wp:paragraph {"align":"center","fontSize":"large"} -->
+<p class="has-text-align-center has-large-font-size"></p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:cover -->
+
+<!-- wp:heading {"level":1} -->
+<h1 class="wp-block-heading"></h1>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Portugal enfrenta uma crise de confiança nas suas instituições, particularmente na Justiça e na transparência governativa. A corrupção, embora negada por muitos dos que detêm o poder, é um problema persistente, como evidenciado pelos índices internacionais e pela própria perceção dos cidadãos e magistrados. No mais recente Índice de Perceção da Corrupção da Transparência Internacional, Portugal caiu para a pior classificação de sempre, um reflexo direto da falta de medidas eficazes para combater a corrupção sistémica.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Uma Justiça Lenta e Seletiva</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>O sistema judicial português sofre de um problema crónico de lentidão e falta de eficácia. Processos de corrupção envolvendo figuras públicas arrastam-se durante anos sem que haja consequências reais. O caso da <em>Operação Marquês</em>, onde José Sócrates foi acusado de corrupção, ilustra perfeitamente este problema: depois de anos de investigação, muitas acusações acabaram prescritas ou anuladas por falhas processuais.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A morosidade não é apenas um entrave à aplicação da Justiça, mas um fator que beneficia os poderosos. A distribuição de processos judiciais é outro ponto de desconfiança, já que, segundo um inquérito da Rede Europeia de Conselhos de Justiça, 27% dos juízes acreditam que houve manipulação na distribuição de casos nos últimos anos. Se até os magistrados começam a desconfiar do próprio sistema, que esperança resta para os cidadãos comuns?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Corrupção e Falta de Consequências</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>A impunidade tem sido uma marca constante na política portuguesa. Casos de corrupção são revelados, investigações são abertas, mas raramente há condenações efetivas. Mesmo quando alguns políticos são afastados temporariamente, muitos regressam ao poder ou a cargos de influência na administração pública ou privada.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A corrupção em Portugal não se limita aos casos mediáticos envolvendo figuras de topo. Está enraizada no funcionamento do Estado, em contratos públicos sem transparência, em favorecimentos políticos e na perpetuação de uma cultura onde os interesses privados se sobrepõem ao bem comum.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Reformas de Fachada</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>O discurso oficial tenta pintar um quadro de compromisso com a transparência, mas na prática, as medidas implementadas são frequentemente ineficazes ou apenas superficiais. Leis são aprovadas, mas sem mecanismos para garantir a sua aplicação rigorosa. Comissões de ética são criadas, mas sem poderes reais para agir. Declarações de rendimentos e interesses de políticos e altos funcionários públicos são publicadas, mas sem fiscalização eficaz.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>O problema não é a falta de leis, mas sim a ausência de vontade política para as aplicar com firmeza. Muitas medidas são tomadas apenas para acalmar a opinião pública, sem qualquer intenção real de mudar o status quo.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>O Papel da Sociedade</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>A falta de cidadania ativa em Portugal também contribui para a manutenção deste sistema. Apesar de uma crescente indignação com os escândalos de corrupção, a reação popular ainda é tímida. A ausência de um movimento forte e persistente de exigência de transparência e justiça permite que o problema continue a crescer.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Os sindicatos do setor público, por exemplo, são frequentemente eficazes na luta por benefícios para os seus membros, mas raramente pressionam por uma reforma profunda do sistema que beneficie toda a sociedade. Da mesma forma, os partidos políticos que chegam ao poder acabam por integrar-se no mesmo esquema de influência e troca de favores, perpetuando o problema.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Conclusão</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Portugal vive uma realidade onde a corrupção é vista como um problema estrutural, mas onde poucas medidas são tomadas para combatê-la de forma séria. O sistema judicial, lento e seletivo, acaba por contribuir para a impunidade. As reformas, quando surgem, são muitas vezes de fachada, e a sociedade civil ainda não encontrou a força necessária para exigir mudanças reais.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Sem um compromisso genuíno com a transparência e a justiça, o país continuará a descer nos índices internacionais, e a desconfiança dos cidadãos nas suas instituições apenas aumentará. O combate à corrupção exige ação, não apenas discursos. A questão que fica é: quando é que Portugal terá coragem para enfrentar este problema de frente?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong><em><a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" data-type="page" data-id="328">Francisco Gonçalves </a></em></strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Créditos para IA, chatGPT e DeepSeek (c)</p>
+<!-- /wp:paragraph --><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+</body></html>

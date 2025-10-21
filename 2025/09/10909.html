@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Tragédia do Elevador da Glória</title>
+<meta name="description" content="A Tragédia do Elevador da Glória">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 800px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Tragédia do Elevador da Glória</h1>
+      <p class="meta">Publicado em 2025-09-07 20:45:34</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_000000008ec062468cc9e45d5a74d42a.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- Artigo – Crónica: Luto não é novela (Elevador da Glória) --><article class="fc-article" role="article" aria-label="Crónica – Luto não é novela (Elevador da Glória)">
+  <style>
+    :root{
+      --bg:#0b0f14;        /* fundo escuro para alto contraste */
+      --text:#e8eef4;      /* texto principal */
+      --muted:#b6c2cf;     /* texto secundário */
+      --accent:#8b5cf6;    /* índigo vivo para títulos */
+      --accent-2:#22c55e;  /* verde suave para destaques */
+      --card:#111827;      /* blocos/caixas */
+      --border:#273142;    /* linhas e divisores */
+      --warning:#fbbf24;   /* avisos/etiquetas */
+    }
+    .fc-article{background:var(--bg); color:var(--text); margin:0; padding:0}
+    .fc-wrap{max-width:860px; margin:0 auto; padding:1.25rem 1rem}
+    header h1{font-size:clamp(1.6rem,3vw,2.4rem); line-height:1.15; margin:0.25rem 0 0.5rem; color:#fff; font-weight:800}
+    header .kicker{display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; color:var(--muted); font-size:.95rem}
+    header .kicker .pill{background:rgba(139,92,246,.12); color:var(--accent); border:1px solid rgba(139,92,246,.35); padding:.2rem .55rem; border-radius:999px}
+    header .meta{color:var(--muted); font-size:.9rem; margin-top:.25rem}h2{font-size:clamp(1.15rem,2.3vw,1.55rem); color:#fff; margin:1.25rem 0 .5rem; line-height:1.25}
+h3{font-size:clamp(1.02rem,2vw,1.2rem); color:#fff; margin:1rem 0 .5rem}
+p{margin:.6rem 0; font-size:clamp(1rem,1.2vw,1.06rem); line-height:1.7}
+strong{color:#fff}
+a{color:#93c5fd; text-decoration:underline; text-underline-offset:2px}
+
+.factbox{background:var(--card); border:1px solid var(--border); border-left:4px solid var(--accent); padding:1rem; border-radius:.8rem; margin:1rem 0}
+.factbox h3{margin:.25rem 0 .75rem}
+.facts{display:grid; grid-template-columns:1fr; gap:.5rem}
+.facts .row{display:flex; justify-content:space-between; gap:.75rem; border-bottom:1px dashed var(--border); padding:.35rem 0}
+.facts .k{color:var(--muted)}
+.facts .v{font-weight:700; color:#fff}
+
+.callout{background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.35); padding:.9rem 1rem; border-radius:.8rem; margin:1rem 0; color:#d1fae5}
+
+ul, ol{padding-left:1.1rem}
+li{margin:.35rem 0}
+
+.hr{height:1px; background:var(--border); margin:1rem 0}
+footer{color:var(--muted); font-size:.9rem; margin-top:1.25rem}
+
+/* mobile-first refinements */
+@media (min-width:740px){
+  .facts{grid-template-columns:1fr 1fr}
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:1rem}
+}
+  /* Forçar cor clara nos títulos, mesmo que o tema do WP/os estilos externos tentem sobrepor */
+.fc-article h1, .fc-article h2, .fc-article h3, .fc-article h4, .fc-article h5, .fc-article h6{ color:#fff !important; }
+.fc-article h1 a, .fc-article h2 a, .fc-article h3 a, .fc-article h4 a, .fc-article h5 a, .fc-article h6 a{ color:#fff !important; }
+
+  </style>
+  <div class="fc-wrap">
+    <header>
+      <div class="kicker"><span class="pill">Crónica</span><span>Elevador da Glória • Lisboa</span></div>
+      <h1>Luto não é novela: por que a TV repete até adormecer</h1>
+      <div class="meta">Publicado: 7 de setembro de 2025 • Atualizado: 7 de setembro de 2025, 20:00 (Lisboa)</div>
+    </header><section class="factbox" aria-label="Box de Factos">
+  <h3>Box de factos (verificado)</h3>
+  <div class="facts">
+    <div class="row"><div class="k">Data do acidente</div><div class="v">4ª feira, 3 set 2025</div></div>
+    <div class="row"><div class="k">Local</div><div class="v">Elevador da Glória, Calçada da Glória (Lisboa)</div></div>
+    <div class="row"><div class="k">Vítimas</div><div class="v">16 mortos • 22 feridos</div></div>
+    <div class="row"><div class="k">Causa imediata</div><div class="v">Rutura/desprendimento do cabo no ponto de fixação da cabina superior</div></div>
+    <div class="row"><div class="k">Ações de emergência</div><div class="v">Travões pneumático e de mão acionados; insuficientes para suster</div></div>
+    <div class="row"><div class="k">Medidas oficiais</div><div class="v">Luto nacional (4 set); suspensão para inspeções</div></div>
+    <div class="row"><div class="k">Investigações</div><div class="v">GPIAAF (relatório preliminar esperado ~45 dias) • Inquérito do MP</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Os factos em um parágrafo</h2>
+  <p>Na tarde de <strong>3 de setembro de 2025</strong>, o Elevador da Glória descarrilou. <strong>Dezasseis pessoas morreram</strong> e <strong>22 ficaram feridas</strong>. O <em>guarda‑freio</em> acionou os travões pneumático e de mão, mas a <strong>falha no cabo que une as duas cabinas</strong> — poucos metros após o arranque — deixou a composição desgovernada. No dia seguinte, o Governo decretou <strong>luto nacional</strong>. São estes os marcos: secos, duros, suficientes.</p>
+</section>
+
+<section>
+  <h2>O ciclo da repetição que nada explica</h2>
+  <ul>
+    <li><strong>Loops infinitos</strong> dos mesmos 30 segundos: grafismos de "última hora" quando já é "hora passada".</li>
+    <li><strong>Painéis de palpite</strong>: a técnica some‑se, a responsabilidade dilui‑se.</li>
+    <li><strong>Soletrar a dor</strong> não é informar: é colher audiências no terreno do luto.</li>
+    <li><strong>Tempo estéril</strong>: horas de emissão sem novidade — ruído que abafa o que importa.</li>
+  </ul>
+  <div class="callout">Luto não pede claque. Pede <strong>clareza</strong>, <strong>silêncio útil</strong> e <strong>engenharia</strong>.</div>
+</section>
+
+<section>
+  <h2>O que a televisão devia fazer</h2>
+  <div class="grid-2">
+    <div>
+      <h3>1) Box de factos atualizada</h3>
+      <p>Sem dramatização. <em>Só</em> novas entradas quando houver <strong>novidade real</strong>.</p>
+      <h3>2) Explicar o sistema</h3>
+      <p>Funicular, redundâncias de travagem, sensores de tensão no cabo, <em>ponto de fixação</em> — <strong>como falhou</strong> e <strong>onde</strong>.</p>
+      <h3>3) Linha de prazos</h3>
+      <p>Relatório preliminar do GPIAAF (≈45 dias), inquérito do MP, auditoria externa. <strong>Quem decide?</strong> <strong>Quando?</strong></p>
+    </div>
+    <div>
+      <h3>4) Documentos, não boatos</h3>
+      <p>Contratos de manutenção, registos de inspeção, notas técnicas <em>na íntegra</em>. Ganho: confiança pública.</p>
+      <h3>5) Comparação internacional</h3>
+      <p>Como outras cidades tratam redundâncias, sensores, auditorias e simulacros. Aprender depressa, aplicar melhor.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Mapa da responsabilidade (com prazos)</h2>
+  <ul>
+    <li><strong>Ponto de falha</strong>: desprendimento/rotura no <em>ponto de fixação</em> da cabina superior.</li>
+    <li><strong>Redundâncias</strong>: travões existiam, mas não susteram a aceleração desgovernada.</li>
+    <li><strong>Prazo técnico</strong>: relatório preliminar do GPIAAF em ~45 dias; final quando concluído.</li>
+    <li><strong>Prazo judicial</strong>: inquérito do Ministério Público em curso (tempo dependente da prova).</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Cinco medidas para não repetirmos a tragédia (nem a novela)</h2>
+  <ol>
+    <li><strong>Dupla redundância mecânica real</strong>: governador de excesso de velocidade + travão de emergência <em>independente</em>.</li>
+    <li><strong>Sensores de tensão/fadiga</strong> com alarmística contínua e <em>logs</em> públicos.</li>
+    <li><strong>Acesso fácil ao "ponto cego"</strong> (fixação do cabo) para inspeções frequentes.</li>
+    <li><strong>Auditoria externa anual</strong> publicada na íntegra (contratos, peças substituídas, ensaios).</li>
+    <li><strong>Simulacros e comando cronometrado</strong>: quem pára, quando pára, com que sinais.</li>
+  </ol>
+</section>
+
+<div class="hr" aria-hidden="true"></div>
+
+<section>
+  <h2>Fontes essenciais</h2>
+  <p>
+    <a href="https://www.reuters.com/world/europe/deadly-portugal-funicular-crash-likely-due-problems-with-cable-report-says-2025-09-07/" rel="noopener" target="_blank">Reuters – relatório preliminar aponta falha no cabo</a> ·
+    <a href="https://apnews.com/article/9ed60e5df2ae5b7ba58f7d061df32039" rel="noopener" target="_blank">AP – descrição inicial da falha de cabo</a> ·
+    <a href="https://www.rtp.pt/noticias/pais/relatorio-elevador-da-gloria-gabinete-de-prevencao-de-acidentes-conclui-para-ja-que-se-soltou-o-cabo-que-unia-as-duas-cabines_v1681806" rel="noopener" target="_blank">RTP – travões acionados, cabo soltou-se</a> ·
+    <a href="https://sicnoticias.pt/especiais/acidente-no-elevador-da-gloria/2025-09-06-relatorio-confirma-que-cabo-do-elevador-da-gloria-cedeu-e-guarda-freios-acionou-travoes-197c1f12" rel="noopener" target="_blank">SIC Notícias – relatório confirma cedência do cabo</a> ·
+    <a href="https://eco.sapo.pt/2025/09/04/tudo-o-que-ja-se-sabe-sobre-uma-das-maiores-tragedias-dos-ultimos-anos-em-lisboa/" rel="noopener" target="_blank">ECO – síntese do que se sabe</a> ·
+    <a href="https://www.dn.pt/sociedade/a-cronologia-do-descarrilamento-do-elevador-segundo-o-gpiaaf" rel="noopener" target="_blank">DN – cronologia segundo o GPIAAF</a>
+  </p>
+</section>
+
+<footer>
+  <p>Crónica por <strong>Francisco Gonçalves</strong> & <strong>Augustus Veritas Lumen</strong>. Luto pede respeito. Informação pede rigor.</p>
+</footer>
+
+  </div>
+</article>
+
+<div style="max-width: 600px; margin: 2em auto; border-radius: 12px; padding: 20px; background-color: #1e1e1e; color: #f0f0f0; font-family: 'Segoe UI', sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.4);">
+<h2 style="text-align: center; margin-bottom: 1em; color: #ffffff;">🌌 Fragmentos do Caos – Sites Relacionados</h2>
+<ul style="list-style: none; padding: 0; font-size: 1.1em;">
+<li style="margin-bottom: 1em;">
+      <strong>📚 Blogue Principal:</strong><br />
+      <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" style="color: #90caf9; text-decoration: none;"><br />
+        https://fasgoncalves.github.io/fragmentoscaos-html<br />
+      </a>
+    </li>
+<li style="margin-bottom: 1em;">
+      <strong>📘 Ebooks "Fragmentos do Caos":</strong><br />
+      <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" style="color: #90caf9; text-decoration: none;"><br />
+        https://fasgoncalves.github.io/hugo.fragmentoscaos<br />
+      </a>
+    </li>
+<li>
+      <strong>🌀 Carrossel de Artigos:</strong><br />
+      <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" style="color: #90caf9; text-decoration: none;"><br />
+        https://fasgoncalves.github.io/indice.fragmentoscaos<br />
+      </a>
+    </li>
+</ul>
+<p style="text-align: center; font-style: italic; margin-top: 2em; color: #cccccc;">
+    Uma constelação de ideias, palavras e caos criativo – ao teu alcance.
+  </p>
+</div>
+<p> A sua avaliação deste artigo é importante para nós. Obrigado.</p>
+
+<!-- wp:shortcode -->
+[avaliacao_5estrelas]
+<!-- /wp:shortcode -->
+
+
+
+<!--
+  Banner Slim "Pesquisa direta – Fragmentos do Caos"
+  ➤ Mais compacto, ideal para sidebar ou rodapé.
+--><section class="fc-banner-slim" role="region" aria-label="Pesquisa direta em Fragmentos do Caos">
+  <form class="fc-search-slim" action="https://webnews.fragmentoscaos.eu" method="GET" target="_blank" rel="noopener">
+    <label class="sr-only" for="fc-q-slim">Pesquisar</label>
+    <div class="fc-input-slim">
+      <svg class="fc-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23 6.5 6.5 0 1 0-6.5 6.5 6.471 6.471 0 0 0 4.23-1.57l.27.28v.79l4.99 4.99 1.49-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input id="fc-q-slim" name="q" type="search" placeholder="Pesquisar Fragmentos do Caos..." aria-label="Pesquisar publicações" />
+    </div>
+    <button class="fc-btn-slim" type="submit">🔍</button>
+  </form>
+</section><style>
+  :root{
+    --fc-bg-slim:#111627;
+    --fc-accent-slim:#7b61ff;
+    --fc-text-slim:#fff;
+    --fc-muted-slim:#aeb7d6;
+  }
+
+  .fc-banner-slim{
+    position:relative; isolation:isolate;
+    margin:18px auto; padding:10px 14px;
+    color:var(--fc-text-slim);
+    background: linear-gradient(135deg, var(--fc-bg-slim), #1e244a);
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .fc-search-slim{ display:flex; gap:8px; align-items:stretch; }
+  .fc-input-slim{ position:relative; flex:1; }
+  .fc-input-slim input{
+    width:100%; height:38px; padding:0 34px 0 36px;
+    border-radius:10px; border:1px solid rgba(255,255,255,.16);
+    background: rgba(255,255,255,.05);
+    color:var(--fc-text-slim); outline:none;
+    font-size:14px;
+  }
+  .fc-input-slim input::placeholder{ color:var(--fc-muted-slim); }
+  .fc-input-slim input:focus{ border-color: var(--fc-accent-slim); box-shadow: 0 0 0 3px rgba(123,97,255,.35); }
+
+  .fc-icon{ position:absolute; left:10px; top:50%; transform:translateY(-50%); width:18px; height:18px; opacity:.7; color:#cfe6ff; }
+
+  .fc-btn-slim{
+    flex:0 0 auto; width:42px; height:38px;
+    border-radius:10px; border:1px solid rgba(123,97,255,.6);
+    background: var(--fc-accent-slim);
+    color:#fff; font-weight:bold; cursor:pointer;
+    transition: background .2s ease;
+  }
+  .fc-btn-slim:hover{ background:#9d87ff; }
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+</body></html>

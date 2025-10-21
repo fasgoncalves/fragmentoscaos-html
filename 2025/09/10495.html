@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Estado real da Literacia em Portugal</title>
+<meta name="description" content="O Estado real da Literacia em Portugal">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 800px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Estado real da Literacia em Portugal</h1>
+      <p class="meta">Publicado em 2025-09-04 18:46:03</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_000000009f486246a2e433f0291589e5.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="--bg:#a1dcdc; --card:#571a20;  --text:#000000; --muted:#3aa0a6; --accent:#7ab4f8; --accent2:#adf0c5; background:var(--bg); color:var(--text); padding:24px; border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,.35); font-family:Segoe UI,Roboto,system-ui,Arial,sans-serif; line-height:1.6; max-width:980px; margin:0 auto;">
+
+  <div style="background:linear-gradient(135deg, rgba(138,180,248,.12), rgba(125,240,197,.10)); border:1px solid rgba(255,255,255,.06); padding:18px 18px 14px; border-radius:14px; margin:0 0 18px 0;">
+    <h2 style="margin:0; font-weight:800; line-height:1.2;">Portugal e a Iliteracia de Luxo: diagnóstico cru e plano de choque</h2>
+  </div>
+
+  <!-- DIAGNÓSTICO -->
+  <h3 style="margin:12px 0 6px 0; font-size:20px;">1) Diagnóstico da realidade atual, escondida por relatórios redondos dos governos</h3>
+  <p>Hoje, em Portugal, milhares de jovens entre os <strong>20 e os 35 anos</strong>, muitos deles com <strong>diplomas universitários</strong>, revelam uma fragilidade intelectual que não pode ser escondida atrás de certificados.</p>
+
+  <p><strong>Dificuldades em interpretar textos complexos:</strong> a leitura profunda morreu, restou o "scan" rápido, como quem passa os olhos por um manual de instruções que nunca entende. <br>
+  <strong>Vocabulário pobre:</strong> repetem as mesmas vinte ou trinta palavras em todas as conversas, limitando o alcance do pensamento. Quem não tem palavras, não tem mundo. <br>
+  <strong>Matemática básica esquecida:</strong> muitos não sabem a tabuada de cor, tropeçam em percentagens e confundem juros com magia negra. <br>
+  <strong>Escrita rudimentar:</strong> frases mal construídas, pontuação ao acaso, ideias truncadas. O texto sai tosco, sem fôlego nem clareza. <br>
+  <strong>Pensamento crítico ausente:</strong> não questionam, não problematizam, não cruzam dados. O que "vem no feed" é o que é. O rebanho pensa por eles — e isso basta.</p>
+
+  <h4 style="margin:12px 0 6px 0;">As causas do problema</h4>
+  <p>Este défice não caiu do céu. É fruto de um sistema que ensina a <em>decorar</em> em vez de pensar:</p>
+  <ul style="margin:6px 0 12px 18px; padding:0;">
+    <li><strong>Escola do exame:</strong> formar para "passar", não para pensar. Ensina-se a decorar, não a criar.</li>
+    <li><strong>Famílias sem livros:</strong> casas cheias de ecrãs, estantes vazias.</li>
+    <li><strong>Redes sociais:</strong> moldam cérebros para recompensas rápidas, sem paciência para o difícil.</li>
+    <li><strong>Universidades massificadas:</strong> diploma virou certificado administrativo, sem exigência cultural.</li>
+  </ul>
+
+  <h4 style="margin:12px 0 6px 0;">As consequências para o país</h4>
+  <p>Criamos gerações com diploma mas sem <strong>ferramentas cognitivas profundas</strong>. O país fica cheio de técnicos medianos, incapazes de inovar. A democracia torna-se frágil: cidadãos que não leem criticamente são facilmente manipulados por slogans e líderes populistas. Culturalmente, estagnamos: sem leitura, sem escrita, sem criação, transformamo-nos numa economia de serviços banais e turismo de temporada. Em suma, produzimos um <strong>rebanho dócil</strong>, confortável em não pensar.</p>
+
+  <hr style="border:none; border-top:1px solid rgba(255,255,255,.08); margin:16px 0 12px 0;" />
+
+  <!-- PLANO -->
+  <h3 style="margin:0 0 8px 0; font-size:20px;">2) Urge Um Plano de Choque para a Literacia (2025–2030)</h3>
+  <p><em>Se não pensamos nem escrevemos bem, o resto é papel timbrado.</em> O país precisa de um choque cultural e educativo, com medidas concretas, mensuráveis e rápidas.</p>
+
+  <h4 style="margin:12px 0 6px 0;">Medidas imediatas (primeiros 90 dias)</h4>
+  <ul style="margin:6px 0 12px 18px; padding:0;">
+    <li><strong>Leitura 20:</strong> em todas as escolas, 20 minutos por dia dedicados à leitura de livros, com registo de ideias.</li>
+    <li><strong>Redação semanal:</strong> um texto por semana, avaliado pela estrutura lógica e clareza.</li>
+    <li><strong>Telemóveis fora da aula:</strong> recolhidos em armários à entrada, para devolver a atenção ao professor e à matéria.</li>
+    <li><strong>Bibliotecas Vivas:</strong> abertas até às 22h em 50 municípios, com clubes de leitura e debate.</li>
+  </ul>
+
+  <h4 style="margin:12px 0 6px 0;">Núcleo do currículo</h4>
+  <ul style="margin:6px 0 12px 18px; padding:0;">
+    <li><strong>Escrita & Retórica:</strong> aprender a argumentar, refutar falácias, escrever com clareza.</li>
+    <li><strong>Lógica & Pensamento Crítico:</strong> distinguir evidência de opinião, desmontar vieses e falácias.</li>
+    <li><strong>Numeracia para a Vida:</strong> percentagens, juros, gráficos, orçamentos.</li>
+  </ul>
+
+  <h4 style="margin:12px 0 6px 0;">Universidade com exigência real</h4>
+  <p>No ensino superior, todos os alunos terão um <strong>tronco comum obrigatório</strong> em Escrita Académica, Pensamento Crítico e Estatística.  
+  Para graduar-se, será necessário apresentar um <strong>portefólio escrito</strong> (ensaios, relatórios) e defender oralmente ideias perante júri.  
+  Cada estágio termina com um <strong>relatório defendido em viva</strong>, perante orientadores e empresa. O diploma deixa de ser carimbo automático e passa a ser prova de cultura e pensamento.</p>
+
+  <h4 style="margin:12px 0 6px 0;">Professores e avaliação</h4>
+  <p>Professores terão formação anual obrigatória em escrita e pensamento crítico.  
+  Escolas serão avaliadas por métricas claras: número de livros lidos, vocabulário ativo dos alunos, qualidade da escrita.  
+  Haverá bónus para escolas que mostrem melhorias reais.</p>
+
+  <h4 style="margin:12px 0 6px 0;">Sociedade a bordo</h4>
+  <ul style="margin:6px 0 12px 18px; padding:0;">
+    <li><strong>Vale-Livro:</strong> apoio direto para famílias vulneráveis, garantindo acesso a livros escolhidos pelos alunos.</li>
+    <li><strong>Campanha nacional:</strong> "Ler é Poder; Escrever é Pensar", com espaço em TV e rádio.</li>
+    <li><strong>Concursos anuais:</strong> ensaios e crónicas premiados com bolsas e publicação.</li>
+  </ul>
+
+  <h4 style="margin:12px 0 6px 0;">Avaliação nacional</h4>
+  <p>Será criado o <strong>Teste Nacional de Literacia e Pensamento Crítico</strong>, aplicado no 6.º, 9.º e 12.º anos.  
+  Avaliará interpretação de texto complexo, ensaio argumentativo e análise de dados. A correção será feita por rubricas, com moderação externa.  
+  Um painel independente publicará relatório anual, sem cosmética nem propaganda.</p>
+
+  <h4 style="margin:12px 0 6px 0;">Calendário</h4>
+  <ul style="margin:6px 0 12px 18px; padding:0;">
+    <li><strong>D0–D90:</strong> Leitura 20, Redação semanal, telemóveis fora da aula, 50 Bibliotecas Vivas.</li>
+    <li><strong>6 meses:</strong> professores em formação; clubes de debate em 30% das escolas.</li>
+    <li><strong>12 meses:</strong> linha de base do teste nacional; tronco comum nas universidades; vale-livro universal.</li>
+    <li><strong>24 meses:</strong> prova de proficiência em vigor; bibliotecas vivas em todos os municípios acima de 50 mil habitantes.</li>
+  </ul>
+
+  <hr style="border:none; border-top:1px solid rgba(255,255,255,.08); margin:16px 0 12px 0;" />
+
+  <!-- FECHO -->
+  <h3 style="margin:0 0 8px 0; font-size:20px;">3) Conclusão</h3>
+  <p>O país não precisa de mais diplomas sem cérebro. Precisa de cidadãos capazes de ler em profundidade, escrever com clareza, pensar com rigor.  
+  <strong>Menos ruído, mais ideias. Menos likes, mais leitura. Menos papel, mais pensamento.</strong></p>
+
+  <div style="margin:14px 0 0 0; font-size:12px; color:var(--muted);">
+    Autor(es): Francisco Gonçalves &amp; Augustus Veritas Lumen • 2025
+  </div>
+</div>
+
+<div style="max-width: 600px; margin: 2em auto; border-radius: 12px; padding: 20px; background-color: #1e1e1e; color: #f0f0f0; font-family: 'Segoe UI', sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.4);">
+<h2 style="text-align: center; margin-bottom: 1em; color: #ffffff;">🌌 Fragmentos do Caos – Sites Relacionados</h2>
+<ul style="list-style: none; padding: 0; font-size: 1.1em;">
+<li style="margin-bottom: 1em;">
+      <strong>📚 Blogue Principal:</strong><br />
+      <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" style="color: #90caf9; text-decoration: none;"><br />
+        https://fasgoncalves.github.io/fragmentoscaos-html<br />
+      </a>
+    </li>
+<li style="margin-bottom: 1em;">
+      <strong>📘 Ebooks "Fragmentos do Caos":</strong><br />
+      <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" style="color: #90caf9; text-decoration: none;"><br />
+        https://fasgoncalves.github.io/hugo.fragmentoscaos<br />
+      </a>
+    </li>
+<li>
+      <strong>🌀 Carrossel de Artigos:</strong><br />
+      <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" style="color: #90caf9; text-decoration: none;"><br />
+        https://fasgoncalves.github.io/indice.fragmentoscaos<br />
+      </a>
+    </li>
+</ul>
+<p style="text-align: center; font-style: italic; margin-top: 2em; color: #cccccc;">
+    Uma constelação de ideias, palavras e caos criativo – ao teu alcance.
+  </p>
+</div>
+<p> A sua avaliação deste artigo é importante para nós. Obrigado.</p>
+
+<!-- wp:shortcode -->
+[avaliacao_5estrelas]
+<!-- /wp:shortcode -->
+
+
+
+<!--
+  Banner Slim "Pesquisa direta – Fragmentos do Caos"
+  ➤ Mais compacto, ideal para sidebar ou rodapé.
+--><section class="fc-banner-slim" role="region" aria-label="Pesquisa direta em Fragmentos do Caos">
+  <form class="fc-search-slim" action="https://webnews.fragmentoscaos.eu" method="GET" target="_blank" rel="noopener">
+    <label class="sr-only" for="fc-q-slim">Pesquisar</label>
+    <div class="fc-input-slim">
+      <svg class="fc-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23 6.5 6.5 0 1 0-6.5 6.5 6.471 6.471 0 0 0 4.23-1.57l.27.28v.79l4.99 4.99 1.49-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input id="fc-q-slim" name="q" type="search" placeholder="Pesquisar Fragmentos do Caos..." aria-label="Pesquisar publicações" />
+    </div>
+    <button class="fc-btn-slim" type="submit">🔍</button>
+  </form>
+</section><style>
+  :root{
+    --fc-bg-slim:#111627;
+    --fc-accent-slim:#7b61ff;
+    --fc-text-slim:#fff;
+    --fc-muted-slim:#aeb7d6;
+  }
+
+  .fc-banner-slim{
+    position:relative; isolation:isolate;
+    margin:18px auto; padding:10px 14px;
+    color:var(--fc-text-slim);
+    background: linear-gradient(135deg, var(--fc-bg-slim), #1e244a);
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .fc-search-slim{ display:flex; gap:8px; align-items:stretch; }
+  .fc-input-slim{ position:relative; flex:1; }
+  .fc-input-slim input{
+    width:100%; height:38px; padding:0 34px 0 36px;
+    border-radius:10px; border:1px solid rgba(255,255,255,.16);
+    background: rgba(255,255,255,.05);
+    color:var(--fc-text-slim); outline:none;
+    font-size:14px;
+  }
+  .fc-input-slim input::placeholder{ color:var(--fc-muted-slim); }
+  .fc-input-slim input:focus{ border-color: var(--fc-accent-slim); box-shadow: 0 0 0 3px rgba(123,97,255,.35); }
+
+  .fc-icon{ position:absolute; left:10px; top:50%; transform:translateY(-50%); width:18px; height:18px; opacity:.7; color:#cfe6ff; }
+
+  .fc-btn-slim{
+    flex:0 0 auto; width:42px; height:38px;
+    border-radius:10px; border:1px solid rgba(123,97,255,.6);
+    background: var(--fc-accent-slim);
+    color:#fff; font-weight:bold; cursor:pointer;
+    transition: background .2s ease;
+  }
+  .fc-btn-slim:hover{ background:#9d87ff; }
+
+  /* utilidade */
+  .sr-only{ position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+</style>
+<!-- /wp:post-content -->
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+</body></html>

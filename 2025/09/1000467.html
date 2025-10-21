@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Legado: Ferramentas para a Liberdade</title>
+<meta name="description" content="Legado: Ferramentas para a Liberdade">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 800px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Legado: Ferramentas para a Liberdade</h1>
+      <p class="meta">Publicado em 2025-09-22 10:45:25</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000165c620ab0aefceaf30a1b07.jpg" alt=""></figure>
+      <div class="post-content">
+        <section id="fc-legado-francisco" style="background:#000; color:#e8eef4; padding:32px; border-radius:16px; line-height:1.75; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;">
+  <header style="text-align:center; margin-bottom:18px;">
+    <h1 style="margin:0; font-size:2.2rem; letter-spacing:.2px;">
+      <span style="color:#ffcc66 !important;">Francisco Gonçalves: o legado de uma vida sem atalhos</span>
+    </h1>
+    <p style="margin:8px 0 0 0; opacity:.9;">Honestidade, integridade, excelência, responsabilidade — e uma teimosia luminosa por liberdade e verdade.</p>
+  </header>
+
+  <!-- Box de Factos -->
+  <div style="border:1px solid #242424; background:#0b0b0b; padding:16px 18px; border-left:6px solid #ffcc66; border-radius:12px; margin:0 0 22px 0;">
+    <h3 style="margin:0 0 8px 0; font-size:1rem; text-transform:uppercase; letter-spacing:.08em;">
+      <span style="color:#ffcc66 !important;">Em três linhas</span>
+    </h3>
+    <ul style="margin:6px 0 0 18px; padding:0;">
+      <li>Meio século a construir sistemas e ideias que funcionam — porque a verdade também é engenharia.</li>
+      <li>Combate sem tréguas à mediocridade, ao nepotismo e a todos os totalitarismos — por uma democracia aberta e direta.</li>
+      <li>Escrever, publicar e partilhar — para que um punhado de jovens encontre um norte e o amplifique.</li>
+    </ul>
+  </div>
+
+  <!-- Epígrafe -->
+  <blockquote style="margin:18px 0; color:#98eef4; padding:12px 16px; border-left:4px solid #ffcc66; background:#0b0b0b; border-radius:8px;">
+    <p style="margin:0; font-style:italic;">"Somos aquilo que repetidamente fazemos. A excelência, portanto, não é um ato: é um hábito."</p>
+    <small style="opacity:.8;">(espírito aristotélico, destilado por Will Durant)</small>
+  </blockquote>
+
+  <!-- Quem sou -->
+  <h2 style="margin:22px 0 10px 0; font-size:1.4rem;">
+    <span style="color:#ffcc66 !important;">Quem sou quando a luz apaga e fica só o carácter</span>
+  </h2>
+  <p style="margin:0 0 12px 0;">
+    Fui e sou programador, arquiteto de sistemas, professor e aprendiz vitalício. Mas, antes dos títulos,
+    sou um cidadão que se obriga a quatro colunas: <em>honestidade</em> para dizer o que é; <em>integridade</em> para ser o que digo;
+    <em>excelência</em> para não aceitar "quase"; e <em>responsabilidade</em> para responder por consequências.
+    A ciência deu-me método; a vida deu-me dúvidas. Com ambas, construí soluções — e alguns livros que insistem em acender luz onde a inércia gosta de escuridão.
+  </p>
+
+  <!-- Caminho -->
+  <h2 style="margin:22px 0 10px 0; font-size:1.4rem;">
+    <span style="color:#ffcc66 !important;">O caminho: do código à consciência</span>
+  </h2>
+  <p style="margin:0 0 12px 0;">
+    Escrevi em muitas linguagens e para muitos mundos: do assembler à nuvem, do balcão do retalho à infraestrutura bancária,
+    de redes síncronas e assíncronas à segurança e virtualização. Aprendi com falhas — as minhas e as dos sistemas que me pediram para salvar.
+    Descobri cedo que "milagre" é o nome que os preguiçosos dão ao método dos persistentes.
+  </p>
+  <p style="margin:0 0 12px 0;">
+    Em paralelo, mantive outra rotina: pensar o país, a Europa e o mundo. Denunciar a promiscuidade entre poder e mediocridade.
+    Defender mérito acima de proximidades, verdade acima de narrativas. Escrever não para agradar, mas para alinhar a bússola.
+  </p>
+
+  <!-- Princípios -->
+  <div style="display:block; border:1px dashed #3a3a3a; background:#0b0b0b; padding:16px; border-radius:12px; margin:16px 0 22px 0;">
+    <h3 style="margin:0 0 8px 0; font-size:1.05rem;">
+      <span style="color:#ffcc66 !important;">Princípios operativos (curtos e duros)</span>
+    </h3>
+    <ul style="margin:6px 0 0 18px; padding:0;">
+      <li><strong>Verdade primeiro:</strong> sem métricas não há progresso — só histórias.</li>
+      <li><strong>Excelência prática:</strong> o que não funciona, melhora-se. O resto é desculpa.</li>
+      <li><strong>Liberdade responsável:</strong> democracia direta começa no indivíduo responsável.</li>
+      <li><strong>Anti-nepotismo:</strong> mérito acima de amizades; integridade acima de conveniências.</li>
+      <li><strong>Aprender sempre:</strong> uma dúvida nova por dia — e uma resposta testada por semana.</li>
+    </ul>
+  </div>
+
+  <!-- O que quero deixar -->
+  <h2 style="margin:22px 0 10px 0; font-size:1.4rem;">
+    <span style="color:#ffcc66 !important;">O que quero como legado</span>
+  </h2>
+  <p style="margin:0 0 12px 0;">
+    Não me interessa um "busto em bronze". Interessa-me que alguém, amanhã, faça melhor porque hoje encontrou um texto, uma ideia,
+    um método — e sentiu que podia. O meu legado é utilitário e livre: <em>uma biblioteca de pensamento prático</em>,
+    <em>um repositório de ferramentas</em> e <em>um mapa ético</em> que qualquer jovem possa seguir sem pedir licença.
+  </p>
+
+  <ul style="margin:0 0 0 18px; padding:0;">
+    <li><strong>Biblioteca aberta de e-books curtos:</strong> temas-bússola (honestidade, integridade, excelência, liberdade, responsabilidade), linguagem clara, exercícios simples.</li>
+    <li><strong>Método dos 10 minutos:</strong> rotina diária mínima para cultivar excelência — acessível, auditável, replicável.</li>
+    <li><strong>Laboratório de ideias livres:</strong> textos e protótipos que testem soluções para problemas reais (educação, governação, tecnologia pública).</li>
+    <li><strong>Repositórios de código e boas práticas:</strong> exemplos de qualidade técnica, segurança e documentação — porque ética também se compila.</li>
+    <li><strong>Manifestos de cidadania responsável:</strong> contra a mediocridade institucional, por uma democracia aberta e direta, com decisões transparentes e auditáveis.</li>
+  </ul>
+
+  <!-- Carta aos jovens -->
+  <h2 style="margin:22px 0 10px 0; font-size:1.4rem;">
+    <span style="color:#ffcc66 !important;">Carta a um jovem (de qualquer idade)</span>
+  </h2>
+  <p style="margin:0 0 12px 0;">
+    O mundo tem pressa para te distrair. Não lho permitas. Aprende uma coisa difícil por semana.
+    Faz perguntas que façam suar quem se esconde atrás de cargos. Se te disserem que "não dá", mede, testa, itera — e prova que dá.
+    Se errares, assume; se acertares, partilha. Nunca adores chefes, nem te prostres a ideologias: serve a verdade, serve o bem comum.
+  </p>
+  <p style="margin:0 0 12px 0;">
+    Quando custar, lembra-te: excelência é hábito, não aplauso. E liberdade é disciplina, não slogan.
+    O resto é ruído — e tu nasceste para música.
+  </p>
+
+  <!-- Compromissos concretos -->
+  <div style="border:1px solid #2a2a2a; background:#0b0b0b; padding:16px; border-radius:12px; margin:16px 0 22px 0;">
+    <h3 style="margin:0 0 8px 0; font-size:1.05rem;">
+      <span style="color:#ffcc66 !important;">Cinco compromissos que deixo escrito</span>
+    </h3>
+    <ol style="margin:6px 0 0 18px; padding:0;">
+      <li>Continuar a publicar e tornar <em>gratuito</em> tudo o que puder — para que circule sem pedágios.</li>
+      <li>Documentar métodos e exercícios replicáveis — para que a excelência seja processo, não mito.</li>
+      <li>Explicar tecnologia em língua clara — porque cidadania digital é alfabetização do século XXI.</li>
+      <li>Exigir mérito na praça pública — elogiar quem faz, confrontar quem atrapalha.</li>
+      <li>Mentorar à vista — partilhar caminhos, atalhos e cautelas, sem culto de autor.</li>
+    </ol>
+  </div>
+
+  <!-- Chamamento -->
+  <h2 style="margin:22px 0 10px 0; font-size:1.4rem;">
+    <span style="color:#ffcc66 !important;">Chamamento final</span>
+  </h2>
+  <blockquote style="margin:10px 0 14px 0;color:#aacc66; padding:12px 16px; border-left:4px solid #ffcc66; background:#0b0b0b; border-radius:8px;">
+    <p style="margin:0;">Se o presente não nos serve, forjamos o futuro. Se a História não nos contempla, escrevemo-la nós. Se nos tentam calar… respondemos com estilo.</p>
+  </blockquote>
+  <p style="margin:0 0 12px 0;  color:#98eef4;">
+    O meu legado aspira a ser simples: <em>ferramentas para a liberdade</em> e <em>exemplos de integridade</em>.
+    Se um jovem — ou um velho jovem — pegar nisto e fizer melhor do que eu, missão cumprida.
+  </p>
+<blockquote  style=color:#aacc66; !important;">
+Vivi sem atalhos: medir antes de prometer, corrigir antes de exibir. O meu legado não são bustos — são ferramentas. Deixo páginas que acendem, métodos que funcionam, código que compila e uma bússola ética para dias difíceis. Se amanhã um jovem usar isto para construir melhor, refutar-me e seguir mais longe, missão cumprida. Não peças licença: vê, mede, melhora. E acende outro farol.
+</blockquote>
+
+  <!-- Assinatura -->
+<div style="margin-top:30px; padding:15px; border-top:1px solid #444; font-family:Georgia,serif; font-size:14px; color:#e8eef4; background-color:#000;">
+  <p style="margin:0;">
+    Artigo autoria de 
+    <a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" target="_blank" 
+       style="color:#ffcc66 !important; text-decoration:none; font-weight:bold;">
+     📖  Francisco Gonçalves
+    </a>
+  </p>
+</div>
+📖💫 Fragmentos do Caos
+</section>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+</body></html>

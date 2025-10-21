@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Web Office SaaS - A Plataforma alternativa de Escritório Electrónico em molde colaborativo</title>
+<meta name="description" content="Web Office SaaS - A Plataforma alternativa de Escritório Electrónico em molde colaborativo">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 800px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Web Office SaaS - A Plataforma alternativa de Escritório Electrónico em molde colaborativo</h1>
+      <p class="meta">Publicado em 2009-07-07 09:22:00</p>
+      
+      <div class="post-content">
+        <a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgvudFt-vX6ix_U7CicfTaXtrHV0q1RnnXTuDFMqFqKEubdMyL46wEdsZZPKWsKx5b9w-qivtlOhjto28hxAZiP9NyWMfMFzDVucLS71FjNp-POdNZiZHGyllYNnYz3EeMCe8bP1ezdxsFC/s1600-h/Thinfree-fg.jpeg"><img style="float:left; margin:0 10px 10px 0;cursor:pointer; cursor:hand;width: 200px; height: 157px;" src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/thinfree-fg.jpg" border="0" alt="" id="BLOGGER_PHOTO_ID_5355649972245213346" /></a><br /><span  style=" line-height: 24px; font-family:Verdana;"><span  style="font-family:Tahoma;"><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><span style="font-size:100%;"><span  style="font-family:verdana;">As <a href="http://fgonit.blogspot.com/2009/07/o-negocio-da-colaboracao-em-crescimento.html">ferramentas colaborativas</a> são um passo importante para dinamizar processos inovativos nas empresas e organizações em geral e prometem enormes benefícios como o </span></span><span style="font-size:100%;"><span  style="font-family:verdana;">aumento da produtividade, redução de custos e, em última instância, o melhor alavancar do conhecimento entre</span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><span style="font-size:100%;"><span  style="font-family:verdana;"> grupos internos e externos (<a href="http://portal.portaltwservices.com.br/portal/page/portal/PortalTWServices/Comunica%C3%A7%C3%A3o/Artigos%20Publicados/ListaArtigosPublicados/PDF_Artigo_Teoria_Nonaka_Takeuchi.pdf">conhecimento organizacional</a>), e o desenvolvimento de produtos e serviços mais eficientes e rentáveis e contribuindo para uma melhor satisfação dos clientes.</span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><span style="font-size:100%;"><span  style="font-family:verdana;"><span  style=" ;font-family:Tahoma;"><span style="font-size:100%;"><span  style="font-family:verdana;">Também nas actividades de escritório electrónico, e até pelas suas características de trabalho com carácter repetitivo,</span></span><span style="font-size:100%;"><span  style="font-family:verdana;"> com muitas informações que poderão ser partilhadas e desde logo fácilmente reutilizáveis de tarefa para tarefa,  ao dotar-se aquele de ferramentas colaborativas, estará desde logo a criar-se um ambiente mais produtivo e eficiente que promete romper com todas as fronteiras do trabalho isolado e meramente repetitivo.</span></span></span></span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><span style="font-size:100%;"><span  style="font-family:verdana;">Estão disponíveis no mercado inúmeras ferramentas e plataformas de colaboração de escritório de nível empresarial, vulgo <a href="http://en.wikipedia.org/wiki/Office_suite">"suites" de Office</a>, mas</span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><span style="font-size:100%;"><span  style="font-family:verdana;"> uma empresa tem-se destacado pela inovação, flexibilidade e eficácia das soluções que propõe.</span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><span  style="font-family:verdana;"><br /></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><span style="font-size:100%;"><span  style="font-family:verdana;">Sem dúvida que a </span></span><a href="http://www.thinkfree.com/" rel="external nofollow" target="_blank" title="http://www.thinkfree.com/" style="color: rgb(0, 102, 204); background-repeat: no-repeat; background-color: initial; text-decoration: none; "><span style="font-size:100%;"><span  style="font-family:verdana;">ThinkFree ®</span></span></a><span style="font-size:100%;"><span  style="font-family:verdana;"> é a líder da próxima geração de soluções para ferramentas de produtividade e </span></span><span style="font-size:100%;"><span  style="font-family:verdana;"><a href="http://fgonit.blogspot.com/2009/07/o-negocio-da-colaboracao-em-crescimento.html">colaboração no escritório</a></span></span><span style="font-size:100%;"><span  style="font-family:verdana;">, constituindo uma plataforma independente, em qualquer lugar e a qualquer hora, sobre qualquer dispositivo. Em suma a ultima palavra em colaboração de documentos Office traduzindo uma completa integração e mobilidade na Empresa. </span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><span  style="font-family:verdana;"><br /></span></p><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/thinkfree1-fgon-jpeg.jpg" style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;width: 200px; height: 132px;" border="0" alt="" id="BLOGGER_PHOTO_ID_5355648962828981042" /><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><span style="font-size:100%;"><span  style="font-family:verdana;">A usabilidade da Plataforma de <a href="http://en.wikipedia.org/wiki/ThinkFree_Office">Office da ThinkFree</a> estende-se muito para além PCs e é perfeito para os acessos através da Internet, para dispositivos conectados, incluindo <a href="http://pt.wikipedia.org/wiki/Thin_client">thin-clients</a> e plataformas de computação móveis, como os telemóveis, PDA´s,  <a href="http://pt.wikipedia.org/wiki/Netbook">NetBooks</a> e outros.</span></span></p><span style=" ;font-family:arial;"><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><span style="font-size:100%;"><span  style="font-family:verdana;">A Plataforma de  Office da <a href="http://www.thinkfree.com/">ThinkFree</a> tem sido frequentemente distinguida também como a solução mais compatível com a "suite" de Office da </span></span><span style="font-size:100%;"><span  style="font-family:verdana;">Microsoft ®, sendo composta composta de processamento de Texto, Folha de Cálculo e Apresentação gráfica de software capaz de ser utilizada off-line e on-line.</span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><span  style="font-family:verdana;"><br /></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><span style="font-size:100%;"><span  style="font-family:verdana;">O Office da </span></span><a href="http://www.thinkfree.com/" rel="external nofollow" target="_blank" title="http://www.thinkfree.com/" style="color: rgb(0, 102, 204); background-repeat: no-repeat; background-color: initial; text-decoration: none; "><span style="font-size:100%;"><span  style="font-family:verdana;">ThinkFree</span></span></a><span style="font-size:100%;"><span  style="font-family:verdana;"> pode-se instalar e actualizar automaticamente através da Web ou de servidor Intranet da Empresa, com funcionalidades como a partilha de arquivos com base na Internet/intranet e a gestão integrada do seu armazenamento, bem como é dotado de completa segurança  "end-to-end". Baseado em Java  e construído de base com funcionalidades "cross-platform", o Office da ThinkFree é compatível com Windows, Macintosh, Unix e Linux.</span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><span style="font-size:100%;"><span  style="font-family:verdana;">De acordo com os utilizadores do </span></span><a href="http://wikibanis/www.thinkfree.com" rel="internal" target="_blank" style="color: rgb(160, 11, 11); text-decoration: none; "><span style="font-size:100%;"><span  style="font-family:verdana;">ThinkFree Live</span></span></a><span style="font-size:100%;"><span  style="font-family:verdana;"> este é o melhor software de Office online disponível para editar, criar e partilhar documentos no formato do Microsoft Office (Word, Excel, PowerPoint), de forma aberta e com completo acesso aos API´s, para integração com outras aplicações de escritório e de nível empresarial, como Wikis, ERP´s, CRM´s, etc.</span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><span  style="font-family:verdana;"><br /></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><span style="font-size:100%;"><span  style="font-family:verdana;">Esta <a href="http://en.wikipedia.org/wiki/Office_suite">Suite de Office</a> constitui uma plataforma livre de processamento de texto, folha de cálculo e apresentações, aplicações estas que são integradas com 1GB de armazenamento, ferramentas colaboração,  publicação de blogs,  páginas da web ou partilha de documentos (biblioteca de documentos publicados pelos servidores da ThinkFree), e capacidades de criação de PDF´s. </span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><span  style="font-family:verdana;"><br /></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><b><span style="font-size:100%;"><span  style="font-family:verdana;">* ThinkFree Docs LIVE - </span></span><span style="font-weight: normal; "><span style="font-size:100%;"><span  style="font-family:verdana;">Possibilita a pesquisa, a partilha e publicação de documentos com a comunidade mundial. O ThinkFree Docs é uma comunidade online de editores que  partilham uma variedade de documentos, folhas de cálculo e apresentações. Poderá utilizar o <a href="http://member.thinkfree.com/member/goLandingPage.action">ThinkFree Docs</a> também através da Internet, juntamente com a sua conta online, e na qual poderá armazenar até 1 Gb.</span></span></span></b></p><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><span  style="font-family:verdana;"><br /></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><b><span style="font-size:100%;"><span  style="font-family:verdana;">* ThinkFree Server Edition - </span></span></b><span style="font-size:100%;"><span  style="font-family:verdana;">Está vocacionado para as Empresas que exigem ferramentas de escritório incorporando qualidade, produtividade, flexibilidade e segurança e simultâneamente frustrados com o elevado custo das soluções de mercado alternativas, como é o caso das licenças da MicroSoft, aliadas a elevadíssimas opções de manutenção de software. A ThinkFree desenvolveu a Plataforma <a href="http://product.thinkfree.com/server/enterprise">ThinkFree Server Edition</a><span  style=" ;font-family:arial;"><span style="font-size:100%;"><span  style="font-family:verdana;"> para satisfazer as necessidades das</span></span><span style="font-size:100%;"><span  style="font-family:verdana;"> Organizações e Empresas. A edição do ThinkFree Server oferece um muito maior ROI, incorpora segurança adicional e gera uma utilização mais eficiente dos recursos tecnologicos internamente nas Organizações.</span></span></span></span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><span  style="font-family:verdana;"><br /></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><span style="font-size:100%;"><span  style="font-family:verdana;">A qualquer hora, em qualquer lugar, os utilizadores podem criar e editar documentos que são perfeitamente compatíveis com o Microsoft Office. O <a href="http://product.thinkfree.com/server/enterprise">ThinkFree Server Edition</a> é lançado a partir de um servidor localizado na Intranet segura da Empresa, para ser executado dentro de um navegador da Web em um qualquer computador, <a href="http://pt.wikipedia.org/wiki/Thin_client">Thin-Client</a> ou outro dispositivo electrónico, com uma total liberdade de sistema operativo Linux, Windows ou Mac. A suite de Office é constituída pelos programas ThinkFree Write; ThinkFree Calc e  ThinkFree Show. </span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><span  style="font-family:verdana;">Para uma demonstração da edição ThinkFree Server click [<a href="http://se.thinkfree.com:8080/standard/index.do">aqui</a>].</span></p><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><span  style="font-family:verdana;"><br /><object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/jo63okGuVjE&amp;hl=en&amp;fs=1&amp;"><param name="allowFullScreen" value="true"><param name="allowscriptaccess" value="always"><embed src="http://www.youtube.com/v/jo63okGuVjE&amp;hl=en&amp;fs=1&amp;" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object><br /><br /></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><span style="font-size:100%;"><span  style="font-family:verdana;">Para além das plataformas de computação de desktops Linux, Windows e Mac, o ThinkFree Office está também disponível para NetBooks e para a plataforma Android (Telemóveis com O/S <a href="http://pt.wikipedia.org/wiki/Android">Android da Google</a> tipo o G1). Mais info </span></span><a href="http://product.thinkfree.com/mobile" rel="external nofollow" target="_blank" title="http://product.thinkfree.com/mobile" style="color: rgb(160, 11, 11); background-repeat: no-repeat; background-color: initial; "><span style="font-size:100%;"><span  style="font-family:verdana;">aqui</span></span></a><span style="font-size:100%;"><span  style="font-family:verdana;">. Para estas plataformas estão incorporadas ferramentas de <a href="http://member.thinkfree.com/member/goAboutService.action?page=powertool">sincronização automática</a> de documentos locais com a infra-estrutura de servidores centrais ThinkFree da Empresa ou directamente com a conta de utilizador do site </span></span><span style="font-size:100%;"><span  style="font-family:verdana;"><a href="http://www.thinkfree.com/">Web ThinkFree LIVE</a></span></span><span style="font-size:100%;"><span  style="font-family:verdana;"> (que disponibiliza 1 Gb de armazenamento).</span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "><span  style="font-family:verdana;"><br /></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><span style="color:#004A80;"><span style="font-size:100%;"><span  style="font-family:verdana;">By: Francisco Gonçalves ( </span></span><a href="mailto:Francis.Goncalves@gmail.com" title="Francis.Goncalves@gmail.com"><span style="font-size:100%;"><span  style="font-family:verdana;">Francis.Goncalves@gmail.com</span></span></a><span style="font-size:100%;"><span  style="font-family:verdana;"> )</span></span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><span style="color: rgb(0, 74, 128); "><span style="font-size:100%;"><span  style="font-family:verdana;">IT Architect &amp; Open-Source Advisor (2009).</span></span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><span  style="font-family:verdana;"><br /></span></p><p style="margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "></p><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><span><b><span style="font-size:100%;"><span  style="font-family:verdana;">Links adicionais:</span></span></b></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><span style="font-size:100%;"><span  style="font-family:verdana;"><a href="http://member.thinkfree.com/myoffice/show.se?f=1f56418c7e161340b2a64fef013b61d7">ThinkFree Office Live - Apresentação</a></span></span></p><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><a href="http://en.wikipedia.org/wiki/ThinkFree_Office" rel="external nofollow" target="_blank" title="http://en.wikipedia.org/wiki/ThinkFree_Office" style="color: rgb(160, 11, 11); background-repeat: no-repeat; background-color: initial; "><span style="font-size:100%;"><span  style="font-family:verdana;">ThinkFree na Wikipedia</span></span></a></p><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><a href="http://justanothermobilemonday.com/Wordpress/2009/06/22/thinkfree-mobile-office-for-netbooks/" rel="external nofollow" target="_blank" title="http://justanothermobilemonday.com/Wordpress/2009/06/22/thinkfree-mobile-office-for-netbooks/" style="color: rgb(160, 11, 11); background-repeat: no-repeat; background-color: initial; "><span style="font-size:100%;"><span  style="font-family:verdana;">ThinkFree Mobile for NetBooks</span></span></a></p><p style="text-align: justify;margin-top: 0px; margin-right: 1.5em; margin-bottom: 0px; margin-left: 0px; "><a href="http://www.downloadsquad.com/2009/06/02/thinkfree-to-bring-its-office-suite-to-google-android/" rel="external nofollow" target="_blank" title="http://www.downloadsquad.com/2009/06/02/thinkfree-to-bring-its-office-suite-to-google-android/" style="color: rgb(160, 11, 11); background-repeat: no-repeat; background-color: initial; "><span style="font-size:100%;"><span  style="font-family:verdana;">ThinkFree brings its Office to Google Android </span></span></a></p></span></span><p></p><span style=" ;font-family:arial;"></span></span><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+</body></html>

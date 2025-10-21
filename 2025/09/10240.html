@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O ministro do paiol da pólvora</title>
+<meta name="description" content="O ministro do paiol da pólvora">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 800px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O ministro do paiol da pólvora</h1>
+      <p class="meta">Publicado em 2025-09-01 13:04:15</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000418861fb85a2f6a223739c9f.jpg" alt=""></figure>
+      <div class="post-content">
+        <article>
+  <header style="text-align:center; padding:20px;">
+    <h1 style="font-size:2em; color:#2c3e50;">Geopolítica com Paiol às Costas</h1>
+    <p><em>Francisco Gonçalves &amp; Augustus Veritas Lumen</em></p>
+  </header>
+
+  <section style="max-width:850px; margin:auto; font-size:1.1em; line-height:1.7;">
+    <p>Portugal é o país onde ministros incapazes de proteger um simples <strong>paiol de Tancos</strong> aparecem depois nas televisões a falar de <em>estratégia internacional</em> e de <em>geopolítica global</em> com ar grave e sobrancelha franzida.</p>
+
+    <p>É uma espécie de <em>teatro do absurdo</em>: primeiro deixam roubar armas como se fossem batatas num armazém municipal; depois sentam-se à frente das câmaras e explicam aos portugueses o que Putin quer na Ucrânia e o que Trump pensa da NATO.</p>
+
+    <p>O contraste é grotesco: um Estado que <strong>não sabe proteger os seus próprios depósitos</strong> tenta vender a imagem de sábio conselheiro nos salões da diplomacia mundial. É como um bombeiro que não sabe acender um fósforo a dar aulas de pirotecnia.</p>
+
+    <blockquote style="font-style:italic; color:#555; border-left:3px solid #2980b9; padding-left:12px; margin-top:24px;">
+      "A credibilidade de um país mede-se tanto nas suas armas guardadas como nas suas palavras ditas.  
+      E nós temos palavras em excesso e cofres vazios."
+    </blockquote>
+
+    <p>E assim cresce a descrença popular. O povo olha e pensa: se não conseguem guardar umas caixas de munições, como vão proteger o país da Rússia, da China ou até de si próprios? É neste vazio que floresce a tentação do "homem forte", seja ele Trump, Putin ou o fantasma de Salazar.</p>
+
+    <p>No fim, Portugal continua a falar de geopolítica como quem fala de estrelas: parecem bonitas à distância, mas não iluminam o caminho aqui em baixo, no chão cheio de buracos e nos paióis sem cadeado.</p>
+  </section>
+</article>
+
+
+
+
+<!-- ===== Rodapé Fragmentos do Caos (isolado) ===== -->
+<section class="fc-footer" role="complementary" aria-label="Fragmentos do Caos – Sites e Pesquisa">
+  <style>
+    /* Estilos ESCOPADOS apenas ao rodapé (.fc-footer) */
+    .fc-footer{
+      margin: 2rem auto;
+      max-width: 900px;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+    }
+    .fc-footer .fc-card{
+      border-radius: 12px; padding: 20px; 
+      background-color: #1e1e1e; color: #f0f0f0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+    }
+    .fc-footer h2{
+      margin: 0 0 1rem 0; text-align: center; color: #fff; font-weight: 800; font-size: 1.25rem;
+    }
+    .fc-footer ul{ list-style: none; padding: 0; margin: 0; }
+    .fc-footer li{ margin-bottom: 1rem; }
+    .fc-footer strong{ font-weight: 700; }
+    .fc-footer a{
+      color: #90caf9; text-decoration: none; word-break: break-all;
+      border-bottom: 1px dotted rgba(144,202,249,.6);
+    }
+    .fc-footer a:hover{ border-bottom-style: solid; }
+    .fc-footer p{ margin: .8rem 0 0 0; }
+    .fc-footer .muted{ color: #cccccc; font-style: italic; text-align: center; }
+
+    /* Banner de pesquisa slim (escopado) */
+    .fc-footer .fc-banner-slim{
+      position: relative; isolation: isolate;
+      margin: 18px auto 0; padding: 10px 14px;
+      color: #fff;
+      background: linear-gradient(135deg, #111627, #1e244a);
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .fc-footer .fc-search-slim{ display: flex; gap: 8px; align-items: stretch; }
+    .fc-footer .fc-input-slim{ position: relative; flex: 1; }
+    .fc-footer .fc-input-slim input{
+      width: 100%; height: 38px; padding: 0 34px 0 36px;
+      border-radius: 10px; border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.05); color: #fff; outline: none; font-size: 14px;
+    }
+    .fc-footer .fc-input-slim input::placeholder{ color: #aeb7d6; }
+    .fc-footer .fc-input-slim input:focus{
+      border-color: #7b61ff; box-shadow: 0 0 0 3px rgba(123,97,255,.35);
+    }
+    .fc-footer .fc-icon{
+      position:absolute; left:10px; top:50%; transform:translateY(-50%);
+      width:18px; height:18px; opacity:.7; color:#cfe6ff;
+    }
+    .fc-footer .fc-btn-slim{
+      flex: 0 0 auto; width: 42px; height: 38px;
+      border-radius: 10px; border: 1px solid rgba(123,97,255,.6);
+      background: #7b61ff; color: #fff; font-weight: bold; cursor: pointer;
+      transition: background .2s ease;
+    }
+    .fc-footer .fc-btn-slim:hover{ background: #9d87ff; }
+    .fc-footer .sr-only{
+      position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+  </style>
+
+  <!-- Card Sites Relacionados -->
+  <div class="fc-card">
+    <h2>🌌 Fragmentos do Caos – Sites Relacionados</h2>
+    <ul>
+      <li>
+        <strong>📚 Blogue Principal:</strong><br>
+        <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener">
+          https://fasgoncalves.github.io/fragmentoscaos-html
+        </a>
+      </li>
+      <li>
+        <strong>📘 Ebooks "Fragmentos do Caos":</strong><br>
+        <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener">
+          https://fasgoncalves.github.io/hugo.fragmentoscaos
+        </a>
+      </li>
+      <li>
+        <strong>🌀 Carrossel de Artigos:</strong><br>
+        <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener">
+          https://fasgoncalves.github.io/indice.fragmentoscaos
+        </a>
+      </li>
+    </ul>
+    <p class="muted">Uma constelação de ideias, palavras e caos criativo – ao teu alcance.</p>
+  </div>
+
+  <p style="text-align:center; margin-top:1rem;">A sua avaliação deste artigo é importante para nós. Obrigado.</p>
+
+  <!-- Shortcode de avaliação -->
+  <!-- wp:shortcode -->
+  [avaliacao_5estrelas]
+  <!-- /wp:shortcode -->
+
+  <!-- Banner Slim "Pesquisa direta – Fragmentos do Caos" -->
+  <section class="fc-banner-slim" role="region" aria-label="Pesquisa direta em Fragmentos do Caos">
+    <form class="fc-search-slim" action="https://webnews.fragmentoscaos.eu" method="GET" target="_blank" rel="noopener">
+      <label class="sr-only" for="fc-q-slim">Pesquisar</label>
+      <div class="fc-input-slim">
+        <svg class="fc-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23 6.5 6.5 0 1 0-6.5 6.5 6.471 6.471 0 0 0 4.23-1.57l.27.28v.79l4.99 4.99 1.49-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+        <input id="fc-q-slim" name="q" type="search" placeholder="Pesquisar Fragmentos do Caos..." aria-label="Pesquisar publicações">
+      </div>
+      <button class="fc-btn-slim" type="submit">🔍</button>
+    </form>
+  </section>
+</section><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+</body></html>
