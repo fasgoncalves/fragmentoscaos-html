@@ -251,6 +251,65 @@ blockquote {
     — Augustus Veritas & Francisco Gonçalves<br>
     <span style="color:#e8eef4;">Série: Contra o Teatro da Mediocridade</span>
   </p>
+Contacte-nos para mais informações
+
+    <div class="container" style="max-width:600px;margin:30px auto;background:#111;padding:25px;border-radius:12px;border:1px solid #333;color:#e8eef4;font-family:Georgia,serif;">
+      <h2 style="color:#ffcc66 !important; text-align:center;">Contacte-nos</h2>
+        <label for="nome" style="color:#ffcc66 !important;">Nome</label>
+        <input type="text" id="nome" required style="width:100%;padding:10px;margin-bottom:15px;background:#1a1a1a;border:1px solid #444;border-radius:8px;color:#e8eef4;">
+
+        <label for="email" style="color:#ffcc66 !important;">Email</label>
+        <input type="email" id="email" required style="width:100%;padding:10px;margin-bottom:15px;background:#1a1a1a;border:1px solid #444;border-radius:8px;color:#e8eef4;">
+
+        <textarea id="mensagem" rows="1" required style="width:100%;padding:10px;background:#1a1a1a;border:1px solid #444;border-radius:8px;color:#e8eef4;"></textarea>
+
+        <button onclick="enviar()"  style="margin-top:15px;width:100%;padding:12px;background:#ffcc66;color:#000;border:none;border-radius:8px;cursor:pointer;font-weight:bold;">
+          Enviar Mensagem
+        </button>
+      <div id="resposta" style="margin-top:15px;font-weight:bold;text-align:center;"></div>
+    </div>
+
+<script>
+async function enviar() {
+  const nome = document.getElementById('nome').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const mensagem = document.getElementById('mensagem').value.trim();
+
+  const resposta = document.getElementById('resposta');
+  resposta.innerText = "A enviar...";
+
+  try {
+    const resp = await fetch("https://snd.softelabs.pt/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nome, email, mensagem })
+    });
+
+    const data = await resp.json();
+
+    if (data.status === "sucesso") {
+      resposta.innerText = "✅ Mensagem enviada com sucesso!";
+      resposta.style.color = "green";
+      document.getElementById('nome').value = "";
+      document.getElementById('email').value = "";
+      document.getElementById('mensagem').value = "";
+    } else {
+      resposta.innerText = "❌ Erro: " + data.mensagem;
+      resposta.style.color = "red";
+      document.getElementById('nome').value = "";
+      document.getElementById('email').value = "";
+      document.getElementById('mensagem').value = "";
+    }
+
+  } catch (e) {
+    resposta.innerText = "⚠️ Erro de rede ao enviar. Codigo :" + str(e);
+    resposta.style.color = "orange";
+    document.getElementById('nome').value = "";
+    document.getElementById('email').value = "";
+    document.getElementById('mensagem').value = "";
+  }
+}
+</script>
 
 </article>
 <!-- FC | Rodapé Mini (HTML puro) -->
