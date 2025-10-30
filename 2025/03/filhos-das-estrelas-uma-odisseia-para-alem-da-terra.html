@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Filhos das Estrelas - Uma Odisseia para Além da Terra</title>
+<meta name="description" content="Filhos das Estrelas - Uma Odisseia para Além da Terra">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 800px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Filhos das Estrelas - Uma Odisseia para Além da Terra</h1>
+      <p class="meta">Publicado em 2025-03-18 09:57:19</p>
+      
+      <div class="post-content">
+        <!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading"><em>Uma Odisseia para Além da Terra</em></h4>
+<!-- /wp:heading -->
+
+<!-- wp:cover {"url":"https://fasgoncalves.github.io/fragmentoscaos-img/imagens/1000008024-1024x585.jpg","id":1494,"dimRatio":50,"style":{"color":{}}} -->
+<div class="wp-block-cover"><span aria-hidden="true" class="wp-block-cover__background has-background-dim"></span><img class="wp-block-cover__image-background wp-image-1494" alt="" src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/1000008024-1024x585.jpg" data-object-fit="cover"/><div class="wp-block-cover__inner-container"><!-- wp:paragraph {"align":"center","fontSize":"large"} -->
+<p class="has-text-align-center has-large-font-size"></p>
+<!-- /wp:paragraph --></div></div>
+<!-- /wp:cover -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 1 – O Último Século na Terra</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>O ano era 2142. A Terra estava morrendo.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>As guerras pelo que restava de recursos naturais haviam deixado cicatrizes profundas. As calotas polares derretiam em um ritmo implacável, o nível do mar engolia cidades inteiras, e o ar se tornara irrespirável em muitas partes do mundo. As nações não lutavam mais umas contra as outras – lutavam contra o tempo.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A humanidade sabia que o fim da Terra como lar seguro estava próximo. Não havia outra escolha: precisavam partir.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>O projeto <em>Nova Aurora</em> foi criado para garantir a sobrevivência da espécie. Os melhores cientistas, engenheiros e visionários dedicaram décadas para construir a maior frota espacial da história. Seriam arcas interestelares, cada uma levando milhares de pessoas para novos mundos. Mas nem todos poderiam ir. Apenas os selecionados teriam um lugar.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Entre eles estavam Helena Vasquez, uma astrofísica cujo trabalho tornara possível a viagem para além do Sistema Solar, e Dorian Mendez, um piloto e explorador que sonhava com o desconhecido desde a infância. Eles não sabiam que seus nomes entrariam para a história.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>E que seriam os primeiros humanos a cruzar a escuridão infinita rumo a um novo lar.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 2 – A Partida da Terra</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>O dia da decolagem foi marcado por um silêncio sepulcral. Milhões assistiam ao lançamento dos 12 <em>arcas</em> que carregavam os últimos sonhos da humanidade.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A nave de Helena e Dorian chamava-se <em>Aurora II</em>. Com um motor de fusão avançado e propulsão de dobra, ela seria capaz de alcançar Próxima Centauri em apenas 16 anos – um feito impensável no século XX.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Dentro da nave, milhares de humanos dormiam em hibernação criogênica. Apenas uma equipe de 25 cientistas e tripulantes permanecia acordada para monitorar a jornada.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Enquanto a Terra se tornava apenas um ponto azul distante, Dorian suspirou.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Quando voltarmos, a Terra será apenas um mito — disse ele.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Helena, observando as estrelas pelo visor da nave, respondeu:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Talvez seja melhor assim. O futuro não está atrás de nós. Está lá fora.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>E então, mergulharam na escuridão.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 3 – O Primeiro Despertar</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Após oito anos de viagem, algo inesperado aconteceu.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Os sensores da <em>Aurora II</em> detectaram um sinal vindo de um sistema desconhecido. Não era natural.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Helena e Dorian despertaram da hibernação. Os dados mostravam que estavam recebendo um padrão de pulsos rítmicos, como uma transmissão artificial.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Isto não pode ser uma coincidência — murmurou Helena.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Se não somos os primeiros, então quem veio antes de nós? — perguntou Dorian.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Decidiram mudar a rota e investigar. O que encontraram desafiava tudo o que sabiam sobre o universo.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 4 – O Encontro com os Antigos</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Orbitando um planeta rochoso desconhecido, a equipe da <em>Aurora II</em> encontrou uma estrutura colossal flutuando no espaço.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Parecia abandonada.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Os sensores indicavam que a estrutura tinha milhões de anos. E, dentro dela, havia algo ainda mais impressionante: registros de uma civilização perdida.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Helena e Dorian lideraram a expedição até o interior da estação espacial. O que viram congelou-lhes o sangue.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Dentro das ruínas, encontraram cápsulas criogênicas. E, dentro delas… seres humanoides.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Eram diferentes, mas, ao mesmo tempo, estranhamente familiares.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 5 – A Verdade Perdida</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Os registros da estação revelaram algo que ninguém poderia imaginar.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Aqueles seres não eram alienígenas. Eram <em>humanos</em>. Ou, pelo menos, os antecessores da humanidade.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A informação estava codificada em uma linguagem que os cientistas conseguiram decifrar aos poucos. Eles eram os últimos sobreviventes de uma civilização antiga que havia fugido de um cataclismo há milhões de anos.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>E a verdade era ainda mais chocante: a Terra não era o berço original da humanidade. Era apenas um entreposto, um refúgio temporário para os descendentes de uma civilização que, há eras, vagava pelas estrelas.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A humanidade não estava destinada a partir para o espaço. Ela estava apenas voltando para casa.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 6 – O Legado das Estrelas</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>A descoberta mudou tudo. A ideia de que os humanos eram os únicos no universo foi destruída.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Mas havia um problema. A tecnologia para despertar os seres nas cápsulas estava danificada. Se quisessem respostas, precisavam restaurar o sistema e reativar os sobreviventes daquela civilização perdida.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Durante meses, Helena e sua equipe trabalharam sem descanso. E então, finalmente, uma das cápsulas foi reativada.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A criatura dentro dela abriu os olhos.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>E falou.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Quanto tempo se passou?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 7 – O Guardião do Passado</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>O ser chamava-se Kaelos. Sua aparência era similar à humana, mas sua pele era prateada e seus olhos brilhavam com um azul intenso. Ele contou uma história que mudaria para sempre a visão da humanidade sobre si mesma.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Seus antepassados haviam construído um império galáctico que se estendia por milhares de mundos. Mas algo aconteceu. Algo que os obrigou a fugir.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— A sombra veio — disse Kaelos. — E nós corremos.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Helena olhou para Dorian.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Que sombra?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Aquilo que destrói civilizações. Aquilo que persegue toda forma de vida inteligente. O verdadeiro predador do universo.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 8 – O Inimigo Invisível</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Kaelos contou que, há milhões de anos, uma entidade desconhecida começou a exterminar civilizações avançadas. Seu objetivo era impedir que qualquer espécie se tornasse poderosa demais.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Vocês são os últimos filhos das estrelas — disse Kaelos. — E se voltaram ao espaço, a sombra virá novamente.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Helena sentiu um frio na espinha.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Se formos os últimos… então temos que lutar.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Kaelos sorriu.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Exatamente o que nossos ancestrais disseram.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 9 – O Destino da Humanidade</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>A <em>Aurora II</em> não era mais apenas uma nave-colônia. Agora era a esperança de toda a espécie humana.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Helena, Dorian e sua equipe decidiram que não fugiriam. Em vez disso, começariam a reconstruir o império perdido da humanidade, preparando-se para o dia em que enfrentariam a ameaça que havia apagado sua história uma vez.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A humanidade não era apenas um grupo de refugiados do espaço.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ela era o que sobrava de uma civilização que um dia governou as estrelas.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>E estava na hora de reclamar seu lugar entre elas.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Epílogo – O Primeiro Dia de um Novo Futuro</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Kaelos e os humanos trabalharam juntos para restaurar a tecnologia perdida. O primeiro passo seria reativar as outras cápsulas e despertar os descendentes da antiga humanidade.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Helena olhou para as estrelas através da janela da nave. Pela primeira vez, sentiu que estava exatamente onde deveria estar.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Dorian sorriu.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Ainda achas que o futuro da humanidade está nas estrelas?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ela segurou sua mão.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Não. O futuro <em>é</em> as estrelas.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>E assim começou a verdadeira jornada da humanidade. Não como exploradores de um novo território…</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Mas como filhos legítimos do cosmos.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading"><strong>Filhos das Estrelas</strong></h3>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading"><em>Uma Odisseia para Além da Terra</em></h4>
+<!-- /wp:heading -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 1 – O Último Século na Terra</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>O ano era 2142. A Terra estava morrendo.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>As guerras pelo que restava de recursos naturais haviam deixado cicatrizes profundas. As calotas polares derretiam em um ritmo implacável, o nível do mar engolia cidades inteiras, e o ar se tornara irrespirável em muitas partes do mundo. As nações não lutavam mais umas contra as outras – lutavam contra o tempo.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A humanidade sabia que o fim da Terra como lar seguro estava próximo. Não havia outra escolha: precisavam partir.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>O projeto <em>Nova Aurora</em> foi criado para garantir a sobrevivência da espécie. Os melhores cientistas, engenheiros e visionários dedicaram décadas para construir a maior frota espacial da história. Seriam arcas interestelares, cada uma levando milhares de pessoas para novos mundos. Mas nem todos poderiam ir. Apenas os selecionados teriam um lugar.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Entre eles estavam Helena Vasquez, uma astrofísica cujo trabalho tornara possível a viagem para além do Sistema Solar, e Dorian Mendez, um piloto e explorador que sonhava com o desconhecido desde a infância. Eles não sabiam que seus nomes entrariam para a história.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>E que seriam os primeiros humanos a cruzar a escuridão infinita rumo a um novo lar.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 2 – A Partida da Terra</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>O dia da decolagem foi marcado por um silêncio sepulcral. Milhões assistiam ao lançamento dos 12 <em>arcas</em> que carregavam os últimos sonhos da humanidade.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A nave de Helena e Dorian chamava-se <em>Aurora II</em>. Com um motor de fusão avançado e propulsão de dobra, ela seria capaz de alcançar Próxima Centauri em apenas 16 anos – um feito impensável no século XX.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Dentro da nave, milhares de humanos dormiam em hibernação criogênica. Apenas uma equipe de 25 cientistas e tripulantes permanecia acordada para monitorar a jornada.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Enquanto a Terra se tornava apenas um ponto azul distante, Dorian suspirou.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Quando voltarmos, a Terra será apenas um mito — disse ele.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Helena, observando as estrelas pelo visor da nave, respondeu:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Talvez seja melhor assim. O futuro não está atrás de nós. Está lá fora.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>E então, mergulharam na escuridão.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 3 – O Primeiro Despertar</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Após oito anos de viagem, algo inesperado aconteceu.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Os sensores da <em>Aurora II</em> detectaram um sinal vindo de um sistema desconhecido. Não era natural.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Helena e Dorian despertaram da hibernação. Os dados mostravam que estavam recebendo um padrão de pulsos rítmicos, como uma transmissão artificial.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Isto não pode ser uma coincidência — murmurou Helena.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Se não somos os primeiros, então quem veio antes de nós? — perguntou Dorian.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Decidiram mudar a rota e investigar. O que encontraram desafiava tudo o que sabiam sobre o universo.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 4 – O Encontro com os Antigos</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Orbitando um planeta rochoso desconhecido, a equipe da <em>Aurora II</em> encontrou uma estrutura colossal flutuando no espaço.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Parecia abandonada.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Os sensores indicavam que a estrutura tinha milhões de anos. E, dentro dela, havia algo ainda mais impressionante: registros de uma civilização perdida.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Helena e Dorian lideraram a expedição até o interior da estação espacial. O que viram congelou-lhes o sangue.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Dentro das ruínas, encontraram cápsulas criogênicas. E, dentro delas… seres humanoides.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Eram diferentes, mas, ao mesmo tempo, estranhamente familiares.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 5 – A Verdade Perdida</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Os registros da estação revelaram algo que ninguém poderia imaginar.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Aqueles seres não eram alienígenas. Eram <em>humanos</em>. Ou, pelo menos, os antecessores da humanidade.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A informação estava codificada em uma linguagem que os cientistas conseguiram decifrar aos poucos. Eles eram os últimos sobreviventes de uma civilização antiga que havia fugido de um cataclismo há milhões de anos.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>E a verdade era ainda mais chocante: a Terra não era o berço original da humanidade. Era apenas um entreposto, um refúgio temporário para os descendentes de uma civilização que, há eras, vagava pelas estrelas.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A humanidade não estava destinada a partir para o espaço. Ela estava apenas voltando para casa.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 6 – O Legado das Estrelas</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>A descoberta mudou tudo. A ideia de que os humanos eram os únicos no universo foi destruída.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Mas havia um problema. A tecnologia para despertar os seres nas cápsulas estava danificada. Se quisessem respostas, precisavam restaurar o sistema e reativar os sobreviventes daquela civilização perdida.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Durante meses, Helena e sua equipe trabalharam sem descanso. E então, finalmente, uma das cápsulas foi reativada.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A criatura dentro dela abriu os olhos.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>E falou.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Quanto tempo se passou?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 7 – O Guardião do Passado</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>O ser chamava-se Kaelos. Sua aparência era similar à humana, mas sua pele era prateada e seus olhos brilhavam com um azul intenso. Ele contou uma história que mudaria para sempre a visão da humanidade sobre si mesma.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Seus antepassados haviam construído um império galáctico que se estendia por milhares de mundos. Mas algo aconteceu. Algo que os obrigou a fugir.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— A sombra veio — disse Kaelos. — E nós corremos.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Helena olhou para Dorian.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Que sombra?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Aquilo que destrói civilizações. Aquilo que persegue toda forma de vida inteligente. O verdadeiro predador do universo.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 8 – O Inimigo Invisível</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Kaelos contou que, há milhões de anos, uma entidade desconhecida começou a exterminar civilizações avançadas. Seu objetivo era impedir que qualquer espécie se tornasse poderosa demais.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Vocês são os últimos filhos das estrelas — disse Kaelos. — E se voltaram ao espaço, a sombra virá novamente.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Helena sentiu um frio na espinha.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Se formos os últimos… então temos que lutar.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Kaelos sorriu.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Exatamente o que nossos ancestrais disseram.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Capítulo 9 – O Destino da Humanidade</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>A <em>Aurora II</em> não era mais apenas uma nave-colônia. Agora era a esperança de toda a espécie humana.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Helena, Dorian e sua equipe decidiram que não fugiriam. Em vez disso, começariam a reconstruir o império perdido da humanidade, preparando-se para o dia em que enfrentariam a ameaça que havia apagado sua história uma vez.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A humanidade não era apenas um grupo de refugiados do espaço.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ela era o que sobrava de uma civilização que um dia governou as estrelas.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>E estava na hora de reclamar seu lugar entre elas.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading"><strong>Epílogo – O Primeiro Dia de um Novo Futuro</strong></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Kaelos e os humanos trabalharam juntos para restaurar a tecnologia perdida. O primeiro passo seria reativar as outras cápsulas e despertar os descendentes da antiga humanidade.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Helena olhou para as estrelas através da janela da nave. Pela primeira vez, sentiu que estava exatamente onde deveria estar.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Dorian sorriu.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Ainda achas que o futuro da humanidade está nas estrelas?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ela segurou sua mão.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>— Não. O futuro <em>é</em> as estrelas.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>E assim começou a verdadeira jornada da humanidade. Não como exploradores de um novo território…</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Mas como filhos legítimos do cosmos.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong><em><a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" data-type="page" data-id="328">Francisco Gonçalves </a></em></strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ficção criada pelo DeepSeek (c)</p>
+<!-- /wp:paragraph --><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+</body></html>

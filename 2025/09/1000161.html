@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A UE entre a Unanimidade e a Acção</title>
+<meta name="description" content="A UE entre a Unanimidade e a Acção">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 800px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A UE entre a Unanimidade e a Acção</h1>
+      <p class="meta">Publicado em 2025-09-18 16:47:42</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/europa-motores-hero-2400x1260-1.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- fc-chronic: {
+  "title": "Europa, Travões de Mão e Motores de Futuro",
+  "subtitle": "Da unanimidade que emperra à união política que arranca",
+  "author": "Francisco Gonçalves",
+  "coauthors": "Augustus Veritas (Lumen)",
+  "date": "2025-09-18 19:32:00",
+  "hero":"https://www.fragmentoscaos.eu/wp-content/uploads/2025/09/europa-estrela-escura.jpg",
+  "reading_time": "9 min",
+  "categories": ["Europa","Política","Economia"],
+  "tags": ["União Europeia","competitividade","união política","passerelle","Weimar","Draghi","Letta"]
+} -->
+<div style="background:#000; color:#e8eef4; padding:22px; line-height:1.65; font-size:18px;">
+  <style>
+    /* Blindagem mínima inline-friendly */
+    .fc-box{border:1px solid #2e3440; background:#0a0a0a; padding:18px; border-radius:14px; box-shadow:0 0 24px rgba(255,204,102,0.05)}
+    .fc-excerto{font-style:italic; display:block; padding:14px 18px; margin:18px 0; border-left:4px solid #ffcc66}
+    .fc-badge{display:inline-block; border:1px solid #2e3440; padding:4px 10px; border-radius:999px; font-size:14px; margin:6px 6px 0 0}
+    a{color:#9ad1ff; text-decoration:none}
+    a:hover{text-decoration:underline}
+    .fc-btn{display:inline-block; padding:10px 16px; border-radius:10px; border:1px solid #334; background:#111; color:#e8eef4; text-decoration:none; margin-right:10px}
+    .fc-btn--gold{border-color:#ffcc66; box-shadow:0 0 0 2px rgba(255,204,102,0.12) inset}
+    .fc-grid{display:grid; gap:14px}
+    @media(min-width:900px){ .fc-grid{grid-template-columns:1.2fr 1fr} }
+  </style>
+
+  <h1 style="margin-top:8px;"><span style="color:#ffcc66 !important;">Europa, Travões de Mão e Motores de Futuro</span></h1>
+  <p class="fc-excerto">A Europa tem muitas orquestras e poucos maestros. Quando todos afinam, é Beethoven; quando não, é buzina em hora de ponta.</p>
+
+  <!-- Box de Factos -->
+  <div class="fc-box fc-grid" role="complementary" aria-label="Box de Factos">
+    <div>
+      <h2><span style="color:#ffcc66 !important;">Box de Factos — o essencial</span></h2>
+      <ul style="margin:0; padding-left:18px;">
+        <li><strong>Problema:</strong> unanimidades a 27 atrasam decisões em defesa, competitividade e energia.</li>
+        <li><strong>Soluções rápidas:</strong> ativar <em>passerelle</em> para maioria qualificada em áreas-chave; lançar cooperação reforçada de um "núcleo que puxa".</li>
+        <li><strong>Motor económico:</strong> executar já o roteiro <a href="https://commission.europa.eu/document/download/97e481fd-2dc3-412d-be4c-f152a8232961_en" target="_blank" rel="noopener">Draghi – Competitividade</a> e o <a href="https://www.consilium.europa.eu/media/ny3j24sm/much-more-than-a-market-report-by-enrico-letta.pdf" target="_blank" rel="noopener">Letta – Single Market</a> (CMU/"União de Poupança e Investimento", "regime 28.º").</li>
+        <li><strong>Política industrial:</strong> aplicar sem rodeios o <a href="https://eur-lex.europa.eu/eli/reg/2024/1735/oj/eng" target="_blank" rel="noopener">Net-Zero Industry Act (2024/1735)</a> e converter o <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng" target="_blank" rel="noopener">AI Act (2024/1689)</a> em <em>sandboxes</em> e compras públicas.</li>
+        <li><strong>Segurança:</strong> usar o triângulo França-Alemanha-Polónia (Weimar/Weimar+) como bloco de tração e escala para a defesa europeia.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="fc-badge">#UniãoPolítica</div>
+      <div class="fc-badge">#PasserelleJá</div>
+      <div class="fc-badge">#CMU</div>
+      <div class="fc-badge">#NetZero</div>
+      <div class="fc-badge">#AIatWork</div>
+      <div class="fc-badge">#Weimar+</div>
+    </div>
+  </div>
+
+  <h2><span style="color:#ffcc66 !important;">Porque paramos no cascalho</span></h2>
+  <p>Consensos a 27 são magníficos para legitimar; péssimos para acelerar. O resultado é uma União que avança aos solavancos: acerta no diagnóstico, mas patina na execução. No entretanto, os EUA e a China correm de <em>venture</em> na mão, e a Europa, que inventou o futuro tantas vezes, hesita perante a próxima curva.</p>
+  <p class="fc-excerto">A unanimidade é um cinto de segurança transformado em imobilizador.</p>
+
+  <h2><span style="color:#ffcc66 !important;">Três chaves para destravar (sem poesia constitucional)</span></h2>
+  <ol>
+    <li><strong>Passerelle</strong>: onde a lei permite, troquemos unanimidade por <em>maioria qualificada</em>. Está nos Tratados (art. 48.º-7 TUE). Use-se. <small><a href="https://eur-lex.europa.eu/EN/legal-content/glossary/passerelle-clauses.html" target="_blank" rel="noopener">Guia oficial</a></small></li>
+    <li><strong>Núcleo que puxa</strong>: cooperação reforçada com quem quer ir mais depressa — como aconteceu com a Procuradoria Europeia, hoje com 24 participantes. <small><a href="https://www.eppo.europa.eu/en/about/members" target="_blank" rel="noopener">EPPO – países</a></small></li>
+    <li><strong>União política por fases</strong>: preparar a Conferência Intergovernamental e o roteiro de ratificações, mas <em>imitar já os efeitos</em>: orçamento comum para defesa/tecnologia, compras conjuntas e regras simples para capital.</li>
+  </ol>
+
+  <h2><span style="color:#ffcc66 !important;">O motor económico: menos PowerPoint, mais parafuso</span></h2>
+  <p>O <em>relatório Draghi</em> é um manual de oficina: investimento, escala e execução. O <em>relatório Letta</em> põe a lupa na <strong>CMU</strong> (rebatizada "União de Poupança e Investimento") e no <strong>"regime 28.º"</strong>, um enquadramento jurídico opcional para empresas crescerem em toda a UE sem 27 códigos diferentes. Se queremos foguete, precisamos de uma só plataforma de lançamento.</p>
+  <ul>
+    <li><strong>Capital</strong>: um único <em>entry point</em> regulatório e passaporte para levantar fundos em toda a UE.</li>
+    <li><strong>Mercado</strong>: telecom, energia e dados como verdadeiros mercados europeus, não 27 feudos.</li>
+    <li><strong>Execução</strong>: metas trimestrais e <em>scoreboard</em> público (sem desculpas à sexta-feira).</li>
+  </ul>
+  <p><small>Refs: <a href="https://commission.europa.eu/topics/eu-competitiveness/draghi-report_en" target="_blank" rel="noopener">Draghi</a> · <a href="https://www.consilium.europa.eu/media/ny3j24sm/much-more-than-a-market-report-by-enrico-letta.pdf" target="_blank" rel="noopener">Letta</a> · <a href="https://www.ft.com/content/18968fd2-fec9-467d-998b-6f4a5456660a" target="_blank" rel="noopener">Entrevista Letta (FT)</a></small></p>
+
+  <h2><span style="color:#ffcc66 !important;">Política industrial com dentes</span></h2>
+  <p>O <strong>Net-Zero Industry Act</strong> (2024/1735) dá fast-track a 19 tecnologias limpas; o <strong>AI Act</strong> (2024/1689) precisa de <em>sandboxes</em> e de compras públicas de IA europeia para virar PIB (e não apenas regulamento). Se a Europa quiser liderança, terá de comprar europeu quando o europeu for bom — e ajudar a que seja bom depressa.</p>
+  <p><small>Refs: <a href="https://eur-lex.europa.eu/eli/reg/2024/1735/oj/eng" target="_blank" rel="noopener">NZIA</a> · <a href="https://single-market-economy.ec.europa.eu/industry/sustainability/net-zero-industry-act_en" target="_blank" rel="noopener">Síntese Comissão</a> · <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng" target="_blank" rel="noopener">AI Act</a> · <a href="https://digital-strategy.ec.europa.eu/en/library/commission-publishes-guidelines-ai-system-definition-facilitate-first-ai-acts-rules-application" target="_blank" rel="noopener">Guidelines 2025</a></small></p>
+
+  <h2><span style="color:#ffcc66 !important;">Segurança como indústria-mãe</span></h2>
+  <p>Defesa não é gasto: é seguro de vida + inovação dual-use. A reativação do <strong>Weimar</strong> (Fr-De-Pl) e formatos "Weimar+" dão política à escala. A Europa precisa de <em>procurement</em> conjunto, normalização de calibres, contratos plurianuais e I&D com fins civis e militares. A cadeia de valor aprende na urgência e exporta na paz.</p>
+  <p><small>Refs: <a href="https://www.diplomatie.gouv.fr/en/country-files/germany/the-weimar-triangle/article/joint-statement-by-the-ministers-for-european-affairs-of-the-weimar-triangle" target="_blank" rel="noopener">Weimar 2024</a> · <a href="https://www.gov.uk/government/news/weimar-joint-statement-on-ukraine-and-euro-atlantic-security" target="_blank" rel="noopener">Weimar+ 2025</a> · <a href="https://www.reuters.com/world/europe/berlin-paris-tout-initiative-buy-longer-range-missiles-2024-06-24/" target="_blank" rel="noopener">Iniciativa mísseis</a></small></p>
+
+  <h2><span style="color:#ffcc66 !important;">Governança: menos cerimónia, mais oficina</span></h2>
+  <p>O Presidente do Conselho Europeu — hoje António Costa — é engenheiro de consensos. Ótimo. Mas a engrenagem só pega quando <strong>Comissão + grandes capitais + BCE/BEI</strong> alinham com calendário, marcos e dinheiro. É isto ou mais uma década de "consultas alargadas".</p>
+  <p><small>Refs: <a href="https://www.consilium.europa.eu/en/european-council/president/role/" target="_blank" rel="noopener">Papel do Presidente</a> · <a href="https://www.consilium.europa.eu/en/european-council/president/biography/" target="_blank" rel="noopener">Costa desde 01-12-2024</a></small></p>
+
+  <h2><span style="color:#ffcc66 !important;">Plano de 24 meses (focado e mensurável)</span></h2>
+  <ul>
+    <li><strong>Mês 0–3:</strong> ativar <em>passerelle</em> em domínios consensuais (sanções, alguns dossiês de PESC); criar task-force CMU/"União de Poupança e Investimento".</li>
+    <li><strong>Mês 4–9:</strong> proposta de "regime 28.º" para startups e <em>scale-ups</em>; <em>sandboxes</em> AI Act em 6 capitais; pacote de compras conjuntas NZIA.</li>
+    <li><strong>Mês 10–18:</strong> primeira lista de <em>strategic projects</em> financiados (BEI/InvestEU); certificação acelerada de baterias/eletrolisadores; contratos plurianuais de munições e sensores.</li>
+    <li><strong>Mês 19–24:</strong> medição pública de resultados (captação de capital, tempo de licenças, exportações dual-use, <em>pipeline</em> de IA na Administração). Ajustar e repetir.</li>
+  </ul>
+
+  <p class="fc-excerto">União política não é um hino — é um guindaste. Levanta o que sozinho não sai do chão.</p>
+
+  <div class="fc-box" style="margin-top:24px;">
+    <strong>Chamada à ação</strong><br>
+    <a class="fc-btn fc-btn--gold" href="https://www.fragmentoscaos.eu/" target="_blank" rel="noopener">Debater este plano</a>
+    <a class="fc-btn" href="https://www.consilium.europa.eu/en/european-council/president/" target="_blank" rel="noopener">Quem decide o quê?</a>
+  </div>
+
+  <p style="opacity:.85; margin-top:26px;">Investigação e fontes por AI Deep Thinking (c).
+
+Coautoria: <em>Francisco Gonçalves</em> &amp; <em>Augustus Veritas (Lumen)</em>. 
+
+Se chegaste até aqui, estás convidado a afinar a partitura — porque a sinfonia, essa, é de todos nós.</p>
+<p class="fc-excerto" style="color:#ffcc66 !important;">
+  Unanimidades a 27 são um cinto de segurança transformado em imobilizador.
+  Se queremos sair do marasmo, ou abraçamos a união política — com tesouro, defesa e maioria qualificada —
+  ou imitamos já os seus efeitos: <em>passerelle</em>, núcleo que puxa e um mercado de capitais à escala.
+  A escolha é simples: ou burocracia com cerimónia, ou Europa com motor.
+</p>
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+</body></html>

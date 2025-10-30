@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mais um Data Center em Portugal?</title>
+<meta name="description" content="Mais um Data Center em Portugal?">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 800px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Mais um Data Center em Portugal?</h1>
+      <p class="meta">Publicado em 2025-09-08 14:56:39</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_000000003cb461f4a2bd8cbe8b699a2d.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading"></h6>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Entre o Sonho de 7 Mil Milhões e a Realidade de 5 Mil Euros</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>🟢 <strong>Factos Rápidos</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>- Local: Zona Industrial do Pego (Abrantes) - Empresa: <strong>EDC ONE, Lda</strong>. (fundada em 2024, capital social 5.000 €)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> - Investimento anunciado: <strong>7.000.000.000 €</strong> até 2030</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>- Emprego prometido: 450 diretos + 700 indiretos</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>- Incentivos aprovados pela Câmara: 16,2 M€ em isenções fiscais</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:paragraph -->
+<p>O país vibra sempre que ouve a palavra "data center". É a promessa de modernidade, de empregos qualificados, de um futuro ligado ao digital. Agora, a Câmara de Abrantes aprovou benefícios fiscais generosos para a <strong>EDC ONE Lda.</strong>, uma empresa criada há pouco mais de um ano, com um capital social de… <strong>cinco mil euros</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Eis a contradição que merece atenção: uma microempresa, sem histórico público no setor tecnológico, promete um investimento <strong>equivalente ao PIB anual de vários países africanos</strong>. Sete mil milhões para erguer um centro de dados junto à Central do Pego — antiga zona marcada pelo carvão e pela falência da RPP Solar.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Entre Sines e Pego</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>O autarca fala em "nova dinâmica", comparando o projeto ao campus de Sines, que efetivamente já tem consórcios sólidos, hyperscalers e investidores internacionais. Mas no Pego, até agora, não se conhece um único parceiro, cliente âncora ou fundo financeiro que dê corpo a esta ambição.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Um projeto desta dimensão não se ergue de anúncios. Precisa de <strong>energia contratada</strong> (centenas de megawatts), de <strong>clientes tecnológicos</strong> (AWS, Google, Microsoft, Meta…), de <strong>engenheiros e EPCs</strong> já em campo. Nada disto foi tornado público.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">O Perigo das Ilusões</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Os incentivos fiscais já foram aprovados. O discurso político já se fez. Mas falta o essencial: <strong>provas concretas de capacidade financeira e técnica</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>O risco? Vender aos cidadãos e à região uma promessa sem lastro. Dar palco a uma narrativa grandiosa, que pode acabar por ser apenas mais um <strong>balão de ar quente</strong>, como tantos que Portugal já conheceu no passado.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">A Cidadania que Pergunta</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Não se trata de ser contra o progresso ou o investimento. Pelo contrário — precisamos deles como de pão para a boca. Mas um país maduro deve exigir <strong>transparência</strong> e <strong>responsabilidade</strong>:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list"><!-- wp:list-item -->
+<li>Quem são os investidores que asseguram os 7 mil milhões?</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Quem vai ocupar a capacidade do data center?</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Existe parecer da REN sobre a energia disponível?</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Há cronogramas de obra, licenciamento ambiental e contratos de engenharia?</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Sem estas respostas, tudo não passa de um enredo demasiado doce para ser engolido sem sal.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Conclusão</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Portugal não pode viver apenas de anúncios e powerpoints. Precisa de <strong>realidade palpável</strong>: betão, cabos, servidores, clientes e salários pagos ao fim do mês.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Até lá, o Data Center do Pego é, por agora, uma <strong>utopia de 7 mil milhões em cima de uma microempresa de 5 mil euros</strong>. E cabe-nos a nós, cidadãos atentos, não confundir <strong>fruta fresca com salada demasiado temperada</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:paragraph -->
+<p>✍️ <em>Francisco Gonçalves &amp; Augustus Veritas Lumen</em> (c)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Imagem cortesia de OpenAI (c)<br>📌 Publicado em <a href="https://www.fragmentoscaos.eu">Fragmentos do Caos</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:paragraph -->
+<p><strong>Nota: </strong>Esta notícia teve por base o Jornal Médio Ribatejo e uma apresentação da Câmara de Abrantes que descreveu este projecto.  O município afirma que este projeto se enquadrada num Projeto de Interesse Nacional (PIN) e implicará um investimento de 7 mil milhões de euros até 2030, com a criação prevista de 450 postos de trabalho diretos e 700 indiretos. </p>
+<!-- /wp:paragraph -->
+
+<p></p>
+<a href="https://fasgoncalves.github.io/hugo.fragmentoscaos/html/caderno-negro-corrupcao-portuguesa.html"
+   target="_blank" rel="noopener"
+   aria-label="Leia o Caderno Negro da Corrupção em Portugal"
+   onmouseover="this.style.filter='brightness(1.05)';this.style.transform='translateY(-1px)'"
+   onmouseout="this.style.filter='';this.style.transform=''"
+   style="display:inline-flex;align-items:center;gap:.55rem;padding:.7rem 1rem;
+          background:#0A66C2;color:#fff;border:1px solid #0a5ab0;border-radius:10px;
+          text-decoration:none;font:600 15px/1 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+          box-shadow:0 1px 2px rgba(0,0,0,.08);transition:transform .1s, filter .1s">
+  <span aria-hidden="true">🌐</span>
+  <span>Leia o Caderno Negro da Corrupção em Portugal</span>
+</a>
+
+<p></p>
+
+
+
+<div style="max-width: 600px; margin: 2em auto; border-radius: 12px; padding: 20px; background-color: #1e1e1e; color: #f0f0f0; font-family: 'Segoe UI', sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.4);">
+<h2 style="text-align: center; margin-bottom: 1em; color: #ffffff;">🌌 Fragmentos do Caos – Sites Relacionados</h2>
+<ul style="list-style: none; padding: 0; font-size: 1.1em;">
+<li style="margin-bottom: 1em;">
+      <strong>📚 Blogue Principal:</strong><br />
+      <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" style="color: #90caf9; text-decoration: none;"><br />
+        https://fasgoncalves.github.io/fragmentoscaos-html<br />
+      </a>
+    </li>
+<li style="margin-bottom: 1em;">
+      <strong>📘 Ebooks "Fragmentos do Caos":</strong><br />
+      <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" style="color: #90caf9; text-decoration: none;"><br />
+        https://fasgoncalves.github.io/hugo.fragmentoscaos<br />
+      </a>
+    </li>
+<li>
+      <strong>🌀 Carrossel de Artigos:</strong><br />
+      <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" style="color: #90caf9; text-decoration: none;"><br />
+        https://fasgoncalves.github.io/indice.fragmentoscaos<br />
+      </a>
+    </li>
+</ul>
+<p style="text-align: center; font-style: italic; margin-top: 2em; color: #cccccc;">
+    Uma constelação de ideias, palavras e caos criativo – ao teu alcance.
+  </p>
+</div>
+<p> A sua avaliação deste artigo é importante para nós. Obrigado.</p>
+
+<!-- wp:shortcode -->
+[avaliacao_5estrelas]
+<!-- /wp:shortcode -->
+
+
+
+<!--
+  Banner Slim "Pesquisa direta – Fragmentos do Caos"
+  ➤ Mais compacto, ideal para sidebar ou rodapé.
+--><section class="fc-banner-slim" role="region" aria-label="Pesquisa direta em Fragmentos do Caos">
+  <form class="fc-search-slim" action="https://webnews.fragmentoscaos.eu" method="GET" target="_blank" rel="noopener">
+    <label class="sr-only" for="fc-q-slim">Pesquisar</label>
+    <div class="fc-input-slim">
+      <svg class="fc-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23 6.5 6.5 0 1 0-6.5 6.5 6.471 6.471 0 0 0 4.23-1.57l.27.28v.79l4.99 4.99 1.49-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input id="fc-q-slim" name="q" type="search" placeholder="Pesquisar Fragmentos do Caos..." aria-label="Pesquisar publicações" />
+    </div>
+    <button class="fc-btn-slim" type="submit">🔍</button>
+  </form>
+</section><style>
+  :root{
+    --fc-bg-slim:#111627;
+    --fc-accent-slim:#7b61ff;
+    --fc-text-slim:#fff;
+    --fc-muted-slim:#aeb7d6;
+  }
+
+  .fc-banner-slim{
+    position:relative; isolation:isolate;
+    margin:18px auto; padding:10px 14px;
+    color:var(--fc-text-slim);
+    background: linear-gradient(135deg, var(--fc-bg-slim), #1e244a);
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .fc-search-slim{ display:flex; gap:8px; align-items:stretch; }
+  .fc-input-slim{ position:relative; flex:1; }
+  .fc-input-slim input{
+    width:100%; height:38px; padding:0 34px 0 36px;
+    border-radius:10px; border:1px solid rgba(255,255,255,.16);
+    background: rgba(255,255,255,.05);
+    color:var(--fc-text-slim); outline:none;
+    font-size:14px;
+  }
+  .fc-input-slim input::placeholder{ color:var(--fc-muted-slim); }
+  .fc-input-slim input:focus{ border-color: var(--fc-accent-slim); box-shadow: 0 0 0 3px rgba(123,97,255,.35); }
+
+  .fc-icon{ position:absolute; left:10px; top:50%; transform:translateY(-50%); width:18px; height:18px; opacity:.7; color:#cfe6ff; }
+
+  .fc-btn-slim{
+    flex:0 0 auto; width:42px; height:38px;
+    border-radius:10px; border:1px solid rgba(123,97,255,.6);
+    background: var(--fc-accent-slim);
+    color:#fff; font-weight:bold; cursor:pointer;
+    transition: background .2s ease;
+  }
+  .fc-btn-slim:hover{ background:#9d87ff; }
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+</body></html>

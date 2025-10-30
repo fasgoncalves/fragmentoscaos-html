@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Estudo sobre Impacto dos Resgates Bancários em Portugal (2008–2025)</title>
+<meta name="description" content="Estudo sobre Impacto dos Resgates Bancários em Portugal (2008–2025)">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 800px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Estudo sobre Impacto dos Resgates Bancários em Portugal (2008–2025)</h1>
+      <p class="meta">Publicado em 2025-08-03 13:39:42</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_000000006b2062468260846775e8bc55.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading"></h6>
+<!-- /wp:heading -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Introdução</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Nos últimos vinte anos, Portugal assistiu ao colapso de vários bancos que, apesar de privados, foram salvos com dinheiro público. Da nacionalização escandalosa do BPN à longa agonia do BES transformado em Novo Banco, passando pela liquidação silenciosa do Banif e pelas injeções multimilionárias na CGD, os contribuintes suportaram uma fatura pesada — <strong>mais de 22 mil milhões de euros</strong> até 2025. Este estudo reúne os números, os protagonistas e os prejuízos de um sistema que socializa perdas e privatiza benefícios. Uma radiografia necessária a uma das maiores transferências de riqueza da história recente do país.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:paragraph -->
+<p>A <strong>INVESTIGAÇÃO</strong> </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Desde a crise financeira de 2008, o Estado português foi obrigado a intervir em vários bancos através de nacionalizações, resgates ou recapitalizações, para prevenir o colapso do sistema financeiro. Essas intervenções tiveram um <strong>custo elevado para os contribuintes</strong>, estimado em mais de <strong>€22 mil milhões</strong> até 2021. Abaixo detalham-se os casos dos principais bancos intervencionados – Banco Português de Negócios (BPN), Banco Espírito Santo/Novo Banco (BES/NB), Banco Internacional do Funchal (Banif), Caixa Geral de Depósitos (CGD) e Banco Privado Português (BPP) – incluindo os montantes públicos envolvidos, o custo líquido após recuperações, os grandes devedores que estiveram na origem dos prejuízos e as fontes oficiais destes dados. No final, apresenta-se um quadro-resumo com os valores principais por banco.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Banco Português de Negócios (BPN)</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><strong>Intervenção:</strong> O BPN foi <strong>nacionalizado em novembro de 2008</strong> após se revelarem fraudes e perdas escondidas que ameaçavam a sua sobrevivência. Foi a primeira nacionalização bancária em Portugal desde 1975, justificada pelo risco sistémico que um colapso do BPN poderia causar. A gestão transitou para a Caixa Geral de Depósitos e, em 2011, optou-se pela reprivatização parcial: em março de 2012, o BPN (já expurgado de muitos ativos tóxicos) foi vendido ao Banco BIC por apenas <strong>€40 milhões</strong>, com o Estado a garantir ainda a cobertura de encargos futuros do banco vendido. Os ativos problemáticos permaneceram no Estado, agrupados em três veículos: <strong>Parvalorem, Parups e Parparticipadas</strong>, criados em 2010 para gerir a carteira de créditos incobráveis, imóveis e participações do antigo BPN.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Dinheiro público injectado:</strong> Desde 2008, o Estado teve de suportar sucessivas perdas do BPN. Segundo o Tribunal de Contas, até final de 2018 o <strong>custo orçamental acumulado</strong> com a nacionalização, reprivatização e operação dos veículos do BPN atingiu <strong>€4.924 milhões</strong>. E o valor não parou de subir: só em 2018 registaram-se €829 milhões de novas perdas e em 2017 mais €437 milhões. Adicionalmente, no final de 2018 os veículos Parvalorem/Parups/Parparticipadas tinham capital próprio negativo de <strong>€1.028 milhões</strong>, prevendo-se que essa diferença venha a ser também suportada pelo Estado. Somando os encargos já suportados e as perdas potenciais futuras, o Tribunal de Contas projetava um <strong>custo total de €5.952 milhões</strong> com o BPN (sem contar resultados negativos posteriores a 2018). De facto, em 2023 o Instituto Nacional de Estatística reconheceu <strong>€915,9 milhões de perdas adicionais</strong> em créditos incobráveis da Parvalorem, aumentando ainda mais a fatura para os contribuintes. Ou seja, <strong>o BPN já custou efetivamente cerca de €6 mil milhões aos contribuintes</strong>, podendo atingir perto de <strong>€7 mil milhões</strong> no final do processo.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Recuperações e custo líquido:</strong> A recuperação de valores pelo Estado tem sido quase nula. A venda do BPN ao BIC rendeu €40 milhões, valor irrisório face aos milhares de milhões de encargos. Alguns ativos foram vendidos pelos veículos (por exemplo, imóveis, obras de arte como a coleção Miró, etc.), mas serviram apenas para reduzir marginalmente as garantias públicas e atrasar novas perdas. Todos os anos, o Orçamento do Estado contempla dotações para cobrir prejuízos da Parvalorem e associadas – por exemplo, <strong>€560 milhões em 2018</strong>, €641 milhões em 2017, e ainda <strong>€199 milhões previstos no OE2025</strong> para continuar a financiar os restos do BPN e do Banif. Assim, o <strong>custo líquido para os contribuintes aproxima-se do total injetado</strong>, rondando <strong>5 a 6 mil milhões de euros</strong> (dependendo das perdas finais a apurar), já que as recuperações de ativos foram muito limitadas.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Grandes devedores e causas do colapso:</strong> O colapso do BPN deveu-se a <strong>gestão fraudulenta e créditos ruinó</strong>sos concedidos a empresas do próprio grupo e figuras ligadas ao banco. Uma lista divulgada em 2012 mostrava que os <strong>500 maiores clientes do BPN deixaram de pagar as suas dívidas</strong>, destacando-se <strong>empresas e offshores do grupo SLN</strong> (Sociedade Lusa de Negócios, dona do BPN) criado por José Oliveira e Costa. Entre os <strong>maiores devedores individuais</strong> figuram nomes ligados ao círculo do BPN e do poder político da época: o próprio <strong>Oliveira e Costa</strong> (ex-presidente do BPN, posteriormente condenado), o ex-ministro <strong>Arlindo de Carvalho</strong>, o advogado <strong>Joaquim Coimbra</strong>, o ex-deputado <strong>Duarte Lima</strong> (envolvido no financiamento ilícito de um projeto imobiliário – fundo Homeland – com €50 milhões de crédito BPN) e <strong>Fernando Fantasia</strong> e <strong>Emídio Catum</strong> (empresários próximos do universo SLN). Os <strong>10 maiores devedores do BPN</strong> incluíam várias sociedades instrumentais ligadas à SLN, muitas sediadas em offshores, com dívidas astronómicas: por exemplo, a <strong>Pluripar</strong> (€135 milhões), a <strong>Solrac Finance</strong> (€116 M), a <strong>Labicer</strong> (€82 M) e a <strong>Cimentos Nacionais e Estrangeiros (CNE)</strong> (€82 M) – todas elas empresas do grupo SLN – além de outras empresas de Fantasia/Catum (Domurbanis, Paprefu) com dezenas de milhões em dívida. Também foram identificados esquemas como a **compra de 41 quadros de Miró através da offshore Zevin (dívida de €43 M)】 e uma teia de financiamentos cruzados dentro do grupo que resultaram em perdas para o banco. Em suma, <strong>fraudes contabilísticas, gestão dolosa e empréstimos concedidos sem garantias a insiders</strong> explicam a pesada fatura deixada pelo BPN.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Banco Espírito Santo (BES) e Novo Banco</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><strong>Intervenção:</strong> O <strong>Banco Espírito Santo (BES)</strong>, um dos maiores bancos privados portugueses, <strong>colapsou em agosto de 2014</strong> na sequência de divulgações de fraude e insolvência nas empresas do Grupo Espírito Santo (GES) – o conglomerado familiar acionista do BES. A 3 de agosto de 2014, o Banco de Portugal aplicou uma <strong>medida de resolução</strong>: os acionistas foram desapossados, o BES foi dividido num <strong>"banco mau"</strong> (que reteve os ativos tóxicos) e num <strong>banco de transição</strong> chamado <strong>Novo Banco (NB)</strong>, para onde foram transferidos os ativos considerados "bons" e a generalidade da atividade bancária do BES. O objetivo era salvar os depósitos e partes sãs do banco, evitando um colapso sistémico. O Novo Banco iniciou atividade em 4 de agosto de 2014, com capital social assegurado pelo Fundo de Resolução. Como banco de transição, o NB seria temporário e destinado a venda. De facto, após várias tentativas falhadas de venda em 2014-2015, o NB acabou por ser <strong>vendido em outubro de 2017</strong>: 75% do capital foi adquirido pelo fundo norte-americano <strong>Lone Star</strong> (por €1 simbólico, acompanhado de injeções de capital privadas de €1.000 milhões), mantendo o Fundo de Resolução 25% do capital. A venda incluiu, porém, um <strong>Mecanismo de Capital Contingente</strong>: o Fundo de Resolução comprometeu-se a cobrir perdas futuras do NB em determinados ativos "tóxicos" herdados do BES, até um limite de <strong>€3.890 milhões</strong>. Este mecanismo levou a várias injecções de capital entre 2018 e 2020, prolongando os custos públicos com este caso.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Dinheiro público injectado:</strong> Na prática, a resolução do BES implicou <strong>financiamento público massivo</strong> através do Fundo de Resolução (FdR). Inicialmente, em agosto de 2014, o <strong>FdR foi chamado a capitalizar o Novo Banco com €4.900 milhões</strong>. Desse montante, <strong>€3.900 milhões foram emprestados pelo Estado</strong> ao Fundo de Resolução (a juros simbólicos e prazo alargado), e cerca de <strong>€1.000 milhões foram adiantados pelos outros bancos</strong> participantes do Fundo. Esta primeira injeção cobriu o capital inicial do NB. Após a venda ao Lone Star (2017), ativou-se o mecanismo contingente: entre 2017 e 2020, o Novo Banco registou <strong>perdas de mais de €4.000 milhões</strong> em ativos herdados do BES, o que levou o Fundo de Resolução a realizar <strong>injeções adicionais de €3.405 milhões</strong> no NB até 2020. Em 2020, por exemplo, o Estado (via FdR) injetou <strong>€1.035 milhões</strong> no Novo Banco. No total, até final de 2021 as <strong>ajudas públicas ao BES/Novo Banco somavam cerca de €8,3 mil milhões</strong>. Esse valor inclui o empréstimo estatal de 2014 (não ainda reembolsado) e as sucessivas chamadas de capital contingente após 2017. Já em 2023, contando decisões arbitrais recentes, estima-se que a <strong>fatura total do Fundo de Resolução com o Novo Banco atinja €8.490 milhões</strong> (praticamente o teto máximo acordado). Importa referir que, por enquanto, estes montantes foram suportados pelo <strong>Fundo de Resolução</strong>, o qual é formalmente financiado pelos bancos – mas <strong>com recurso a avultados empréstimos públicos</strong> que terão de ser pagos ao longo de décadas. Segundo o acordado, o Fundo de Resolução pagará os empréstimos ao Estado (e a bancos credores) até <strong>2060–2062</strong>, usando as contribuições anuais da banca. Na prática, porém, enquanto esses empréstimos não forem liquidados, é o <strong>Erário público que suporta o encargo</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Recuperações e custo líquido:</strong> Ao contrário de outros casos, o BES/Novo Banco teve <strong>alguma expectativa de recuperação</strong> no longo prazo, dado que os bancos do sistema estão obrigados a repor os fundos públicos usados. No imediato, porém, <strong>o custo líquido para os contribuintes é muito elevado</strong>. Até 2021, o <strong>saldo negativo para o Estado</strong> nas intervenções BES/NB era de <strong>€8,3 mil milhões</strong>. A venda do Novo Banco à Lone Star não trouxe receita direta (foi praticamente gratuita) e ainda implicou o compromisso de cobertura de perdas pelo Estado. Apenas no futuro, se o Fundo de Resolução conseguir reembolsar integralmente os empréstimos (algo incerto, prolongado até 2060+), é que parte deste custo poderá ser recuperada – mas ao custo de décadas de juros baixos suportados pelo Tesouro. Assim, pode-se considerar que a <strong>fatura suportada pelos contribuintes ronda os €8–8,5 mil milhões</strong>, sem contar eventuais recuperações futuras. Este valor representa <strong>mais de 25% do total de apoios públicos ao setor financeiro desde 2008</strong>, sendo de longe o maior encargo individual. Note-se que o BES "mau" permaneceu em liquidação com alguns ativos residuais, mas os credores desse BES insolvente (obrigacionistas subordinados e outros) dificilmente terão recuperações significativas – não beneficiando o Estado.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Grandes devedores e causas do colapso:</strong> A queda do BES deveu-se sobretudo a <strong>exposições gigantescas a entidades do próprio Grupo Espírito Santo</strong> e a outros <strong>devedores de risco</strong> durante a gestão de Ricardo Salgado. Uma auditoria e uma comissão parlamentar revelaram que, à data da resolução, os <strong>21 maiores devedores do BES/Novo Banco</strong> acumulavam <strong>€6,6 mil milhões de dívida</strong> (grande parte já incobrável). No topo da lista estava o <strong>Grupo José de Mello</strong> (dívida inicial de €945 milhões), seguido da holding <strong>Ongoing</strong> de Nuno Vasconcellos (≈€606 milhões). Mais de metade deste crédito total concentrava-se em empresas de <strong>construção e imobiliário</strong> próximas do BES: por exemplo, o <strong>Grupo Lena</strong> (irmãos Barroca), a <strong>Obriverca</strong> (de Eduardo Rodrigues), a <strong>Temple</strong> (de Vasco Pereira Coutinho) e a <strong>Promovalor</strong> (grupo do empresário <strong>Luís Filipe Vieira</strong>, ligado ao futebol). Entre os maiores devedores constavam ainda figuras mediáticas como <strong>Joe Berardo</strong> (empresário cuja fundação tinha €327,7 milhões em dívida ao Novo Banco, parte de um total perto de €1.000 milhões de créditos envolvendo também CGD e BCP) e o construtor <strong>José Guilherme</strong> (com exposição de €250+ milhões, dos quais €82 milhões já em perdas no NB) – este último notório por ter presenteado Ricardo Salgado com €14 milhões, indício de conluio. Outro caso ruinso foi o do <strong>BES Angola (BESA)</strong>: o BES tinha financiado a sua filial em Angola em <strong>milhares de milhões de dólares</strong> sem garantias suficientes; esses créditos foram maioritariamente perdidos, acabando o governo angolano por intervir separadamente. No Novo Banco, após 2014, verificou-se que muitos destes grandes devedores não pagaram e tiveram de ser reconhecidas imparidades (perdas) elevadíssimas. A <strong>Deloitte</strong> apurou que mais de <strong>€2.000 milhões das perdas do NB (2014–2018) resultaram de "créditos ruinosos" concedidos no tempo do BES</strong>. Exemplo simbólico: um pacote de empréstimos problemáticos com valor nominal acima de €1.000 milhões (incluindo Ongoing, Prebuild, grupos Tiner e Tricos, etc.) recebeu ofertas de compra por apenas <strong>€20 milhões</strong> – reflexo da quase total irrecuperabilidade desses créditos. O Fundo de Resolução travou essa venda a preço de saldo, esperando melhorar a recuperação, mas na prática empresas como a <strong>Ongoing</strong> e a <strong>Prebuild</strong> acabaram insolventes, e o NB dificilmente recuperará algo significativo. Em suma, <strong>a "doença" do BES passou para o Novo Banco</strong> – ativos maus (muitos sobrevalorizados no balanço do BES) migraram para o NB e continuaram a gerar perdas, deixando uma conta pesada a cargo do setor público.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Banco Internacional do Funchal (Banif)</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><strong>Intervenção:</strong> O <strong>Banif</strong>, fundado na Madeira e então o 7º maior banco português, enfrentou dificuldades após 2010. Em 2013, no contexto do programa da troika, o Estado injetou <strong>€700 milhões</strong> no Banif (tomando 60% do capital) e concedeu €400 milhões em empréstimos convertíveis (CoCo bonds) para o recapitalizar. No entanto, o banco não se reestruturou com sucesso nem encontrou investidor privado, permanecendo fragilizado. Em finais de 2015, sob pressão do Banco Central Europeu (que ameaçava cortar financiamento) e da Comissão Europeia, foi decidida a <strong>resolução do Banif</strong>. A 20 de dezembro de 2015, o Banco de Portugal anunciou a <strong>venda de parte das operações do Banif ao Banco Santander Totta</strong> por <strong>€150 milhões</strong>, integrada numa medida de resolução. Tal como no BES, foi transferida a "parte boa" (depósitos, créditos saudáveis, rede de balcões) para o Santander, e os ativos problemáticos ficaram num <strong>veículo de gestão de ativos (Oitante, S.A.)</strong> criado para o efeito. Nesta operação, o Estado teve de assegurar um <strong>apoio público de €2.255 milhões</strong> para cobrir perdas e garantir a venda ao Santander. Desse montante, <strong>€1.766 milhões saíram diretamente do Tesouro</strong> e <strong>€489 milhões via Fundo de Resolução</strong> (este último financiado por um empréstimo obrigacionista do próprio Santander, garantido pelo Estado). Em suma, a resolução do Banif envolveu <em>de imediato</em> cerca de <strong>€2,25 mil milhões de fundos públicos</strong>, além da injeção de €700 milhões feita em 2013.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Dinheiro público injectado:</strong> Somando as intervenções, o Banif implicou aproximadamente <strong>€2,95 mil milhões de dinheiros públicos</strong> (700 + 2.255). Parte deste valor corresponde a garantias e capital que teoricamente poderiam ser recuperados, mas na prática a maior parcela foi perda efetiva. O Tribunal de Contas calculou que, até final de 2021, o <strong>custo suportado pelos contribuintes com o Banif ascendia a perto de €3 mil milhões</strong>. Este valor inclui a injeção inicial de 2013 (não recuperada) e os fundos públicos colocados na resolução de 2015. O veículo <strong>Oitante</strong> ficou com os ativos "tóxicos" do Banif (imóveis e créditos depreciados) e tem apresentado pequenos lucros anuais, tendo inclusive já reembolsado empréstimos e pago cerca de €55 milhões ao Fundo de Resolução em 2022. Contudo, isso não altera substancialmente o quadro: todos os anos o OE tem destinado verbas de dezenas de milhões para a Oitante e outras entidades remanescentes do Banif (por exemplo, <strong>€95,7 milhões no OE2024</strong>, entre Oitante e antigas sociedades Banif). Assim, <strong>o custo líquido para os contribuintes</strong> com o Banif permanece na ordem dos <strong>€3 mil milhões</strong>, dado que a venda ao Santander foi por valor simbólico e os ativos recuperados pela Oitante apenas cobrem marginalmente o que o Estado continua a injectar para manter esse veículo operacional.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Grandes devedores e causas do colapso:</strong> O caso Banif teve contornos diferentes dos anteriores. As causas da sua derrocada incluíram <strong>acumulação de créditos malparados</strong>, sobretudo no segmento empresarial e imobiliário, e <strong>problemas de governação</strong>. O banco era muito exposto à economia dos Açores e Madeira (de onde era originário) e sofreu com a recessão pós-2011. Embora não tão mediatizado, também aqui existiram grandes devedores incumpridores. Informações divulgadas posteriormente indicaram, por exemplo, que <strong>ainda havia €143 milhões por recuperar dos "despojos" do Banif em 2024</strong>. Entre os ativos problemáticos transferidos para a Oitante estavam créditos associados a empreendimentos imobiliários que o Santander recusou comprar. Houve referência a grupos económicos regionais que ficaram insolventes, mas poucos nomes vieram a público. O Banif chegou a financiar expansões internacionais e projetos imobiliários que correram mal; e a sua queda foi precipitada também por um <strong>escândalo mediático em 2015</strong> (uma reportagem televisiva sobre a situação do banco desencadeou fuga de depósitos). Resumindo, <strong>maus empréstimos e falhas de supervisão</strong> levaram ao fim do Banif, com o Estado a arcar com as perdas. (Uma Comissão Parlamentar de Inquérito ao Banif em 2016 investigou estes contornos e criticou tanto a gestão do banco como a atuação tardia das autoridades, recomendando apuramento de responsabilidades.)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Caixa Geral de Depósitos (CGD)</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><strong>Intervenção:</strong> A <strong>Caixa Geral de Depósitos</strong>, sendo um banco público, teve uma trajetória distinta: nunca faliu nem foi alvo de resolução, mas precisou de <strong>várias recapitalizações com dinheiros públicos</strong> para fazer face a perdas e reforçar rácios. Entre <strong>2008 e 2012</strong>, a CGD realizou <strong>quatro aumentos de capital</strong> por parte do Estado, num total de <strong>€2.700 milhões</strong>. Adicionalmente, em 2012 o Estado emprestou <strong>€900 milhões</strong> à CGD via obrigações convertíveis (os chamados <strong>CoCos</strong>), montante que a Caixa não conseguiu reembolsar integralmente – tendo esses €900 M (mais €45 M de juros vencidos) sido convertidos em capital em 2017. A situação agravou-se após a crise: a CGD acumulou imparidades (provisões para crédito malparado) superiores a <strong>€3.000 milhões</strong>, revelando a necessidade de uma recapitalização ainda maior. Em 2017, já fora do programa troika, o governo acordou com a UE um <strong>plano de recapitalização</strong> da CGD envolvendo <strong>€4.000 milhões</strong>: o Estado injetou <strong>€2.500 milhões em dinheiro fresco</strong> e transferiu para a CGD ativos (participações) no valor de ~€500 milhões; além disso, foram convertidos os €900 M de CoCos restantes e emitidos €1.000 milhões em obrigações subscritas por investidores privados. No total, a operação de 2017 mobilizou cerca de <strong>€3.944 milhões em recursos públicos</strong> (dos quais €2,5 mM em capital direto). Em troca, a CGD implementou um plano de reestruturação (fecho de balcões, redução de efetivos) e passou a ser supervisionada de perto para melhorar a gestão.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Dinheiro público injectado:</strong> Somando todos os apoios desde 2008, a <strong>CGD recebeu cerca de €5,7 mil milhões</strong> em capital do Estado. Este valor inclui os €2,7 mM de 2008–2012, o empréstimo CoCo €0,9 mM (convertido) e os €2,5 mM de 2017, entre outros ajustes. O Tribunal de Contas apontou um <strong>saldo negativo de €5.458 milhões</strong> para o Estado nas operações com a CGD (até 2021). Ao contrário dos outros bancos, porém, a CGD <strong>permanece estatal e viável</strong> – ou seja, as injeções são consideradas um <em>investimento</em> do acionista Estado. Por isso, há a expectativa de recuperar valor através de dividendos e eventuais vendas de ativos. De fato, a CGD voltou aos lucros a partir de 2018 e retomou a distribuição de dividendos ao Estado. Entre 2019 e 2022, a Caixa entregou centenas de milhões em dividendos, ajudando a "pagar" parte da recapitalização. O objetivo declarado é que pelo menos os <strong>€2,5 mil milhões injetados em 2017 em dinheiro sejam devolvidos até 2025</strong> sob forma de dividendos. Assim, o <strong>custo líquido efetivo para os contribuintes poderá ser menor</strong> se a CGD continuar lucrativa. Ainda assim, até ao momento, considera-se que <strong>cerca de €5,5 mil milhões</strong> de dinheiros públicos ficaram "empatados" para salvar a CGD, e <strong>qualquer recuperação dependerá dos resultados futuros</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Grandes devedores e causas do capital deficitário:</strong> A razão para a CGD ter precisado de auxílio reside em <strong>créditos de risco muito elevado concedidos entre 2005 e 2010</strong>, que redundaram em pesadas perdas. Uma auditoria independente (EY, 2018) identificou <strong>46 operações de crédito ruinosas</strong>, totalizando quase €3.000 milhões em potenciais perdas, muitas aprovadas em contexto de influência política e critérios duvidosos. A <strong>lista de grandes devedores da CGD</strong> tornou-se pública em parte durante a Comissão Parlamentar de Inquérito de 2019. Destacam-se vários casos emblemáticos:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>O <strong>Grupo Artlant</strong> (projeto de fábrica petroquímica em Sines associado à espanhola La Seda) foi o <strong>maior devedor individual</strong>, com <strong>€351 milhões</strong> financiados pela CGD. O projeto faliu (insolvência em 2016), deixando esse prejuízo praticamente total.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>A <strong>Fundação Joe Berardo</strong> (ligada ao empresário José Berardo) surge como o <strong>segundo maior devedor</strong>, com <strong>€268 milhões</strong> emprestados para compra de ações do BCP – investimento que se evaporou na crise, levando a 100% de imparidade. Berardo, que chegou a afirmar no Parlamento "não tenho dívidas, quem tem é a Fundação", acabou por ser alvo de ações judiciais coordenadas pela CGD, BCP e Novo Banco para recuperar cerca de €1.000 milhões em dívida total. Em 2019, Berardo viria a ser constituído arguido por fraude bancária.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>O <strong>resort de luxo Vale do Lobo (Algarve)</strong> foi outro fiasco: a CGD liderou um consórcio bancário que financiou os promotores <strong>Diogo Gaspar Ferreira e Luís Correa de Barros</strong> em mais de €200 milhões. O negócio colapsou com a crise imobiliária e a dívida tornou-se incobrável em grande parte. Vale do Lobo foi apontado como <strong>terceiro maior crédito ruinoso</strong> na CGD, com perdas de muitas dezenas de milhões (estima-se acima de €100 M só para a Caixa).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>O <strong>Grupo Lena</strong> (construção civil, ligado a Joaquim Barroca) também está na lista: a CGD emprestou para diversos projetos do grupo, que depois enfrentou dificuldades, causando imparidades significativas.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Manuel Fino</strong>, investidor que detinha a holding <strong>Investifino/Finpro</strong>, recebeu financiamento da CGD para comprar participações (como ações Cimpor). Com a crise, essas operações deram prejuízo e Fino entrou em incumprimento, contribuindo com largas dezenas de milhões em perdas (o grupo Finpro surge entre os maiores devedores falhados da Caixa).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Outros devedores notáveis incluem a empresa <strong>Birchview</strong> (ligada ao investidor angolano Helder Bataglia), o projeto imobiliário <strong>Quinta do Lorde</strong> (na Madeira), a <strong>Optivisão/Optway</strong> (rede óticas do GES) e vários fundos de investimento imobiliário financiados pela Caixa. De acordo com dados divulgados, <strong>metade dos 25 maiores devedores da CGD acabaram insolventes</strong>, e sete deles – incluindo <strong>Artlant, Birchview, QDL (Quinta do Lago/Lobo), Fundação Berardo, Investifino, Finpro</strong> – causaram conjuntamente perdas na casa dos <strong>€1,3 mil milhões</strong> antes da recapitalização estatal.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Em resumo, <strong>erros de gestão e governance na CGD</strong> – concedendo créditos avultados sem garantias sólidas, muitas vezes por motivações político-empresariais – forçaram o Estado, enquanto acionista, a cobrir um <strong>enorme buraco financeiro</strong> no banco público. A boa notícia é que, diferentemente dos bancos privados, a CGD saneada permanece nas mãos do Estado, gerando agora lucros que mitigam o prejuízo dos contribuintes.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Banco Privado Português (BPP)</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><strong>Intervenção:</strong> O <strong>BPP</strong>, um pequeno banco de investimento especializado em gestão de fortunas, enfrentou sérios problemas de liquidez em 2008 após o colapso do Lehman Brothers. Para evitar o pânico dos clientes, em dezembro de 2008 o governo português <em>garantiu</em> uma linha de crédito interbancária de <strong>€450 milhões</strong> ao BPP. Contudo, o BPP nunca recuperou: entrou em insolvência e acabou por <strong>perder autorização bancária em 2010</strong>, iniciando-se a liquidação. A garantia estatal foi chamada em grande parte, tornando-se encargo para o Estado.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Dinheiro público injectado:</strong> Embora não tenha havido uma "nacionalização", o Estado assumiu riscos financeiros significativos. Segundo o Tribunal de Contas, mais de <strong>€268 milhões</strong> ainda estavam por recuperar pelo erário público no final de 2021 relacionados com o caso BPP. Esse valor corresponde aos adiantamentos feitos pelo Estado para ressarcir clientes e credores preferenciais. O processo de liquidação do BPP arrasta-se há mais de uma década: ainda existem cerca de <strong>6.000 credores</strong> à espera e <strong>€700 milhões em ativos por realizar</strong> (valor contabilístico). O Estado é credor prioritário na liquidação, tentando reaver o dinheiro desembolsado, mas a recuperação tem sido muito limitada.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Recuperações e custo líquido:</strong> Até ao momento, <strong>o custo líquido para os contribuintes aproxima-se de €0,3 mil milhões</strong>. Se a liquidação do BPP conseguir vender ativos remanescentes, o Estado poderá recuperar alguma parcela – mas dificilmente a totalidade. Na melhor das hipóteses, o caso BPP deverá saldar-se com um <strong>pequeno prejuízo ou equilíbrio</strong>, comparado aos restantes casos (como nota, a revista <em>Visão</em> em 2017 referia que "o BPP também desapareceu mas, contas feitas, o saldo deve ficar perto de zero", devido à eventual recuperação de valores). Entretanto, o Estado já arcou com custos judiciais e de gestão na ordem de <strong>centenas de milhares de euros</strong> no processo.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Grandes devedores:</strong> O BPP colapsou principalmente devido a <strong>erros de gestão e produtos financeiros de alto risco</strong> que correram mal (e não tanto por créditos comerciais como nos outros bancos). Ainda assim, houve alguns nomes envolvidos em créditos problemáticos. O fundador João Rendeiro (falecido em 2022) foi considerado responsável por fraude e desvio de fundos. O BPP tinha concedido empréstimos a clientes VIP para investimentos alavancados; muitos desses empréstimos ficaram por pagar após a falência. Não existe uma "lista de devedores" pública comparável às de outros bancos, mas o processo judicial identificou diversas sociedades veículo e offshores usadas para retirar ativos do BPP. Em suma, os contribuintes tiveram de intervir para garantir os depósitos e impedir um efeito dominó, mas a dimensão do BPP era pequena e o impacto financeiro, apesar de negativo, foi relativamente contido.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Quadro-Resumo dos Custos por Banco (até 2025)</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Para uma visão consolidada, o quadro seguinte resume os <strong>montantes de dinheiros públicos injetados</strong> em cada banco intervencionado e o <strong>custo líquido estimado</strong> suportado pelos contribuintes (após recuperações ou expectativas de reembolso):</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:table -->
+<figure class="wp-block-table"><table class="has-fixed-layout"><thead><tr><th><strong>Banco</strong></th><th><strong>Intervenção (ano)</strong></th><th><strong>Dinheiro público injectado</strong></th><th><strong>Custo líquido estimado</strong></th></tr></thead><tbody><tr><td><strong>BPN</strong> (nacionalizado)</td><td>2008 (venda 2012)</td><td>≈ €5.0 mil milhões (até 2018)<br>*(+ pot. &gt; €1 mil milhões após 2018)*</td><td>~€6,0–6,5 mil milhões (quase total sem retorno)</td></tr><tr><td><strong>BES/Novo Banco</strong> (resolução)</td><td>2014 (venda 75% em 2017)</td><td>€4,9 mil milhões (2014) + €3,4 mil milhões (2017–2020)<br><strong>Total:</strong> ≈ €8,3 mil milhões</td><td>~€8–8,5 mil milhões (a serem suportados pelo setor público, ainda que com reembolso a longo prazo pelo FdR)</td></tr><tr><td><strong>Banif</strong> (resolução)</td><td>2015 (venda parcial ao Santander)</td><td>€2,25 mil milhões (2015) + €0,7 mil milhões (2013)<br><strong>Total:</strong> ≈ €2,95 mil milhões</td><td>~€3,0 mil milhões (quase total perdido; venda rendeu €150 M)</td></tr><tr><td><strong>CGD</strong> (recapitalizações)</td><td>2012, 2017</td><td>€2,7 mil milhões (2008–12) + €0,9 mil milhões (CoCos 2012) + €2,5 mil milhões (2017)<br><strong>Total:</strong> ≈ €5,7 mil milhões</td><td>~€5,5 mil milhões (Estado acionista único; parte recuperada via dividendos, restante em ativo público)</td></tr><tr><td><strong>BPP</strong> (liquidação)</td><td>2008–2010</td><td>€450 milhões (garantia estatal de 2008) <em>(executada parcialmente)</em></td><td>~€0,3 mil milhões (alguma recuperação possível em liquidação, ainda em curso)</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+
+<!-- wp:paragraph -->
+<p>*Fontes: Tribunal de Contas, Banco de Portugal, relatórios oficiais e comunicação social.*</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:paragraph -->
+<p><strong>Referências Oficiais:</strong> Os dados apresentados foram obtidos de relatórios do <strong>Tribunal de Contas</strong> (pareceres sobre a Conta Geral do Estado), comunicados do <strong>Banco de Portugal</strong>, informações do <strong>Ministério das Finanças</strong> (e Orçamentos do Estado), bem como das <strong>Comissões Parlamentares de Inquérito</strong> aos respectivos casos (BPN, BES, Banif, CGD) e auditorias independentes (como a da EY à CGD). Todos os valores e factos estão suportados em fontes públicas, nomeadamente notícias de órgãos de referência que citam esses relatórios oficiais.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Investigação a cargo de Augustus Veritas e OpenAI [AI].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Claro, aqui está um <strong>excerto sintético</strong> que podes usar para divulgação ou introdução ao estudo completo:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:paragraph -->
+<p><strong><em>Excerto – O Peso Silencioso da Banca: A Herança que os Contribuintes Suportam</em></strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><!-- wp:paragraph -->
+<p><em>"Entre fraudes, má gestão e promessas de estabilidade, os contribuintes portugueses pagaram, entre 2008 e 2025, mais de <strong>22 mil milhões de euros</strong> para resgatar bancos em colapso. O caso BPN, um buraco de corrupção e favores, custou cerca de <strong>6 mil milhões</strong> ao erário público. O colapso do BES deu origem ao Novo Banco, onde os portugueses já injetaram mais de <strong>8 mil milhões</strong> — com promessas de reembolso que se arrastam até 2060. O Banif desapareceu em silêncio, mas deixou uma fatura de <strong>3 mil milhões</strong>. A CGD, embora pública e lucrativa nos últimos anos, exigiu mais de <strong>5,5 mil milhões</strong> em recapitalizações para cobrir o passado. Esta história de resgates, falências e dívidas incobráveis envolve nomes conhecidos, empresas falidas, e milhões evaporados — quase sempre sem responsáveis atrás das grades."</em></p>
+<!-- /wp:paragraph --></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:paragraph -->
+<p>Este estudo / artigo pretende acender uma vela num túnel sombrio. ✨<br>A verdade precisa de quem a carregue com firmeza.<br>E sempre que envergamos a tocha da verdade  e da luz, estas incomodam os que vivem do nevoeiro.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>E isso so nos mostra que estamos a iluminar o caminho certo.<br>🚩 Pela verdade. Pela lucidez. Pela reconstrução.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p> Francisco Gonçalves </p>
+<!-- /wp:paragraph -->
+
+<div style="max-width: 600px; margin: 2em auto; border-radius: 12px; padding: 20px; background-color: #1e1e1e; color: #f0f0f0; font-family: 'Segoe UI', sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.4);">
+<h2 style="text-align: center; margin-bottom: 1em; color: #ffffff;">🌌 Fragmentos do Caos – Sites Relacionados</h2>
+<ul style="list-style: none; padding: 0; font-size: 1.1em;">
+<li style="margin-bottom: 1em;">
+      <strong>📚 Blogue Principal:</strong><br />
+      <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" style="color: #90caf9; text-decoration: none;"><br />
+        https://fasgoncalves.github.io/fragmentoscaos-html<br />
+      </a>
+    </li>
+<li style="margin-bottom: 1em;">
+      <strong>📘 Ebooks "Fragmentos do Caos":</strong><br />
+      <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" style="color: #90caf9; text-decoration: none;"><br />
+        https://fasgoncalves.github.io/hugo.fragmentoscaos<br />
+      </a>
+    </li>
+<li>
+      <strong>🌀 Carrossel de Artigos:</strong><br />
+      <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" style="color: #90caf9; text-decoration: none;"><br />
+        https://fasgoncalves.github.io/indice.fragmentoscaos<br />
+      </a>
+    </li>
+</ul>
+<p style="text-align: center; font-style: italic; margin-top: 2em; color: #cccccc;">
+    Uma constelação de ideias, palavras e caos criativo – ao teu alcance.
+  </p>
+</div>
+<p> A sua avaliação deste artigo é importante para nós. Obrigado.</p>
+
+<!-- wp:shortcode -->
+[avaliacao_5estrelas]
+<!-- /wp:shortcode -->
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+</body></html>

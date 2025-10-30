@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Desperta Europa !</title>
+<meta name="description" content="Desperta Europa !">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 800px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Desperta Europa !</h1>
+      <p class="meta">Publicado em 2025-09-20 22:34:27</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000fbc861f6906f8d981ce94d60.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- Manifesto: Chamamento Final (Formato FC Dark Chronicle) -->
+<article style="background:#000!important;color:#e8eef4!important;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;line-height:1.7;margin:0;padding:0;">
+  <!-- Hero / Título -->
+  <header style="max-width:980px;margin:0 auto;padding:48px 24px 16px;">
+    <h1 style="margin:0 0 .2em 0;font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:.2px;line-height:1.15;">
+      <span style="color:#ffcc66!important;">Chamamento Final: Europa, desperta!</span>
+    </h1>
+    <p style="margin:.2em 0 0 0;opacity:.85;font-size:clamp(14px,2.4vw,16px);">
+      Manifesto pela substituição do culto do regulamento pelo <em>culto do talento</em>.
+    </p>
+  </header>
+
+  <!-- Barra de ações -->
+  <div style="max-width:980px;margin:0 auto;padding:0 24px 8px;display:flex;gap:12px;flex-wrap:wrap;">
+    <button onclick="window.print()" 
+            style="cursor:pointer;border:1px solid #333;border-radius:12px;padding:10px 16px;background:#111;color:#e8eef4;font-weight:600;box-shadow:0 2px 10px rgba(0,0,0,.35);">
+      🖨️ Imprimir / Guardar PDF
+    </button>
+  </div>
+
+  <!-- Box de Destaque -->
+  <section style="max-width:980px;margin:0 auto;padding:12px 24px 0;">
+    <div style="background:#0f0f0f;border:1px solid #222;border-radius:16px;padding:18px 18px 14px;box-shadow:0 6px 22px rgba(0,0,0,.45);">
+      <div style="font-size:14px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;color:#b3c2cf;">Editorial</div>
+      <div style="font-size:clamp(16px,2.8vw,18px);">
+        A Europa tornou-se arquivista de regulamentos. Este texto é o clarim: voltar a criar mentes livres, arriscar e liderar.
+      </div>
+    </div>
+  </section>
+
+  <!-- Corpo do Manifesto -->
+  <section style="max-width:980px;margin:0 auto;padding:24px;">
+    <h2 style="font-size:clamp(22px,4vw,28px);margin:0 0 12px;">
+      <span style="color:#ffcc66!important;">Chamamento Final</span>
+    </h2>
+
+    <p style="margin:0 0 1em;">Europa, desperta! Não foste feita para carimbos nem para regulamentos intermináveis. Foste berço de Newton, Beethoven, Da Vinci, Marie Curie e Fernando Pessoa — gente que rasgou os limites do possível.</p>
+
+    <p style="margin:0 0 1em;">Hoje arriscas transformar-te num <strong>museu vivo</strong>, onde as normas superam as ideias e o medo do erro vence a vontade de criar. Mas o mundo não espera — e a História não perdoa os que ficam para trás.</p>
+
+    <p style="margin:0 0 1em;">O teu futuro não está nas secretarias: está nas garagens, nos laboratórios, nas universidades, nas ruas; nas cabeças inquietas dos jovens que pedem espaço para ousar.</p>
+
+    <p style="margin:0 0 1em;"><strong>Chegou a hora</strong> de quebrar os grilhões da burocracia e substituir o culto do regulamento pelo <strong>culto do talento</strong>. Se não o fizeres, outros inventarão o futuro em teu lugar — e tu ficarás reduzida a guardiã de papéis que ninguém lerá.</p>
+
+    <p style="margin:0 0 1em;">Europa, lembra-te de quem foste — e escolhe quem queres ser: <strong>a arquivista do passado ou a criadora do futuro</strong>.</p>
+
+    <!-- Chamada à Ação -->
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px;">
+      <a href="#" style="text-decoration:none;border:1px solid #2a2a2a;border-radius:14px;padding:12px 18px;background:#121212;color:#e8eef4;font-weight:700;box-shadow:0 3px 14px rgba(0,0,0,.4);">
+        🚀 Compromisso: 10.000 Laboratórios Vivos
+      </a>
+      <a href="#" style="text-decoration:none;border:1px solid #2a2a2a;border-radius:14px;padding:12px 18px;background:#121212;color:#e8eef4;font-weight:700;box-shadow:0 3px 14px rgba(0,0,0,.4);">
+        📚 Reformar avaliação: premiar o risco
+      </a>
+      <a href="#" style="text-decoration:none;border:1px solid #2a2a2a;border-radius:14px;padding:12px 18px;background:#121212;color:#e8eef4;font-weight:700;box-shadow:0 3px 14px rgba(0,0,0,.4);">
+        🧪 Ciência aberta e protótipos rápidos
+      </a>
+    </div>
+  </section>
+
+  <!-- Assinatura / Coautoria -->
+  <footer style="max-width:980px;margin:0 auto;padding:8px 24px 48px;">
+    <div style="border-top:1px solid #222;margin-top:8px;padding-top:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div style="width:42px;height:42px;border-radius:50%;background:#111;border:1px solid #222;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 18px rgba(255,204,102,.08);">✍️</div>
+      <div>
+        <div style="font-weight:800;">Augustus Veritas</div>
+        <div style="opacity:.8;font-size:15px;">Manifesto publicado em <em>Fragmentos do Caos</em></div>
+      </div>
+<blockquote style="color: #33ff99; border-left: 4px solid #33ff99; padding-left: 1em; font-style: italic;">
+Se o presente não nos serve, forjamos o futuro.<br>
+Se a História não nos contempla, escrevemo-la nós.<br>
+Se nos tentam calar… respondemos com estilo.
+</blockquote>
+    </div>
+<div style="margin-top:30px; padding:15px; border-top:1px solid #444; font-family:Georgia,serif; font-size:14px; color:#e8eef4; background-color:#000;">
+  <p style="margin:0;">
+    Artigo autoria de 
+    <a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" target="_blank" 
+       style="color:#ffcc66 !important; text-decoration:none; font-weight:bold;">
+     📖  Francisco Gonçalves
+    </a>
+  </p>
+</div>
+  </footer>
+</article>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+</body></html>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Um pouco de História da Computação : Do ICL 1500 ao DRS 20: Bastidores de um Monitor de Comandos (Feltham, 1981)</title>
+<meta name="description" content="Um pouco de História da Computação : Do ICL 1500 ao DRS 20: Bastidores de um Monitor de Comandos (Feltham, 1981)">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 800px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Um pouco de História da Computação : Do ICL 1500 ao DRS 20: Bastidores de um Monitor de Comandos (Feltham, 1981)</h1>
+      <p class="meta">Publicado em 2025-09-12 12:17:42</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000cbd061f9ac279c3b24434eb2.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- wp:heading {"level":5} -->
+<h5 class="wp-block-heading"><em>Uma memória técnica pessoal sobre a transição de aplicações de gestão do ICL 1500 para o DRS 20 — e como um pequeno CLI em BASIC ajudou a atravessar a ponte.</em></h5>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":1} -->
+<h1 class="wp-block-heading">Do ICL 1500 ao DRS 20: Bastidores de um Monitor de comandos (Feltham, 1981)</h1>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><em>Uma memória técnica pessoal sobre a transição de aplicações de gestão do ICL 1500 para o DRS 20 — e como um pequeno CLI em BASIC ajudou a atravessar a ponte.</em></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Introdução </h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Em <strong>1981</strong>, em <strong>Feltham (Reino Unido)</strong>, fui destacado para validar, num ambiente <strong>ICL 1500 com disco</strong>, as aplicações que eu próprio tinha desenvolvido em Portugal — <strong>Faturação, Stocks, Contas‑correntes e Contabilidade POC</strong> — com vista à sua migração para o <strong>DRS 20</strong>. O novo sistema arrancou em <strong>modo "retained"</strong>, emulando o interface do ICL 1500, e rapidamente senti falta de uma ferramenta mais direta para acelerar testes e operações. A resposta foi construir, em <strong>BASIC comercial</strong>, um <strong>monitor de comandos</strong> (<em>CLI, command line interpreter &amp; executor</em>). Um ano depois, já com o DRS 20 em <strong>modo nativo</strong>, encontrei um monitor de comandos integrado cuja sintaxe era, para minha surpresa, <strong>praticamente idêntica</strong> à que tinha concebido.</p>
+<!-- /wp:paragraph -->
+
+</p>
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><!-- wp:paragraph -->
+<p>Este texto é um registo histórico pessoal. Não procura reconhecimento formal; quer apenas fixar o contexto, as escolhas técnicas e as lições aprendidas.</p>
+<!-- /wp:paragraph --></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">1) Contexto e objetivos</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Local &amp; data:</strong> Feltham, UK — July <strong>1981</strong>-1982</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Missão:</strong> validar e preparar a passagem de aplicações de gestão do <strong>ICL 1500</strong> para o <strong>DRS 20</strong>.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Aplicações em causa:</strong> Faturação, Stocks, Contas‑correntes, Contabilidade <strong>POC</strong>.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Meta imediata:</strong> assegurar compatibilidade funcional e operacional, reduzir riscos de migração e ganhar velocidade nos ensaios.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:image {"id":1239,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/1000007729.jpg" alt="" class="wp-image-1239"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">2) O desafio do <em>retained mode</em></h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>O arranque do DRS 20 em <strong>retained mode</strong> significava <strong>emular o interface do ICL 1500</strong>. Funcionava, mas trazia fricções: comandos menos diretos, ciclos de teste lentos e uma sensação de estar a trabalhar por camadas. Para validar com rigor (e sem desperdiçar tempo), era preciso uma ferramenta <strong>scriptável</strong>, <strong>repetível</strong> e <strong>transparente</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">3) Porque um CLI?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Um <strong>CLI</strong> oferece três vantagens decisivas em contextos de migração e testes:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Automação</strong> — repetir cenários sem esforço, com logs claros.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Precisão</strong> — cada comando é explícito; fácil detetar diferenças entre execuções.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Velocidade</strong> — menos navegação por menus, mais foco na tarefa.</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">4) Construção em BASIC comercial</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Escolhi <strong>BASIC comercial</strong> por estar disponível no ambiente e permitir resultados rápidos. A arquitetura foi deliberadamente simples:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Laço principal</strong> a ler uma linha de comando e a despachar para uma <strong>tabela de verbos</strong>.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Parser enxuto</strong>, baseado em <em>tokens</em> separados por espaços e vírgulas.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Abstração de canais/dispositivos</strong> (e.g., <code>#1</code>, <code>#2</code>) típica do ecossistema, para uniformizar acessos a ficheiros/unidades.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Tratamento de erros</strong> com mensagens curtas e inequívocas (sem códigos obscuros).</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">5) Gramática de comandos (exemplos)</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>A sintaxe seguia o padrão <strong>VERBO argumentos</strong>. Alguns exemplos da época:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>copy #1,filenameinput #2.filenameout
+rename #1.testeabc #1.testeum
+list  #2
+delete #2.filename
+run   #1faturacao.cbl
+
+Onde #x era o dispositivo de IO, diskete ou disco fixo.
+</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Princípios de desenho:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Minimalismo</strong> (o essencial primeiro, sem <em>switches</em> crípticos).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Previsibilidade</strong> (mesma ordem de argumentos em todos os verbos que manipulavam ficheiros/dispositivos).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Feedback claro</strong> (confirmações sucintas; erros com indicação do passo falhado).</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">6) Entrega e o que aconteceu depois</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Durante a missão, o meu chefe em UK, <strong>Terry Fuller</strong>, <strong>pediu o código</strong> do monitor de comandos — e assim foi. Pouco depois <strong>regressei a Portugal</strong> e deixei o projeto para trás. Cerca de <strong>um ano depois</strong>, com o <strong>lançamento do DRS 20 em modo nativo</strong>, deparei‑me com um <strong>monitor de comandos integrado</strong> no sistema cuja <strong>sintaxe e espírito</strong> eram uma <strong>cópia fiel</strong> do que eu implementara em Feltham. Foi uma surpresa, misto de orgulho e assombro.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><!-- wp:paragraph -->
+<p>Este relato não pretende julgar processos internos nem abrir discussões de propriedade intelectual; é apenas o registo honesto de uma sequência de factos vivida no terreno.</p>
+<!-- /wp:paragraph --></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:image {"id":11293,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/1000032606.jpg" alt="" class="wp-image-11293"/></figure>
+<!-- /wp:image -->
+
+</p>
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">7) Lições aprendidas</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Ferramentas nascem da necessidade</strong>: a melhor especificação é o problema real à frente dos olhos.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Em migrações, simplicidade é uma arma</strong>: comandos claros aceleram testes e reduzem ambiguidades.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Documentação é memória</strong>: <em>readme</em>s, exemplos e logs são ouro passado um ano.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Portabilidade mental</strong>: pensar em <strong>interfaces estáveis</strong> (ex.: <code>#1</code>, <code>#2</code>) ajuda a atravessar gerações de hardware.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Guardar provas de trabalho</strong>: <em>snippets</em>, datas e versões facilitam futuras reconstruções históricas.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">8) Linha temporal (aproximada)</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>1981</strong> — Feltham: validação no DRS 20 em <em>retained mode</em>; desenvolvimento do CLI em BASIC; entrega do código a Terry Fuller.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>1982</strong> — Lançamento do <strong>DRS 20 em modo nativo</strong>; monitor de comandos integrado, com sintaxe praticamente idêntica.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Depois</strong> — O capítulo encerra‑se, mas as ideias (e a gramática) seguem viagem.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">9) Glossário rápido</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>ICL 1500</strong> — Sistema onde corriam as aplicações originais (com disco).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>DRS 20</strong> — Nova plataforma a lançar no mercado na época.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>POC</strong> — Plano Oficial de Contabilidade português, base das regras contabilísticas usadas.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Retained mode</strong> — Modo do DRS 20 que <strong>emulava</strong> o interface do ICL 1500.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>CLI</strong> — <em>Command Line Interface</em>: intérprete/executor de comandos em linha.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">10) Agradecimentos</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>À equipa de <strong>Feltham</strong> pelo ambiente de trabalho, e uma nota especial ao <strong>Terry Fuller</strong> pelo desafio técnico que, direta ou indiretamente, impulsionou este pequeno projeto.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">11) Fontes e notas históricas</h2>
+<!-- /wp:heading -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><!-- wp:paragraph -->
+<p><em>Abaixo ficam fontes públicas e testemunhos técnicos que ajudam a contextualizar o DRS 20, o DRX (Executive) e o arranque em "retained" vs "native" mode. A gramática completa do CLI do Executive não está facilmente disponível online; estes apontadores são um bom ponto de partida para investigação adicional.</em></p>
+<!-- /wp:paragraph --></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p><strong>Visão geral da gama DRS e do DRS 20</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><em>ICL DRS — visão geral</em> (modelos, CPUs 8085/80188/80186, arranjo de nós LAN coax 93 Ω a 1,25 Mbps, unidades com/sem disco e <em>boot</em> partilhado).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><em>Notas de evolução</em> para a linha DRS (300/6000) — útil para não confundir com plataformas posteriores (DRS/NX Unix, etc.).</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p><strong>Retained vs Native Mode (emulação ICL 1500)</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Documento técnico de síntese da ICL que descreve o <strong>"Retained Mode"</strong> (emulação da ordem de instruções do 1500 em <em>bit-slice</em>) e o <strong>"N‑Mode"</strong> (nativo).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Testemunhos técnicos coevos (listas/foruns) confirmam a passagem de <strong>retained</strong> para <strong>native (8085AH2)</strong> no DRS 20 e apontam limitações de desempenho do <em>retained</em>.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p><strong>Sistemas operativos e ferramentas</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>DRX — Distributed Resource Executive</strong> como ambiente/"executive" do DRS 20; referências a edições como <strong>DRX 2.1</strong> e à disponibilidade de <strong>CP/M 2.2</strong> e ferramentas de desenvolvimento (Microsoft BASIC, CIS‑COBOL, Pascal, Userbuild, Demon).</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p><strong>Arquivos e repositórios para aprofundar</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Bitsavers</strong> — repositório de manuais ICL (incl. sínteses técnicas e PDFs).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Science Museum Group Archives</strong> — <em>finding aid</em> do fundo ICL, com séries de manuais e documentação comercial/técnica.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Museus e coleções online</strong> (p.ex. <em>Centre for Computing History</em>) com entradas sobre a gama DRS.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph --></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>Artigo [ histórico] de <strong><em><a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" data-type="page" data-id="328">Francisco Gonçalves</a></em></strong> in Fragmentos do Caos </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph --></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+</body></html>
