@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Uma Arquitetura avançada para todos os Sistemas de Informação do Estado Português</title>
+<meta name="description" content="Uma Arquitetura avançada para todos os Sistemas de Informação do Estado Português">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Uma Arquitetura avançada para todos os Sistemas de Informação do Estado Português</h1>
+      <p class="meta">Publicado em 2025-11-06 15:25:42</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000e0b071f58d87eae044da63cd.jpg" alt=""></figure>
+      <div class="post-content">
+        <article class="fc-chronic" style="background:#0b0b1a; color:#e8eef4; margin:0; padding:0;">
+  <style>
+    .fc-chronic .fc-wrap{max-width:1000px;margin:0 auto;padding:18px 18px 28px;}
+    @media (max-width:640px){.fc-chronic .fc-wrap{padding:12px;}}
+    .fc-chronic h1,.fc-chronic h2,.fc-chronic h3{color:#ffcc66 !important; line-height:1.25; margin:0 0 .6em;}
+    .fc-chronic h1{font-size:2.0rem; text-align:center; margin-top:.2em;}
+    .fc-chronic h2{font-size:1.35rem; margin-top:1.2em;}
+    .fc-chronic h3{font-size:1.1rem; margin-top:.9em;}
+    .fc-chronic p{margin:.6em 0; font-size:1.02rem; line-height:1.7;}
+    .fc-chronic ul{margin:.4em 0 .8em 1.2em;}
+    .fc-chronic li{margin:.35em 0;}
+    .fc-chronic a{color:#ffcc66; text-decoration:none; border-bottom:1px dashed #ffcc66;}
+    .fc-chronic .fact-box{
+      background:#0f111a; border:1px solid #2a2a2a; border-radius:14px; padding:12px 14px; margin:14px 0 18px;
+      box-shadow:0 0 0 1px #121212 inset;
+    }
+    .fc-chronic .fact-box .title{color:#ffcc66 !important; font-weight:700; margin-bottom:.35em;}
+    .fc-chronic .badge-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:.4em;}
+    .fc-chronic .badge{
+      background:#101217; border:1px solid #3a3a3a; color:#e8eef4; border-radius:999px; padding:6px 10px; font-size:.9rem;
+    }
+    .fc-chronic blockquote{
+      margin:1em 0; padding:.8em 1em; background:#10131c; border-left:3px solid #ffcc66; color:#e8eef4; border-radius:8px;
+    }
+    .fc-chronic hr{border:none; height:1px; background:linear-gradient(90deg,transparent,#2a2a2a,transparent); margin:18px 0;}
+    .fc-chronic .callout{
+      background:#111; border:1px dashed #3b3b3b; border-radius:12px; padding:12px 14px; margin-top:12px; color:#dfe6ef;
+    }
+  </style>
+
+  <div class="fc-wrap">
+    <h1><span style="color:#ffcc66 !important;">Plataforma Unificada do Estado (PUE): Sumário Executivo</span></h1>
+    <p>
+      Uma plataforma única, <em>browser-enabled</em>, para todos os serviços públicos — assente em <strong>Linux Ubuntu</strong>,
+      soluções <strong>open-source por omissão</strong>, <strong>segurança máxima por desenho</strong> e <strong>dados soberanos</strong>.
+      Dois <strong>data-centers governamentais</strong> (Lisboa ↔ Porto) em <strong>replicação em tempo real</strong> garantem continuidade
+      de serviço mesmo perante falhas graves. Menos "engenhocas", menos entropia, mais serviço ao cidadão.
+    </p>
+
+    <div class="fact-box">
+      <div class="title">Box de Factos</div>
+      <ul>
+        <li><strong>Núcleo</strong>: Kubernetes multi-cluster <em>active-active</em> (Lisboa/Porto), CI/CD declarativo, Infra-as-Code.</li>
+        <li><strong>Identidade</strong>: Keycloak (OIDC/SAML, eIDAS/Cartão de Cidadão), MFA/WebAuthn, RBAC/ABAC.</li>
+        <li><strong>Dados</strong>: PostgreSQL 16+ com Patroni (HA, PITR), Debezium CDC, object-storage Ceph/S3 (WORM para auditoria).</li>
+        <li><strong>Integração</strong>: APIs REST padronizadas (OpenAPI) + eventos NATS; um gateway leve.</li>
+        <li><strong>Observabilidade</strong>: OpenTelemetry → Prometheus/Grafana; logs e <em>traces</em> unificados.</li>
+        <li><strong>Segurança</strong>: hardening CIS, SAST/DAST, Wazuh/SIEM, cifragem total; RGPD por defeito.</li>
+        <li><strong>Metas</strong>: SLO 99,95% por domínio (Identidade 99,99%); p95 leitura ≤ 300 ms, escrita ≤ 800 ms.</li>
+      </ul>
+      <div class="badge-row">
+        <div class="badge">Open-Source</div>
+        <div class="badge">Active-Active</div>
+        <div class="badge">Zero-Trust</div>
+        <div class="badge">WCAG 2.2 AA</div>
+        <div class="badge">RPO≈0 / RTO baixo</div>
+      </div>
+    </div>
+
+    <h2><span style="color:#ffcc66 !important;">Desenho da Solução (em 7 peças)</span></h2>
+    <ol>
+      <li><strong>Núcleo de execução</strong>: Kubernetes multi-cluster (Lisboa↔Porto), <em>service-mesh</em> apenas onde agrega valor; CI/CD (GitLab/GitHub + ArgoCD), Terraform/Ansible.</li>
+      <li><strong>Identidade & Acesso</strong>: Keycloak, MFA/WebAuthn, integração eIDAS/Cartão de Cidadão; RBAC/ABAC, <em>least-privilege</em>.</li>
+      <li><strong>Dados transaccionais e ficheiros</strong>: PostgreSQL 16+ (Patroni, PITR), Debezium CDC para análise, Ceph/S3 com <em>object-lock</em> (WORM).</li>
+      <li><strong>Integração simplificada</strong>: contratos OpenAPI e eventos NATS; um gateway governamental leve (rate-limit, auth, observability).</li>
+      <li><strong>Observabilidade & Segurança</strong>: OpenTelemetry (métricas/traces), Prometheus/Grafana; Wazuh/SIEM, SAST/DAST, <em>secret scanning</em>, hardening CIS.</li>
+      <li><strong>Experiência digital</strong>: <em>front-ends</em> responsivos, sem <em>plug-ins</em>, <strong>WCAG 2.2 AA</strong>, .ics, notificações e linguagem clara; design-system comum.</li>
+      <li><strong>IA aplicada</strong>: previsão de procura (slots, picos), detecção de anomalias/fraude, recomendação de capacidade, assistentes de apoio.</li>
+    </ol>
+<figure>
+  <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/pue_diagrama_logico.jpg" alt="PUE - Diagrama Lógico">
+  <figcaption>PUE - Diagrama Lógico</figcaption>
+</figure>
+    <h2><span style="color:#ffcc66 !important;">Demonstração Piloto</span></h2>
+    <p>
+      <strong>Agendamento do Cidadão</strong>: <em>mock</em> React (tema escuro, acessível), APIs em OpenAPI, checklist operacional,
+      modelo de dados, <em>cutover</em> e critérios <em>Go/No-Go</em>. Exportação <strong>.ics</strong> e autenticação OIDC simulada.
+    </p>
+
+    <h2><span style="color:#ffcc66 !important;">Vantagens Técnicas</span></h2>
+    <ul>
+      <li><strong>Resiliência real</strong>: <em>Active-active</em> Lisboa/Porto, <strong>RPO≈0</strong>, <strong>RTO</strong> reduzido, <em>failover</em> orquestrado.</li>
+      <li><strong>Desempenho previsível</strong>: p95 leitura ≤ 300 ms; escrita ≤ 800 ms; <em>autoscaling</em> guiado por SLO.</li>
+      <li><strong>Segurança por omissão</strong>: cifragem total, <em>least-privilege</em>, WORM para auditoria, RGPD operacionalizado.</li>
+      <li><strong>Interoperabilidade sem cola</strong>: OpenAPI e eventos padronizados; menos gateways, menos atrito.</li>
+      <li><strong>Sem <em>lock-in</em></strong>: <em>stack</em> aberto (PostgreSQL, Keycloak, Ceph, Kubernetes) — substituição de peças sem reescrever o Estado.</li>
+      <li><strong>Observabilidade unificada</strong>: métricas, logs e <em>traces</em> num só plano; problemas visíveis antes de doer.</li>
+      <li><strong>Escalabilidade e eficiência</strong>: contentores densificados, <em>right-sizing</em> automático, custos sob controlo.</li>
+      <li><strong>Qualidade contínua</strong>: SAST/DAST, <em>policy-as-code</em>, <em>canary</em> e <em>progressive delivery</em>.</li>
+    </ul>
+
+    <h2><span style="color:#ffcc66 !important;">Vantagens Operacionais</span></h2>
+    <ul>
+      <li><strong>Um balcão digital</strong> para múltiplos serviços: queda drástica da fragmentação e "portalite".</li>
+      <li><strong>Time-to-market</strong> menor: <em>templates</em> de domínio, <em>pipelines</em> e <em>playbooks</em> já testados.</li>
+      <li><strong>Custos directos mais baixos</strong>: licenciamento reduzido, consolidação de infra, suporte simplificado.</li>
+      <li><strong>Disponibilidade elevada</strong>: SLO 99,95% (Identidade 99,99%); comunicação transparente de incidentes.</li>
+      <li><strong>Governança de dados</strong>: catálogos, trilhos de auditoria, <em>retention</em> e anonimização por política.</li>
+      <li><strong>Acessibilidade e inclusão</strong>: WCAG 2.2 AA por defeito, <em>content design</em> e linguagem simples.</li>
+      <li><strong>Operação previsível</strong>: SLO/SLA claros, <em>runbooks</em> e <em>post-mortems</em> com melhoria contínua.</li>
+      <li><strong>IA que ajuda</strong>: filas balanceadas, previsão de procura e recomendações operacionais.</li>
+    </ul>
+
+    <h2><span style="color:#ffcc66 !important;">O que muda, na prática</span></h2>
+    <ul>
+      <li>Do "zoo de portais" para <strong>uma plataforma coerente</strong>.</li>
+      <li>Do "cada ministério por si" para <strong>domínios ágeis sobre um núcleo comum</strong>.</li>
+      <li>Do "apagar fogos" para <strong>prever e prevenir</strong> com telemetria e IA.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Conclusão.</strong> Menos entropia, mais Estado: mais simples para o cidadão, mais sólido para a operação,
+      mais livre para evoluir. É arquitectura para décadas — não para a próxima urgência.
+    </div>
+  </div>
+
+<section class="fc-chronic" style="background:#0b0b1a; color:#e8eef4; margin:0; padding:0;">
+  <style>
+    .fc-chronic .fc-attach-wrap{max-width:1000px;margin:0 auto;padding:18px 18px 28px;}
+    @media (max-width:640px){.fc-chronic .fc-attach-wrap{padding:12px;}}
+    .fc-chronic h2{color:#ffcc66 !important; line-height:1.25; margin:0 0 .8em; font-size:1.28rem;}
+    .fc-chronic h3{color:#ffcc66 !important; line-height:1.25; margin:.8em 0 .5em; font-size:1.05rem;}
+    .fc-chronic p{margin:.6em 0; font-size:.98rem; line-height:1.6;}
+    .fc-chronic a{color:#ffcc66; text-decoration:none; border-bottom:1px dashed #ffcc66;}
+
+    /* Cartões e grelha responsiva (sem "crescer") */
+    .fc-chronic .attach-grid{display:grid; grid-template-columns:1fr; gap:10px;}
+    @media (min-width:760px){.fc-chronic .attach-grid{grid-template-columns:repeat(2,1fr);} }
+    .fc-chronic .attach-card{
+      background:#0f111a; border:1px solid #2a2a2a; border-radius:14px; padding:10px 12px;
+      box-shadow:0 0 0 1px #121212 inset; font-size:.96rem; overflow:visible;
+    }
+
+    /* Scroll horizontal real em mobile (lista = track) */
+    .fc-chronic .scroll-x{overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain;}
+    .fc-chronic .attach-list{
+      list-style:none; padding:2px 2px 8px; margin:.2em 0 0;
+      display:flex; flex-wrap:nowrap; gap:10px; min-width:100%;
+    }
+    /* Cada item é um "tile" compacto e não aumenta tipografia */
+    .fc-chronic .attach-list li{
+      display:flex; align-items:center; gap:10px;
+      background:#0b0f18; border:1px solid #2a2a2a; border-radius:12px; padding:8px 10px;
+      white-space:nowrap; min-width:280px; max-width:100%; line-height:1.45;
+    }
+    .fc-chronic .icon{min-width:18px; width:18px; height:18px;}
+    .fc-chronic .hint{color:#b9c3cf; font-size:.88rem; margin-top:6px;}
+
+    /* Etiqueta pequena e estável */
+    .fc-chronic .tag{
+      display:inline-block; padding:1px 8px; border:1px solid #3a3a3a; border-radius:999px; font-size:.78rem; margin-left:8px;
+    }
+
+    /* Ajustes finos para telemóvel */
+    @media (max-width:640px){
+      .fc-chronic h2{font-size:1.18rem;}
+      .fc-chronic h3{font-size:1.0rem;}
+      .fc-chronic .attach-card{padding:9px 10px;}
+      .fc-chronic .attach-list li{min-width:260px; padding:8px 10px;}
+    }
+  </style>
+
+  <div class="fc-attach-wrap">
+    <h1><span style="color:#ffcc66 !important;">Anexos e Documentação</span></h1>
+   
+    <div class="attach-grid">
+
+      <!-- Pacotes ZIP -->
+      <div class="attach-card">
+        <h3><span style="color:#ffcc66 !important;">Pacotes consolidados (ZIP)</h3>
+        <div class="scroll-x" role="region" aria-label="Pacotes ZIP (scroll horizontal)">
+          <ul class="attach-list">
+            <li>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#ffcc66" stroke-width="1.6"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7z"></path><path d="M12 3v18"></path></svg>
+              <div><a href="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/PUE_Pacote_TOTAL_v2.zip" target="_blank" rel="noopener">PUE_Pacote_TOTAL_v2.zip</a><span class="tag">/span></div>
+            </li>
+            <li>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#ffcc66" stroke-width="1.6"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7z"></path><path d="M12 3v18"></path></svg>
+              <div><a href="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/PUE_Agendamento_Pacote_Completo_v1.zip" target="_blank" rel="noopener">PUE_Agendamento_Pacote_Completo_v1.zip</a><span class="tag"> agendamento </span></div>
+            </li
+         </ul>
+        </div>
+        </div>
+
+      <!-- Especificações / OpenAPI -->
+      <div class="attach-card">
+        <h3><span style="color:#ffcc66 !important;">Especificações</span></h3>
+        <div class="scroll-x" role="region" aria-label="Especificações (scroll horizontal)">
+          <ul class="attach-list">
+            <li>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#ffcc66" stroke-width="1.6"><path d="M4 4h16v16H4z"></path><path d="M8 8h8M8 12h8M8 16h5"></path></svg>
+              <div><a href="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/openapi-pue-agendamento.yaml_.zip" target="_blank" rel="noopener">openapi-pue-agendamento.yaml em Zip File</a><span class="tag">OpenAPI 3.0</span></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+     
+      <!-- Documentos operacionais (DOCX) -->
+      <div class="attach-card">
+        <h3><span style="color:#ffcc66 !important;">Documentos operacionais (DOCX)</span></h3>
+        <div class="scroll-x" role="region" aria-label="Documentos (scroll horizontal)">
+          <ul class="attach-list">
+
+ <li>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#ffcc66" stroke-width="1.6"><path d="M6 2h9l5 5v15H6z"></path><path d="M14 2v6h6"></path></svg>
+              <div><a href="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/PUE_TAD_Estrutura_Tecnologica.docx" target="_blank" rel="noopener">PUE_TAD_Estrutura_Tecnologica.docx</a></div>
+            </li>
+            <li>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#ffcc66" stroke-width="1.6"><path d="M6 2h9l5 5v15H6z"></path><path d="M14 2v6h6"></path></svg>
+              <div><a href="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/PUE_Checklist_Plano_Operacional.docx" target="_blank" rel="noopener">PUE_Checklist_Plano_Operacional.docx</a></div>
+            </li>
+           
+          </ul>
+        </div>
+       
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="fc-chronic" style="background:#0b0b1a; color:#e8eef4; margin:0; padding:0;">
+  <style>
+    .fc-chronic .fc-costs-wrap{max-width:1000px;margin:0 auto;padding:18px 18px 28px;}
+    @media (max-width:640px){.fc-chronic .fc-costs-wrap{padding:12px;}}
+    .fc-chronic h2,.fc-chronic h3{color:#ffcc66 !important; line-height:1.25;}
+    .fc-chronic h2{font-size:1.35rem; margin:.2em 0 .8em;}
+    .fc-chronic h3{font-size:1.1rem; margin:.9em 0 .5em;}
+    .fc-chronic p{margin:.6em 0; font-size:1.02rem; line-height:1.7;}
+    .fc-chronic .tbl-wrap{overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid #2a2a2a; border-radius:12px; background:#0f111a;}
+    .fc-chronic table{border-collapse:collapse; width:100%; min-width:760px;}
+    .fc-chronic th,.fc-chronic td{border:1px solid #2a2a2a; padding:8px 10px; font-size:.98rem;}
+    .fc-chronic th{color:#ffcc66 !important; background:#111;}
+    .fc-chronic .muted{color:#b9c3cf; font-size:.92rem;}
+    .fc-chronic .badge{display:inline-block; padding:1px 8px; border:1px solid #3a3a3a; border-radius:999px; font-size:.82rem; margin-left:8px;}
+    .fc-chronic .note{background:#10131c; border:1px dashed #3b3b3b; border-radius:12px; padding:10px 12px; margin-top:10px; color:#dfe6ef;}
+    .fc-chronic .hr{height:1px; background:linear-gradient(90deg,transparent,#2a2a2a,transparent); margin:16px 0;}
+  </style>
+
+  <div class="fc-costs-wrap">
+    <h1><span style="color:#ffcc66 !important;">Custos de Implantação, Operação e Licenciamento — Exercício</span></h1>
+    <p class="muted">Notas: valores sem IVA, em euros, com variação ±20% conforme contratação, câmbios, energia e escala. Assumimos plataforma
+      <strong>active-active Lisboa↔Porto</strong>, Linux Ubuntu, <strong>stack aberto</strong> (PostgreSQL, Ceph, Keycloak, Wazuh), <strong>gateway leve</strong> e observabilidade nativa.
+    </p>
+
+    <h3><span style="color:#ffcc66 !important;">Suposições de base</span></h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Parâmetro</th><th>Hipótese</th><th>Observações</th></tr>
+      <tr><td>Aplicações do Estado</td><td>700 (exercício)</td><td>Cenários de sensibilidade: 500 e 900 apps.</td></tr>
+      <tr><td>Carga IT por data-center</td><td>0,6–1,0 MW</td><td>PUE alvo ≈ 1,35–1,45 (projecto de eficiência).</td></tr>
+      <tr><td>Energia (€/kWh)</td><td>0,14</td><td>Tarifa média empresarial; afinar com contratos reais.</td></tr>
+      <tr><td>Vida útil/refresh HW</td><td>4–5 anos</td><td>Reserva anual para refresh (depreciação técnica).</td></tr>
+      <tr><td>Equipa plataforma + segurança + operação</td><td>110–140 FTE</td><td>Custo médio total/FTE ≈ 65–75k€/ano.</td></tr>
+    </table></div>
+
+    <div class="hr"></div>
+
+    <h3><span style="color:#ffcc66 !important;">1) CAPEX inicial (plataforma + infra)</span></h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Rubrica</th><th>Faixa (€)</th><th>Detalhe</th></tr>
+      <tr><td>Hardware (compute, storage, rede) — 2 DC</td><td>10–18 M</td><td>Clusters Kubernetes, Ceph, redes 25/100G, HSM, firewalls.</td></tr>
+      <tr><td>Obras/MEP DC & rede (adaptações)</td><td>5–9 M</td><td>Salas, UPS, cooling, cross-connects, protecções físicas.</td></tr>
+      <tr><td>Engenharia de plataforma (setup)</td><td>8–12 M</td><td>Automação, CI/CD, observabilidade, hardening, runbooks.</td></tr>
+      <tr><th>Total CAPEX (faixa)</th><th>23–39 M</th><th></th></tr>
+    </table></div>
+
+    <div class="hr"></div>
+
+    <h3><span style="color:#ffcc66 !important;">2) OPEX anual — operação dos 2 data-centers</span></h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Rubrica</th><th>Faixa €/ano</th><th>Observações</th></tr>
+      <tr><td>Energia eléctrica (2 DC)</td><td>2,1–3,4 M</td><td>0,6–1,0 MW IT por DC; PUE≈1,4 → 0,84–1,4 MW facility por DC.</td></tr>
+      <tr><td>Equipas (plataforma, SRE, segurança, redes)</td><td>7,8–10,0 M</td><td>110–140 FTE × 65–75k€ TCO.</td></tr>
+      <tr><td>Conectividade & DDoS</td><td>0,5–1,0 M</td><td>Trânsito multi-operador, peering, protecção volumétrica.</td></tr>
+      <tr><td>Segurança física</td><td>0,6–1,0 M</td><td>Vigilância, controlo de acessos, manutenção de sistemas.</td></tr>
+      <tr><td>Segurança lógica (amenities & threat intel)</td><td>0,4–0,8 M</td><td>Feeds, testes intrusivos, *bug bounty* controlado.</td></tr>
+      <tr><td>Manutenção HW (peças/SLAs)</td><td>1,0–1,5 M</td><td>≈ 6–10% do CAPEX hardware.</td></tr>
+      <tr><td>Reserva refresh (4–5 anos)</td><td>3,0–5,0 M</td><td>Para evitar saltos de investimento.</td></tr>
+      <tr><th>Total OPEX anual (faixa)</th><th>17–26 M</th><th>Meta SLO ≥ 99,95% por domínio.</th></tr>
+    </table></div>
+
+    <div class="hr"></div>
+
+    <h2><span style="color:#ffcc66 !important;">3) Custos de desenvolvimento/migração das aplicações</span></h2>
+    <p>Modelo por classe de esforço (refactor/rewrite, integração, testes, segurança). Distribuição típica — afinar com inventário real.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>Classe</th><th>%</th><th>Custo por app (€)</th><th>Apps (500)</th><th>Total (500)</th><th>Apps (700)</th><th>Total (700)</th><th>Apps (900)</th><th>Total (900)</th></tr>
+      <tr><td>Pequena (S)</td><td>45%</td><td>50.000</td><td>225</td><td>11,25 M</td><td>315</td><td>15,75 M</td><td>405</td><td>20,25 M</td></tr>
+      <tr><td>Média (M)</td><td>35%</td><td>150.000</td><td>175</td><td>26,25 M</td><td>245</td><td>36,75 M</td><td>315</td><td>47,25 M</td></tr>
+      <tr><td>Grande (L)</td><td>15%</td><td>450.000</td><td>75</td><td>33,75 M</td><td>105</td><td>47,25 M</td><td>135</td><td>60,75 M</td></tr>
+      <tr><td>Crítica (XL)</td><td>5%</td><td>1.200.000</td><td>25</td><td>30,00 M</td><td>35</td><td>42,00 M</td><td>45</td><td>54,00 M</td></tr>
+      <tr><th colspan="4">Total por cenário</th><th><strong>101,25 M</strong></th><th></th><th><strong>141,75 M</strong></th><th></th><th><strong>182,25 M</strong></th></tr>
+    </table></div>
+    <p class="muted">Acrescentar 1–2% para formação, gestão da mudança e communication packs (ex.: +1,5% → +1,52 M€ no cenário 700 apps).</p>
+
+    <div class="hr"></div>
+
+    <h2><span style="color:#ffcc66 !important;">4) Licenciamento & suporte anual (open-source com suporte comercial)</span></h2>
+    <div class="tbl-wrap"><table>
+      <tr><th>Componente</th><th>Faixa €/ano</th><th>Observações</th></tr>
+      <tr><td>Ubuntu (suporte enterprise)</td><td>0,15–0,30 M</td><td>Por nó/ano; depende de nº de hosts.</td></tr>
+      <tr><td>PostgreSQL (suporte/consultoria)</td><td>0,20–0,45 M</td><td>Por cluster/nível; *tuning*/PITR/HA.</td></tr>
+      <tr><td>Ceph/S3 (suporte)</td><td>0,10–0,25 M</td><td>Capacidade e SLA de suporte.</td></tr>
+      <tr><td>Keycloak/ID (suporte)</td><td>0,08–0,20 M</td><td>Integrações, upgrade seguro, incident response.</td></tr>
+      <tr><td>Wazuh/SIEM & *threat intel*</td><td>0,15–0,30 M</td><td>Feeds, regras, red teaming programado.</td></tr>
+      <tr><td>Observabilidade (Prometheus/Grafana, OTEL)</td><td>0,10–0,30 M</td><td>Se parcialmente SaaS, a cifra pode subir.</td></tr>
+      <tr><td>Cripto/HSM & PKI (quando aplicável)</td><td>0,30–0,60 M</td><td>HSMs e tokens com manutenção.</td></tr>
+      <tr><th>Total anual (faixa)</th><th>1,1–2,2 M</th><th><strong>Stack aberto</strong> + suporte comercial selectivo.</th></tr>
+    </table></div>
+
+    <div class="hr"></div>
+
+    <h3><span style="color:#ffcc66 !important;">5) Leituras de síntese</span></h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Escopo</th><th>Estimativa</th><th>Comentário</th></tr>
+      <tr><td>CAPEX inicial (plataforma+infra)</td><td>23–39 M€</td><td>Uma vez, com rampa faseada por domínios.</td></tr>
+      <tr><td>Migração/Desenvolvimento (700 apps)</td><td>≈ 141,75 M€</td><td>12–24 meses; waves por prioridade/valor.</td></tr>
+      <tr><td>OPEX anual (2 DC)</td><td>17–26 M€/ano</td><td>Operação, energia, equipas, refresh e segurança.</td></tr>
+      <tr><td>Licenciamento + suporte <strong>(open-source)</strong></td><td>1,1–2,2 M€/ano</td><td>Suporte comercial selectivo, sem <strong>lock-in</strong> em fabricantes e marcas comerciais.</td></tr>
+    </table></div>
+
+    <p class="note">
+      <strong>Métrica cidadã (ordem de grandeza):</strong> se o investimento inicial global rondar ~180 M€, isso equivale a ~17–18 € por cidadão (uma vez), e um OPEX total
+      anual de ~20–22 M€ equivale a ~2 € por cidadão/ano — valores ilustrativos, a validar com inventário e <strong>benchmarks</strong> reais.
+    </p>
+
+    <p class="muted">Próximo passo: substituir hipóteses por medições — carga IT real, PUE por commissioning, nº exacto de apps por classe, inventário HW e contratos de energia/transporte. Depois, congelar baseline e SLO orçamentais por domínio.</p>
+  </div>
+</section>
+
+
+<section class="fc-chronic" style="background:#0b0b1a; color:#e8eef4; margin:0; padding:0;">
+  <style>
+    .fc-chronic .fc-author-wrap{max-width:1000px;margin:0 auto;padding:18px 18px 28px;}
+    @media (max-width:640px){.fc-chronic .fc-author-wrap{padding:12px;}}
+    .fc-chronic h2,.fc-chronic h3{color:#ffcc66 !important; line-height:1.25;}
+    .fc-chronic h2{font-size:1.32rem; margin:.2em 0 .8em;}
+    .fc-chronic h3{font-size:1.06rem; margin:.9em 0 .5em;}
+    .fc-chronic p{margin:.6em 0; font-size:.98rem; line-height:1.65;}
+    .fc-chronic a{color:#ffcc66; text-decoration:none; border-bottom:1px dashed #ffcc66;}
+    .fc-chronic .card{
+      background:#0f111a; border:1px solid #2a2a2a; border-radius:14px; padding:10px 12px;
+      box-shadow:0 0 0 1px #121212 inset; margin-bottom:12px;
+    }
+    .fc-chronic .meta{display:flex; flex-wrap:wrap; gap:10px; color:#cfd7e3; font-size:.9rem;}
+    .fc-chronic .badge{display:inline-block; padding:1px 8px; border:1px solid #3a3a3a; border-radius:999px; font-size:.82rem; margin-left:8px;}
+    .fc-chronic .list{margin:.35em 0 .2em 1.1em;}
+    .fc-chronic .note{background:#10131c; border:1px dashed #3b3b3b; border-radius:12px; padding:10px 12px; color:#dfe6ef;}
+    .fc-chronic .hr{height:1px; background:linear-gradient(90deg,transparent,#2a2a2a,transparent); margin:16px 0;}
+    /* Scroll horizontal para linhas longas de referências no mobile */
+    .fc-chronic .scroll-x{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+    .fc-chronic .w-max{width:max-content;}
+  </style>
+
+  <div class="fc-author-wrap">
+    <h2><span style="color:#ffcc66 !important;">Autoria e Base dos Estudos</span></h2>
+
+    <div class="card">
+      <h3><span style="color:#ffcc66 !important;">Autoria deste Estudo de Viabilidade</span></h3>
+      <p><strong>Francisco Gonçalves</strong> &amp; <strong>Augustus Veritas Lumen</strong> <span class="badge">Co-autoria</span></p>
+      <div class="meta">
+        <div>Data Publicação: <strong>6 Nov 2025</strong></div>
+        <div>Versão: <strong>v1.0</strong></div>
+        <div>Contacto: <a href="infos@softelabs.pt" target="_blank" rel="noopener">https://www.softelabs.pt</a></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span style="color:#ffcc66 !important;">Metodologia e pressupostos</span></h3>
+      <ul class="list">
+        <li><strong>Arquitectura</strong>: plataforma unificada <strong>browser-enabled</strong>; Kubernetes multi-cluster <strong>active-active</strong> (Lisboa↔Porto); integração por <em>APIs</em> (OpenAPI) e eventos.</li>
+        <li><strong>Stack</strong>: Linux Ubuntu, PostgreSQL 16+ (Patroni/PITR), Ceph/S3 (WORM), Keycloak (OIDC/SAML), OpenTelemetry→Prometheus/Grafana, Wazuh/SIEM.</li>
+        <li><strong>Segurança</strong>: zero-trust, RBAC/ABAC, MFA/WebAuthn; hardening CIS; cifragem em trânsito/repouso; auditoria imutável.</li>
+        <li><strong>Operação</strong>: SLO 99,95% por domínio (Identidade 99,99%); p95 leitura ≤ 300 ms / escrita ≤ 800 ms (exercício).</li>
+        <li><strong>Dados e DC</strong>: dois data-centers governamentais com replicação em tempo real; PUE alvo ~1,35–1,45.</li>
+        <li><strong>Custos</strong>: estimativas por classes de esforço (S/M/L/XL) e faixas CAPEX/OPEX; valores indicativos a validar com inventário real.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><span style="color:#ffcc66 !important;">Âmbito e limitações</span></h3>
+      <ul class="list">
+        <li>Exercício técnico-operacional baseado em <em>tecnologias avançadas e robustas </em> e <em>benchmarks</em> do sector; não substitui cotações formais.</li>
+        <li>Valores dependem de inventário exacto (n.º de aplicações, consumos, contratos de energia/conectividade, SLA de suporte).</li>
+        <li>Recomenda-se fase de <strong>descoberta</strong> (4–8 semanas) para calibração com métricas reais e congelação de <em>baseline</em>.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><span style="color:#ffcc66 !important;">Referências e materiais (a inserir)</span></h3>
+      <div class="scroll-x">
+        <div class="w-max">
+          <ul class="list">
+            <li>OpenAPI — Agendamento do Cidadão: <a href="URL_DO_OPENAPI_YAML" target="_blank" rel="noopener">openapi-pue-agendamento.yaml</a></li>
+            <li>Front-end demo (ZIP): <a href="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/openapi-pue-agendamento.yaml_.zip" target="_blank" rel="noopener">pue-agendamento-demo_v2.zip</a></li>
+            <li>Pacote completo: <a href="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/PUE_Agendamento_Pacote_Completo_v1.zip" target="_blank" rel="noopener">PUE_Agendamento_Pacote_Completo_v1.zip</a></li>
+            <li>Pacote total: <a href="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/PUE_Pacote_TOTAL_v2.zip" target="_blank" rel="noopener">PUE_Pacote_TOTAL_v2.zip</a></li>
+            <li>DOCX: Checklist Operacional / Piloto / Anexos (Hardening, SLO/Orçamento de Erros, ADR, Playbooks): <a href="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/PUE_Checklist_Plano_Operacional.docx" target="_blank" rel="noopener">http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/PUE_Checklist_Plano_Operacional.docx</a></li>
+            
+          </ul>
+        </div>
+      </div>
+     
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="note">
+      <strong>Declaração.</strong> Este trabalho foi desenvolvido com foco na <strong>total soberania digital de Portugal</strong>, eficiência operacional e <strong>redução de entropia sistémica no Estado.</strong>
+      As estimativas financeiras são de ordem de grandeza e devem ser validadas por medições e cotações oficiais. <strong>Reutilização recomendada com citação de autoria deste Estudo. (c)</strong>
+    </div>
+<div style="margin-top:30px; padding:15px; border-top:1px solid #444; font-family:Georgia,serif; font-size:14px; color:#e8eef4; background-color:#000;">
+  <p style="margin:0;">
+    Artigo autoria de 
+    <a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" target="_blank" 
+       style="color:#ffcc66 !important; text-decoration:none; font-weight:bold;">
+     📖  Francisco Gonçalves
+    </a> 
+    e 
+    <a href="https://www.fragmentoscaos.eu/o-blog-de-fragmentos-do-caos/" target="_blank" 
+       style="color:#ffcc66 !important; text-decoration:none; font-weight:bold;">
+       Augustus Veritas
+    </a>
+  </p>
+</div>
+ 💫📖 Fragmentos do Caos
+  </div>
+</section>
+
+
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+</article>
+
+
+
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
