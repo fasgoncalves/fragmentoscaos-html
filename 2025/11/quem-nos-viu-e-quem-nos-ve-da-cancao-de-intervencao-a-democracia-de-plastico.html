@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>"Quem Nos Viu e Quem Nos Vê" : Da Canção de Intervenção à Democracia de Plástico</title>
+<meta name="description" content=""Quem Nos Viu e Quem Nos Vê" : Da Canção de Intervenção à Democracia de Plástico">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">"Quem Nos Viu e Quem Nos Vê" : Da Canção de Intervenção à Democracia de Plástico</h1>
+      <p class="meta">Publicado em 2025-11-29 15:34:45</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000f5b47243a5383875038882ca.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia,serif; line-height:2.2; padding:10px;">
+
+  <!-- Metadados Google News -->
+  <div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+    <meta itemprop="headline" content="Quem Nos Viu e Quem Nos Vê: Da Canção de Intervenção à Democracia de Plástico">
+    <meta itemprop="datePublished" content="2025-11-29">
+    <meta itemprop="dateModified" content="2025-11-29">
+    <meta itemprop="description" content="Da canção de José Jorge Letria à realidade portuguesa de hoje: meio século depois, quem nos viu e quem nos vê numa democracia capturada por partidos, carreiras e mediocridade organizada.">
+    <meta itemprop="author" content="Francisco Gonçalves e Augustus Veritas Lumen">
+    <meta itemprop="publisher" content="Fragmentos do Caos">
+    <meta itemprop="image" content="https://www.fragmentoscaos.eu/wp-content/uploads/2025/11/fc_logo_round.png">
+    <meta itemprop="mainEntityOfPage" content="https://www.fragmentoscaos.eu/">
+  </div>
+
+  <!-- BOX DE FACTOS -->
+  <div style="border:1px solid #444; padding:10px; margin-bottom:20px; background:#111; text-align:left;">
+    <h3 style="margin-top:0; color:#ffcc66 !important; text-align:left;">
+      <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+    </h3>
+    <ul>
+      <li><strong>Origem:</strong> Canção de intervenção de José Jorge Letria, início dos anos 70, em plena ditadura.</li>
+      <li><strong>Ideia central:</strong> O choque entre o que fomos e o que nos tornámos – individual e colectivamente.</li>
+      <li><strong>Contexto histórico:</strong> Do antes do 25 de Abril à ilusão democrática e ao conforto partidário do pós-revolução.</li>
+      <li><strong>Actualidade:</strong> Meio século depois, a pergunta permanece: quem nos viu e quem nos vê numa democracia capturada por aparelhos, clientelas e carreiras políticas.</li>
+      <li><strong>Esta crónica:</strong> Usa o espírito da canção como espelho cruel da realidade portuguesa em 2025.</li>
+    </ul>
+  </div>
+
+  <!-- TÍTULO PRINCIPAL -->
+  <h2 style="color:#ffcc66 !important; font-size:34px; text-align:center; margin-top:20px; margin-bottom:10px;">
+    <span style="color:#ffcc66 !important;">Quem Nos Viu e Quem Nos Vê: Da Canção de Intervenção à Democracia de Plástico</span>
+  </h2>
+
+  <!-- EXCERTO DESTACADO -->
+  <div style="margin:20px 0; padding:10px 15px; border-left:4px solid #ffcc66; background:#151515; font-style:italic; text-align:left;">
+    <p style="margin:0; text-align:left;">
+      Há um verso antigo que não envelhece: pergunta, em tom de espanto e melancolia, como é possível que um povo que sonhou a liberdade aceite hoje viver numa democracia de plástico, cheia de slogans reciclados, onde a coragem é rara e a mediocridade é, discretamente, política de Estado.
+    </p>
+  </div>
+
+  <!-- CORPO DA CRÓNICA -->
+
+  <h3 style="color:#ffcc66 !important; text-align:left; margin-top:25px;">
+    <span style="color:#ffcc66 !important;">1. Quando a canção era risco e não decoração</span>
+  </h3>
+  <p style="text-align:left;">
+    No início dos anos 70, cantar contra o regime não era um exercício de estilo nem um truque de marketing: era, muitas vezes, um gesto de risco real. Havia censura, fichas na polícia política, telefonemas vigiados, cartas abertas a ferro em água quente. Nesse tempo, uma canção de intervenção não servia para ganhar festivais; servia para lembrar a quem ainda não tinha desistido que não estava sozinho. Cada verso era um bilhete clandestino passado de mão em mão.
+  </p>
+  <p style="text-align:left;">
+    Quando José Jorge Letria devolveu ao país a pergunta de quem nos viu e quem nos vê, apontava a fratura entre a dignidade desejada e a realidade vivida: a distância entre a fome de justiça e o chão pegajoso da repressão, da pobreza, do medo. A canção era espelho e denúncia, mas também promessa discreta de que, um dia, a história poderia mudar de curso.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left; margin-top:25px;">
+    <span style="color:#ffcc66 !important;">2. Abril: a alvorada que não vinha com manual de instruções</span>
+  </h3>
+  <p style="text-align:left;">
+    Depois, os cravos nas bocas das espingardas, as portas das prisões a abrir, o povo a ocupar as ruas como quem ocupa finalmente o próprio corpo. Durante algum tempo, o país pareceu um laboratório de futuro: assembleias, plenários, jornais a nascer por toda a parte, poetas a falar em voz alta, operários a discutir economia, estudantes a devorar filosofia como quem descobre a água.
+  </p>
+  <p style="text-align:left;">
+    Mas a liberdade não traz manual de instruções. E, enquanto uns se entregavam ao trabalho duro de reinventar um país, outros começaram a perceber que, naquela espuma de mudança, se abria espaço para outra coisa: carreiras, cargos, benesses, um novo tipo de poder com cheiro a velho, mas verniz de modernidade. A revolução abriu portas; a esperteza instalou-se à socapa nos corredores.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left; margin-top:25px;">
+    <span style="color:#ffcc66 !important;">3. Quem nos viu a lutar e quem nos vê a gerir</span>
+  </h3>
+  <p style="text-align:left;">
+    Muitos daqueles que, um dia, arriscaram tudo para que o país pudesse respirar, viram-se, pouco depois, sentados em cadeiras estofadas, rodeados de dossiers, selos e circulares internas. Alguns continuaram decentes, fiéis à palavra dada; outros descobriram que o poder tem um conforto morno que embala, anestesia e desculpa quase tudo.
+  </p>
+  <p style="text-align:left;">
+    É aqui que o antigo verso ganha nova acidez: quem nos viu a erguer punhos e bandeiras, quem nos viu presos, exilados, perseguidos, talvez já não nos reconheça quando nos senta à mesa do orçamento, do concurso público conveniente, da nomeação discreta. A distância entre o militante e o gestor de regime não é medida em quilómetros: mede-se em concessões silenciosas, em indignação arquivada, em princípios colocados numa gaveta com chave.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left; margin-top:25px;">
+    <span style="color:#ffcc66 !important;">4. A democracia de plástico: partidos-empresa, cidadãos-cliente</span>
+  </h3>
+  <p style="text-align:left;">
+    Meio século depois, chamamos "democracia" a um sistema em que, durante a campanha, os partidos prometem mundos e fundos, e, no dia seguinte às eleições, entregam ao país um folheto de supermercado: cortes, taxinhas, obras faraónicas, negócios mal explicados, nomeações para amigos e ex-assessores. O voto transformou-se em contrato de adesão a um tarifário político que ninguém lê até ao fim.
+  </p>
+  <p style="text-align:left;">
+    Os partidos, muitos deles, comportam-se como empresas: recrutam aprendizes de político em idade precoce, treinam-nos em jotas, promovem os mais dóceis, empurram para fora os que pensam demasiado. Em vez de cidadãos livres, formam-se gestores de narrativa. Fala-se de povo, mas a prioridade é o aparelho. Fala-se de justiça social, mas a prioridade é a próxima eleição. Fala-se de pátria, mas a prioridade é o lugar na lista.
+  </p>
+  <p style="text-align:left;">
+    Nesta democracia de plástico, a canção de intervenção converteu-se em fundo musical para documentários nostálgicos, e a palavra "liberdade" aparece, muitas vezes, como decoração em discursos que, na prática, legitimam a continuidade da desigualdade, da injustiça e da pobreza estrutural.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left; margin-top:25px;">
+    <span style="color:#ffcc66 !important;">5. Quem nos vê hoje: um país cansado, mas ainda lúcido</span>
+  </h3>
+  <p style="text-align:left;">
+    Quem nos vê hoje vê um país onde uma parte da população trabalha a tempo inteiro para não sair da pobreza, onde a juventude qualificada emigra, onde os serviços públicos agonizam em corredores de espera, onde a habitação se tornou lotaria e a velhice, muitas vezes, um corredor estreito entre a solidão e a caridade. Vê um povo cansado, sim; mas não necessariamente cego.
+  </p>
+  <p style="text-align:left;">
+    A lucidez está aí, espalhada em conversas de café, em textos teimosos, em pequenos grupos que ainda se recusam a aceitar a normalização da miséria moral e material. Não enche praças todos os dias, não tem horário marcado no telejornal, mas existe. É essa lucidez que ouve a velha canção e percebe que a pergunta se deslocou: já não se dirige apenas ao passado, fala também deste presente híbrido, onde a revolta tem medo de sair à rua, mas recusa morrer em silêncio.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left; margin-top:25px;">
+    <span style="color:#ffcc66 !important;">6. Entre a memória e o futuro: o que fazemos com a vergonha</span>
+  </h3>
+  <p style="text-align:left;">
+    Há países que sobrevivem sem memória, à força de amnésia voluntária e propaganda diária. Mas nenhum país suporta, por muito tempo, viver sem vergonha. A vergonha de ver crianças em casas geladas enquanto se discutem cativações; a vergonha de aceitar listas de espera fatais enquanto se salvam bancos falidos; a vergonha de conviver, com naturalidade, com um léxico de "casos" e "suspeitas" que nunca parecem chegar a lado nenhum.
+  </p>
+  <p style="text-align:left;">
+    A pergunta antiga torna-se teste de stress moral: se quem nos viu não nos reconhece, se o país que fomos e o país que somos parecem duas fotografias de estranhos, então alguma coisa falhou — não apenas nos governantes, mas na cultura cívica que fomos permitindo que se atrofiásse. A canção aponta para a política, mas também para cada um de nós: onde estivemos, enquanto tudo isto acontecia?
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left; margin-top:25px;">
+    <span style="color:#ffcc66 !important;">7. Reescrever o refrão: de quem nos viu a quem queremos ser</span>
+  </h3>
+  <p style="text-align:left;">
+    Não basta repetir versos de memória. O que faz falta é reescrever, na prática, o refrão. Trocar o cinismo por exigência, a resignação por organização, o desabafo de café por participação consciente. Não para glorificar partidos ou líderes messiânicos, mas para recuperar a ideia simples e quase revolucionária de que o Estado existe para servir pessoas, e não o contrário.
+  </p>
+  <p style="text-align:left;">
+    Talvez o futuro comece no momento em que a pergunta se inverte: não apenas "quem nos viu e quem nos vê", mas "quem queremos ser para que, um dia, alguém olhe para trás e diga: foi ali que deixaram de se conformar". Quando a canção deixar de ser apenas memória e se transformar, de novo, em faísca.
+  </p>
+
+  <!-- EPÍLOGO -->
+  <h3 style="color:#ffcc66 !important; text-align:left; margin-top:30px;">
+    <span style="color:#ffcc66 !important;">Epílogo: a canção como espelho que recusamos partir</span>
+  </h3>
+  <p style="text-align:left;">
+    Continuamos, tantos anos depois, diante do mesmo espelho. Podemos tentar emoldurá-lo com nostalgia, pendurá-lo numa parede de museu, usá-lo como banda sonora para documentários sobre "os tempos heróicos". Mas, por mais que o maquilhemos, o espelho insiste em devolver a imagem crua do país que somos hoje.
+  </p>
+  <p style="text-align:left;">
+    Talvez a forma mais honesta de homenagear as canções de intervenção não seja repeti-las em coro, mas aceitarmos a ferida que elas abrem. Enquanto houver quem, ao ouvi-las, sinta qualquer coisa a mexer por dentro — uma mistura de raiva, ternura e vergonha — ainda não está tudo perdido. Porque, nesse instante, a democracia de plástico estala um pouco, e por essa fenda entra uma luz antiga: a possibilidade, sempre adiada mas nunca morta, de fazermos deste país algo que mereça, um dia, ser visto sem que tenhamos de desviar os olhos.
+  </p>
+
+  <!-- ASSINATURA -->
+  <div style="margin-top:30px; padding-top:10px; border-top:1px solid #ffcc78; color:#ffcca0; font-size:14px; text-align:left;">
+    <p style="margin:0; text-align:left;">
+      Crónica de <strong>Francisco Gonçalves</strong>, em parceria com <strong>Augustus Veritas Lumen</strong>, para <strong>Fragmentos do Caos</strong>.
+    </p>
+    <p style="margin:0; text-align:left;">
+      Entre a canção de intervenção e o grito silencioso de um país cansado, permanece a teimosia de quem ainda recusa confundir liberdade com rotina e democracia com espectáculo.
+    </p>
+  </div>
+<!-- CAIXA LATERAL – "ATÉ AO PESCOÇO" E A GERAÇÃO DA CANÇÃO DE INTERVENÇÃO -->
+<div style="border:1px solid #444; padding:12px 14px; margin:20px 0; background:#101010; font-size:14px; text-align:left;">
+  <h3 style="margin-top:0; margin-bottom:8px; color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">"Até ao Pescoço" e a geração que cantou contra a noite</span>
+  </h3>
+  <p style="margin:0 0 8px 0; text-align:left;">
+    Quando José Jorge Letria grava <strong>"Até ao Pescoço"</strong>, no início dos anos 70, Portugal ainda vive mergulhado numa ditadura longa, pobre e vigilante. Cantar não é apenas entreter: é arriscar. Cada verso pode ser lido por ouvidos atentos da censura, cada metáfora pode valer um processo, uma proibição, um "desaparecimento" na rádio.
+  </p>
+  <p style="margin:0 0 8px 0; text-align:left;">
+    Ao lado de outros nomes da época, Letria integra a chamada <strong>canção de intervenção</strong>, um movimento em que a música se torna lugar de resistência. Não há redes sociais, não há canais de notícias 24/7: há discos, concertos semiclandestinos, cassetes que passam de mão em mão, rádios estrangeiras sintonizadas às escondidas. É nesse contexto que nascem temas como <strong>"Quem nos viu e quem nos vê"</strong>, que questionam a cobardia, a hipocrisia social e a pequena burguesia acomodada.
+  </p>
+  <p style="margin:0 0 8px 0; text-align:left;">
+    O disco é mais do que um conjunto de canções: é um retrato de geração. Fala de gente "até ao pescoço" em problemas, em censura, em injustiça, mas também até ao pescoço em esperança. É a banda sonora de quem recusa aceitar que o país é condenação e não escolha.
+  </p>
+  <p style="margin:0; text-align:left;">
+    Hoje, quando essas músicas regressam como memória, lembram-nos que houve um tempo em que a palavra <strong>liberdade</strong> não era slogan em cartaz partidário, mas desejo físico, urgente, pago com prisões, exílio e silêncio imposto. Ouvir esse disco em 2025 é perguntar, com um certo embaraço: <strong>o que fizemos nós com a coragem que herdámos?</strong>
+  </p>
+</div>
+  <br>
+</div>
+  <!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
