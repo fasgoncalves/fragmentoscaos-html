@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Sabedoria é o que fica quando desmontamos tudo</title>
+<meta name="description" content="A Sabedoria é o que fica quando desmontamos tudo">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Sabedoria é o que fica quando desmontamos tudo</h1>
+      <p class="meta">Publicado em 2025-12-18 11:37:33</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_000000007530720cab3d98033ebd90e2.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family: Georgia, serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+      <meta itemprop="headline" content="A Sabedoria é o que fica quando desmontamos tudo" />
+      <meta itemprop="datePublished" content="2025-12-18" />
+      <meta itemprop="dateModified" content="2025-12-18" />
+      <meta itemprop="description" content="Uma crónica sobre a sabedoria como resíduo luminoso após desmontarmos o que lemos e ouvimos — e sobre a liberdade que nasce quando o ruído cai." />
+      <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+        <meta itemprop="name" content="Francisco Gonçalves" />
+      </span>
+      <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+        <meta itemprop="name" content="Fragmentos do Caos" />
+        <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+          <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/fc_logo_round.png" />
+        </span>
+      </span>
+      <span itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+        <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2025/12/file_000000007530720cab3d98033ebd90e2.png" />
+      </span>
+    </div>
+  </div>
+
+  <div style="background:#111; border:1px solid #444; border-radius:12px; padding:12px; margin:10px 0;">
+    <div style="font-weight:bold; letter-spacing:1px; margin-bottom:6px;">
+      <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+    </div>
+    <ul style="margin:0; padding-left:18px;">
+      <li><strong>O mote:</strong> "Sabedoria é aquilo que fica depois de desmontarmos tudo aquilo que lemos e ouvimos."</li>
+      <li><strong>A ideia central:</strong> o conhecimento acumula-se; a sabedoria destila-se.</li>
+      <li><strong>O inimigo recorrente:</strong> o ruído — propaganda, certezas rápidas, narrativas prontas a vestir.</li>
+      <li><strong>O resultado:</strong> menos frases feitas, mais lucidez; menos ânsia de vencer, mais capacidade de ver.</li>
+      <li><strong>O preço:</strong> alguma solidão. <strong>O prémio:</strong> liberdade interior.</li>
+    </ul>
+  </div>
+
+  <h2 style="text-align:center; color:#ffcc66 !important; font-size:34px; margin:18px 0 8px;">
+    A Sabedoria é o que fica quando desmontamos tudo
+  </h2>
+
+  <div style="border-left:4px solid #ffcc66; padding:10px 12px; margin:12px 0 18px; font-style:italic; color:#ffdf99; background:rgba(255,204,102,0.06); border-radius:10px;">Há uma espécie de ouro que não se compra: é o que sobra quando deixamos cair o peso do que nos disseram que era verdade.
+  </div>
+
+  <p>Vivemos cercados por palavras. Palavras em excesso, palavras em série, palavras com embalagem brilhante e prazo de validade curto.
+Há as palavras dos livros, as palavras dos palcos, as palavras dos noticiários, as palavras dos "especialistas", as palavras dos que juram ter "a" solução para tudo — como quem vende aspirinas para curar eclipses.
+  </p>
+
+  <p>E, no entanto, a sabedoria raramente nasce do aplauso ao que ouvimos. Nasce da desmontagem. Daquela operação íntima e quase artesanal em que pegamos numa ideia e a viramos do avesso: <strong>o que é que isto quer dizer, afinal?</strong> O que é que isto esconde? A quem serve?
+O que é que fica de pé quando lhe tiramos a decoração?
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin:18px 0 6px;">A diferença entre encher e destilar</h3>
+
+  <p>Conhecimento é encher prateleiras; sabedoria é aprender a deitar fora o que ocupa espaço e não sustenta nada.
+Conhecimento é acumular ferramentas; sabedoria é saber qual pegar — e quando não pegar nenhuma.
+  </p>
+
+  <p>A maioria das pessoas vive numa casa mental cheia de móveis: frases feitas, opiniões herdadas, dogmas de família,
+certezas de tribo, indignações pré-cozinhadas. Entram nelas como quem entra numa sala já decorada. Sentam-se.
+E chamam a isso "pensar".
+  </p>
+
+  <p>Mas pensar, amigo, é mais parecido com carpintaria do que com decoração. Pensar é ouvir uma ideia a ranger, desmontar as tábuas, perceber onde está o prego enferrujado, testar a madeira, e reconstruir só o que presta.
+O resto vai para a fogueira — e ainda aquece.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin:18px 0 6px;">O ruído é um sistema de controlo</h3>
+
+  <p>O ruído não é um acidente. É uma arquitectura. Um método. Uma política não escrita.
+Quanto mais barulho houver, menos espaço sobra para o essencial.
+Quanto mais narrativas prontas, menos perguntas verdadeiras.
+  </p>
+
+  <p>O ruído quer-nos reativos: aplaudir, odiar, repetir, escolher lados como quem escolhe clubes.
+E, no meio desse estádio moral, a verdade passa despercebida — não por ser invisível, mas por não ter megafone.
+  </p>
+
+  <p>A sabedoria, pelo contrário, é um acto de <strong>recusa</strong>. Recusa do histerismo como regime, recusa da pressa como religião, recusa do "toda a gente sabe" como argumento.
+A sabedoria é a coragem de dizer: <strong>não sei ainda</strong>, e continuar a caminhar.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin:18px 0 6px;">Desmontar é um gesto moral</h3>
+
+  <p>Desmontar o que lemos e ouvimos não é só exercício intelectual. É higiene ética.
+Porque há ideias que vêm com veneno dentro: preconceitos com etiqueta elegante, crueldades embrulhadas em "realismo", injustiças vendidas como "inevitáveis", mentiras com crachá de "consenso".
+  </p>
+
+  <p>Quando desmontamos, descobrimos a mecânica: as engrenagens de medo, as correias de interesses, os parafusos de manipulação, as soldaduras de conveniência.
+E então percebemos uma coisa: <strong>muita coisa que nos pedem para acreditar não quer ser compreendida — quer apenas ser obedecida.</strong>
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin:18px 0 6px;">O que fica no fim</h3>
+
+  <p>Depois da desmontagem, o que fica costuma ser simples. Quase desarmante.
+Fica a noção de que a dignidade humana não é negociável.
+Fica a evidência de que a mentira, repetida, não vira verdade — vira hábito.
+Fica a certeza de que a liberdade interior é a última trincheira quando o mundo se torna teatro.
+  </p>
+
+  <p>Fica também uma estranha paz: já não precisamos de ganhar discussões para ter razão, nem de "provar" a nossa lucidez a ninguém. A sabedoria não procura troféus.
+Procura clareza.
+  </p>
+
+  <p>E sim, fica um pouco de solidão. Porque quem desmonta as ilusões deixa de conseguir viver nelas.
+Mas essa solidão tem uma qualidade rara: não é abandono. É espaço.
+É ar. É horizonte.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin:18px 0 6px;">Epílogo: a luz que não faz barulho</h3>
+
+  <p>Há uma luz que não ofusca: ilumina. Não grita: revela. Não humilha: orienta.
+Chama-se sabedoria — e aparece quando o ruído cai, quando os slogans se desfazem, quando as certezas emprestadas regressam ao seu dono.
+  </p>
+
+  <p>E, nesse instante, ficamos com o essencial: a capacidade de ver.
+Ver as pessoas por detrás das máscaras, ver os sistemas por detrás das palavras, ver o futuro por detrás do medo.
+  </p>
+
+  <p>Sabedoria é aquilo que fica, sim — mas é também aquilo que <strong>abre caminho</strong>.
+Porque quando desmontamos o que nos prende, sobra finalmente espaço para construir.
+  </p>
+
+  <div style="margin:18px 0 8px; padding:10px 12px; background:rgba(255,204,102,0.05); border:1px solid rgba(255,204,102,0.25); border-radius:12px;">
+    <strong style="color:#ffcc66 !important;"></strong> Se este texto te tocou, partilha-o com alguém que ainda tenha coragem de desmontar o mundo — peça por peça — sem perder a ternura.
+  </div>
+
+  <div style="border-top:1px solid #ffcc78; margin-top:18px; padding-top:12px; color:#ffcca0;">
+    <div><strong>Francisco Gonçalves</strong></div>
+    <div style="opacity:0.9;">Crónica para <strong>Fragmentos do Caos</strong> — escrita com lucidez, teimosia e uma luz tranquila ao fundo do corredor.</div>
+    <div style="opacity:0.85; margin-top:6px;">Coautoria editorial: <strong>Augustus</strong> (IA), companheiro de oficina na arte de desmontar o ruído.</div>
+  </div>
+
+</div><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
