@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Caridadezinha dos Intocáveis: quando o recibo some e a fotografia aparece</title>
+<meta name="description" content="A Caridadezinha dos Intocáveis: quando o recibo some e a fotografia aparece">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Caridadezinha dos Intocáveis: quando o recibo some e a fotografia aparece</h1>
+      <p class="meta">Publicado em 2025-12-25 18:39:59</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000b344724393b35f5b76ae16b7.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family: Georgia, serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <!-- Google News metadata (invisível) -->
+  <div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+    <meta itemprop="headline" content="A Caridadezinha dos Intocáveis: quando o recibo some e a fotografia aparece" />
+    <meta itemprop="datePublished" content="2025-12-25" />
+    <meta itemprop="dateModified" content="2025-12-25" />
+    <meta itemprop="description" content="Crónica satírica sobre a filantropia mediática dos ultra-ricos e a velha arte de transformar dever cívico em espectáculo, enquanto a factura pública fica para os mesmos de sempre." />
+    <meta itemprop="author" content="Francisco Gonçalves" />
+    <meta itemprop="publisher" content="Fragmentos do Caos News Team" />
+    <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2025/12/file_00000000b344724393b35f5b76ae16b7.png" />
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+      <meta itemprop="name" content="Fragmentos do Caos" />
+      <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+        <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/fc_logo_round.png" />
+      </div>
+    </div>
+  </div>
+
+  <!-- 1) BOX DE FACTOS -->
+  <div style="background:#111; border:1px solid #444; padding:12px; margin:10px 0;">
+    <div style="font-weight:bold; letter-spacing:1px; margin-bottom:8px;">
+      <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+    </div>
+    <ul style="margin:0; padding-left:18px;">
+      <li><strong>Fenómeno:</strong> quando o dever fiscal vira "opção" e a filantropia vira "marca".</li>
+      <li><strong>Truque moral:</strong> trocar o colectivo (impostos) pelo espectáculo (doação com fotografia).</li>
+      <li><strong>Resultado:</strong> o Estado fica subfinanciado, e o povo paga duas vezes: com impostos e com aplausos.</li>
+      <li><strong>Gancho mediático:</strong> notícias de gestos solidários de figuras muito ricas reforçam a narrativa do "benfeitor".</li>
+      <li><strong>Pergunta incómoda:</strong> porque é que o "mérito" só aparece em manchete quando é voluntário?</li>
+    </ul>
+  </div>
+
+  <!-- 2) TÍTULO -->
+  <h2 style="text-align:center; color:#ffcc66 !important; font-size:34px; margin:16px 0;">
+    A Caridadezinha dos Intocáveis: quando o recibo some e a fotografia aparece
+  </h2>
+
+  <!-- 3) EXCERTO -->
+  <div style="border-left:4px solid #ffcc66; padding:10px 12px; margin:12px 0; font-style:italic;">
+    Há um tipo de riqueza que não gosta de impostos — dá-lhe alergia. Mas adora doações: são hipoalergénicas, fotogénicas, e vêm com legenda pronta para as redes.
+  </div>
+
+  <!-- 4) CORPO -->
+  <h3 style="color:#ffcc66 !important; margin-top:18px;">A arte de fugir ao dever e regressar como santo</h3>
+  <p>
+    É uma coreografia antiga, mas continua a funcionar como relógio suíço (guardado num cofre fora do mapa). 
+Primeiro, os muito poderosos fazem uma descoberta científica: <strong>o imposto é um conceito relativo</strong>, como a moral em dia de gala.
+Depois, com o mesmo rigor com que se escolhe um vinho raro, escolhe-se também uma jurisdição simpática, com palmeiras, sigilo e uma burocracia que sorri.
+  </p>
+  <p>
+    E quando a cidadania começa a perguntar — timidamente, porque em Portugal até as perguntas pedem licença — surge o grande acto final: <strong>a caridadezinha.</strong> Uma casa aqui, uma ambulância acolá, material hospitalar a brilhar como redenção instantânea.
+Não é ajuda: é <strong>narrativa</strong>. A doação não cai do céu — cai para a câmara.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin-top:18px;">Porque é que isto cola tão bem na alma colectiva?</h3>
+  <p>
+    Porque o imposto é invisível e impopular. É chato. É cinzento. É "papelada".
+A doação, pelo contrário, é cinema: tem emoção, tem antes-e-depois, tem "obrigado" com lágrimas e um país inteiro a suspirar: "Vês? Há bons ricos." E há. Claro que há. O problema é quando o país inteiro depende da bondade ocasional, como se a justiça social fosse um peditório com hora marcada.
+  </p>
+  <p>
+    O imposto é a versão adulta da solidariedade: <strong>não escolhe destinatários</strong> por simpatia, não pede palmas, não exige altar.
+Serve para financiar escolas, hospitais, justiça, transportes — essas coisas aborrecidas que não cabem num "reels" de 12 segundos.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin-top:18px;">O truque psicológico: trocar o colectivo pelo voluntário</h3>
+  <p>
+    Há uma diferença brutal entre <strong>contribuir</strong> e <strong>aparecer a contribuir</strong>.
+Quem paga impostos financia o país mesmo quando ninguém vê.
+Quem faz filantropia mediática pode escolher a vitrina, a data, o ângulo, e — sobretudo — pode escolher <strong>não tocar no essencial</strong>: a máquina que produz desigualdade, precariedade e dependência.
+  </p>
+  <p>
+    É aqui que o teatro fica mais perverso: a filantropia pública pode funcionar como um "selo de absolvição".
+E nós, povo de salários curtos e paciência longa, fazemos o resto: aplaudimos, agradecemos, e seguimos para a fila.
+Uma fila para o hospital, outra para as Finanças, outra para a vida.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin-top:18px;">E se a verdadeira caridade fosse… não fugir?</h3>
+  <p>
+    Há uma ideia escandalosa — quase revolucionária — que devia ser dita em voz alta:
+<strong>a maior forma de solidariedade de um ultra-rico não é a doação; é pagar o que deve, onde vive.</strong>
+Porque isso não depende de humor, nem de vaidade, nem de marketing.
+Depende apenas de uma coisa raríssima: responsabilidade.
+  </p>
+  <p>
+    A caridade é bonita. Mas não substitui um país funcional. 
+Um país funcional não pede "gestos". Exige regras iguais. E cumpre-as.
+E quando as cumpre, a solidariedade deixa de ser espectáculo — passa a ser <strong>estrutura</strong>.
+  </p>
+
+  <!-- 5) EPÍLOGO -->
+  <h3 style="color:#ffcc66 !important; margin-top:18px;">Epílogo: o santo e o contribuinte</h3>
+  <p>
+    No fim, há dois tipos de heróis: o que aparece na notícia com a oferta na mão, e o que aparece na folha de vencimento com a retenção no topo.
+Um recebe aplausos. O outro recebe silêncio.
+  </p>
+  <p>
+    E talvez seja por isso que a desigualdade cresce: porque confundimos <strong>justiça</strong> com <strong>bondade ocasional</strong>.
+E a bondade ocasional, por mais comovente que seja, nunca foi capaz de construir um país — apenas de o adiar.
+  </p>
+<div style="background:#0b0b0b; color:#e8eef4; font-family: Georgia, serif; line-height:2.1; padding:10px; text-align:left; border:1px solid #333; margin-top:14px;">
+  <h3 style="color:#ffcc66 !important; margin:0 0 10px 0;">Fontes e Leituras</h3>
+  <ul style="margin:0; padding-left:18px;">
+    <li>
+      <strong>Correio da Manhã / CMTV</strong> — "O lado solidário do superagente Jorge Mendes" (25/12/2025). 
+      <a href="https://www.cmjornal.pt/cmtv/videos/detalhe/o-lado-solidario-do-superagente-jorge-mendes" target="_blank" rel="noopener">ver</a>
+    </li>
+    <li>
+      <strong>Correio da Manhã</strong> — "Jorge Mendes dá casa e ambulância na Beira" (26/04/2018).
+      <a href="https://www.cmjornal.pt/portugal/detalhe/da-nos-mais-forca-para-virar-a-pagina" target="_blank" rel="noopener">ler</a>
+    </li>
+    <li>
+      <strong>IPO Porto</strong> — Nota institucional sobre doação de equipamento (15/12/2018).
+      <a href="https://ipoporto.pt/en/jorge-mendes-visita-ipo-para-doar-equipamento-de-ponta/" target="_blank" rel="noopener">ler</a>
+    </li>
+    <li>
+      <strong>VM TV (SAPO)</strong> — Notícia sobre oferta de equipamento médico a hospitais (22/03/2020).
+      <a href="https://vmtv.sapo.pt/jorge-mendes-vai-oferecer-equipamento-medico-a-dois-hospitais-do-norte-do-pais/" target="_blank" rel="noopener">ler</a>
+    </li>
+    <li>
+      <strong>ECO</strong> — Artigo de opinião "A fuga dos impostos" (28/07/2022).
+      <a href="https://eco.sapo.pt/opiniao/a-fuga-dos-impostos/" target="_blank" rel="noopener">ler</a>
+    </li>
+  </ul>
+</div>
+  <!-- 6) ASSINATURA -->
+  <div style="border-top:1px solid #ffcc78; margin-top:18px; padding-top:12px; color:#ffcca0;">Artigo de <strong>Francisco Gonçalves</strong><br/>
+    <span style="opacity:0.95;">Fragmentos do Caos — crónica satírica e cívica</span><br/>
+    <span style="opacity:0.85;">Co-autoria editorial: <strong>Augustus Veritas</strong></span>
+  </div>
+
+  
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
