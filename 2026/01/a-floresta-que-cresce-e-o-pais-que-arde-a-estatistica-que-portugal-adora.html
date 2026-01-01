@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Floresta Que Cresce… e o País Que Arde — a estatística que Portugal adora</title>
+<meta name="description" content="A Floresta Que Cresce… e o País Que Arde — a estatística que Portugal adora">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Floresta Que Cresce… e o País Que Arde — a estatística que Portugal adora</h1>
+      <p class="meta">Publicado em 2026-01-01 19:24:40</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_000000001d7872469fd6890aa5ce220a.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family: Georgia, serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <!-- Google News / Schema.org metadata (oculto) -->
+  <div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+    <meta itemprop="headline" content="A Floresta Que Cresce… e o País Que Arde — a estatística que Portugal adora" />
+    <meta itemprop="datePublished" content="2026-01-01T19:00:00+00:00" />
+    <meta itemprop="dateModified" content="2026-01-01T19:00:00+00:00" />
+    <meta itemprop="description" content="Portugal surge no topo do 'crescimento florestal' na UE (Eurostat, 2023). Mas a métrica mede incremento de volume de madeira — não mede resiliência, biodiversidade, prevenção nem capacidade de combate. Uma vitória de PowerPoint num país que continua a arder." />
+    <meta itemprop="author" content="Francisco Gonçalves" />
+    <meta itemprop="publisher" content="Fragmentos do Caos" />
+    <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/01/file_000000001d7872469fd6890aa5ce220a.png" />
+  </div>
+
+  <!-- 1️⃣ BOX DE FACTOS -->
+  <div style="background:#111; border:1px solid #444; padding:12px; margin:10px 0;">
+    <div style="color:#ffcc66 !important; font-weight:bold; letter-spacing:1px;">BOX DE FACTOS</div>
+    <ul style="margin:8px 0 0 18px;">
+      <li><strong>Eurostat (2023):</strong> Portugal aparece com o maior "crescimento florestal" da UE: <strong>11,1%</strong>, medido como incremento líquido do volume de madeira face ao stock inicial. 0</li>
+      <li><strong>Tradução do truque:</strong> a métrica fala sobretudo de <strong>madeira a aumentar</strong>; não é sinónimo de floresta mais saudável, diversa ou resistente ao fogo. 1</li>
+      <li><strong>Portugal continental (2024):</strong> registaram-se <strong>6.255 incêndios rurais</strong> e <strong>137.651 ha</strong> de área ardida (dados do Relatório do Estado do Ambiente/APA). 2</li>
+      <li><strong>Mensagem dos especialistas (na notícia):</strong> sem <strong>financiamento estável</strong> o "bom desempenho" pode não durar. 3</li>
+    </ul>
+  </div>
+
+  <!-- 2️⃣ TÍTULO PRINCIPAL -->
+  <h2 style="color:#ffcc66 !important; font-size:34px; margin:14px 0 8px 0; text-align:left;">
+    <span style="color:#ffcc66 !important;">A Floresta Que Cresce… e o País Que Arde</span>
+  </h2>
+
+  <!-- 3️⃣ EXCERTO -->
+  <div style="border-left:4px solid #ffcc66; padding:10px 12px; margin:10px 0 14px 0; font-style:italic;">
+    Celebrar "crescimento florestal" num país que todos os verões cheira a fumo é como festejar "lucros" numa casa em chamas: pode ser verdade no papel… e falso na vida.
+  </div>
+
+  <!-- 4️⃣ CORPO PRINCIPAL -->
+  <h3 style="color:#ffcc66 !important; margin:12px 0 6px 0; text-align:left;">
+    <span style="color:#ffcc66 !important;">A estatística que Portugal gosta: a que cabe num título</span>
+  </h3>
+  <p style="margin:0 0 12px 0;">
+    A notícia diz: Portugal "líder do crescimento florestal" na União Europeia. E, sim, o Eurostat coloca-nos no topo em 2023: <strong>11,1%</strong>. 4
+Só que o diabo — esse velho engenheiro — mora na definição: <strong>crescimento</strong> aqui é "incremento líquido do volume de madeira" face ao stock inicial. 5
+  </p>
+  <p style="margin:0 0 12px 0;">
+    Ou seja: mede-se sobretudo a <strong>contabilidade da madeira</strong>. Não se mede a <strong>mosaico de paisagem</strong>, a gestão do combustível, a diversidade de espécies, a saúde do solo, a capacidade de regeneração pós-fogo, nem a resiliência aos extremos climáticos. A métrica pode estar a sorrir… enquanto o território range os dentes.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin:12px 0 6px 0; text-align:left;">
+    <span style="color:#ffcc66 !important;">Um país que "cresce" e queima: o paradoxo nacional</span>
+  </h3>
+  <p style="margin:0 0 12px 0;">
+    Repare-se na fotografia de fundo: mesmo com variações anuais, Portugal continua a viver com fogo como se fosse estação do ano.
+Em 2024, o Relatório do Estado do Ambiente aponta <strong>137.651 hectares</strong> de área ardida e <strong>6.255</strong> incêndios rurais. 6
+Isto não é ruído estatístico; é padrão civilizacional.
+  </p>
+  <p style="margin:0 0 12px 0;">
+    E aqui nasce a ironia: podemos ter um "crescimento" de volume de madeira num ano e, ainda assim, manter um sistema que permite que o país arda noutro.
+A árvore cresce… a política encolhe.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin:12px 0 6px 0; text-align:left;">
+    <span style="color:#ffcc66 !important;">A vitória de PowerPoint: quando "mais madeira" vira "melhor floresta"</span>
+  </h3>
+  <p style="margin:0 0 12px 0;">
+    Portugal tem uma antiga vocação: confundir <strong>indicador</strong> com <strong>realidade</strong>.
+O Eurostat fala de incremento de madeira. 7
+O debate público traduz: "a floresta está melhor".
+E a seguir, como manda a tradição, voltamos a discutir aviões, heli-pistas, sirenes, e a épica coreografia anual do "agora é que é".
+  </p>
+  <p style="margin:0 0 12px 0;">
+    Uma floresta resiliente não é um armazém de matéria-prima a acelerar. É um ecossistema com diversidade, continuidade de gestão, rendimentos compatíveis para quem cuida do território, e prevenção que exista <strong>antes</strong> do fumo. E é aqui que a própria notícia deixa o aviso: <strong>sem financiamento estável</strong>, o bom desempenho não é duradouro. 8
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin:12px 0 6px 0; text-align:left;">
+    <span style="color:#ffcc66 !important;">O que seria "combate sério" num país adulto</span>
+  </h3>
+  <p style="margin:0 0 12px 0;">
+    Combate sério não é só mais meios em Agosto. É um contrato nacional com o território:
+<strong>financiamento plurianual</strong>, gestão do combustível com escala, mosaicos de usos, fiscalização eficaz, penalização real do abandono, incentivos alinhados com prevenção, e uma cadeia de valor florestal que pague a quem mantém a paisagem limpa e diversa.
+  </p>
+  <p style="margin:0 0 12px 0;">
+    Caso contrário, continuaremos a ter isto: um país que, num relatório europeu, aparece como "campeão do crescimento"… e, no Verão seguinte, volta a ser finalista olímpico na modalidade "cinza no ar".
+  </p>
+
+  <!-- 5️⃣ EPÍLOGO / CONCLUSÃO -->
+  <h3 style="color:#ffcc66 !important; margin:12px 0 6px 0; text-align:left;">
+    <span style="color:#ffcc66 !important;">Epílogo: a floresta não precisa de aplausos — precisa de Estado</span>
+  </h3>
+  <p style="margin:0 0 10px 0;">
+    A notícia pode não ser piada. Mas a forma como a celebramos, sem ler o rodapé da métrica, é o nosso humor involuntário.
+Se o indicador mede madeira e nós ouvimos "floresta", então já não é desinformação: é um hábito nacional.
+  </p>
+  <p style="margin:0 0 10px 0;">
+    Uma floresta digna não se mede só em percentagens — mede-se em resiliência, em vida e em futuro.
+E futuro não se faz com títulos. Faz-se com continuidade.
+  </p>
+
+  <!-- 6️⃣ ASSINATURA -->
+  <div style="border-top:1px solid #ffcc78; margin-top:14px; padding-top:10px; color:#ffcca0;">
+    Francisco Gonçalves<br/>
+    <span style="opacity:0.9;">Co-autoria assistida por AI - Augustus Veritas — para que a lucidez não arda antes do Verão.</span>
+  </div>
+
+  <!-- 7️⃣ TERMINADOR -->
+  
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
