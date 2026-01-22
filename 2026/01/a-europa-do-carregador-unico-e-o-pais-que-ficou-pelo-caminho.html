@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Europa do Carregador Único e o País que Ficou Pelo Caminho</title>
+<meta name="description" content="A Europa do Carregador Único e o País que Ficou Pelo Caminho">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Europa do Carregador Único e o País que Ficou Pelo Caminho</h1>
+      <p class="meta">Publicado em 2026-01-22 19:53:34</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_000000005be071f4a5256e0a042b81ec.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, serif; line-height:2.2; padding:10px; text-align:left;">
+
+<!-- METADADOS GOOGLE NEWS -->
+<div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+  <meta itemprop="headline" content="A Europa do Carregador Único e o País que Ficou Pelo Caminho" />
+  <meta itemprop="datePublished" content="2026-01-22" />
+  <meta itemprop="dateModified" content="2026-01-22" />
+  <meta itemprop="description" content="Crónica crítica sobre os 40 anos da adesão de Portugal à União Europeia e a distância entre propaganda institucional e realidade social." />
+  <meta itemprop="author" content="Francisco Gonçalves" />
+  <meta itemprop="publisher" content="Fragmentos do Caos" />
+</div>
+
+<!-- BOX DE FACTOS -->
+<div style="background:#111; border:1px solid #444; padding:12px; margin:10px 0 18px 0; border-radius:10px;">
+  <div style="color:#ffcc66 !important; font-weight:bold; margin-bottom:8px;">BOX DE FACTOS</div>
+  <ul style="margin:0; padding-left:18px;">
+    <li><strong>Evento:</strong> 40 anos da adesão de Portugal à União Europeia.</li>
+    <li><strong>Narrativa oficial:</strong> "Salto qualitativo substancial em todos os sectores".</li>
+    <li><strong>Exemplos apresentados:</strong> roaming, carregador único, indemnizações aéreas.</li>
+    <li><strong>Realidade social:</strong> salários baixos, serviços públicos degradados, produtividade estagnada.</li>
+    <li><strong>Questão central:</strong> desenvolvimento real ou pedagogia auto-celebratória?</li>
+  </ul>
+</div>
+
+<h2 style="color:#ffcc66 !important; font-size:34px;">
+A Europa do Carregador Único  
+e o País que Ficou Pelo Caminho
+</h2>
+
+<div style="border-left:4px solid #ffcc66; padding:10px 14px; background:rgba(255,204,102,0.06); font-style:italic; margin-bottom:18px;">
+Quando a propaganda começa a confundir direitos básicos com progresso civilizacional,
+sabemos que a narrativa já não serve para adultos — serve para tranquilizar consciências.
+</div>
+
+<p>
+Confesso: fiquei perplexo.
+</p>
+
+<p>
+Ouvir, em 2026, que Portugal "deu um salto qualitativo substancial em todos os sectores" faz-me sentir como se estivesse a escutar uma história para crianças —
+dessas em que tudo acaba bem, mesmo quando a casa está a arder.
+</p>
+
+<p>Não se trata de negar que houve mudanças desde 1986.
+<strong>Seria absurdo fazê-lo.</strong>
+É facto que o mundo mudou muito e Portugal teve que mudar também. 
+Mudaram as cadeias de valor, as tecnologias deram um "hyper-salto", os meios de transporte também, e por aí fora. Todos sabemos que já não estamos em 1986! Não precisam explicar o facto.
+</p>
+
+<p>Mas transformar <strong>normas administrativas europeias</strong> em prova de desenvolvimento nacional
+é um exercício perigoso de auto-engano colectivo.
+</p>
+
+<h3 style="color:#ffcc66 !important;">O país do carregador único</h3>
+
+<p>O exemplo máximo apresentado é revelador:
+</p>
+
+<p style="font-style:italic; padding-left:12px;">
+"Hoje temos carregador único."
+</p>
+
+<p>
+É verdade.
+</p>
+
+<p>Mas permitam-me a brutalidade da pergunta:
+</p>
+
+<p style="font-weight:bold;">
+é isto que define o progresso de uma nação?
+</p>
+
+<p>Não falamos de salários europeus.
+Nem de serviços públicos eficientes.
+Nem de justiça célere.
+Nem de produtividade.
+Nem de inovação tecnológica própria.
+</p>
+
+<p>Falamos de um cabo USB.
+</p>
+
+<p>Enquanto isso, Portugal continua:
+</p>
+
+<ul>
+  <li>no fundo da tabela salarial da União Europeia;</li>
+  <li>com jovens altamente qualificados a emigrar em massa;</li>
+  <li>com professores, médicos e técnicos exaustos;</li>
+  <li>com um Estado lento, burocrático e desconfiado do mérito;</li>
+  <li>com uma economia dependente de fundos e não de criação de valor.</li>
+</ul>
+
+<p>Mas temos carregador único.
+</p>
+
+<h3 style="color:#ffcc66 !important;">Direitos não são desenvolvimento</h3>
+
+<p>
+A União Europeia trouxe direitos — é inegável.
+</p>
+
+<p>Mas direitos não são sinónimo de desenvolvimento económico, nem substituem soberania produtiva.
+</p>
+
+<p>Ter direito a indemnização por atraso de voo não compensa viver num país onde o salário não chega ao fim do mês.
+Sobretudo quando mais de 80% da população portuguesa nunca realizou sequer um único voo na vida.
+Invocar direitos de passageiros aéreos como prova de progresso social num país onde a maioria luta pela sobrevivência quotidiana é um exercício de abstração confortável — típico de quem confunde estatística europeia com realidade nacional.
+</p>
+
+<p>O cidadão europeu português pode reclamar em Bruxelas,
+mas continua incapaz de comprar casa em Lisboa.
+</p>
+
+<p>Pode viajar sem roaming,
+mas não consegue regressar porque o país não lhe paga dignamente.
+</p>
+
+<h3 style="color:#ffcc66 !important;">Fundos não são estratégia</h3>
+
+<p>Durante quatro décadas, Portugal recebeu milhares de milhões de euros.
+</p>
+
+<p>A pergunta honesta nunca é "quanto recebemos".
+É:
+</p>
+
+<p style="font-weight:bold;">
+o que construímos que permaneça?
+</p>
+
+<p>Não criámos um tecido industrial forte. Não criámos cadeias tecnológicas próprias.
+Não criámos autonomia energética.
+Não criámos um Estado eficiente.
+</p>
+
+<p>Criámos rotundas,
+infra-estruturas subutilizadas,
+consultoria, e dependência estrutural.
+</p>
+
+<p>Confundiu-se financiamento com visão. E quando os fundos diminuem, fica o vazio.
+</p>
+
+<h3 style="color:#ffcc66 !important;">A pedagogia da ilusão</h3>
+
+<p>O mais inquietante não é a celebração.
+</p>
+
+<p>É a insistência numa <strong>pedagogia da ilusão</strong>:
+explicar aos portugueses que vivem melhor, quando eles sabem que vivem pior.
+</p>
+
+<p>Que têm mais oportunidades,
+quando os filhos partem.
+</p>
+
+<p>Que o país evoluiu muito,
+quando os serviços colapsam
+e o futuro se adia.
+</p>
+
+<p>Não é eurocepticismo dizer isto.
+</p>
+
+<p>É patriotismo adulto.
+</p>
+
+<h3 style="color:#ffcc66 !important;">Europa sim — ingenuidade não</h3>
+
+<p>A União Europeia não é o problema.
+</p>
+
+<p>O problema é um país que,
+tendo recebido estabilidade, tempo e recursos, não os converteu em transformação estrutural.
+</p>
+
+<p>Entrámos europeus. Mas ficámos (ainda) periféricos.
+</p>
+
+<p>Recebemos direitos. Mas não construímos poder económico.
+</p>
+
+<p>Ganhámos normas. Mas perdemos ambição.
+</p>
+
+<h3 style="color:#ffcc66 !important;">Epílogo — quando a propaganda substitui o balanço</h3>
+
+<p>Celebrar quarenta anos devia ser um exercício de verdade.
+</p>
+
+<p>Não de auto-elogio institucional.
+</p>
+
+<p>Portugal mudou. Sim.
+</p>
+
+<p>Mas não mudou o suficiente para justificar discursos triunfalistas.
+</p>
+
+<p>Porque um país verdadeiramente desenvolvido
+não precisa de explicar às pessoas que vivem melhor —
+as pessoas sentem-no.
+</p>
+
+<p>Quando é preciso convencer,
+algo falhou.
+</p>
+
+<p>E talvez o maior fracasso destes 40 anos não seja económico, nem social,
+nem europeu.
+</p>
+
+<p style="font-weight:bold;">
+É termos aprendido a celebrar pouco, como se fosse muito.
+</p>
+<p style="margin:18px 0 12px 0;">O país "deu um salto", dizem. Eu acredito. Saltou, sim — mas muitas vezes <strong>para o lado</strong>.
+Saltou para a propaganda, para o auto-elogio, para a pedagogia do contentamento.
+</p>
+
+<p style="margin:0 0 12px 0;">A Europa deu-nos normas, direitos e um mercado. Mas Portugal não converteu isso em salários dignos, produtividade, justiça célere, Estado eficiente e futuro para os seus jovens.
+</p>
+
+<p style="margin:0 0 12px 0;">E é aqui que a narrativa se torna obscena: transformar o <strong>carregador único</strong> e as  <strong>indemnizações por atrasos de voo</strong> em medalhas de progresso num país onde, para demasiados, a "viagem" mais comum continua a ser da cozinha para a ansiedade.
+</p>
+
+<p style="margin:0 0 12px 0;">Portugal não precisa que lhe expliquem que evoluiu. Precisa de o <strong>sentir</strong>.
+Porque quando é necessário convencer, é sinal de que a realidade não acompanha o discurso.
+</p>
+
+<p style="margin:0; font-weight:bold;">Se isto é um "salto qualitativo substancial", então a fasquia está enterrada.
+E o aplauso é apenas <strong>o som da mediocridade a celebrar-se a si própria.</strong>
+</p>
+        
+<div style="background:#111; border:1px solid #444; padding:12px; margin:18px 0; border-radius:10px; text-align:left;">
+  <div style="color:#ffcc66 !important; font-weight:bold; margin-bottom:8px;">
+    <span style="color:#ffcc66 !important;">FONTE (JORNALISMO)</span>
+  </div>
+
+  <p style="margin:0 0 10px 0;">
+    <strong>RTP Notícias / Antena 1</strong> — "40 anos da adesão. 'O nosso país deu um salto qualitativo substancial'"
+(Andrea Neves, enviada especial a Estrasburgo).
+  </p>
+
+  <a href="https://www.rtp.pt/noticias/mundo/40-anos-da-adesao-o-nosso-pais-deu-um-salto-qualitativo-substancial_n1711793"
+     target="_blank" rel="noopener"
+     style="color:#ffcc66 !important; text-decoration:none; font-weight:bold;">
+    Ver artigo na RTP
+  </a>
+</div>
+
+
+
+
+<div style="margin-top:18px; padding-top:12px; border-top:1px solid #ffcc78; color:#ffcca0;">
+  <strong>Francisco Gonçalves</strong><br/>
+  Fragmentos do Caos — Crónica de cidadania<br/>
+  <span style="opacity:0.85;">
+Este é o retrato acabado do delírio auto-elogioso institucional.
+(Entre o carregador único e o futuro perdido, escolhemos discutir cabos.)
+  </span>
+</div>
+
+</div>
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
