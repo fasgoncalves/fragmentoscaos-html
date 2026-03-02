@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DGX Station + DeepSeek: engenharia de IA local com memória coerente, contexto longo e agentes com ferramentas</title>
+<meta name="description" content="DGX Station + DeepSeek: engenharia de IA local com memória coerente, contexto longo e agentes com ferramentas">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">DGX Station + DeepSeek: engenharia de IA local com memória coerente, contexto longo e agentes com ferramentas</h1>
+      <p class="meta">Publicado em 2026-03-02 11:06:27</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/screenshot_20260302_110832.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b;color:#e8eef4;font-family:Georgia,serif;line-height:2.2;padding:10px;text-align:left;">
+
+  <!-- Metadados Google News (oculto / compatível WP) -->
+  <div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+    <meta itemprop="headline" content="DGX Station + DeepSeek: engenharia de IA local com memória coerente, contexto longo e agentes com ferramentas" />
+    <meta itemprop="datePublished" content="2026-03-02" />
+    <meta itemprop="dateModified" content="2026-03-02" />
+    <meta itemprop="description" content="Artigo técnico sobre a NVIDIA DGX Station (GB300 Grace Blackwell Ultra, 784GB de memória coerente, ConnectX-8 800Gb/s) e a evolução do DeepSeek (V3.2 e V3.2-Exp com DSA), com abordagem prática para inferência, RAG e agentes on-prem." />
+    <meta itemprop="author" content="Francisco Gonçalves" />
+    <meta itemprop="publisher" content="Fragmentos do Caos" />
+    <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/fc_logo_round.png" />
+    <meta itemprop="mainEntityOfPage" content="https://www.fragmentoscaos.eu/" />
+  </div>
+
+  <!-- 1️⃣ BOX DE FACTOS -->
+  <div style="background:#111;border:1px solid #444;border-radius:12px;padding:14px;margin:10px 0 18px 0;">
+    <div style="font-weight:bold;margin-bottom:10px;letter-spacing:1px;">
+      <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+    </div>
+    <ul style="margin:0;padding-left:18px;">
+      <li><strong>DGX Station</strong>: primeira workstation "deskside" com o <strong>NVIDIA GB300 Grace Blackwell Ultra Desktop Superchip</strong>, com <strong>~784GB</strong> de memória unificada/coerente (a NVIDIA refere também ~775GB em descrições), orientada a treino e inferência de larga escala no posto de trabalho.</li>
+      <li><strong>Rede</strong>: inclui <strong>ConnectX-8 SuperNIC</strong> até <strong>800Gb/s</strong>, pensado para "multi-station scaling" e integração com infra-estrutura empresarial.</li>
+      <li><strong>DeepSeek-V3.2</strong> (01/12/2025): primeiro modelo da DeepSeek a integrar "thinking" directamente no <strong>tool-use</strong> e a suportar ferramentas em modo "thinking" e "non-thinking".</li>
+      <li><strong>DeepSeek-V3.2-Exp</strong> (29/09/2025): introduz <strong>DeepSeek Sparse Attention (DSA)</strong> para contexto longo com menor custo computacional; anunciado como passo intermédio para a próxima arquitectura.</li>
+      <li><strong>Mensagem técnica</strong>: a combinação "memória coerente massiva + contexto longo eficiente + tool-use" torna viável a IA local para RAG, agentes e automação empresarial com dados sensíveis "em casa".</li>
+    </ul>
+  </div>
+
+  <!-- 2️⃣ TÍTULO -->
+  <h2 style="margin:10px 0 14px 0;color:#ffcc66 !important;font-size:34px;line-height:1.2;text-align:left;">
+    <span style="color:#ffcc66 !important;">DGX Station + DeepSeek: engenharia de IA local com memória coerente, contexto longo e agentes com ferramentas</span>
+  </h2>
+
+  <!-- 3️⃣ EXCERTO -->
+  <div style="border-left:4px solid #ffcc66;padding:10px 12px;margin:0 0 18px 0;background:rgba(255,204,102,0.06);font-style:italic;">A era do "modelo na nuvem" continua — mas há um regresso silencioso ao terreno: executar, governar e auditar IA dentro da própria infra-estrutura.
+A DGX Station é o ferro; o DeepSeek V3.2 é a mente que aprende a operar com ferramentas.
+  </div>
+
+  <!-- IMAGEM (opcional) -->
+  <div style="margin:14px 0 18px 0;padding:10px;background:#0f0f0f;border:1px solid #222;border-radius:12px;">
+    <div style="font-size:14px;opacity:.9;margin-bottom:8px;">
+      <span style="color:#ffcc66 !important;"><strong>Imagem</strong></span> — (substituir pelo URL depois de carregares no WordPress)
+    </div>
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/screenshot_20260302_110047.jpg" alt="DGX Station e IA local com DeepSeek" style="width:100%;height:auto;border-radius:10px;display:block;border:1px solid #222;">
+  </div>
+
+  <!-- 4️⃣ CORPO -->
+  <h3 style="color:#ffcc66 !important;margin:18px 0 6px 0;text-align:left;">
+    <span style="color:#ffcc66 !important;">1) DGX Station: o que interessa tecnicamente (e porquê)</span>
+  </h3>
+
+  <p style="margin:0 0 12px 0;">A DGX Station não é "mais uma workstation com GPU". É uma máquina concebida como <strong>plataforma coerente</strong>: CPU+GPU ligados por interconexão de altíssima largura de banda, com <strong>memória unificada/coerente em escala anormal</strong> para o mundo "deskside". Isto altera o tipo de trabalho que se consegue fazer localmente: modelos maiores, contextos longos, múltiplos serviços, e pipelines completos (indexação, inferência, pós-processamento, auditoria) sem "trocas de contexto" de infra-estrutura.
+  </p>
+
+  <p style="margin:0 0 12px 0;">A NVIDIA posiciona a DGX Station como o primeiro sistema "deskside" com o <strong>GB300 Grace Blackwell Ultra</strong>, com <strong>~784GB</strong> de memória unificada e conectividade de rede até <strong>800Gb/s</strong> via <strong>ConnectX-8</strong>. O recado é claro: não é apenas potência; é <strong>capacidade de caber</strong>.
+E "caber" é o que decide se um modelo e o seu contexto vivem localmente ou se são expulsos para a nuvem.
+  </p>
+
+  <h3 style="color:#ffcc66 !important;margin:18px 0 6px 0;text-align:left;">
+    <span style="color:#ffcc66 !important;">2) Memória coerente: a arma silenciosa</span>
+  </h3>
+
+  <p style="margin:0 0 12px 0;">Em IA aplicada, o gargalo real raramente é "FLOPS". É <strong>memória</strong>: quanto cabe, com que latência, e com que custo de movimentação.
+A memória coerente em grande escala permite:
+  </p>
+
+  <ul style="margin:0 0 12px 22px;">
+    <li><strong>Modelos maiores</strong> (ou mais instâncias do mesmo modelo) sem amputações brutais;</li>
+    <li><strong>Contexto longo</strong> sem "pagamento" excessivo em trocas CPU↔GPU;</li>
+    <li><strong>RAG robusto</strong> com indexação, re-ranking e caches persistentes no mesmo nó;</li>
+    <li><strong>Serviços paralelos</strong> (API, embeddings, vector DB, auditoria, observabilidade) sem a máquina entrar em asfixia.</li>
+  </ul>
+
+  <p style="margin:0 0 12px 0;">Em termos de arquitectura, isto dá-te liberdade: podes desenhar um "nó IA" que seja simultaneamente laboratório e produção, com camadas de governação e logging que, em cloud, muitas vezes ficam subfinanciadas por custo.
+  </p>
+
+  <h3 style="color:#ffcc66 !important;margin:18px 0 6px 0;text-align:left;">
+    <span style="color:#ffcc66 !important;">3) DeepSeek V3.2: "thinking" a operar com ferramentas</span>
+  </h3>
+
+  <p style="margin:0 0 12px 0;">O salto do DeepSeek-V3.2 é conceptual e prático: integrar "thinking" no <strong>tool-use</strong>.
+Isto aproxima o modelo do papel de <strong>agente</strong> (planeia, chama ferramentas, valida, volta a chamar, conclui) em vez de ser apenas um "oráculo textual".
+A própria DeepSeek refere treino de agentes com síntese massiva de dados cobrindo milhares de ambientes e dezenas de milhares de instruções complexas.
+  </p>
+
+  <p style="margin:0 0 12px 0;">Para uma empresa, "tool-use" é o nome civilizado de coisas concretas:
+<strong>consultar base de dados</strong>, <strong>chamar um serviço interno</strong>, <strong>gerar orçamento</strong>, <strong>validar margens</strong>,
+<strong>ler um PDF indexado</strong>, <strong>criar uma proposta</strong>, <strong>abrir um ticket</strong>, <strong>produzir relatório</strong>.
+É aqui que a IA deixa de ser conversa e passa a ser <strong>processo</strong>.
+  </p>
+
+  <h3 style="color:#ffcc66 !important;margin:18px 0 6px 0;text-align:left;">
+    <span style="color:#ffcc66 !important;">4) V3.2-Exp e DSA: contexto longo com menos imposto computacional</span>
+  </h3>
+
+  <p style="margin:0 0 12px 0;">A DeepSeek-V3.2-Exp introduz <strong>DeepSeek Sparse Attention (DSA)</strong>, apontada como mecanismo para reduzir custo computacional e melhorar desempenho em texto de sequência longa.
+Isto interessa porque a IA empresarial vive de <strong>documentos longos</strong>: procedimentos, contratos, catálogos, histórico de suporte, relatórios técnicos, normativos.
+Contexto longo é a diferença entre "resposta bonita" e "resposta correcta, com fonte e coerência".
+  </p>
+
+  <h3 style="color:#ffcc66 !important;margin:18px 0 6px 0;text-align:left;">
+    <span style="color:#ffcc66 !important;">5) Arquitectura recomendada: DGX Station como nó on-prem (padrão de produção)</span>
+  </h3>
+
+  <p style="margin:0 0 12px 0;">Um desenho "limpo" (e auditável) para pôr DeepSeek em produção na DGX Station:
+  </p>
+
+  <div style="background:#0f0f0f;border:1px solid #222;border-radius:12px;padding:12px 14px;margin:0 0 12px 0;">
+    <div style="color:#ffcc66 !important;font-weight:bold;margin-bottom:8px;">Pipeline (alto nível)</div>
+    <ol style="margin:0;padding-left:18px;">
+      <li><strong>Ingestão</strong>: documentos (PDF, DOCX, HTML, e-mail), normalização e metadados (departamento, permissões, datas).</li>
+      <li><strong>Embeddings</strong>: geração de vectores e armazenamento em <strong>vector DB</strong> (com colecções por domínio e ACLs).</li>
+      <li><strong>RAG</strong>: retrieval + re-ranking + montagem de contexto com citações internas (IDs de documento e páginas).</li>
+      <li><strong>Inferência</strong>: DeepSeek-V3.2 como "motor", com <strong>tool-use</strong> activado e limites de segurança.</li>
+      <li><strong>Ferramentas</strong>: conectores (ERP/CRM/SQL) e funções de negócio (ex.: cálculo de orçamento, validação de margens).</li>
+      <li><strong>Validação</strong>: regras determinísticas + verificação de campos críticos (ex.: valores, impostos, condições).</li>
+      <li><strong>Auditoria</strong>: logging de prompts, fontes, chamadas a ferramentas, tempos, erros e versões de modelo.</li>
+    </ol>
+  </div>
+
+  <p style="margin:0 0 12px 0;">O benefício de executar isto num nó "deskside" potente é a <strong>latência baixa</strong> e a <strong>soberania de dados</strong>.
+O benefício de ter "tool-use" é transformar respostas em <strong>acções controladas</strong>.
+E o benefício de DSA/contexto longo é reduzir o risco de respostas fora de contexto quando os documentos crescem.
+  </p>
+
+  <h3 style="color:#ffcc66 !important;margin:18px 0 6px 0;text-align:left;">
+    <span style="color:#ffcc66 !important;">6) Notas práticas: quantização, throughput e desenho de serviços</span>
+  </h3>
+
+  <ul style="margin:0 0 12px 22px;">
+    <li><strong>Quantização</strong>: em produção, quase sempre compensa usar quantização (quando compatível) para ganhar throughput e reduzir pegada, mantendo qualidade aceitável.</li>
+    <li><strong>Separação de serviços</strong>: mesmo num nó único, isola "API gateway", "RAG service", "model server" e "tools service" para observabilidade e controlo de falhas.</li>
+    <li><strong>Cache e warmup</strong>: caches de embeddings e de re-ranking (por colecção) reduzem custos e melhoram previsibilidade.</li>
+    <li><strong>Políticas</strong>: define claramente o que o agente pode fazer. "Tool-use" sem guarda é automação cega; com guarda, é produtividade.</li>
+  </ul>
+
+  <h3 style="color:#ffcc66 !important;margin:18px 0 6px 0;text-align:left;">
+    <span style="color:#ffcc66 !important;">Epílogo: 2026 é o ano em que a IA volta a ser infra-estrutura</span>
+  </h3>
+
+  <p style="margin:0 0 12px 0;">A DGX Station representa uma ideia antiga com roupa nova: <strong>computação perto dos dados</strong>.
+O DeepSeek V3.2 representa uma ideia moderna com músculo: <strong>modelos que raciocinam enquanto operam ferramentas</strong>.
+Juntos, dão forma a uma arquitectura onde a IA não é um espectáculo distante — é um sistema local, governado, auditável e útil.
+  </p>
+
+  <!-- Referências internacionais -->
+  <div style="margin-top:16px;padding-top:10px;border-top:1px solid #222;">
+    <div style="color:#ffcc66 !important;font-weight:bold;">Referências (fontes)</div>
+    <ul style="margin:8px 0 0 18px;padding:0;">
+      <li>NVIDIA — DGX Station (página oficial): https://www.nvidia.com/en-eu/products/workstations/dgx-station/</li>
+      <li>NVIDIA Newsroom (18 Maio 2025) — DGX Station: GB300, 20 PFLOPS, 784GB, ConnectX-8 800Gb/s: https://nvidianews.nvidia.com/news/nvidia-launches-ai-first-dgx-personal-computing-systems-with-global-computer-makers</li>
+      <li>DeepSeek — V3.2 Release (01 Dez 2025): https://api-docs.deepseek.com/news/news251201</li>
+      <li>DeepSeek — Introducing V3.2-Exp (29 Set 2025): https://api-docs.deepseek.com/news/news250929</li>
+      <li>Reuters (29 Set 2025) — V3.2-Exp, DSA, "intermediate step": https://www.reuters.com/technology/deepseek-releases-model-it-calls-intermediate-step-towards-next-generation-2025-09-29/</li>
+    </ul>
+  </div>
+
+  <!-- Assinatura -->
+  <div style="border-top:1px solid #ffcc78;margin-top:18px;padding-top:10px;color:#ffcca0;">
+    <strong>Francisco Gonçalves</strong><br>
+    <span style="opacity:.95;">Fragmentos do Caos • FC-Chronic-News</span><br>
+    <span style="opacity:.85;">Co-autoria editorial: Augustus</span>
+  </div>
+
+  
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://dweb.link/ipns/k51qzi5uqu5dm865x8gvpx5ywhcu9ndr5652r2nc689gsnl5dgzgzjugt36xf6"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ IPFS (IPNS)
+    </a>
+
+  </div>
+
+
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
