@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Nova Internacional do Medo</title>
+<meta name="description" content="A Nova Internacional do Medo">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Nova Internacional do Medo</h1>
+      <p class="meta">Publicado em 2026-03-19 12:07:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000c5107243b09daba54e0f1f95.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, serif; line-height:2.2; padding:10px;">
+
+  <div style="background:#111; border:1px solid #444; padding:18px; margin:0 0 30px 0;">
+    <h3 style="margin-top:0; text-align:left;"><span style="color:#ffcc66 !important;">BOX DE FACTOS</span></h3>
+    <ul style="margin:0; padding-left:22px; text-align:left;">
+      <li>A cooperação entre regimes autoritários deixou de ser apenas táctica e tornou-se mais estruturada e persistente.</li>
+      <li>Rússia e China surgem no centro de redes de apoio que incluem propaganda, tecnologia, diplomacia, comércio estratégico e protecção mútua.</li>
+      <li>As autocracias do século XXI já não precisam sempre de fardas e tanques: usam plataformas, vigilância digital, influência mediática e erosão institucional gradual.</li>
+      <li>A desunião das democracias e a erosão interna do seu compromisso liberal ajudaram a abrir espaço a esta nova ecologia autoritária.</li>
+      <li>O autoritarismo contemporâneo é menos teatral do que o do século XX, mas por isso mesmo mais adaptável, mais insinuante e mais perigoso.</li>
+      <li>O grande risco do nosso tempo é a normalização de regimes que transformam a força em ordem, a censura em estabilidade e o medo em método de governo.</li>
+    </ul>
+  </div>
+
+  <h2 style="text-align:center; color:#ffcc66 !important; font-size:34px; margin-bottom:22px;">
+    <span style="color:#ffcc66 !important;">O novo mal do século XXI: a internacional autoritária e a fadiga das democracias</span>
+  </h2>
+
+  <div style="border-left:4px solid #ffcc66; padding:14px 18px; margin:0 0 30px 0; background:#111; font-style:italic; color:#f3d58a; text-align:left;">
+    O autoritarismo já não marcha apenas com botas. Hoje circula por cabos submarinos, satélites, plataformas digitais, câmaras de vigilância, tratados oportunistas e narrativas cuidadosamente embaladas para consumo global.
+  </div>
+
+  <p style="text-align:left;">
+    Há males históricos que regressam mascarados de novidade. Mudam de tecnologia, de linguagem, de estética e de método, mas conservam intacto o seu núcleo essencial: o desprezo pela liberdade, a alergia ao pluralismo, a captura da verdade e a redução do ser humano a peça obediente de uma arquitectura de poder. O século XXI prometia, a muitos, um mundo mais aberto, mais interdependente e mais imune aos velhos monstros do século passado. Em vez disso, está a assistir à consolidação de uma nova ecologia autoritária, flexível, tecnológica, pragmática e internacionalizada.
+  </p>
+
+  <p style="text-align:left;">
+    A expressão "eixo de ditaduras" pode soar excessiva para alguns ou demasiado cinematográfica para outros. Mas o fenómeno que procura descrever é real. O que antes parecia uma justaposição de regimes fechados, com agendas próprias e alianças variáveis, tornou-se progressivamente mais coordenado. Rússia, China e outros regimes afins deixaram de actuar apenas por coincidência geopolítica. Passaram a colaborar de forma mais contínua, mais funcional e mais estratégica, explorando as fraquezas das democracias, protegendo-se mutuamente em fóruns internacionais e difundindo tecnologias, discursos e práticas de controlo.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Do autoritarismo isolado à ecologia autoritária</span>
+  </h3>
+
+  <p style="text-align:left;">
+    O relatório referido pela imprensa internacional assinala precisamente esse salto qualitativo: a cooperação autoritária deixou de ser episódica e começou a institucionalizar-se. Já não se trata apenas de contactos diplomáticos de conveniência ou de negócios oportunos. Fala-se agora de financiamento, partilha tecnológica, propaganda, concertação diplomática e apoio mútuo perante críticas vindas do mundo democrático. Isto significa que o autoritarismo contemporâneo já não opera apenas dentro de fronteiras nacionais; constrói redes, aprende, adapta-se e exporta o seu método.
+  </p>
+
+  <p style="text-align:left;">
+    Convém, ainda assim, não cair na simplificação preguiçosa. Não estamos perante uma aliança perfeitamente coesa, doutrinariamente homogénea ou sentimentalmente solidária. O que existe é talvez algo mais frio e mais perigoso: uma convergência pragmática entre regimes que podem não confiar plenamente uns nos outros, mas que partilham um objectivo fundamental — enfraquecer o prestígio e a eficácia do modelo democrático liberal e garantir a sobrevivência de sistemas assentes no controlo, na repressão e na gestão manipulada da opinião pública.
+  </p>
+
+  <p style="text-align:left;">
+    No fundo, não é necessário que estes regimes se amem. Basta-lhes que se ajudem o suficiente. Basta-lhes reconhecer que o êxito de um deles abre espaço para os restantes. Basta-lhes perceber que cada fissura no campo democrático é uma oportunidade estratégica. O século XXI ensinou-lhes algo essencial: a liberdade descoordenada é vulnerável; a repressão coordenada é eficaz.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">A nova arma: informação, narrativa e colonização do real</span>
+  </h3>
+
+  <p style="text-align:left;">
+    Se o totalitarismo clássico precisava de praças cheias, uniformes e coreografias de massas, o autoritarismo actual prefere muitas vezes a subtileza algorítmica, a saturação mediática e a deformação permanente da percepção. A grande batalha não é apenas territorial ou militar; é também uma guerra pela realidade. Quem define o enquadramento do mundo controla mais do que notícias: controla emoções, medos, prioridades e limiares de tolerância moral.
+  </p>
+
+  <p style="text-align:left;">
+    A Reporters Without Borders tem mostrado como a China procura remodelar a ordem mediática global, promovendo uma visão em que o jornalismo não serve a verdade nem o escrutínio do poder, mas antes a estabilidade do regime e a sua narrativa externa. A Rússia fez da manipulação informacional uma arte de corrosão. Outros regimes observam, aprendem e replicam. O objectivo não é apenas convencer; é cansar. Não é apenas mentir; é dissolver a confiança na própria possibilidade de verdade. Quando tudo parece propaganda, a propaganda vence por exaustão.
+  </p>
+
+  <p style="text-align:left;">
+    Este é talvez um dos traços mais sombrios do novo autoritarismo: ele já não precisa de censurar tudo de forma brutal e explícita. Pode inundar o espaço público com ruído, semear contradições, relativizar crimes, inverter culpados, amplificar extremismos e deixar que a fadiga cognitiva faça o resto. A mentira industrial do século XXI não destrói apenas factos; destrói a disposição para os procurar.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Democracias divididas, autocracias pacientes</span>
+  </h3>
+
+  <p style="text-align:left;">
+    Mas seria intelectualmente preguiçoso atribuir toda a culpa à astúcia dos regimes autoritários. O crescimento desta "internacional" repressiva não se explica apenas pela força dos seus actores. Explica-se também pela fraqueza, pela hesitação e pela fragmentação do campo democrático. Durante demasiado tempo, muitas democracias acreditaram que a História tinha decidido a seu favor. Supuseram que a prosperidade bastaria, que o mercado resolveria, que a interdependência domesticaria os predadores, que o progresso técnico arrastaria consigo a maturidade política.
+  </p>
+
+  <p style="text-align:left;">
+    Nada disso aconteceu de forma automática. Pelo contrário: a abertura económica sem defesa ética consistente, a digitalização sem regulação inteligente, a política sem cultura cívica profunda e a liberdade sem musculatura institucional criaram vulnerabilidades internas que os regimes autoritários aprenderam rapidamente a explorar. O resultado está à vista: democracias fatigadas, polarizadas, infiltradas por desinformação, corroídas por populismos internos e por uma perda progressiva de confiança nas suas próprias bases morais.
+  </p>
+
+  <p style="text-align:left;">
+    A tragédia das democracias modernas é, em parte, esta: habituaram-se tanto à liberdade que deixaram de a tratar como civilização exigente e começaram a vivê-la como automatismo garantido. Ora a liberdade não é um estado natural. É uma construção difícil, sempre provisória, sempre exposta, sempre ameaçada. Quando as democracias esquecem isso, tornam-se frágeis diante de regimes que não hesitam, não têm pudor e não reconhecem limites éticos à preservação do seu poder.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">O mal do século XXI não precisa de se chamar totalitarismo</span>
+  </h3>
+
+  <p style="text-align:left;">
+    Há um erro frequente na análise contemporânea: imaginar que, se não voltámos exactamente aos fascismos ou estalinismos do século XX, então o perigo actual é menor ou de outra natureza irrelevante. Não. O mal político do nosso tempo pode ser menos espectacular e, ainda assim, profundamente destrutivo. Pode coexistir com eleições encenadas, parlamentos decorativos, mercados parcialmente abertos, consumo abundante e uma aparência de normalidade. Pode vestir fato moderno, falar em soberania, desenvolvimento, ordem, eficiência e multipolaridade. Pode até apresentar-se como alternativa racional ao "caos" das democracias.
+  </p>
+
+  <p style="text-align:left;">
+    É precisamente essa plasticidade que o torna tão perigoso. O autoritarismo do século XXI é modular. Usa tecnologia de vigilância, repressão legalizada, patriotismo instrumental, nacionalismo emocional, revisionismo histórico, dependência económica e influência digital. Sabe adaptar-se ao contexto local. Não precisa de repetir o século XX para produzir efeitos comparáveis de asfixia moral, cívica e institucional.
+  </p>
+
+  <p style="text-align:left;">
+    E talvez o mais perturbador seja isto: muitos cidadãos, cansados do ruído democrático, começam a olhar para estas arquitecturas de força com uma curiosidade perigosa. Trocam liberdade imperfeita por ordem sem alma. Trocam conflito legítimo por silêncio administrado. Trocam pluralismo difícil por autoridade simplificadora. E não percebem que, ao fazê-lo, não estão a resolver as imperfeições da democracia — estão a preparar a sua própria menoridade política.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Uma escolha civilizacional</span>
+  </h3>
+
+  <p style="text-align:left;">
+    O que está em curso não é apenas uma disputa entre blocos geopolíticos. É uma escolha civilizacional sobre o valor do indivíduo, o lugar da verdade, a legitimidade do dissenso e os limites do poder. O século XXI será decidido menos pela retórica das cimeiras e mais pela capacidade das sociedades livres de voltarem a acreditar na dignidade da liberdade, na exigência da responsabilidade e na necessidade de defender instituições abertas contra os predadores externos e internos.
+  </p>
+
+  <p style="text-align:left;">
+    Se falharem, o futuro não pertencerá necessariamente a uma grande tirania unificada, mas a algo talvez ainda mais insidioso: um mundo progressivamente contaminado por métodos autoritários normalizados, por democracias esvaziadas por dentro e por uma habituação colectiva à ideia de que a liberdade é desordem, a crítica é sabotagem e a obediência é maturidade.
+  </p>
+
+  <p style="text-align:left;">
+    É esse o verdadeiro mal extremo do século XXI: não apenas a existência de ditaduras, mas a lenta sedução global da lógica ditatorial.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Referências internacionais</span>
+  </h3>
+
+  <div style="background:#111; border:1px solid #333; padding:18px; margin:20px 0 28px 0; text-align:left;">
+    <p style="margin-top:0; text-align:left;"><strong>• Bloomberg</strong> — sobre o relatório da Action for Democracy e o índice que acompanha sete formas de cooperação entre regimes autoritários. 1</p>
+
+    <p style="text-align:left;"><strong>• V-Dem Institute, Democracy Report 2026</strong> — sobre o aumento do peso global das autocracias e a regressão democrática. 2</p>
+
+    <p style="text-align:left;"><strong>• Freedom House, The Global Expansion of Authoritarian Rule</strong> — sobre a eficácia crescente dos regimes autoritários em contornar normas, apoiar aliados iliberais e desafiar democracias. 3</p>
+
+    <p style="margin-bottom:0; text-align:left;"><strong>• Reporters Without Borders, Propaganda Monitor</strong> — sobre a estratégia chinesa de remodelação da ordem mediática global e o uso da propaganda como instrumento sistémico. 4</p>
+  </div>
+
+  <div style="border-top:1px solid #ffcc78; margin-top:35px; padding-top:18px; color:#ffcca0; text-align:left;">
+    <p style="margin:0 0 10px 0;"><strong>Frase final:</strong></p>
+    <p style="margin:0; font-size:1.12em;">
+      <strong>O maior perigo do século XXI não é apenas o regresso das ditaduras, mas a normalização lenta de um mundo onde a liberdade passa a parecer fraqueza e a obediência volta a ser vendida como salvação.</strong>
+    </p>
+    <p style="margin:18px 0 0 0;">— Francisco Gonçalves, com Augustus Veritas</p>
+  </div>
+
+  
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://dweb.link/ipns/k51qzi5uqu5dm865x8gvpx5ywhcu9ndr5652r2nc689gsnl5dgzgzjugt36xf6"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ IPFS (IPNS)
+    </a>
+
+  </div>
+
+
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
