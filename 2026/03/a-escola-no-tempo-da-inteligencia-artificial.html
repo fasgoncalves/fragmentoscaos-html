@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Escola no Tempo da Inteligência Artificial</title>
+<meta name="description" content="A Escola no Tempo da Inteligência Artificial">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Escola no Tempo da Inteligência Artificial</h1>
+      <p class="meta">Publicado em 2026-03-21 10:16:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000ddf4720aa21af31e6efceaac.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, serif; line-height:2.2; padding:10px; text-align:left;">
+
+<div style="display:none;">
+  <div itemscope itemtype="https://schema.org/NewsArticle">
+    <meta itemprop="headline" content="A Escola no Tempo da Inteligência Artificial">
+    <meta itemprop="datePublished" content="2026-03-20">
+    <meta itemprop="dateModified" content="2026-03-20">
+    <meta itemprop="description" content="Perante a aceleração da inteligência artificial, Portugal precisa de uma reforma profunda do sistema educativo para não ficar condenado à irrelevância.">
+    <meta itemprop="author" content="Aletheia Veritas & Francisco Gonçalves">
+    <meta itemprop="mainEntityOfPage" content="https://www.fragmentoscaos.eu/">
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+      <meta itemprop="name" content="Fragmentos do Caos">
+      <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+        <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/fc_logo_round.png">
+      </div>
+    </div>
+    <div itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+      <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/03/file_00000000ddf4720aa21af31e6efceaac.png">
+    </div>
+  </div>
+</div>
+
+<div style="background:#111; border:1px solid #444; padding:18px; margin:12px 0 24px 0;">
+  <div style="color:#ffcc66 !important; font-size:22px; font-weight:bold; letter-spacing:1px;">BOX DE FACTOS</div>
+  <ul style="margin-top:12px; color:#e8eef4;">
+    <li>A UNESCO alerta que a rápida evolução da inteligência artificial está a ultrapassar os debates políticos e os enquadramentos regulatórios na educação.</li>
+    <li>O Fórum Económico Mundial identifica a IA e os dados, a literacia tecnológica, o pensamento analítico e a criatividade entre as competências em maior crescimento até 2030.</li>
+    <li>A OCDE defende o alargamento do acesso a aprendizagem de qualidade desde a infância até à idade adulta, com forte ênfase em literacia, numeracia e resolução adaptativa de problemas.</li>
+    <li>O FMI sublinha que as escolhas de política pública e a preparação de competências determinarão quem beneficia e quem ficará para trás na revolução da IA.</li>
+    <li>Portugal não pode continuar a ensinar para exames do passado num mundo em que máquinas já escrevem, analisam, programam e assistem decisões.</li>
+    <li>Sem reforma profunda da escola, a IA não será apenas uma mudança tecnológica: será um acelerador cruel do atraso nacional.</li>
+  </ul>
+</div>
+
+<h2 style="text-align:center; color:#ffcc66 !important; font-size:34px; margin-top:10px; margin-bottom:22px;">
+  <span style="color:#ffcc66 !important;">A Escola no Tempo da Inteligência Artificial</span>
+</h2>
+
+<div style="border-left:4px solid #ffcc66; padding:14px 18px; margin:18px 0 26px 0; background:#121212; font-style:italic; color:#ffe7ad;">
+  Andy Grove deixou uma frase que hoje soa menos a reflexão e mais a aviso: <strong>"Tudo o que pode ser feito será feito."</strong> Perante a aceleração da inteligência artificial, a questão decisiva já não é se o mundo vai mudar, mas se Portugal quer preparar-se ou continuar a olhar o futuro da berma.
+</div>
+
+<p>A solução terá de passar, necessariamente, por uma reforma profunda do sistema educativo. Não como ornamento discursivo de campanhas, nem como promessa cerimonial para relatórios ministeriais, mas como decisão estrutural de sobrevivência civilizacional. Porque, como disse Andy Grove, antigo líder da Intel, tudo o que pode ser feito será feito. E na era da inteligência artificial esta frase deixou de ser uma observação sobre o progresso tecnológico para se transformar num princípio brutal do nosso tempo.</p>
+
+<p>A inteligência artificial já não pertence ao domínio da ficção, nem à zona confortável das conferências sobre o amanhã. Está a entrar no trabalho, na administração, na saúde, na investigação, na criação de conteúdos, na programação, na análise de dados, na tradução, na consultoria e até na própria escola. A UNESCO alerta explicitamente que os desenvolvimentos rápidos destas tecnologias já ultrapassaram os debates políticos e os enquadramentos regulatórios, criando riscos e desafios que os sistemas educativos ainda não acompanharam. É uma advertência séria: o mundo acelerou, e as instituições continuam muitas vezes a andar a passo de repartição pública.</p>
+
+<h3 style="color:#ffcc66 !important; margin-top:28px;"><span style="color:#ffcc66 !important;">A velha escola para um mundo que já morreu</span></h3>
+
+<p>Durante demasiado tempo, a escola portuguesa habituou-se a confundir ensino com transmissão, avaliação com memorização e disciplina com conformidade. Esse modelo já era insuficiente antes da inteligência artificial. Agora tornou-se perigosamente obsoleto. Uma escola desenhada para repetir matéria, premiar obediência e treinar respostas fechadas não prepara jovens para um mundo em que as máquinas executam, em segundos, grande parte das tarefas rotineiras que durante décadas justificaram currículos, exames e métodos.</p>
+
+<p>Não se trata de declarar a morte do professor nem de ajoelhar perante os algoritmos, como se estivéssemos condenados a venerar a nova máquina sagrada. Trata-se de perceber que, se a tecnologia automatiza o previsível, a escola tem de elevar o humano. E elevar o humano significa ensinar melhor aquilo que as máquinas não substituem facilmente: pensamento crítico, interpretação, dúvida metódica, criatividade, juízo ético, capacidade de cooperação, comunicação, imaginação e coragem intelectual.</p>
+
+<h3 style="color:#ffcc66 !important; margin-top:28px;"><span style="color:#ffcc66 !important;">O que o mundo já percebeu</span></h3>
+
+<p>As grandes instituições internacionais estão a dizer isto com todas as letras. O Fórum Económico Mundial assinala que, até 2030, a IA e os dados, a literacia tecnológica, o pensamento analítico, a criatividade, a resiliência, a flexibilidade e a aprendizagem contínua estarão entre as competências em maior crescimento. Ou seja: o futuro não exige apenas saber usar ferramentas; exige saber pensar num ecossistema dominado por ferramentas inteligentes.</p>
+
+<p>A OCDE, por seu lado, insiste num duplo imperativo: alargar o acesso a aprendizagem de qualidade desde a infância até à idade adulta e garantir que as competências desenvolvidas são efectivamente relevantes para empregos produtivos e vidas socialmente dignas. Literacia, numeracia, resolução adaptativa de problemas e competências sociais e emocionais deixam de ser capítulos acessórios; passam a ser a ossatura de uma cidadania apta para o século XXI.</p>
+
+<p>O FMI vai ainda mais longe no aviso: as escolhas de política pública vão determinar se trabalhadores e empresas estarão preparados para a revolução da IA. Em bom português: a tecnologia não decidirá sozinha quem prospera. Serão os sistemas educativos, a capacidade de requalificação, a inteligência das políticas e a lucidez dos países a definir quem sobe e quem afunda.</p>
+
+<h3 style="color:#ffcc66 !important; margin-top:28px;"><span style="color:#ffcc66 !important;">Portugal entre a hesitação e o abismo</span></h3>
+
+<p>É aqui que Portugal entra em cena com os seus velhos fantasmas. Burocracia, reformas tímidas, culto do diploma em vez da competência real, currículos por vezes sobrecarregados de matéria e pobres em pensamento, e uma ligação ainda débil entre escola, ciência, tecnologia e tecido produtivo. Continuamos demasiadas vezes a educar para a certificação e não para a capacidade. Para a nota, não para o discernimento. Para o ritual escolar, não para a vida intelectual autónoma.</p>
+
+<p>Ora, perante a aceleração da inteligência artificial, essa lentidão deixou de ser apenas um problema administrativo. Passa a ser uma ameaça estratégica. Um país que não reforma a sua escola será forçado a importar conhecimento, tecnologia, modelos e dependências. E quando isso acontece, o atraso deixa de ser apenas económico: torna-se cultural e político. A nação perde voz própria e passa a limitar-se a usar, mal e tarde, o que outros inventaram primeiro.</p>
+
+<h3 style="color:#ffcc66 !important; margin-top:28px;"><span style="color:#ffcc66 !important;">O que deve mudar na educação</span></h3>
+
+<p>Reformar profundamente o sistema educativo não significa encher salas com ecrãs e vender isso como modernização. Esse truque de feira já não engana ninguém. A transformação séria tem de ser muito mais funda. É preciso rever currículos, reduzir o peso do ensino meramente repetitivo, dar centralidade à compreensão, ao raciocínio, à escrita, à argumentação, à investigação e à resolução de problemas reais. É preciso ensinar os alunos a usar a IA, mas também a questioná-la, a desmontá-la, a reconhecer os seus erros, enviesamentos e alucinações.</p>
+
+<p>É igualmente indispensável reforçar a formação dos professores. Num mundo saturado de respostas automáticas, o professor torna-se menos distribuidor de informação e mais arquitecto de sentido. Menos vigilante de testes e mais orientador de pensamento. Menos repetidor de programa e mais mestre de leitura crítica, debate, síntese, interpretação e critério. Essa é a sua nova centralidade. E será talvez mais nobre do que a antiga.</p>
+
+<p>Também o ensino profissional, técnico e superior terá de ser repensado. A escola não pode continuar a funcionar como se a aprendizagem terminasse com a juventude. A nova economia exigirá requalificação permanente, aprendizagem ao longo da vida, actualização contínua e capacidade de atravessar mudanças tecnológicas sem colapso pessoal ou profissional. O adulto de amanhã terá de reaprender várias vezes. O país que não organizar isso ficará para trás com a solenidade de quem afunda a cantar hinos administrativos.</p>
+
+<h3 style="color:#ffcc66 !important; margin-top:28px;"><span style="color:#ffcc66 !important;">Educar para dominar a técnica, não para servir a técnica</span></h3>
+
+<p>Mas há uma fronteira ainda mais importante. A escola do futuro não deve formar apenas utilizadores competentes de ferramentas inteligentes. Deve formar consciências capazes de dominar a técnica sem se ajoelhar perante ela. A UNESCO insiste numa abordagem centrada no humano, com atenção à ética, aos direitos, à privacidade, à inclusão e ao uso responsável da IA na educação. Esse ponto é decisivo. Porque uma nação tecnicamente equipada mas moralmente vazia não é moderna: é apenas perigosa.</p>
+
+<p>Educar para a era da IA implica, por isso, muito mais do que ensinar código, "prompts" ou plataformas. Implica formar cidadãos que saibam distinguir verdade de simulação, rigor de verosimilhança, liberdade de manipulação, progresso de submissão. Num tempo em que a máquina pode produzir textos, imagens, análises e persuasão em escala industrial, a grande tarefa da escola será talvez a mais antiga e a mais difícil de todas: ensinar a pensar.</p>
+
+<h3 style="color:#ffcc66 !important; margin-top:28px;"><span style="color:#ffcc66 !important;">Uma decisão histórica</span></h3>
+
+<p>Portugal está, assim, perante uma escolha que não é pedagógica apenas; é histórica. Pode continuar a remendar o sistema, mudando nomes a disciplinas, multiplicando plataformas, distribuindo slogans digitais e simulando modernidade em conferências bem iluminadas. Ou pode assumir, finalmente, que a inteligência artificial exige uma reforma profunda do edifício educativo nacional, desde o ensino básico até à aprendizagem ao longo da vida.</p>
+
+<p>Essa reforma não é um luxo. É a condição mínima para que o País não seja condenado à irrelevância numa nova geografia mundial do conhecimento, da produtividade e do poder. Porque a tecnologia não espera por países lentos. E quando o futuro acelera, a indecisão já não é prudência: é rendição adiada.</p>
+
+<div style="margin:28px 0; padding:16px 18px; background:#101010; border:1px solid #3a3320;">
+  <h3 style="color:#ffcc66 !important; margin-top:0;"><span style="color:#ffcc66 !important;">Referências internacionais</span></h3>
+
+  <p style="margin-bottom:10px;"><strong>UNESCO</strong> — orientação sobre IA generativa na educação e investigação, com defesa de uma visão centrada no humano.<br>
+  <a href="https://www.unesco.org/en/articles/guidance-generative-ai-education-and-research" target="_blank" rel="noopener" style="color:#ffcc66 !important;">https://www.unesco.org/en/articles/guidance-generative-ai-education-and-research</a></p>
+
+  <p style="margin-bottom:10px;"><strong>UNESCO</strong> — enquadramento geral sobre IA na educação e alerta para riscos que ultrapassam os debates políticos e regulatórios.<br>
+  <a href="https://www.unesco.org/en/digital-education/artificial-intelligence" target="_blank" rel="noopener" style="color:#ffcc66 !important;">https://www.unesco.org/en/digital-education/artificial-intelligence</a></p>
+
+  <p style="margin-bottom:10px;"><strong>World Economic Forum</strong> — <em>The Future of Jobs Report 2025</em>, competências em maior crescimento, incluindo IA e dados, pensamento analítico e criatividade.<br>
+  <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/" target="_blank" rel="noopener" style="color:#ffcc66 !important;">https://www.weforum.org/publications/the-future-of-jobs-report-2025/</a></p>
+
+  <p style="margin-bottom:10px;"><strong>World Economic Forum</strong> — síntese sobre competências do futuro e crescente importância da IA e da literacia tecnológica.<br>
+  <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/digest/" target="_blank" rel="noopener" style="color:#ffcc66 !important;">https://www.weforum.org/publications/the-future-of-jobs-report-2025/digest/</a></p>
+
+  <p style="margin-bottom:10px;"><strong>OCDE</strong> — <em>OECD Skills Outlook 2025</em>, com ênfase em aprendizagem de qualidade, literacia, numeracia e resolução adaptativa de problemas.<br>
+  <a href="https://www.oecd.org/en/publications/oecd-skills-outlook-2025_26163cd3-en.html" target="_blank" rel="noopener" style="color:#ffcc66 !important;">https://www.oecd.org/en/publications/oecd-skills-outlook-2025_26163cd3-en.html</a></p>
+
+  <p style="margin-bottom:10px;"><strong>OCDE</strong> — IA, educação e competências, com foco nos impactos da IA na formação e no futuro das capacidades humanas.<br>
+  <a href="https://www.oecd.org/en/topics/artificial-intelligence-and-education-and-skills.html" target="_blank" rel="noopener" style="color:#ffcc66 !important;">https://www.oecd.org/en/topics/artificial-intelligence-and-education-and-skills.html</a></p>
+
+  <p style="margin-bottom:0;"><strong>FMI</strong> — análise sobre novas competências e IA na transformação do futuro do trabalho.<br>
+  <a href="https://www.imf.org/en/blogs/articles/2026/01/14/new-skills-and-ai-are-reshaping-the-future-of-work" target="_blank" rel="noopener" style="color:#ffcc66 !important;">https://www.imf.org/en/blogs/articles/2026/01/14/new-skills-and-ai-are-reshaping-the-future-of-work</a></p>
+</div>
+
+<h3 style="color:#ffcc66 !important; margin-top:30px;"><span style="color:#ffcc66 !important;">Epílogo</span></h3>
+
+<p>Talvez a grande questão do nosso tempo não seja tecnológica, mas educativa. A inteligência artificial continuará a avançar, quer Portugal queira quer não. O que ainda depende de nós é decidir se queremos formar gerações capazes de pensar com lucidez nesse novo mundo — ou apenas populações condenadas a consumir, obedecer e adaptar-se ao que outros conceberam.</p>
+
+<div style="border-top:1px solid #ffcc78; margin-top:34px; padding-top:18px; color:#ffcca0;">
+  <p><strong>Autoria:</strong> Aletheia Veritas & Francisco Gonçalves "in" 2026 - Future Predictions</p>
+<p><strong>Em Fragmentos do Caos</strong>, escrevemos para que o futuro não seja sequestrado pela ignorância travestida de progresso.</p>
+
+  <p style="font-size:20px; color:#ffcc66 !important; margin-top:18px;"><strong>Frase final para reflexão</strong></p>
+  <p style="font-size:22px; color:#fff0c2;"><strong>Se a escola continuar a ensinar como ontem, a inteligência artificial não encontrará um país preparado para o futuro — encontrará apenas um país atrasado a pedir licença para entrar nele.</strong></p>
+</div>
+<blockquote style="color:#ffcc67;">
+No século da IA, já não basta aprender conteúdos: é preciso aprender a aprender, reaprender e reinventar-se — ou morrer na praia da irrelevância.
+</blockquote>
+- Francisco Gonçalves (2026)
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://dweb.link/ipns/k51qzi5uqu5dm865x8gvpx5ywhcu9ndr5652r2nc689gsnl5dgzgzjugt36xf6"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ IPFS (IPNS)
+    </a>
+
+  </div>
+
+
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
