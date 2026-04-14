@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ecossistema Aberto de Aprendizagem e Ferramentas Open Source</title>
+<meta name="description" content="Ecossistema Aberto de Aprendizagem e Ferramentas Open Source">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Ecossistema Aberto de Aprendizagem e Ferramentas Open Source</h1>
+      <p class="meta">Publicado em 2026-04-13 22:24:52</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000b80c7246ac4cc95855bedcfe.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="background:#111; border:1px solid #444; padding:18px; margin-bottom:28px;">
+    <div style="color:#ffcc66 !important; font-size:22px; font-weight:bold; letter-spacing:0.5px; margin-bottom:10px;">
+      BOX DE FACTOS
+    </div>
+    <ul style="margin:0; padding-left:22px; color:#e8eef4;">
+      <li>Portugal continua a sofrer de défices persistentes de literacia, exigência intelectual e cultura de aprendizagem contínua.</li>
+      <li>Hoje existem plataformas abertas e gratuitas que permitem estudar áreas cruciais sem depender exclusivamente de estruturas tradicionais.</li>
+      <li>O acesso ao conhecimento já não está limitado pela geografia, mas continua muitas vezes bloqueado pela resignação e pela inércia social.</li>
+      <li>Uma sociedade que não valoriza o saber acaba por depender da mediocridade, da propaganda e da submissão.</li>
+    </ul>
+  </div>
+
+  <h2 style="text-align:center; color:#ffcc66 !important; font-size:34px; margin-top:0; margin-bottom:24px;">
+    Estamos na Idade Média em termos de literacia — e isso pode ser fatal para Portugal
+  </h2>
+
+  <div style="border-left:4px solid #ffcc66; padding:14px 18px; margin:0 0 28px 0; background:#121212; font-style:italic; color:#f3d58a;">
+    Um país que não aprende, que não lê, que não se actualiza e que não valoriza o saber entrega-se lentamente à dependência, à manipulação e à irrelevância.
+  </div>
+
+  <p>
+    Portugal continua, em muitos aspectos, a viver num atraso cultural e intelectual que já não pode ser explicado apenas por dificuldades económicas ou por limitações estruturais. O problema é mais fundo. Está entranhado numa forma de estar colectiva que tolera a superficialidade, banaliza a ignorância e olha para o conhecimento como se fosse um ornamento dispensável, em vez de o reconhecer como motor de liberdade e de construção nacional.
+  </p>
+
+  <p>
+    Quando um país perde o gosto de aprender, perde também a capacidade de pensar por si mesmo. E quando perde essa capacidade, torna-se presa fácil da propaganda, da incompetência, da demagogia e da corrupção. É por isso que a questão da literacia não é apenas pedagógica. É uma questão cívica, moral e até civilizacional.
+  </p>
+
+  <p>
+    A boa notícia, se é que ainda podemos usar essa expressão sem corar, é que o mundo não ficou parado à espera de Portugal. A ciência avançou. A tecnologia abriu portas. A Internet transformou-se num vasto território de acesso ao saber, onde qualquer pessoa com curiosidade, disciplina e força de vontade pode estudar gratuitamente, aprofundar competências e reinventar o seu percurso.
+  </p>
+
+  <p>
+    Quem quiser aprender já não depende apenas de sistemas de ensino lentos, burocráticos e tantas vezes desactualizados. Há hoje plataformas abertas, bibliotecas digitais, cursos online, comunidades de entreajuda e recursos gratuitos de enorme qualidade, muitos deles superiores, em clareza, actualidade e rigor, a boa parte da oferta formal que continua a ser apresentada como se fosse a última bolacha do pacote.
+  </p>
+
+  <p>
+    O que falta, por isso, não são meios. Falta muitas vezes a coragem de romper com a passividade. Falta a decisão íntima de não aceitar que o destino intelectual de uma pessoa fique confinado ao que o Estado lhe serve, ao que a escola lhe despeja ou ao que a sociedade lhe diz que basta.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; font-size:26px; margin-top:28px;">
+    Alguns recursos que merecem ser conhecidos
+  </h3>
+
+  <p>
+    Para quem quiser estudar, progredir ou simplesmente fugir à anemia mental instalada, eis alguns exemplos de plataformas que vale a pena explorar:
+  </p>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">1. Khan Academy</strong><br>
+    Uma das plataformas de aprendizagem gratuita mais conhecidas do mundo. Oferece conteúdos em matemática, ciências, informática, economia e outras áreas, com uma abordagem clara, progressiva e acessível.<br>
+    <a href="https://www.khanacademy.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.khanacademy.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">2. Duolingo</strong><br>
+    Uma ferramenta extremamente popular para aprendizagem de línguas, útil para quem quer começar ou reforçar competências linguísticas de forma autónoma e prática.<br>
+    <a href="https://www.duolingo.com/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.duolingo.com/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">3. MIT OpenCourseWare</strong><br>
+    Uma referência mundial no acesso aberto ao conhecimento. Disponibiliza materiais de milhares de cursos do MIT, cobrindo praticamente todo o seu currículo.<br>
+    <a href="https://ocw.mit.edu/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://ocw.mit.edu/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">4. OpenLearn</strong><br>
+    A plataforma gratuita da Open University, com centenas de cursos livres em áreas como tecnologia, ciência, cultura, línguas, sociedade e competências profissionais.<br>
+    <a href="https://www.open.edu/openlearn/free-courses" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.open.edu/openlearn/free-courses</a>
+  </div>
+
+  <p>
+    Em 2013 falava-se muito de novas universidades online e de plataformas emergentes que prometiam revolucionar o ensino superior. Algumas mudaram, outras foram absorvidas por lógicas mais empresariais, e outras perderam relevância. Isso, porém, não altera o essencial: o ensino digital aberto não era uma miragem passageira. Era o prenúncio de uma transformação profunda que hoje está ainda mais consolidada.
+  </p>
+
+  <p>
+    O futuro da formação está, cada vez mais, ligado ao <strong>e-learning</strong>, à aprendizagem contínua, à autoformação séria e ao acesso aberto aos melhores conteúdos disponíveis. Não se trata de abolir a escola ou a universidade enquanto instituições. Trata-se de reconhecer que, sozinhas, já não bastam. E em muitos casos chegam tarde, chegam mal e chegam desligadas do mundo real.
+  </p>
+
+  <p>
+    Num país lúcido, esta revolução do acesso ao saber seria celebrada, integrada e reforçada. Em Portugal, porém, continuamos muitas vezes presos a estruturas que recompensam a repetição, a burocracia e a obediência, enquanto o mundo lá fora oferece ferramentas para aprender quase tudo, a partir de casa, com rigor e sem custos proibitivos.
+  </p>
+
+  <p>
+    A tragédia portuguesa não está apenas nos salários baixos, na estagnação económica ou na degradação das instituições. Está também nesta pobreza de ambição intelectual, nesta tolerância social à ignorância e nesta incapacidade crónica de compreender que o conhecimento é a infraestrutura invisível de toda a liberdade.
+  </p>
+
+  <p>
+    Um povo que não estuda seriamente deixa de escolher o seu caminho. Limita-se a ser conduzido. E um país que abdica da literacia abdica, cedo ou tarde, do seu próprio futuro.
+  </p>
+
+  <div style="margin-top:26px; padding:18px; background:#111; border-left:4px solid #ffcc66;">
+    <strong style="color:#ffcc66 !important;">Nota final</strong><br>
+    A Internet abriu bibliotecas, cursos, ferramentas e caminhos que antes estavam reservados a poucos. A pergunta, hoje, já não é se existem meios para aprender. A pergunta é quantos ainda estão dispostos a fazê-lo com seriedade, disciplina e fome de futuro.
+  </div>
+
+  <div style="margin-top:34px; padding-top:18px; border-top:1px solid #ffcc78; color:#ffcca0;">
+    <strong>Francisco Gonçalves</strong><br>
+    <span style="color:#e8eef4;">Texto inspirado no original publicado em 17 de Agosto de 2013, agora revisto e actualizado.</span>
+  </div>
+<div style="margin-top:36px; background:#0f0f0f; border:1px solid #3b3b3b; padding:24px; text-align:left; color:#e8eef4; font-family:Georgia, serif; line-height:2.1;">
+
+  <h3 style="color:#ffcc66 !important; font-size:30px; margin-top:0; margin-bottom:18px;">
+    Grande mapa de recursos: plataformas de ensino online e ferramentas open source
+  </h3>
+
+  <div style="border-left:4px solid #ffcc66; padding:14px 18px; margin:0 0 24px 0; background:#121212; font-style:italic; color:#f3d58a;">
+    Quem quiser estudar hoje já não está condenado a esperar por reformas miraculosas, por ministérios inspirados ou por burocracias iluminadas. A Internet abriu brechas suficientes para que qualquer pessoa com vontade possa aprender, praticar e crescer.
+  </div>
+
+  <p>
+    A lista seguinte foi organizada para servir o público em geral: estudantes, autodidactas, curiosos, professores, profissionais em reciclagem e cidadãos que simplesmente se recusam a envelhecer intelectualmente. Uns recursos são inteiramente gratuitos. Outros têm acesso gratuito ao conteúdo, mas cobram certificados ou funcionalidades adicionais. E depois há um segundo universo, igualmente importante: o das ferramentas livres e open source, que permitem criar, ensinar, estudar, escrever e partilhar sem ficar preso às algemas do software proprietário.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; font-size:26px; margin-top:28px;">
+    1. Plataformas de aprendizagem online
+  </h3>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Khan Academy</strong><br>
+    Aprendizagem gratuita em matemática, ciências, computação, economia, história e outras áreas. Excelente para bases sólidas e estudo progressivo.<br>
+    <a href="https://www.khanacademy.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.khanacademy.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">MIT OpenCourseWare</strong><br>
+    Materiais abertos de cursos do MIT, ideais para quem quer estudar a sério em áreas técnicas, científicas e humanísticas.<br>
+    <a href="https://ocw.mit.edu/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://ocw.mit.edu/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">MIT Open Learning Library</strong><br>
+    Percursos mais guiados do universo MIT, úteis para auto-estudo disciplinado e estruturado.<br>
+    <a href="https://ocw.mit.edu/collections/mit-open-learning-library/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://ocw.mit.edu/collections/mit-open-learning-library/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">OpenLearn</strong><br>
+    Plataforma gratuita da Open University, com cursos curtos e acessíveis em ciência, cultura, sociedade, línguas, trabalho e competências digitais.<br>
+    <a href="https://www.open.edu/openlearn/free-courses" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.open.edu/openlearn/free-courses</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Saylor Academy / Saylor University</strong><br>
+    Cursos gratuitos e auto-ritmados ao nível universitário e profissional. Bom para quem quer estudar com método, sem pagar propinas de outro planeta.<br>
+    <a href="https://www.saylor.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.saylor.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">OpenStax</strong><br>
+    Manuais e recursos educativos abertos, gratuitos e de grande utilidade para ensino secundário e superior.<br>
+    <a href="https://openstax.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://openstax.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">freeCodeCamp</strong><br>
+    Um dos melhores pontos de entrada para aprender programação, desenvolvimento web, Python, JavaScript, bases de dados e prática real. Ideal para quem quer aprender fazendo.<br>
+    <a href="https://www.freecodecamp.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.freecodecamp.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">freeCodeCamp Forum</strong><br>
+    Comunidade activa para esclarecer dúvidas, encontrar roteiros de aprendizagem e trocar experiências com outros autodidactas e programadores.<br>
+    <a href="https://forum.freecodecamp.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://forum.freecodecamp.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Coursera</strong><br>
+    Grande catálogo de cursos, certificados e programas. Há muitos conteúdos com acesso gratuito, auditoria ou pré-visualização, mas a certificação costuma ser paga.<br>
+    <a href="https://www.coursera.org/browse" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.coursera.org/browse</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">edX</strong><br>
+    Plataforma com cursos e programas de instituições como MIT, Harvard e outras universidades. Muito útil para quem quer cursos universitários online com forte componente académica.<br>
+    <a href="https://www.edx.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.edx.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Alison</strong><br>
+    Plataforma com milhares de cursos gratuitos em TI, saúde, negócio, ensino, línguas e desenvolvimento pessoal. Boa para quem procura variedade e percursos rápidos.<br>
+    <a href="https://alison.com/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://alison.com/</a>
+  </div>
+
+  <h3 style="color:#ffcc66 !important; font-size:26px; margin-top:32px;">
+    2. Plataformas para aprendizagem de línguas
+  </h3>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Duolingo</strong><br>
+    Ferramenta muito popular para começar ou reforçar o estudo de línguas, com exercícios curtos e abordagem gamificada.<br>
+    <a href="https://www.duolingo.com/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.duolingo.com/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Busuu</strong><br>
+    Plataforma com lições curtas e ligação a falantes nativos. Tem acesso gratuito inicial e pode ser útil para quem precisa de rotina e estrutura.<br>
+    <a href="https://www.busuu.com/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.busuu.com/</a>
+  </div>
+
+  <h3 style="color:#ffcc66 !important; font-size:26px; margin-top:32px;">
+    3. Ferramentas open source, livres e abertas para ensinar, aprender e criar
+  </h3>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Moodle</strong><br>
+    Um dos mais conhecidos sistemas de gestão de aprendizagem open source. Muito usado por escolas, universidades e organizações para cursos online e ensino misto.<br>
+    <a href="https://moodle.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://moodle.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Moodle Academy</strong><br>
+    Cursos gratuitos para professores, administradores, designers instrucionais e utilizadores do ecossistema Moodle.<br>
+    <a href="https://learn.moodle.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://learn.moodle.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Open edX</strong><br>
+    Plataforma open source de ensino e aprendizagem, usada por universidades, governos e organizações em grande escala. Excelente para quem pensa em criar academias online robustas.<br>
+    <a href="https://openedx.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://openedx.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Kolibri</strong><br>
+    Ecossistema de aprendizagem offline-first, particularmente valioso em contextos com Internet instável ou inexistente. Um belo exemplo de tecnologia útil fora da bolha urbana.<br>
+    <a href="https://learningequality.org/kolibri/about-kolibri/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://learningequality.org/kolibri/about-kolibri/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Project Jupyter</strong><br>
+    Ecossistema open source para computação interactiva, ciência de dados, ensino técnico, notebooks e experimentação prática. Magnífico para aprender programando, calculando e documentando ao mesmo tempo.<br>
+    <a href="https://jupyter.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://jupyter.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Try Jupyter</strong><br>
+    Para experimentar Jupyter no navegador, sem instalação local. Óptimo para curiosos e iniciantes.<br>
+    <a href="https://jupyter.org/try" target="_blank" rel="noopener" style="color:#9fd0ff;">https://jupyter.org/try</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">LibreOffice</strong><br>
+    Suite office livre e gratuita com editor de texto, folha de cálculo, apresentações, desenho, base de dados e editor de fórmulas. Útil para estudo, produção de trabalhos e autonomia digital.<br>
+    <a href="https://www.libreoffice.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.libreoffice.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">OpenBoard</strong><br>
+    Quadro interactivo open source para escolas, professores, aulas, apresentações e ensino presencial ou híbrido.<br>
+    <a href="https://openboard.ch/index.en.html" target="_blank" rel="noopener" style="color:#9fd0ff;">https://openboard.ch/index.en.html</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">GCompris</strong><br>
+    Software educativo livre para crianças, com muitas actividades lúdicas e pedagógicas. Muito interessante para primeiros anos de aprendizagem.<br>
+    <a href="https://gcompris.net/index-pt.html" target="_blank" rel="noopener" style="color:#9fd0ff;">https://gcompris.net/index-pt.html</a>
+  </div>
+
+  <h3 style="color:#ffcc66 !important; font-size:26px; margin-top:32px;">
+    4. Como usar esta lista sem se perder
+  </h3>
+
+  <div style="background:#141414; border:1px solid #4a3b1d; padding:18px; margin-top:10px;">
+    <ol style="margin:0; padding-left:22px; color:#e8eef4; line-height:2;">
+      <li>Escolha primeiro uma área concreta: programação, línguas, matemática, ciência, escrita ou ensino.</li>
+      <li>Não tente abraçar vinte plataformas ao mesmo tempo, sob pena de aprender sobretudo a arte nacional de começar e não acabar.</li>
+      <li>Use uma plataforma principal e duas de apoio.</li>
+      <li>Reserve tempo fixo semanal para estudo, prática e revisão.</li>
+      <li>Privilegie recursos abertos e ferramentas livres sempre que possível: poupa dinheiro, aumenta autonomia e reduz dependências desnecessárias.</li>
+    </ol>
+  </div>
+
+  <div style="margin-top:22px; padding:16px; background:#0d0d0d; border-top:1px solid #ffcc66; color:#ffdda0;">
+    O saber continua a ser uma das poucas riquezas que cresce quando é partilhado. E, ao contrário de tantos discursos oficiais, este ainda não cobra imposto de selo à inteligência.
+  </div>
+
+</div>
+<div style="margin-top:36px; background:#0f0f0f; border:1px solid #3b3b3b; padding:24px; text-align:left; color:#e8eef4; font-family:Georgia, serif; line-height:2.1;">
+
+  <h3 style="color:#ffcc66 !important; font-size:30px; margin-top:0; margin-bottom:18px;">
+    Recursos técnicos livres: programação, Linux, IA, ciência e matemática
+  </h3>
+
+  <div style="border-left:4px solid #ffcc66; padding:14px 18px; margin:0 0 24px 0; background:#121212; font-style:italic; color:#f3d58a;">
+    A técnica deixou de viver apenas em laboratórios fechados, universidades caras ou departamentos blindados. Hoje, muito do melhor saber técnico está disponível a quem tiver disciplina, curiosidade e a coragem de abrir um terminal sem entrar em colapso emocional.
+  </div>
+
+  <p>
+    Para os leitores que querem ir além da cultura geral e entrar no território da criação concreta — escrever código, perceber sistemas, estudar matemática a sério, explorar inteligência artificial ou trabalhar com ferramentas profissionais livres — a Internet oferece um património extraordinário. Não é magia. Não substitui esforço. Mas reduz brutalmente as barreiras de entrada.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; font-size:26px; margin-top:28px;">
+    1. Programação e desenvolvimento de software
+  </h3>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">freeCodeCamp</strong><br>
+    Uma das melhores portas de entrada para programação. Ensina HTML, CSS, JavaScript, Python, bases de dados, análise de dados e muito mais, com forte componente prática.<br>
+    <a href="https://www.freecodecamp.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.freecodecamp.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">The Odin Project</strong><br>
+    Currículo gratuito e muito respeitado para desenvolvimento web. Excelente para quem quer aprender a construir projectos reais e ganhar hábitos de programador.<br>
+    <a href="https://www.theodinproject.com/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.theodinproject.com/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">CS50x</strong><br>
+    O célebre curso introdutório de ciência da computação de Harvard. Ensina a pensar computacionalmente, programar com rigor e resolver problemas de forma metódica.<br>
+    <a href="https://cs50.harvard.edu/x/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://cs50.harvard.edu/x/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">CS50 Python</strong><br>
+    Curso de introdução à programação em Python, muito adequado para quem quer começar por uma linguagem moderna, expressiva e poderosa.<br>
+    <a href="https://cs50.harvard.edu/python" target="_blank" rel="noopener" style="color:#9fd0ff;">https://cs50.harvard.edu/python</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">CS50 Web</strong><br>
+    Para quem quiser aprofundar web programming com Python, JavaScript, SQL, APIs, Django, React e conceitos de escalabilidade e segurança.<br>
+    <a href="https://cs50.harvard.edu/web/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://cs50.harvard.edu/web/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Python Documentation e Tutorial Oficial</strong><br>
+    A documentação oficial do Python continua a ser uma mina de ouro: tutorial, referências, HOWTOs e guias para principiantes e utilizadores mais avançados.<br>
+    <a href="https://docs.python.org/3/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://docs.python.org/3/</a><br>
+    <a href="https://docs.python.org/3/tutorial/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://docs.python.org/3/tutorial/</a>
+  </div>
+
+  <h3 style="color:#ffcc66 !important; font-size:26px; margin-top:32px;">
+    2. Linux, sistemas e infra-estruturas
+  </h3>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Ubuntu Tutorials</strong><br>
+    Tutoriais oficiais para desktop, servidores, linha de comandos, devops, cloud e administração de sistemas. Bom ponto de entrada para quem quer aprender Linux de forma prática.<br>
+    <a href="https://ubuntu.com/tutorials" target="_blank" rel="noopener" style="color:#9fd0ff;">https://ubuntu.com/tutorials</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Ubuntu Documentation</strong><br>
+    Documentação oficial do Ubuntu, com versões correntes e LTS, útil para instalação, administração, redes, servidores e segurança.<br>
+    <a href="https://help.ubuntu.com/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://help.ubuntu.com/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Linux Journey</strong><br>
+    Recurso gratuito e muito acessível para aprender comandos, ficheiros, permissões, processos, redes e bases do universo Linux.<br>
+    <a href="https://linuxjourney.com/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://linuxjourney.com/</a>
+  </div>
+
+  <h3 style="color:#ffcc66 !important; font-size:26px; margin-top:32px;">
+    3. Inteligência artificial e machine learning
+  </h3>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">CS50 AI</strong><br>
+    Curso de introdução à inteligência artificial com Python, cobrindo pesquisa, optimização, classificação, machine learning e LLMs.<br>
+    <a href="https://cs50.harvard.edu/ai/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://cs50.harvard.edu/ai/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">scikit-learn</strong><br>
+    Biblioteca open source de machine learning em Python, com documentação excelente para classificação, regressão, clustering, avaliação e pré-processamento.<br>
+    <a href="https://scikit-learn.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://scikit-learn.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Hugging Face Learn</strong><br>
+    Portal com cursos gratuitos sobre LLMs, agentes, visão por computador, áudio, robótica, RL e outros tópicos de IA moderna.<br>
+    <a href="https://huggingface.co/learn" target="_blank" rel="noopener" style="color:#9fd0ff;">https://huggingface.co/learn</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Hugging Face LLM Course</strong><br>
+    Curso gratuito centrado em modelos de linguagem de grande escala e no ecossistema Hugging Face.<br>
+    <a href="https://huggingface.co/learn/llm-course" target="_blank" rel="noopener" style="color:#9fd0ff;">https://huggingface.co/learn/llm-course</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Hugging Face AI Agents Course</strong><br>
+    Curso gratuito para compreender, usar e construir agentes de IA.<br>
+    <a href="https://huggingface.co/learn/agents-course" target="_blank" rel="noopener" style="color:#9fd0ff;">https://huggingface.co/learn/agents-course</a>
+  </div>
+
+  <h3 style="color:#ffcc66 !important; font-size:26px; margin-top:32px;">
+    4. Ciência de dados, notebooks e computação interactiva
+  </h3>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Project Jupyter</strong><br>
+    Ecossistema open source para notebooks interactivos, ciência de dados, ensino técnico, exploração de código e documentação viva.<br>
+    <a href="https://jupyter.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://jupyter.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Try Jupyter</strong><br>
+    Permite experimentar notebooks directamente no navegador, sem instalação local. Muito útil para começar sem fricção.<br>
+    <a href="https://jupyter.org/try" target="_blank" rel="noopener" style="color:#9fd0ff;">https://jupyter.org/try</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">R Project</strong><br>
+    Linguagem e ambiente livre para estatística, análise de dados e gráficos, com um ecossistema vastíssimo para ciência de dados e investigação.<br>
+    <a href="https://www.r-project.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.r-project.org/</a>
+  </div>
+
+  <h3 style="color:#ffcc66 !important; font-size:26px; margin-top:32px;">
+    5. Matemática, cálculo simbólico e computação científica
+  </h3>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">GNU Octave</strong><br>
+    Linguagem livre orientada a computação numérica, muito útil para álgebra linear, métodos numéricos, simulação e visualização.<br>
+    <a href="https://octave.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://octave.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">SageMath</strong><br>
+    Sistema matemático open source extremamente poderoso, apoiado em múltiplos pacotes livres, útil para álgebra, geometria, teoria dos números, criptografia e computação simbólica.<br>
+    <a href="https://www.sagemath.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.sagemath.org/</a>
+  </div>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">SageMathCell</strong><br>
+    Interface web para experimentar SageMath no navegador, sem instalação, ideal para demonstrações, testes e ensino.<br>
+    <a href="https://sagecell.sagemath.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://sagecell.sagemath.org/</a>
+  </div>
+
+  <h3 style="color:#ffcc66 !important; font-size:26px; margin-top:32px;">
+    6. Ferramentas criativas open source que também ensinam
+  </h3>
+
+  <div style="background:#111; border:1px solid #333; padding:16px; margin:18px 0;">
+    <strong style="color:#ffcc66 !important;">Blender</strong><br>
+    Suite open source de criação 3D, animação, modelação, rendering e simulação. Serve tanto para criar como para aprender pipelines visuais de nível profissional.<br>
+    <a href="https://www.blender.org/" target="_blank" rel="noopener" style="color:#9fd0ff;">https://www.blender.org/</a>
+  </div>
+
+  <h3 style="color:#ffcc66 !important; font-size:26px; margin-top:32px;">
+    7. Roteiro prático para não naufragar em excesso de recursos
+  </h3>
+
+  <div style="background:#141414; border:1px solid #4a3b1d; padding:18px; margin-top:10px;">
+    <ol style="margin:0; padding-left:22px; color:#e8eef4; line-height:2;">
+      <li>Escolha uma trilha principal: programação, Linux, IA, dados ou matemática.</li>
+      <li>Use uma plataforma de teoria e uma de prática.</li>
+      <li>Crie um pequeno projecto desde a primeira semana, mesmo imperfeito.</li>
+      <li>Documente o que aprende em notas, repositórios ou notebooks.</li>
+      <li>Prefira ferramentas livres sempre que possível: elas ensinam autonomia além de ensinar técnica.</li>
+    </ol>
+  </div>
+
+  <div style="margin-top:22px; padding:16px; background:#0d0d0d; border-top:1px solid #ffcc66; color:#ffdda0;">
+    Aprender tecnologia com ferramentas abertas é mais do que adquirir competências: é treinar independência mental. E essa continua a ser uma forma elegante de resistência.
+  </div>
+
+</div>
+<p style="color:#ffcc67;">
+Partilhar conhecimento é uma das formas mais limpas de semear futuro. O resto, muitas vezes, é apenas ruído, vaidade de poder e burocracia com gravata.
+</p>
+  
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://dweb.link/ipns/k51qzi5uqu5dm865x8gvpx5ywhcu9ndr5652r2nc689gsnl5dgzgzjugt36xf6"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ IPFS (IPNS)
+    </a>
+
+  </div>
+
+
+</div>
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
