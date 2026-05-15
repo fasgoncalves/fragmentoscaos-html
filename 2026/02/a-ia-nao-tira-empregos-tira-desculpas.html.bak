@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A IA não tira empregos — tira desculpas</title>
+<meta name="description" content="A IA não tira empregos — tira desculpas">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A IA não tira empregos — tira desculpas</h1>
+      <p class="meta">Publicado em 2026-02-27 12:06:46</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_000000001e04720cb9be3cb1161b44c3.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background: #0b0b0b; color: #e8eef4; font-family: Georgia, serif; line-height: 2.2; padding: 10px; text-align: left;">
+<p><!-- METADADOS GOOGLE NEWS (oculto) --></p>
+<div style="display: none;">
+<div><br /><br /><br /><br /><br /><br />
+<div>
+<div> </div>
+</div>
+</div>
+</div>
+<p><!-- 1) BOX DE FACTOS --></p>
+<div style="background: #111; border: 1px solid #444; border-radius: 10px; padding: 12px; margin-bottom: 14px;">
+<div style="font-weight: bold; letter-spacing: 1px; margin-bottom: 8px;"><span style="color: #ffcc66 !important;">BOX DE FACTOS</span></div>
+<ul style="margin: 0; padding-left: 18px;">
+<li><strong>A IA não rouba só tarefas:</strong> rouba o teatro e encurta o caminho entre "parecer" e "ser".</li>
+<li><strong>O medo da IA é real:</strong> uma fatia relevante de trabalhadores declara-se preocupada e/ou esmagada pela mudança.</li>
+<li><strong>O mercado pede mais "humano":</strong> pensamento analítico, criatividade, resiliência, liderança e aprendizagem contínua sobem de valor.</li>
+<li><strong>Há um risco perverso:</strong> a "miragem de falsa mestria" — produzir sem compreender, decidir sem saber porquê.</li>
+<li><strong>O futuro decide-se numa frase:</strong> ou a IA serve a dignidade do trabalho… ou serve a economia do disfarce.</li>
+</ul>
+</div>
+<p><!-- 2) TÍTULO --></p>
+<h2 style="margin: 10px 0 12px 0; font-size: 34px; line-height: 1.2; text-align: left;"><span style="color: #ffcc66 !important;">A IA Não Rouba Lugares: Rouba Disfarces — e Expõe a Mediocridade</span></h2>
+<p><!-- 3) EXCERTO --></p>
+<div style="border-left: 4px solid #ffcc66; padding: 10px 12px; margin: 0 0 16px 0; font-style: italic; background: rgba(255,204,102,0.06); border-radius: 8px; text-align: left;">A cada salto da IA, cai um verniz. E, debaixo do verniz, não está o apocalipse — está a contabilidade simples das competências: quem sabe, avança; quem fingia, aparece.</div>
+<p><!-- 4) CORPO --></p>
+<p style="text-align: left;">Há frases que parecem inofensivas até se tornarem uma pedrada na vitrina da auto-ilusão. "A IA não rouba lugares. Revela é cada vez mais incompetências."<br />E, sim, isto dói. Dói porque a dor não vem de um algoritmo: vem do espelho.</p>
+<p style="text-align: left;">Durante décadas, uma parte considerável do mundo do trabalho viveu de rituais: reuniões para dizer nada, relatórios para esconder o óbvio, "alinhamentos" para adiar decisões, e um vocabulário tão gordo que já não cabia na realidade. A IA chega e faz, em minutos, o que essa liturgia fazia em semanas. E, quando o ruído desaparece, a pergunta fica nua: <strong>quem pensa… e quem apenas ocupa?</strong></p>
+<h3 style="margin: 18px 0 8px 0; text-align: left;"><span style="color: #ffcc66 !important;">A luz fria da máquina: não cria mediocridade — só a torna visível</span></h3>
+<p style="text-align: left;">A verdade inconveniente é esta: a IA não inventou os medíocres. Eles sempre estiveram aí — apenas tinham sombra suficiente para parecerem "competentes".<br />A IA é um holofote: acelera, simplifica, compara. E quando compara, expõe.</p>
+<p style="text-align: left;">Isto não significa que todos os receios sejam fantasias. Pelo contrário: o <strong>medo da IA</strong> é mensurável e transversal.<br />Há trabalhadores que se declaram preocupados com o impacto futuro da IA no emprego; outros sentem-se esmagados pela velocidade da mudança; e uma parte relevante acredita que haverá menos oportunidades a prazo. Não é pânico gratuito: é a intuição de que o mundo está a mudar<br />mais depressa do que as instituições e as carreiras conseguem acompanhar.</p>
+<h3 style="margin: 18px 0 8px 0; text-align: left;"><span style="color: #ffcc66 !important;">O que a IA não entrega (e por isso vale mais)</span></h3>
+<p style="text-align: left;">Quanto mais a IA automatiza tarefas, mais sobe o preço daquilo que ela não consegue entregar com integridade por defeito: <strong>pensamento crítico</strong>, <strong>ética</strong>, <strong>decisão sob ambiguidade</strong>, <strong>responsabilidade moral</strong>, <strong>coragem estratégica</strong>, <strong>visão</strong>. É aqui que o humano se separa do "operador de procedimentos".</p>
+<p style="text-align: left;">Curiosamente, os relatórios internacionais começam a convergir nesse ponto: as competências em alta incluem pensamento analítico,<br />criatividade, resiliência, curiosidade e aprendizagem contínua — e, em paralelo, cresce a importância de literacia tecnológica<br />(incluindo IA e dados). Ou seja: não basta temer a máquina;<strong> é preciso aprender a conduzi-la sem perder a alma.</strong></p>
+<h3 style="margin: 18px 0 8px 0; text-align: left;"><span style="color: #ffcc66 !important;">O perigo silencioso: a "miragem de falsa mestria"</span></h3>
+<p style="text-align: left;">Mas há um risco novo, mais subtil do que o desemprego e mais corrosivo do que a ansiedade: a ilusão de competência.<br />A IA pode produzir textos, resumos, planos e respostas com brilho superficial, criando a sensação de "domínio" sem aprendizagem real.<br />É o triunfo do atalho: fazer sem compreender. E isto, a prazo, não cria elites de pensamento — cria <strong>dependência</strong>.</p>
+<p style="text-align: left;">Uma sociedade que terceiriza o pensamento perde soberania interior. E um trabalhador que terceiriza a análise perde, pouco a pouco, a sua própria musculatura cognitiva. O resultado é uma geração capaz de gerar "outputs"… mas incapaz de sustentar a decisão quando o mundo deixa de ser um formulário.</p>
+<h3 style="margin: 18px 0 8px 0; text-align: left;"><span style="color: #ffcc66 !important;">E então, a IA rouba lugares?</span></h3>
+<p style="text-align: left;">A IA rouba alguns lugares, sim — sobretudo onde o trabalho foi reduzido a repetição, triagem, cópia e colagem.<br />Mas o golpe maior é outro: a IA rouba o conforto da mediocridade disfarçada. E isso explica a fúria, o sarcasmo e o medo: não é apenas o emprego que está em jogo; <strong>é a máscara.</strong></p>
+<p style="text-align: left;">Se queremos um futuro digno, a escolha é simples e brutal: ou usamos a IA para elevar o trabalho humano (mais tempo para pensar, cuidar, criar, decidir com ética), ou usamos a IA para multiplicar o velho vício: <strong>um exército de incompetentes com ferramentas de luxo</strong>.</p>
+<p style="text-align: left; margin-bottom: 0;"><strong>Frase final (curta e cortante):</strong> A IA não cria mediocridade — <strong>acende a luz</strong> e obriga-a a aparecer.</p>
+<p><!-- REFERÊNCIAS --></p>
+<h3 style="margin: 18px 0 8px 0; text-align: left;"><span style="color: #ffcc66 !important;">Referências (fonte e publicações internacionais)</span></h3>
+<ul style="margin: 0; padding-left: 18px; text-align: left;">
+<li><strong>Fonte do tema (título/citação):</strong> partilha do Observador sobre o artigo "A IA não rouba lugares. Revela é cada vez mais incompetências", atribuído a José Crespo de Carvalho (pré-visualização em publicação do Observador nas redes sociais). 0</li>
+<li><strong>Medo/ansiedade no trabalho:</strong> Pew Research Center (2025) — trabalhadores mais preocupados do que esperançosos sobre o futuro uso de IA no local de trabalho. 1</li>
+<li><strong>Percepção pública e receio de substituição:</strong> Stanford HAI, AI Index Report 2025 — expectativas de mudança no trabalho e percentagem que teme substituição. 2</li>
+<li><strong>Europa e emprego:</strong> Eurobarómetro / Parlamento Europeu (2024) — percepção sobre criação vs eliminação de empregos com IA. 3</li>
+<li><strong>Competências em ascensão:</strong> World Economic Forum, Future of Jobs Report 2025 — destaque para pensamento analítico, criatividade, resiliência, literacia tecnológica e IA/dados. 4</li>
+<li><strong>Educação e "falsa mestria":</strong> OECD Digital Education Outlook 2026 — riscos de dependência e aprendizagem superficial com GenAI. 5</li>
+<li><strong>Políticas e transição no trabalho:</strong> OECD/GPAI — relatório sobre GenAI e futuro do trabalho, com orientação para reconstrução de tarefas e funções. 6</li>
+<li><strong>IA e competências:</strong> OECD — Artificial Intelligence and the Future of Skills (projecto e publicações associadas). 7</li>
+</ul>
+<p><!-- ASSINATURA --></p>
+<div style="border-top: 1px solid #ffcc78; margin-top: 16px; padding-top: 10px; color: #ffcca0;"><strong>Francisco Gonçalves</strong><br /><span style="opacity: 0.9;">Crónica para <strong>Fragmentos do Caos</strong> — co-autoria editorial com Augustus Veritas. </span></div>
+<blockquote style="color:#ffcc67;">
+A IA não vem para roubar lugares; vem para arrancar o verniz — e, quando a luz acende, quem só vivia do "parecer" descobre que já não há sombras onde esconder a incompetência.
+</blockquote>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://dweb.link/ipns/k51qzi5uqu5dm865x8gvpx5ywhcu9ndr5652r2nc689gsnl5dgzgzjugt36xf6"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ IPFS (IPNS)
+    </a>
+
+  </div>
+
+
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

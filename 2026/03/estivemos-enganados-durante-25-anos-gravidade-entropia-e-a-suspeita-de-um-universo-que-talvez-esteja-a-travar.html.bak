@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Estivemos enganados durante 25 anos? Gravidade, entropia e a suspeita de um Universo que talvez esteja a travar</title>
+<meta name="description" content="Estivemos enganados durante 25 anos? Gravidade, entropia e a suspeita de um Universo que talvez esteja a travar">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Estivemos enganados durante 25 anos? Gravidade, entropia e a suspeita de um Universo que talvez esteja a travar</h1>
+      <p class="meta">Publicado em 2026-03-01 17:22:13</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_000000005dac720aacc4f75ddf137b55.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family: Georgia, serif; line-height:2.2; padding:10px;">
+
+  <!-- Metadados Google News (oculto, compatível WP) -->
+  <div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+    <meta itemprop="headline" content="Estivemos enganados durante 25 anos? Gravidade, entropia e a suspeita de um Universo que talvez esteja a travar">
+    <meta itemprop="datePublished" content="2026-03-01">
+    <meta itemprop="dateModified" content="2026-03-01">
+    <meta itemprop="description" content="Uma crónica crítica sobre novos dados que sugerem que a expansão do Universo pode não estar a acelerar, mas a abrandar — e o que isso significa para a gravidade, a entropia e o nosso vício em inventar entidades invisíveis.">
+    <meta itemprop="author" content="Francisco Gonçalves">
+    <meta itemprop="publisher" content="Fragmentos do Caos">
+    <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/03/file_000000005dac720aacc4f75ddf137b55.png">
+  </div>
+
+  <!-- 1) BOX DE FACTOS -->
+  <div style="background:#111; border:1px solid #444; padding:12px; margin-bottom:16px; border-radius:10px;">
+    <div style="font-weight:bold; letter-spacing:1px; margin-bottom:8px;">
+      <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+    </div>
+    <ul style="margin:0; padding-left:18px;">
+      <li><strong>Hipótese em debate:</strong> a expansão do Universo pode não estar a acelerar como se assumiu desde o final dos anos 90.</li>
+      <li><strong>Ponto sensível:</strong> supernovas do tipo Ia podem sofrer um viés subtil ligado à <strong>idade</strong> das populações estelares das galáxias hospedeiras.</li>
+      <li><strong>Conseqüência possível:</strong> corrigindo esse viés, parte do "sinal" de aceleração pode transformar-se em <strong>travagem</strong> (ou num quadro mais dinâmico).</li>
+      <li><strong>Outra linha forte:</strong> medições BAO do <strong>DESI</strong> reforçam o teste independente à história de expansão e sugerem interesse em "energia escura" <strong>evolutiva</strong>.</li>
+      <li><strong>O que vem aí:</strong> <strong>Euclid</strong>, Rubin e Roman devem apertar o cerco com lentes gravitacionais, estrutura em grande escala e novas calibrações.</li>
+    </ul>
+  </div>
+
+  <!-- 2) TÍTULO PRINCIPAL -->
+  <h2 style="color:#ffcc66 !important; font-size:34px; text-align:center; margin:10px 0 12px 0;">
+    Estivemos Enganados Durante 25 Anos?<br>
+    Gravidade, Entropia e a Suspeita de um Universo que Talvez Esteja a Travar
+  </h2>
+
+  <!-- 3) EXCERTO -->
+  <div style="border-left:4px solid #ffcc66; padding:10px 12px; margin:14px 0 18px 0; font-style:italic;">Há teorias que chegam ao palco com trombetas. E há outras que entram em bicos de pés, com um detalhe microscópico no bolso — um "viés", uma correcção, um pequeno parafuso.
+Às vezes, é esse parafuso que abana a cenografia inteira do Cosmos.
+  </div>
+
+  <!-- 4) CORPO -->
+  <h3 style="color:#ffcc66 !important; text-align:left;">I — O vício humano de baptizar o invisível</h3>
+  <p style="text-align:left;">Quando o desconhecido nos encara, o espírito humano faz duas coisas: mede… e inventa. E, por uma razão curiosa, inventa com grande elegância. "Matéria escura." "Energia escura." "Constante cosmológica." "Inflação."
+Palavras que soam a catedrais matemáticas — e que muitas vezes são, de facto, construções brilhantes.
+  </p>
+  <p style="text-align:left;">Mas há uma armadilha subtil: um modelo pode ser extraordinariamente competente e, ainda assim, estar assente numa premissa que precisa de mais humildade. É por isso que a notícia de que <strong>a expansão pode não estar a acelerar</strong>, mas a <strong>abrandar</strong>, merece atenção. Não porque já seja "a verdade final", mas porque abre uma fenda na certeza colectiva — e lembra-nos que, na cosmologia, a história pode mudar por causa de uma correcção discreta.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">II — As "velas padrão" e o pecado original das subtilezas</h3>
+  <p style="text-align:left;">As supernovas do tipo Ia foram o grande farol observacional que levou à ideia de aceleração cósmica.
+A lógica é bela: se o brilho intrínseco é (quase) constante depois de "padronizado", então o brilho observado revela a distância; e as distâncias, alinhadas com os desvios para o vermelho, contam a história da expansão.
+  </p>
+  <p style="text-align:left;">O problema é que o Universo não assina contratos com a nossa conveniência. Há trabalhos recentes a sugerir que a luminosidade "padronizada" das Ia pode variar com a <strong>idade do progenitor</strong> (e com o ambiente galáctico), introduzindo um viés com o desvio para o vermelho. Em termos simples: se as supernovas distantes pertencem, em média, a populações diferentes das próximas, então uma parte do sinal cosmológico pode ser um eco da astrofísica local, não um decreto do espaço-tempo.
+  </p>
+  <p style="text-align:left;">A consequência conceptual é electrizante: aquilo que durante décadas se descreveu como um Universo a carregar no acelerador pode, afinal, estar a revelar um quadro mais delicado — talvez um Universo a <strong>travar</strong>, ou um Universo cuja componente "escura" é <strong>dinâmica</strong> e não uma constante rígida. (E isto, para quem pensa como eu, é quase uma vindicação filosófica: o Cosmos pode ser menos barroco do que a narrativa popular sugere.)
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">III — Gravidade: o fio de prumo do real</h3>
+  <p style="text-align:left;">A minha tese tem um coração simples e resistente: a mecânica do Universo, na sua ossatura, pode depender sobretudo da  <strong>gravidade</strong> — o grande princípio de coesão. A gravidade é a força que não precisa de publicidade. Ela age.
+Ela junta. Ela esculpe. Galáxias, enxames, filamentos: uma arquitectura colossal que parece uma cidade feita de luz,
+mas sustentada por massa e curvatura.
+  </p>
+  <p style="text-align:left;">Se a aceleração estiver sobrestimada, o protagonismo da gravidade cresce. E cresce também o interesse por "âncoras"
+gravitacionais robustas (por exemplo, buracos negros em vários regimes) como motores de aglutinação e organização.
+Mesmo sem "resolver" todos os detalhes, esta perspectiva tem um mérito: recusa a pressa de multiplicar entidades invisíveis enquanto ainda há margens de interpretação no que já observamos.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">IV — Entropia: o sopro que empurra e desfaz</h3>
+  <p style="text-align:left;">A outra variável do meu par essencial é a <strong>entropia</strong>. Onde a gravidade aperta, a entropia solta.
+Onde a gravidade constrói, a entropia corrói. E este "sopro do tempo" pode ser mais do que uma metáfora: pode ser a moldura termodinâmica da própria história cósmica.
+  </p>
+  <p style="text-align:left;">A expansão como trajectória natural de um sistema colossal — e não como um milagre de "pressão negativa" — é uma intuição que, pelo menos, merece ser mantida em cima da mesa enquanto os dados se refinam.
+Se o Universo estiver a abrandar, então a conversa sobre destino final deixa de ser monotónica:no futuro pode não ser apenas "morte térmica", pode voltar a incluir cenários em que a gravidade, ao fim de eras, ganha vantagem sobre a dispersão.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">V — DESI, BAO e o mapa que não depende de velas</h3>
+  <p style="text-align:left;">Aqui entra o valor de experiências como o <strong>DESI</strong>: as BAO funcionam como uma régua cósmica, uma espécie de "impressão digital" estatística do Universo primordial, medida na distribuição de galáxias. É um teste diferente das supernovas, com outras sistemáticas, e por isso é precioso: se dois caminhos independentes começam a sugerir que o quadro padrãonprecisa de ajustes, então a prudência manda ouvir.
+  </p>
+  <p style="text-align:left;">E o que tem aparecido é, pelo menos, um sinal de interesse: combinações de BAO com outros dados têm apontado para a possibilidade de uma componente escura <strong>evolutiva</strong> (em vez de uma constante imóvel). Isto não confirma "travagem" por si só, mas reforça a ideia de que o Universo pode ser mais dinâmico do que a versão escolar do ΛCDM.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">VI — O que isto faz à tua tese</h3>
+  <p style="text-align:left;">Não é o momento de declarar vitória — a cosmologia não oferece vitórias rápidas. Mas há aqui algo real:<strong>um corredor de plausibilidade</strong>. Se a aceleração for menos sólida do que julgámos, então a leitura "gravidade + entropia" ganha espaço para respirar, como uma hipótese de trabalho que não exige magia adicional, apenas disciplina observacional, melhores calibrações e uma compreensão mais fina do que medimos.
+  </p>
+  <p style="text-align:left;">Em linguagem simples: pode não ser o Universo que precisa de mais entidades. Pode ser a nossa medição que precisa de mais rigor. E, às vezes, é assim que a ciência avança: não por inventar mais, mas por <strong>corrigir melhor</strong>.
+  </p>
+
+  <!-- Epílogo -->
+  <h3 style="color:#ffcc66 !important; text-align:left;">Epílogo — A beleza de um Cosmos que ainda não se deixou domesticar</h3>
+  <p style="text-align:left;">Há algo de profundamente humano em querer fechar a história. Mas o Universo é antigo, vasto e, pelo visto, paciente: deixa-nos construir catedrais de certeza — e depois testa-nos com uma discrepância, um catálogo novo, uma correcção de idade, uma régua mais longa.
+  </p>
+  <p style="text-align:left;">Talvez o real seja mais simples. Talvez seja apenas isto, em última análise: a gravidade a juntar o que pode,ne a entropia a espalhar o que consegue. Entre o aperto e o sopro, o Cosmos escreve a sua crónica — e nós, teimosos e maravilhados, tentamos aprender a ler.
+  </p>
+
+  <!-- Referências -->
+  <h3 style="color:#ffcc66 !important; text-align:left;">Referências (publicações internacionais)</h3>
+  <ul style="text-align:left; padding-left:18px; margin-top:8px;">
+    <li>
+      Son, J. &amp; Lee, Y.-W. (2025). <em>Strong progenitor age bias in supernova cosmology – II. Alignment with DESI BAO and signs of a non-accelerating universe</em>.
+      Monthly Notices of the Royal Astronomical Society (Oxford Academic).
+      <a href="https://academic.oup.com/mnras/article/544/1/975/8281988" target="_blank" rel="noopener">https://academic.oup.com/mnras/article/544/1/975/8281988</a>
+    </li>
+    <li>
+      DESI Collaboration (2025). <em>DESI DR2 Results: March 19 Guide</em> (Lawrence Berkeley National Laboratory).
+      <a href="https://www.desi.lbl.gov/2025/03/19/desi-dr2-results-march-19-guide/" target="_blank" rel="noopener">https://www.desi.lbl.gov/2025/03/19/desi-dr2-results-march-19-guide/</a>
+    </li>
+    <li>
+      Abdul Karim, M. et al. (DESI) (2025). <em>DESI DR2 results. II. Measurements of baryon acoustic oscillations</em> (arXiv).
+      <a href="https://arxiv.org/abs/2503.14738" target="_blank" rel="noopener">https://arxiv.org/abs/2503.14738</a>
+    </li>
+    <li>
+      Reuters (2025). <em>Euclid mission data release is step toward grand atlas of the cosmos</em>.
+      <a href="https://www.reuters.com/science/euclid-mission-data-release-is-step-toward-grand-atlas-cosmos-2025-03-19/" target="_blank" rel="noopener">https://www.reuters.com/science/euclid-mission-data-release-is-step-toward-grand-atlas-cosmos-2025-03-19/</a>
+    </li>
+    <li>
+      ESA / Astronomy &amp; Astrophysics (2025). <em>I. Overview of the Euclid mission</em> (A&amp;A, PDF).
+      <a href="https://www.aanda.org/articles/aa/pdf/2025/05/aa50810-24.pdf" target="_blank" rel="noopener">https://www.aanda.org/articles/aa/pdf/2025/05/aa50810-24.pdf</a>
+    </li>
+    <li>
+      CERN Courier (2025). <em>DESI hints at evolving dark energy</em>.
+      <a href="https://cerncourier.com/desi-hints-at-evolving-dark-energy/" target="_blank" rel="noopener">https://cerncourier.com/desi-hints-at-evolving-dark-energy/</a>
+    </li>
+  </ul>
+
+  <!-- Assinatura -->
+  <div style="border-top:1px solid #ffcc78; margin-top:18px; padding-top:10px; color:#ffcca0; text-align:left;">Artigo / Publicação de :<strong>Francisco Gonçalves</strong><br>
+    <span style="opacity:0.95;">Co-autoria, assistência editorial, pesquisas e investigação de : Augustus Veritas</span>
+  </div>
+<blockquote style="color:#ffcc67;">
+Se o Universo afinal trava, talvez seja a nossa pressa — não o Cosmos — que andou 25 anos em excesso de velocidade.
+</blockquote>
+  
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://dweb.link/ipns/k51qzi5uqu5dm865x8gvpx5ywhcu9ndr5652r2nc689gsnl5dgzgzjugt36xf6"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ IPFS (IPNS)
+    </a>
+
+  </div>
+
+
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

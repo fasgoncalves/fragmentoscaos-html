@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Segurança IT - Artigo técnico do Voltaire-Monitor v2</title>
+<meta name="description" content="Segurança IT - Artigo técnico do Voltaire-Monitor v2">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Segurança IT - Artigo técnico do Voltaire-Monitor v2</h1>
+      <p class="meta">Publicado em 2026-01-28 15:57:35</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/voltaire-monitor.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family: Georgia, serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <!-- Metadados Google News (oculto) -->
+  <div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+    <meta itemprop="headline" content="Voltaire-Monitor v2: Monitorização, Hardening e SIPA com Disciplina Operacional" />
+    <meta itemprop="datePublished" content="2026-01-28" />
+    <meta itemprop="dateModified" content="2026-01-28" />
+    <meta itemprop="description" content="Artigo técnico aprofundado sobre o Voltaire-Monitor v2: arquitectura, hardening systemd, segredos fora do código, integridade eficiente, contagem incremental de falhas SSH, deduplicação/cooldown de alertas e mitigação segura de incidentes." />
+    <meta itemprop="author" content="Francisco Gonçalves" />
+    <meta itemprop="publisher" content="Fragmentos do Caos News Team" />
+    <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/01/Voltaire-Monitor.png" />
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+      <meta itemprop="name" content="Fragmentos do Caos" />
+      <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+        <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/fc_logo_round.png" />
+      </div>
+    </div>
+  </div>
+
+  <!-- 1️⃣ BOX DE FACTOS -->
+  <div style="background:#111; border:1px solid #444; border-radius:10px; padding:12px; margin:10px 0;">
+    <div style="font-weight:bold; letter-spacing:1px; margin-bottom:8px;">
+      <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+    </div>
+    <ul style="margin:0; padding-left:18px;">
+      <li><strong>Versão:</strong> <strong>Voltaire-Monitor v2</strong> (Monitor + Shield + SIPA).</li>
+      <li><strong>Objectivo:</strong> observabilidade pragmática + detecção de padrões de ataque + mitigação controlada.</li>
+      <li><strong>Princípio central:</strong> <strong>não criar uma nova vulnerabilidade</strong> ao tentar vigiar tudo.</li>
+      <li><strong>Operação:</strong> serviço <strong>systemd</strong> endurecido (hardening), logs com retenção, alertas deduplicados.</li>
+      <li><strong>Segredos:</strong> credenciais e tokens <strong>fora do código</strong> (EnvironmentFile / variáveis de ambiente).</li>
+      <li><strong>Mitigação:</strong> escalonada (alerta → contenção suave → isolamento com failsafe), evitando auto-sabotagem.</li>
+    </ul>
+  </div>
+
+  <!-- 2️⃣ TÍTULO PRINCIPAL -->
+  <h2 style="color:#ffcc66 !important; font-size:34px; margin:14px 0 6px 0; text-align:left;">
+    <span style="color:#ffcc66 !important;">Voltaire-Monitor v2: Monitorização, Hardening e SIPA com Disciplina Operacional</span>
+  </h2>
+
+  <!-- 3️⃣ EXCERTO -->
+  <div style="border-left:4px solid #ffcc66; padding:10px 12px; margin:10px 0 18px 0; background:#0f0f0f; font-style:italic;">Um monitor que abre portas a mais é um sentinela que adormece com a chave na mão. O <strong>Voltaire-Monitor v2</strong> assume uma regra simples: <strong>vigiar sem se tornar vulnerável</strong>, alertar com sinal e não com ruído, e mitigar sem cortar a própria garganta operacional.
+  </div>
+
+  <!-- 4️⃣ CORPO -->
+  <h3 style="color:#ffcc66 !important; margin-top:18px;"><span style="color:#ffcc66 !important;">1. Arquitectura: quatro blocos e uma promessa</span></h3>
+  <p>O Voltaire-Monitor v2 organiza-se em quatro blocos operacionais, desenhados para minimizar superfície de ataque e maximizar utilidade:
+<strong>Sensores</strong> (métricas locais), <strong>Verificações activas</strong> (serviços/saúde), <strong>Motor de regras</strong> (limiares, janelas, histerese), e <strong>Alertas + Auditoria</strong> (ntfy + logging estruturado).
+  </p>
+  <p>A promessa é clara: cada componente deve poder falhar sem comprometer os restantes, e sem transformar o servidor num "laboratório de permissões".
+O monitor não é decoração. É disciplina.
+  </p>
+
+  <h3 style="color:#ffcc66 !important;"><span style="color:#ffcc66 !important;">2. Segredos fora do código: o primeiro selo de segurança</span></h3>
+  <p>A versão v2 elimina credenciais hardcoded e adopta um modelo simples e robusto: <strong>EnvironmentFile</strong> (systemd) e variáveis de ambiente.
+Isto evita fugas acidentais em backups, repositórios, cópias, logs ou screenshots — a causa mais banal de incidentes evitáveis.
+  </p>
+  <div style="background:#101010; border:1px solid #333; border-radius:10px; padding:12px; margin:10px 0;">
+    <div style="color:#ffcc66 !important; font-weight:bold; margin-bottom:6px;">Modelo adoptado</div>
+    <ul style="margin:0; padding-left:18px;">
+      <li><strong>/etc/voltaire-monitor.env</strong> com permissões restritas (ex.: 600).</li>
+      <li>Uso preferencial de <strong>tokens</strong> em vez de user/password (quando o endpoint o permite).</li>
+      <li>Transporte seguro: <strong>HTTPS</strong> sempre que possível, mesmo em LAN (segredos não devem "viajar nus").</li>
+    </ul>
+  </div>
+  <p>Além disso, a v2 impõe uma regra de ouro: <strong>nunca imprimir segredos em logs</strong>. Um monitor que escreve tokens é um traidor involuntário.
+  </p>
+
+  <h3 style="color:#ffcc66 !important;"><span style="color:#ffcc66 !important;">3. Execução como serviço systemd: hardening a sério</span></h3>
+  <p>Correr 24/7 implica systemd. Mas correr 24/7 com segurança implica <strong>confinamento</strong>. A v2 adopta as directivas de hardening que reduzem o impacto de falhas, vulnerabilidades em dependências e execuções indevidas.
+  </p>
+  <p>O princípio do menor privilégio é aplicado de forma prática: utilizador dedicado, filesystem protegido, proibição de elevação, e permissões de escrita apenas para <strong>estado</strong> e <strong>logs</strong>.
+  </p>
+
+  <div style="border-left:4px solid #2f7d32; padding:10px 12px; margin:10px 0; background:#0f130f;">
+    <span style="color:#9be29f; font-weight:bold;">Nota operacional:</span> se o monitor apenas envia alertas, não deve "ouvir" rede. Se precisa de rede, deve ser <strong>mínima</strong>, explícita e auditável.
+  </div>
+
+  <h3 style="color:#ffcc66 !important;"><span style="color:#ffcc66 !important;">4. Métricas e thresholds: histerese, janelas e verdade útil</span></h3>
+  <p>CPU, memória e disco continuam no centro — mas com critério. A v2 evita o "pisca-pisca" de alertas com:   <strong>VERIFICATIONS</strong> (persistência), <strong>histerese</strong> (limiar de disparo e limiar de normalização), e <strong>janelas temporais</strong> (um pico curto não é uma crise).
+  </p>
+  <p>Também aqui se impõe um detalhe essencial: o intervalo real do ciclo não pode ser uma ficção.
+A v2 mede o tempo gasto no loop e ajusta o sleep para manter cadência estável.
+  </p>
+
+  <h3 style="color:#ffcc66 !important;"><span style="color:#ffcc66 !important;">5. Falhas SSH: contagem incremental (o fim dos falsos positivos)</span></h3>
+  <p>Um erro clássico em monitores "caseiros" é contar falhas SSH com greps cumulativos em <em>auth.log</em>. Isso cresce indefinidamente e fabrica "ataques" onde só existe história antiga. A v2 corrige este problema com um modelo incremental:
+  </p>
+  <ul style="padding-left:18px;">
+    <li>Guardar <strong>offset</strong> (posição) do ficheiro lido no ciclo anterior.</li>
+    <li>Ler apenas <strong>linhas novas</strong> desde a última posição.</li>
+    <li>Contar "Failed password" apenas na janela recente (ex.: últimos minutos).</li>
+  </ul>
+  <p>O resultado é imediato: o SIPA passa a reflectir <strong>acontecimentos</strong>, não "cicatrizes antigas".
+  </p>
+
+  <h3 style="color:#ffcc66 !important;"><span style="color:#ffcc66 !important;">6. Integridade: SHA-256 e periodicidade inteligente</span></h3>
+  <p>A v2 endurece o controlo de integridade, eliminando duas fragilidades comuns: hashes fracos e leitura parcial de ficheiros.
+Em vez de MD5 e 4 KB, adopta-se <strong>SHA-256</strong> e leitura por blocos, com limite razoável, reduzindo a probabilidade de bypass.
+  </p>
+  <p>Mais importante ainda: a verificação de integridade deixa de ser feita a cada ciclo base.
+Em servidores reais, varrer recursivamente <strong>/etc</strong> e <strong>/usr/bin</strong> a cada 10 segundos é uma forma elegante de criar carga… e de treinar o operador a ignorar alertas.
+  </p>
+  <p>A v2 aplica <strong>periodicidade</strong> (ex.: 10–30 minutos) e, quando necessário, amostragem dirigida.
+Segurança não é pressa. É consistência.
+  </p>
+
+  <h3 style="color:#ffcc66 !important;"><span style="color:#ffcc66 !important;">7. Conexões e tráfego: medir sem incendiar o CPU</span></h3>
+  <p>A versão v2 assume uma realidade: certas chamadas (ex.: listagens completas de sockets) podem ser pesadas.
+Assim, a detecção de "conexões elevadas" privilegia fontes de baixo custo e indicadores sumários, e o tráfego é medido por diferença temporal (delta) com limiares claros.
+  </p>
+  <p>A ideia é simples: o monitor não deve criar o mesmo sintoma que pretende detectar.
+  </p>
+
+  <h3 style="color:#ffcc66 !important;"><span style="color:#ffcc66 !important;">8. SIPA: pontuação inteligente com estados (NORMAL / SUSPEITO / ATAQUE)</span></h3>
+  <p>O <strong>SIPA</strong> (Sistema Inteligente de Pontuação de Ataque) mantém o modelo de score, mas ganha disciplina: eventos têm peso, persistência, e transição de estados. Isto reduz alarmes espúrios e melhora a acção.
+  </p>
+  <ul style="padding-left:18px;">
+    <li><strong>Regras ponderadas:</strong> falhas SSH, picos de tráfego, alterações críticas, CPU anómala, instabilidade de rede.</li>
+    <li><strong>Janelas temporais:</strong> cada regra mede o "agora" (últimos minutos), não o "desde sempre".</li>
+    <li><strong>Cooldown de alertas:</strong> um ataque não pode gerar spam; há deduplicação e escalada.</li>
+  </ul>
+
+  <div style="background:#101010; border:1px solid #333; border-radius:10px; padding:12px; margin:10px 0;">
+    <div style="color:#ffcc66 !important; font-weight:bold; margin-bottom:6px;">Critério que muda tudo</div>
+    <p style="margin:0;">Um alerta só vale se for accionável. Na v2, cada notificação inclui: <strong>o que aconteceu</strong>, <strong>porquê</strong>,
+9<strong>pontuação</strong> e <strong>próximo passo</strong>.
+    </p>
+  </div>
+
+  <h3 style="color:#ffcc66 !important;"><span style="color:#ffcc66 !important;">9. Mitigação escalonada: conter sem auto-sabotagem</span></h3>
+  <p>O gesto dramático de desligar a bridge ou interfaces (<em>br0/ens, etc</em>) pode ser vital… ou pode deixar-te às escuras no pior momento.
+A v2 substitui "pânico automático" por mitigação escalonada:
+  </p>
+  <ul style="padding-left:18px;">
+    <li><strong>Nível 1:</strong> alerta crítico (com contexto e recomendação de acção).</li>
+    <li><strong>Nível 2:</strong> contenção suave (ex.: bloquear IPs ofensores, rate limiting, reforço de firewall).</li>
+    <li><strong>Nível 3:</strong> isolamento temporário com <strong>failsafe</strong> (reversão automática após X minutos) ou com confirmação humana.</li>
+  </ul>
+  <p>Isto protege o servidor sem destruir a tua capacidade de resposta. Segurança sem operação é teatro; operação sem segurança é roleta.
+  </p>
+
+  <h3 style="color:#ffcc66 !important;"><span style="color:#ffcc66 !important;">10. Logs, retenção e forense: a memória que te salva amanhã</span></h3>
+  <p>A v2 mantém métricas em CSV diário (útil para análise e gráficos) e adiciona disciplina de logging: níveis, IDs de evento, e mensagens de "recuperação" quando um incidente normaliza.
+  </p>
+  <p>Complementarmente, recomenda-se rotação (logrotate) e integração com journald, para que o monitor seja também um "relato" do sistema e não apenas um alarme de incêndio.
+  </p>
+
+  <!-- 5️⃣ EPÍLOGO -->
+  <h3 style="color:#ffcc66 !important;"><span style="color:#ffcc66 !important;">Conclusão: um guardião que não mente</span></h3>
+  <p>O <strong>Voltaire-Monitor v2</strong> não tenta ser um SIEM corporativo nem um "dashboard de vaidade".
+Ele assume o essencial: medir, correlacionar, alertar e mitigar — com o menor risco possível de se tornar ele próprio um problema.
+  </p>
+  <p>No fundo, é isto: <strong>segurança é disciplina aplicada ao tempo</strong>. E um servidor bem guardado é um servidor que, mesmo sob ataque, continua a contar a verdade — com logs, com sinais, e com escolhas operacionais que não traem o administrador.
+  </p>
+
+  <!-- 6️⃣ ASSINATURA -->
+  <div style="border-top:1px solid #ffcc78; margin-top:18px; padding-top:12px; color:#ffcca0;">Artigo Técnico de : <div><strong>Francisco Gonçalves</strong></div>
+    <div style="opacity:0.95;">Fragmentos do Caos News Team.</div>
+  </div>
+
+  
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://dweb.link/ipns/k51qzi5uqu5dm865x8gvpx5ywhcu9ndr5652r2nc689gsnl5dgzgzjugt36xf6"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ IPFS (IPNS)
+    </a>
+
+  </div>
+
+
+<p style="margin-top:14px;">
+  Para mais informações pode contactar-nos em
+  <a href="https://www.fragmentoscaos.eu/blog-fragmentos-do-caos/" style="color:#ffcc66 !important; text-decoration:none;">
+    <strong>botão de Contactos</strong>
+  </a>
+</p>
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
