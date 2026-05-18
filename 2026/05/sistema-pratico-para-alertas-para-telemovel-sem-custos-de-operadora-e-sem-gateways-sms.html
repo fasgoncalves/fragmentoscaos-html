@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sistema prático para Alertas para Telemóvel sem Custos de Operadora e sem Gateways SMS</title>
+<meta name="description" content="Sistema prático para Alertas para Telemóvel sem Custos de Operadora e sem Gateways SMS">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Sistema prático para Alertas para Telemóvel sem Custos de Operadora e sem Gateways SMS</h1>
+      <p class="meta">Publicado em 2026-05-17 14:41:09</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_000000001bf471f4adabe02a18213fb0.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia,serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div itemscope itemtype="https://schema.org/TechArticle" style="display:none;">
+    <meta itemprop="headline" content="Alertas para Telemóvel sem Custos de Operadora com ntfy">
+    <meta itemprop="description" content="Documento técnico sobre uma solução simples, aberta e de baixo custo para envio de alertas para telemóveis usando ntfy, HTTP, scripts, servidores Linux e automação.">
+    <meta itemprop="datePublished" content="2026-05-17T14:00:00+01:00">
+    <meta itemprop="dateModified" content="2026-05-17T14:00:00+01:00">
+    <meta itemprop="author" content="Francisco Gonçalves">
+    <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+      <meta itemprop="name" content="Fragmentos do Caos">
+      <span itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+        <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/05/file_000000001bf471f4adabe02a18213fb0.png">
+      </span>
+    </span>
+  </div>
+
+  <div style="background:#111; border:1px solid #444; border-radius:14px; padding:18px; margin:20px 0;">
+    <h3 style="color:#ffcc66 !important; margin-top:0; text-align:left;">
+      <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+    </h3>
+    <ul>
+      <li>O ntfy permite enviar notificações para telemóvel ou computador através de simples pedidos HTTP.</li>
+      <li>Não exige SMS, gateway GSM, cartões SIM adicionais nem contratos específicos com operadoras.</li>
+      <li>Funciona através de Internet: Wi-Fi, rede local, VPN ou dados móveis já existentes.</li>
+      <li>Pode ser usado no serviço público <strong>ntfy.sh</strong> ou instalado num servidor próprio.</li>
+      <li>É especialmente útil para alertas de servidores, UPS, sensores, backups, câmaras, serviços críticos e monitorização doméstica ou empresarial.</li>
+    </ul>
+  </div>
+
+  <h2 style="color:#ffcc66 !important; font-size:34px; text-align:center; line-height:1.35;">
+    <span style="color:#ffcc66 !important;">Alertas para Telemóvel sem Custos de Operadora com ntfy</span>
+  </h2>
+
+  <p style="text-align:center; color:#ffcca0; font-size:18px;">
+    Uma solução simples, aberta e elegante para transformar qualquer servidor Linux num emissor inteligente de notificações.
+  </p>
+
+  <div style="border-left:4px solid #ffcc66; background:#111; padding:18px 22px; margin:28px 0; font-style:italic; color:#f4dfb0;">
+    Nem todos os alertas precisam de passar por SMS, contratos, plataformas caras ou serviços fechados. Às vezes, basta um servidor, uma ligação à Internet, uma aplicação no telemóvel e uma boa ideia.
+  </div>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">1. Introdução</span>
+  </h3>
+
+  <p>
+    Em muitos ambientes técnicos — servidores domésticos, pequenas empresas, redes locais, sistemas de videovigilância, sensores, backups, UPS, monitorização de energia ou serviços críticos — existe uma necessidade simples: receber um alerta imediato no telemóvel quando algo acontece.
+  </p>
+
+  <p>
+    Tradicionalmente, este tipo de alerta era resolvido com SMS, modems GSM, gateways de operadora, serviços pagos de envio de mensagens ou plataformas empresariais com mensalidades. Essas soluções continuam a fazer sentido em alguns cenários críticos, mas para muitos casos práticos são caras, pesadas e desnecessariamente complexas.
+  </p>
+
+  <p>
+    O <strong>ntfy</strong> oferece uma alternativa simples: permite enviar notificações para telemóveis e computadores usando pedidos HTTP normais, do tipo <strong>PUT</strong> ou <strong>POST</strong>. Qualquer script Bash, Python, aplicação web, serviço systemd ou processo de monitorização pode enviar uma mensagem para um tópico, e o telemóvel inscrito nesse tópico recebe o alerta quase de imediato.
+  </p>
+
+  <p>
+    A grande vantagem é esta: não se paga por SMS. Não há necessidade de contrato específico com uma operadora. O transporte é feito pela ligação Internet já existente — rede local, Wi-Fi, VPN ou dados móveis.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">2. O que é o ntfy?</span>
+  </h3>
+
+  <p>
+    O ntfy é um serviço simples de notificações baseado no modelo <em>publish/subscribe</em>. Um emissor publica uma mensagem num determinado tópico; os dispositivos subscritores desse tópico recebem a notificação.
+  </p>
+
+  <p>
+    O modelo é deliberadamente minimalista. Um alerta pode ser enviado com uma linha de comando:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>curl -d "Backup concluído com sucesso" https://ntfy.sh/meu-topico-secreto</code></pre>
+
+  <p>
+    No telemóvel, instala-se a aplicação ntfy, subscreve-se o tópico escolhido, e todas as mensagens publicadas nesse tópico passam a surgir como notificações.
+  </p>
+
+  <p>
+    Para utilização pessoal ou laboratorial, pode usar-se o serviço público <strong>ntfy.sh</strong>. Para ambientes mais controlados, empresariais ou privados, pode instalar-se uma instância própria do ntfy num servidor Linux, VPS, máquina local ou contentor Docker.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">3. Arquitectura da solução</span>
+  </h3>
+
+  <p>
+    A arquitectura típica é composta por quatro elementos:
+  </p>
+
+  <ul>
+    <li><strong>Servidor ou sistema emissor:</strong> máquina Linux, script, sensor, aplicação ou serviço que detecta o evento.</li>
+    <li><strong>Servidor ntfy:</strong> pode ser o serviço público ntfy.sh ou uma instância própria.</li>
+    <li><strong>Tópico:</strong> canal lógico onde as mensagens são publicadas.</li>
+    <li><strong>Telemóvel:</strong> dispositivo com a aplicação ntfy instalada e subscrita ao tópico.</li>
+  </ul>
+
+  <p>
+    O fluxo é simples:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>[Servidor / Script / Sensor]
+          |
+          | HTTP POST / PUT
+          v
+[Servidor ntfy]
+          |
+          | Push notification
+          v
+[Telemóvel Android / iPhone / Browser]</code></pre>
+
+  <p>
+    O segredo da solução está precisamente na sua simplicidade. Não há filas complexas, SDKs pesados, dependências proprietárias ou painéis opacos. Há apenas HTTP, mensagens e tópicos.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">4. Alerta básico com curl</span>
+  </h3>
+
+  <p>
+    O exemplo mais simples é o envio de uma mensagem de texto:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>curl -d "Servidor Voltaire activo e operacional" https://ntfy.sh/MEU_TOPICO_SECRETO</code></pre>
+
+  <p>
+    Para um alerta com título:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>curl \
+  -H "Title: Alerta do Servidor" \
+  -d "Foi detectado consumo elevado de CPU." \
+  https://ntfy.sh/MEU_TOPICO_SECRETO</code></pre>
+
+  <p>
+    Para um alerta com prioridade:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>curl \
+  -H "Title: Alerta Crítico" \
+  -H "Priority: urgent" \
+  -H "Tags: warning,computer" \
+  -d "O servidor deixou de responder ao ping." \
+  https://ntfy.sh/MEU_TOPICO_SECRETO</code></pre>
+
+  <p>
+    A prioridade deve ser usada com critério. Se tudo for urgente, nada é urgente. O telemóvel também merece paz — e o administrador de sistemas merece dormir pelo menos ocasionalmente, esse luxo quase revolucionário.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">5. Exemplo prático: alerta de backup</span>
+  </h3>
+
+  <p>
+    Um caso clássico é o envio de alerta no final de uma cópia de segurança:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>#!/bin/bash
+
+TOPICO="MEU_TOPICO_SECRETO"
+URL="https://ntfy.sh/$TOPICO"
+
+if rsync -av /var/www/ /backup/www/; then
+    curl \
+      -H "Title: Backup concluído" \
+      -H "Priority: default" \
+      -H "Tags: white_check_mark" \
+      -d "Backup de /var/www concluído com sucesso em $(hostname)." \
+      "$URL"
+else
+    curl \
+      -H "Title: Falha no backup" \
+      -H "Priority: urgent" \
+      -H "Tags: warning" \
+      -d "O backup de /var/www falhou em $(hostname)." \
+      "$URL"
+fi</code></pre>
+
+  <p>
+    Este tipo de mecanismo permite transformar qualquer script de manutenção numa fonte de alertas úteis.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">6. Exemplo em Python</span>
+  </h3>
+
+  <p>
+    Em Python, o envio de alertas também é directo. O exemplo seguinte usa a biblioteca <strong>requests</strong>:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code># -*- coding: utf-8 -*-
+
+import requests
+from datetime import datetime
+
+
+NTFY_URL = "https://ntfy.sh/MEU_TOPICO_SECRETO"
+
+
+def enviar_alerta(titulo, mensagem, prioridade="default", tags="computer"):
+    headers = {
+        "Title": titulo,
+        "Priority": prioridade,
+        "Tags": tags,
+    }
+
+    resposta = requests.post(
+        NTFY_URL,
+        data=mensagem.encode("utf-8"),
+        headers=headers,
+        timeout=10,
+    )
+
+    resposta.raise_for_status()
+
+
+if __name__ == "__main__":
+    agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    enviar_alerta(
+        titulo="Teste de alerta Python",
+        mensagem=f"Mensagem enviada pelo servidor às {agora}.",
+        prioridade="default",
+        tags="snake,computer",
+    )</code></pre>
+
+  <p>
+    Este módulo pode depois ser importado por outros programas: monitorização de disco, verificação de serviços, sensores ambientais, câmaras, sistemas de energia, segurança ou automação doméstica.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">7. Monitorização simples de serviços systemd</span>
+  </h3>
+
+  <p>
+    Um pequeno script pode verificar se serviços essenciais continuam activos:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>#!/bin/bash
+
+TOPICO="MEU_TOPICO_SECRETO"
+URL="https://ntfy.sh/$TOPICO"
+
+SERVICOS=("ssh" "nginx" "mysql")
+
+for SERVICO in "${SERVICOS[@]}"; do
+    if ! systemctl is-active --quiet "$SERVICO"; then
+        curl \
+          -H "Title: Serviço inactivo" \
+          -H "Priority: urgent" \
+          -H "Tags: warning" \
+          -d "O serviço $SERVICO está inactivo no servidor $(hostname)." \
+          "$URL"
+    fi
+done</code></pre>
+
+  <p>
+    Com uma entrada em <strong>cron</strong>, este script pode correr periodicamente:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>*/5 * * * * /opt/alertas/verifica_servicos.sh</code></pre>
+
+  <p>
+    Assim, a cada cinco minutos, o servidor verifica serviços críticos e envia uma notificação caso algo falhe.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">8. Alerta de falha de energia</span>
+  </h3>
+
+  <p>
+    Um cenário particularmente interessante é a detecção de falha de energia. Por exemplo, se um dispositivo da rede local deixa de responder, mas o servidor principal continua activo por UPS, pode ser enviado um alerta:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>#!/bin/bash
+
+TOPICO="MEU_TOPICO_SECRETO"
+URL="https://ntfy.sh/$TOPICO"
+DISPOSITIVO="192.168.10.190"
+
+if ! ping -c 3 -W 2 "$DISPOSITIVO" > /dev/null; then
+    curl \
+      -H "Title: Possível falha de energia" \
+      -H "Priority: urgent" \
+      -H "Tags: zap,warning" \
+      -d "O dispositivo $DISPOSITIVO deixou de responder. Verificar energia, UPS ou rede local." \
+      "$URL"
+fi</code></pre>
+
+  <p>
+    Este tipo de alerta pode ser combinado com sensores Tuya, Shelly, câmaras IP, UPS, routers, switches ou simples testes de conectividade.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">9. Serviço público ou servidor próprio?</span>
+  </h3>
+
+  <p>
+    Existem duas abordagens principais:
+  </p>
+
+  <h4 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">9.1. Usar ntfy.sh</span>
+  </h4>
+
+  <p>
+    É a forma mais simples. Basta escolher um tópico e começar a enviar mensagens. No entanto, deve evitar nomes óbvios como <strong>alertas</strong>, <strong>casa</strong>, <strong>servidor</strong> ou <strong>backup</strong>. Um tópico público deve funcionar quase como uma palavra-passe.
+  </p>
+
+  <p>
+    Exemplo de tópico mais seguro:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>fc-voltaire-alertas-9f7c2a88b6d14e0a</code></pre>
+
+  <h4 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">9.2. Instalar ntfy em servidor próprio</span>
+  </h4>
+
+  <p>
+    Para maior controlo, privacidade e independência, a solução ideal é instalar uma instância própria, por exemplo:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>https://notify.exemplo.pt/Alertas</code></pre>
+
+  <p>
+    Esta abordagem permite usar domínio próprio, autenticação, regras de acesso, proxy reverso, certificados TLS, logs locais e integração mais controlada com a infra-estrutura existente.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">10. Exemplo com autenticação</span>
+  </h3>
+
+  <p>
+    Em ambientes expostos à Internet, a autenticação deve ser considerada. Um exemplo típico com token:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>curl \
+  -H "Authorization: Bearer SEU_TOKEN_AQUI" \
+  -H "Title: Alerta autenticado" \
+  -H "Priority: high" \
+  -d "Mensagem enviada para servidor ntfy protegido." \
+  https://notify.exemplo.pt/Alertas</code></pre>
+
+  <p>
+    Numa rede doméstica ou laboratório fechado, pode optar-se por uma configuração mais simples. Mas quando o serviço fica publicado na Internet, a prudência recomenda autenticação, TLS e nomes de tópicos não previsíveis.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">11. Integração com um servidor Linux</span>
+  </h3>
+
+  <p>
+    Uma boa prática é centralizar a lógica de envio num pequeno script reutilizável:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>#!/bin/bash
+
+NTFY_URL="https://ntfy.sh/MEU_TOPICO_SECRETO"
+
+TITULO="$1"
+PRIORIDADE="$2"
+TAGS="$3"
+MENSAGEM="$4"
+
+curl \
+  -H "Title: $TITULO" \
+  -H "Priority: $PRIORIDADE" \
+  -H "Tags: $TAGS" \
+  -d "$MENSAGEM" \
+  "$NTFY_URL"</code></pre>
+
+  <p>
+    Guardar, por exemplo, em:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>/usr/local/bin/ntfy-alerta</code></pre>
+
+  <p>
+    Tornar executável:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>chmod +x /usr/local/bin/ntfy-alerta</code></pre>
+
+  <p>
+    Depois, qualquer processo pode enviar alertas:
+  </p>
+
+  <pre style="background:#050505; color:#d8ffd8; padding:16px; border-radius:12px; overflow:auto; border:1px solid #333;"><code>ntfy-alerta \
+  "Alerta de disco" \
+  "high" \
+  "floppy_disk,warning" \
+  "A partição /var ultrapassou 85% de utilização."</code></pre>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">12. Casos de uso recomendados</span>
+  </h3>
+
+  <ul>
+    <li>Falha de backups.</li>
+    <li>Serviços systemd parados.</li>
+    <li>Consumo elevado de CPU, memória ou disco.</li>
+    <li>Falha de energia detectada por UPS ou por ausência de resposta de dispositivos.</li>
+    <li>Intrusões SSH ou tentativas de autenticação suspeitas.</li>
+    <li>Queda de câmaras IP ou sensores.</li>
+    <li>Alertas de servidores WordPress, MySQL, Apache, Nginx ou Docker.</li>
+    <li>Monitorização de temperatura, humidade, esgoto, água ou presença.</li>
+    <li>Conclusão de processos longos, exportações, importações ou tarefas nocturnas.</li>
+  </ul>
+
+  <p>
+    A solução é particularmente útil em pequenas infra-estruturas, onde não se justifica pagar plataformas empresariais pesadas, mas onde a ausência de alertas pode sair cara.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">13. Vantagens</span>
+  </h3>
+
+  <ul>
+    <li><strong>Baixo custo:</strong> não usa SMS pagos nem contratos específicos.</li>
+    <li><strong>Simplicidade:</strong> qualquer ferramenta que fale HTTP pode enviar mensagens.</li>
+    <li><strong>Flexibilidade:</strong> integra-se com Bash, Python, PHP, Node.js, cron, systemd, Docker e aplicações próprias.</li>
+    <li><strong>Rapidez:</strong> ideal para alertas quase em tempo real.</li>
+    <li><strong>Auto-hospedável:</strong> permite controlo sobre dados, domínio, autenticação e logs.</li>
+    <li><strong>Multiplataforma:</strong> pode ser usado em telemóveis, browsers e computadores.</li>
+  </ul>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">14. Limitações</span>
+  </h3>
+
+  <ul>
+    <li>Não substitui sistemas certificados de emergência crítica.</li>
+    <li>Depende de Internet ou rede local funcional.</li>
+    <li>Se usado no serviço público, o nome do tópico deve ser difícil de adivinhar.</li>
+    <li>Para ambientes empresariais, deve ser considerada autenticação e instância própria.</li>
+    <li>Alertas excessivos podem levar à habituação e reduzir a atenção do utilizador.</li>
+  </ul>
+
+  <p>
+    A tecnologia é simples, mas a disciplina operacional continua a ser essencial. Um mau sistema de alertas não é aquele que não avisa; é também aquele que avisa tanto que já ninguém o ouve.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">15. Conclusão</span>
+  </h3>
+
+  <p>
+    O ntfy representa uma daquelas soluções técnicas que parecem pequenas, mas mudam a forma como uma infra-estrutura é observada. Com meia dúzia de comandos, um servidor Linux ganha voz. Um backup deixa de morrer em silêncio. Uma falha de energia deixa de ser descoberta horas depois. Um serviço parado passa a gritar no bolso do administrador.
+  </p>
+
+  <p>
+    Num mundo onde tantas soluções tecnológicas chegam embrulhadas em subscrições, plataformas fechadas e contratos opacos, o ntfy recorda uma virtude antiga da informática: a elegância da simplicidade.
+  </p>
+
+  <p>
+    Não resolve todos os problemas. Não substitui monitorização profissional, redundância, boas práticas ou arquitectura sólida. Mas oferece algo precioso: uma ponte directa entre os acontecimentos da máquina e a atenção humana.
+  </p>
+
+  <p>
+    E por vezes, numa noite longa, quando um servidor decide tossir no escuro, essa pequena notificação no telemóvel pode ser a diferença entre uma falha discreta e um desastre anunciado.
+  </p>
+
+  <div style="background:#111; border:1px solid #333; border-radius:14px; padding:18px; margin:32px 0;">
+    <h3 style="color:#ffcc66 !important; margin-top:0; text-align:left;">
+      <span style="color:#ffcc66 !important;">Referências técnicas</span>
+    </h3>
+    <ul>
+      <li>
+        <a href="https://ntfy.sh/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          ntfy — Página oficial
+        </a>
+      </li>
+      <li>
+        <a href="https://docs.ntfy.sh/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          ntfy — Documentação oficial
+        </a>
+      </li>
+      <li>
+        <a href="https://docs.ntfy.sh/publish/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          ntfy — Envio de mensagens por HTTP PUT/POST
+        </a>
+      </li>
+      <li>
+        <a href="https://docs.ntfy.sh/config/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          ntfy — Configuração e auto-hospedagem
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/binwiederhier/ntfy" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          ntfy — Repositório GitHub
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div style="border-top:1px solid #ffcc78; margin-top:36px; padding-top:18px; color:#ffcca0;">
+    <p>
+      <strong>Autor : </strong>
+      <a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+        <strong>Francisco Gonçalves</strong>
+      </a>
+    </p>
+    
+  </div>
+<div style="background:#111; border:1px solid #444; border-radius:14px; padding:22px; margin:36px 0; text-align:center; color:#e8eef4; font-family:Georgia,serif; line-height:2; box-shadow:0 0 18px rgba(255,204,102,0.12);">
+  <p style="margin:0 0 16px 0; font-size:18px;">
+    <strong style="color:#ffcc66;">Nota:</strong>
+    Para mais informações técnicas ou desenvolvimento de soluções tecnológicas personalizadas, poderá contactar-nos em
+    <strong style="color:#ffcc66;">Softelabs</strong>.
+  </p>
+
+  <a href="https://www.softelabs.pt"
+     target="_blank"
+     rel="noopener noreferrer"
+     style="display:inline-block; background:#ffcc66; color:#0b0b0b; padding:10px 22px; border-radius:999px; font-weight:bold; text-decoration:none;">
+    Contactar a Softelabs
+  </a>
+</div>
+<p style="color:#ffcc66;">
+Um sub-sistema útil, prático e com aquela elegância de tecnologia simples que faz o seu trabalho sem pedir licença ao império das subscrições.
+</p>
+<strong> Francisco Gonçalves </strong>
+  
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/FragmentosCaos-codeberg"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+
+</div>
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
