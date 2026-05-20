@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DeepSeek V4: A Fonte Aberta que Reabre a Guerra da Inteligência Artificial</title>
+<meta name="description" content="DeepSeek V4: A Fonte Aberta que Reabre a Guerra da Inteligência Artificial">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">DeepSeek V4: A Fonte Aberta que Reabre a Guerra da Inteligência Artificial</h1>
+      <p class="meta">Publicado em 2026-05-18 10:19:30</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000963471fdb780bd8b4ef3e336.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b;color:#e8eef4;font-family:Georgia,serif;line-height:2.2;padding:10px;text-align:left;">
+
+<div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+<meta itemprop="headline" content="DeepSeek V4: A Fonte Aberta que Reabre a Guerra da Inteligência Artificial">
+<meta itemprop="datePublished" content="2026-05-18">
+<meta itemprop="dateModified" content="2026-05-18">
+<meta itemprop="description" content="Análise técnica e estratégica ao DeepSeek V4 Preview, modelo open-source com contexto de um milhão de tokens, arquitectura MoE e adaptação ao ecossistema Huawei Ascend.">
+<meta itemprop="author" content="Francisco Gonçalves">
+<span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+<meta itemprop="name" content="Fragmentos do Caos">
+<span itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+<meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/05/file_00000000963471fdb780bd8b4ef3e336.png">
+</span>
+</span>
+</div>
+
+<div style="background:#111;border:1px solid #444;padding:16px;border-radius:10px;margin-bottom:22px;">
+<div style="font-size:20px;font-weight:bold;margin-bottom:10px;">
+<span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+</div>
+<ul>
+<li><strong>DeepSeek-V4 Preview</strong> foi anunciado oficialmente em 24 de Abril de 2026.</li>
+<li>Surge em duas variantes: <strong>DeepSeek-V4-Pro</strong> e <strong>DeepSeek-V4-Flash</strong>.</li>
+<li>A versão Pro apresenta cerca de <strong>1,6 biliões de cada parâmetros totais</strong>, com cerca de <strong>49 mil milhões activos</strong>.</li>
+<li>A versão Flash apresenta cerca de <strong>284 mil milhões de parâmetros totais</strong>, com cerca de <strong>13 mil milhões activos</strong>.</li>
+<li>Ambas suportam uma janela de contexto de até <strong>1 milhão de tokens</strong>.</li>
+<li>O modelo foi adaptado ao ecossistema de chips <strong>Huawei Ascend</strong>, sinalizando uma estratégia chinesa de independência tecnológica face à NVIDIA.</li>
+</ul>
+</div>
+
+<h2 style="color:#ffcc66 !important;font-size:34px;text-align:left;margin-bottom:18px;">
+<span style="color:#ffcc66 !important;">DeepSeek V4: A Fonte Aberta que Reabre a Guerra da Inteligência Artificial</span>
+</h2>
+
+<div style="border-left:4px solid #ffcc66;padding:14px 18px;margin:20px 0;background:#101010;color:#f2d58a;font-style:italic;">
+A nova batalha da inteligência artificial já não se trava apenas na qualidade dos modelos. Trava-se na arquitectura, no custo, na abertura, no hardware e na capacidade de cada país deixar de depender dos impérios digitais dos outros.
+</div>
+
+<p>
+O lançamento do <strong>DeepSeek-V4 Preview</strong> representa mais do que uma actualização técnica. É um sinal estratégico. A inteligência artificial de fonte aberta está a entrar numa fase em que já não pode ser tratada como laboratório marginal, curiosidade académica ou alternativa barata aos grandes modelos fechados. Começa a disputar o centro do palco.
+</p>
+
+<p>
+A DeepSeek apresenta o V4 em duas variantes principais: <strong>V4-Pro</strong>, orientado para tarefas exigentes de raciocínio, programação e agentes autónomos; e <strong>V4-Flash</strong>, pensado para velocidade, menor custo e utilização mais económica. Esta distinção é relevante: a inteligência artificial moderna já não se resume a ter "o maior modelo possível", mas a escolher o modelo certo para a tarefa certa.
+</p>
+
+<h3 style="color:#ffcc66 !important;text-align:left;">
+<span style="color:#ffcc66 !important;">Uma arquitectura Mixture-of-Experts para eficiência extrema</span>
+</h3>
+
+<p>
+O ponto técnico central do DeepSeek-V4 é a sua arquitectura <strong>Mixture-of-Experts</strong>. Em vez de activar todos os parâmetros em cada inferência, o modelo activa apenas uma fracção especializada. No caso do V4-Pro, falamos de cerca de <strong>1,6 biliões de parâmetros totais</strong>, mas apenas cerca de <strong>49 mil milhões de parâmetros activos</strong> por operação. No V4-Flash, os números descem para cerca de <strong>284 mil milhões totais</strong> e cerca de <strong>13 mil milhões activos</strong>.
+</p>
+
+<p>
+Esta abordagem permite uma espécie de inteligência modular: o modelo tem uma grande capacidade global, mas não precisa de mobilizar toda a máquina cognitiva para cada pergunta. É como uma biblioteca gigantesca onde, em vez de abrir todos os livros ao mesmo tempo, se chamam apenas os especialistas necessários para cada problema.
+</p>
+
+<p>
+A consequência prática é óbvia: maior eficiência, menor custo computacional e melhor escalabilidade. E isto interessa profundamente ao futuro da IA. Se os modelos continuassem apenas a crescer de forma bruta, rapidamente ficariam reservados a meia dúzia de gigantes tecnológicos com centros de dados planetários. Arquitecturas como esta abrem outro caminho: modelos gigantes, sim, mas operacionalmente mais racionais.
+</p>
+
+<h3 style="color:#ffcc66 !important;text-align:left;">
+<span style="color:#ffcc66 !important;">Um milhão de tokens: o salto do contexto longo</span>
+</h3>
+
+<p>
+Outro elemento decisivo é a janela de contexto de até <strong>1 milhão de tokens</strong>. Esta capacidade altera profundamente o tipo de tarefas possíveis. Já não falamos apenas de responder a perguntas isoladas, mas de analisar repositórios inteiros, contratos longos, documentação técnica extensa, históricos de conversação, processos judiciais, bases documentais internas ou projectos de software complexos.
+</p>
+
+<p>
+Para programadores, isto pode significar a possibilidade de dar ao modelo uma visão muito mais completa de uma aplicação. Para empresas, permite trabalhar com documentação corporativa extensa. Para investigação, abre caminho a análise de grandes corpos textuais sem fragmentação artificial. Para agentes autónomos, representa memória operacional mais ampla.
+</p>
+
+<p>
+Mas o contexto longo também exige prudência. Um milhão de tokens não é sabedoria. É capacidade de retenção. A qualidade dependerá sempre da arquitectura, do treino, da capacidade de raciocínio e da forma como o modelo selecciona o que é relevante. Um modelo pode ter uma janela enorme e ainda assim perder-se num labirinto documental, como certos burocratas que têm todos os papéis em cima da secretária e nenhuma ideia do que fazer com eles.
+</p>
+
+<h3 style="color:#ffcc66 !important;text-align:left;">
+<span style="color:#ffcc66 !important;">Pro e Flash: duas faces da mesma estratégia</span>
+</h3>
+
+<p>
+A separação entre <strong>V4-Pro</strong> e <strong>V4-Flash</strong> é tecnicamente interessante. A versão Pro aponta para desempenho superior em tarefas complexas: programação agentic, raciocínio multi-passo, resolução de problemas difíceis, análise técnica e competitiva. A versão Flash sacrifica parte desse desempenho em troca de maior rapidez e menor custo.
+</p>
+
+<p>
+Esta dualidade antecipa o futuro dos sistemas de IA: não haverá um único modelo universal a resolver tudo. Haverá orquestração. Modelos rápidos para tarefas simples. Modelos mais profundos para análise complexa. Modelos locais para privacidade. Modelos remotos para escala. Pequenos especialistas a trabalhar em conjunto com grandes modelos de raciocínio.
+</p>
+
+<p>
+Neste sentido, o DeepSeek-V4 é menos um produto isolado e mais uma peça de uma arquitectura maior: a passagem da IA como chatbot para a IA como infra-estrutura distribuída.
+</p>
+
+<h3 style="color:#ffcc66 !important;text-align:left;">
+<span style="color:#ffcc66 !important;">A adaptação ao Huawei Ascend: IA como soberania tecnológica</span>
+</h3>
+
+<p>
+Talvez o aspecto mais geopolítico do DeepSeek-V4 seja a sua adaptação ao ecossistema <strong>Huawei Ascend</strong>. Durante anos, a NVIDIA tornou-se praticamente sinónimo de computação avançada para inteligência artificial. As suas GPUs dominaram treino, inferência e infra-estrutura de centros de dados.
+</p>
+
+<p>
+Mas as restrições tecnológicas impostas pelos Estados Unidos à China aceleraram uma resposta previsível: a tentativa de criar uma cadeia de IA menos dependente de hardware estrangeiro. O DeepSeek-V4 adaptado aos chips Huawei Ascend deve ser lido nesse contexto. Não é apenas uma decisão técnica. É uma afirmação estratégica.
+</p>
+
+<p>
+A mensagem é clara: quem controlar modelos, chips, compiladores, frameworks e centros de dados controla uma parte crescente da economia e da soberania do século XXI. A IA deixou de ser apenas software. Tornou-se infra-estrutura de poder.
+</p>
+
+<h3 style="color:#ffcc66 !important;text-align:left;">
+<span style="color:#ffcc66 !important;">Fonte aberta: liberdade, auditoria e competição</span>
+</h3>
+
+<p>
+O facto de o DeepSeek-V4 Preview ser apresentado como open-sourced é particularmente relevante. Modelos abertos permitem auditoria, adaptação, optimização e integração em contextos próprios. Permitem que investigadores, empresas e comunidades técnicas estudem o funcionamento do modelo, testem limites, criem derivações e reduzam a dependência de APIs fechadas.
+</p>
+
+<p>
+Isto não significa ingenuidade. Nem todos os modelos "abertos" são igualmente livres. É necessário olhar para licenças, pesos, código de treino, dados, documentação, permissões comerciais e restrições reais. Mas, mesmo com essas cautelas, a direcção é clara: a pressão da IA aberta está a obrigar os modelos fechados a justificar melhor o seu custo e a sua opacidade.
+</p>
+
+<p>
+O open-source em IA já não é apenas uma causa romântica. É um mecanismo de concorrência. É uma forma de escrutínio. É uma ferramenta de soberania. E, para países pequenos como Portugal, pode ser uma das poucas vias realistas para não ficarem totalmente dependentes de plataformas externas.
+</p>
+
+<h3 style="color:#ffcc66 !important;text-align:left;">
+<span style="color:#ffcc66 !important;">O que isto significa para programadores e empresas</span>
+</h3>
+
+<p>
+Para programadores, o DeepSeek-V4 aponta para um futuro onde modelos de grande contexto podem analisar projectos inteiros, ajudar em refactorizações profundas, escrever testes, compreender arquitecturas e funcionar como agentes técnicos mais persistentes. A programação deixa de ser apenas escrever código linha a linha e passa a incluir orquestração de modelos, revisão assistida e automação de tarefas complexas.
+</p>
+
+<p>
+Para empresas, a questão será outra: como aproveitar modelos abertos sem comprometer segurança, dados e propriedade intelectual? A resposta não estará apenas em "usar uma API". Estará em criar infra-estruturas próprias, ambientes controlados, pipelines de validação, logs, auditoria, segurança e integração com bases documentais internas.
+</p>
+
+<p>
+A vantagem competitiva passará cada vez menos por "ter acesso à IA" — todos terão — e cada vez mais por saber integrá-la nos processos reais de trabalho. A inteligência artificial será tão útil quanto a arquitectura que a envolve.
+</p>
+
+<h3 style="color:#ffcc66 !important;text-align:left;">
+<span style="color:#ffcc66 !important;">Riscos: entusiasmo, opacidade e dependência disfarçada</span>
+</h3>
+
+<p>
+Apesar do entusiasmo, convém manter espírito crítico. Modelos de grande escala podem herdar enviesamentos, censuras, limitações culturais e fragilidades de segurança. O facto de serem abertos não os torna automaticamente neutros, seguros ou transparentes. Torna-os apenas mais escrutináveis — o que já é muito, mas não é tudo.
+</p>
+
+<p>
+Além disso, há uma nova dependência possível: deixar de depender de uma API fechada ocidental para depender de uma infra-estrutura aberta mas optimizada para um ecossistema geopolítico específico. A soberania tecnológica não se atinge apenas mudando de fornecedor. Atinge-se desenvolvendo competência própria.
+</p>
+
+<p>
+É aqui que a Europa, e Portugal em particular, deveriam acordar. A questão não é escolher cegamente entre OpenAI, Google, Meta, DeepSeek ou Mistral. A questão é criar capacidade técnica, infra-estrutura, conhecimento local e massa crítica para avaliar, adaptar e executar modelos de forma autónoma.
+</p>
+
+<h3 style="color:#ffcc66 !important;text-align:left;">
+<span style="color:#ffcc66 !important;">Conclusão: o DeepSeek-V4 como sinal de uma nova ordem</span>
+</h3>
+
+<p>
+O DeepSeek-V4 não é apenas mais um modelo. É um sinal de mudança na economia política da inteligência artificial. Mostra que a corrida já não se faz apenas com modelos fechados, GPUs americanas e centros de dados ocidentais. Faz-se também com modelos abertos, arquitecturas eficientes, hardware alternativo e ambição estratégica.
+</p>
+
+<p>
+A IA de fonte aberta está a deixar de ser periferia. Está a tornar-se campo de batalha. E nesse campo de batalha, quem souber compreender, adaptar e construir terá vantagem sobre quem se limitar a consumir.
+</p>
+
+<p>
+Portugal deveria olhar para isto com seriedade. Não para copiar a China, nem para trocar uma dependência por outra, mas para perceber a lição essencial: no século XXI, a independência começa no código, passa pelos dados, atravessa o hardware e termina na capacidade de pensar tecnologicamente com cabeça própria.
+</p>
+
+<p>
+O DeepSeek-V4 é uma garrafa lançada ao mar da história tecnológica. Mas, ao contrário das nossas garrafas poéticas, esta vem cheia de parâmetros, contexto, eficiência e geopolítica. Quem a souber ler perceberá que a próxima década não será decidida apenas por quem tem melhores modelos, mas por quem tem coragem de não depender inteiramente dos modelos dos outros.
+</p>
+
+<h3 style="color:#ffcc66 !important;text-align:left;">
+<span style="color:#ffcc66 !important;">Referências</span>
+</h3>
+
+<ul>
+<li><a href="https://api-docs.deepseek.com/news/news260424" target="_blank" rel="noopener" style="color:#ffcc66;">DeepSeek — DeepSeek V4 Preview Release</a></li>
+<li><a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro" target="_blank" rel="noopener" style="color:#ffcc66;">Hugging Face — DeepSeek-V4-Pro</a></li>
+<li><a href="https://www.reuters.com/world/china/deepseek-v4-chinese-ai-model-adapted-huawei-chips-2026-04-24/" target="_blank" rel="noopener" style="color:#ffcc66;">Reuters — DeepSeek-V4 adapted for Huawei chips</a></li>
+<li><a href="https://github.com/deepseek-ai" target="_blank" rel="noopener" style="color:#ffcc66;">DeepSeek no GitHub</a></li>
+</ul>
+
+<div style="border-top:1px solid #ffcc78;margin-top:30px;padding-top:14px;color:#ffcca0;">
+<strong><a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" style="color:#ffcca0;text-decoration:none;">Francisco Gonçalves</a></strong><br>
+Co-autoria: <strong>Augustus Veritas</strong><br>— Fragmentos do Caos
+</div>
+<div style="margin-top:25px;padding:18px;background:#111;border-left:4px solid #ffcc66;border-radius:8px;">
+
+<h3 style="color:#ffcc66 !important;margin-top:0;">
+<span style="color:#ffcc66 !important;">Nota Editorial</span>
+</h3>
+
+<p>
+Independentemente de a tecnologia ser chinesa, americana ou europeia, a verdadeira importância da <strong>fonte aberta</strong> reside precisamente na liberdade de adaptação e evolução. Um país como Portugal não precisa de aceitar um modelo exactamente como ele é entregue. Pode estudá-lo, auditá-lo, adaptá-lo, criar um fork e desenvolver uma variante alinhada com os seus próprios princípios, interesses estratégicos e visão de soberania tecnológica.
+</p>
+
+<p>
+Esse é precisamente o poder do open-source: transformar dependência em capacidade de construção.
+</p>
+
+<p>
+Um exemplo paradigmático desta realidade foi a própria Microsoft. Durante anos tentou tornar o <strong>Internet Explorer</strong> competitivo face à nova geração de browsers modernos. Quando percebeu que estava a perder essa corrida, não teve qualquer problema em adoptar a base open-source do projecto <strong>Chromium</strong>, originalmente impulsionado pela Google através do Chrome.
+</p>
+
+<p>
+A partir desse fork, a Microsoft criou o actual <strong>Edge</strong>, adicionando optimizações próprias, integração com o ecossistema Windows, segurança adicional e funcionalidades específicas. Ou seja: até uma das maiores empresas tecnológicas do planeta reconheceu que a fonte aberta pode ser não apenas uma ferramenta técnica, mas uma estratégia de sobrevivência e competitividade.
+</p>
+
+<p>
+É exactamente essa lógica que muitos países deveriam compreender relativamente à inteligência artificial. O verdadeiro perigo não está em usar tecnologia desenvolvida noutro país. O verdadeiro perigo está em depender exclusivamente de tecnologia fechada, impossível de auditar, modificar ou controlar.
+</p>
+
+<p>
+A independência tecnológica não nasce do isolamento. Nasce da capacidade de compreender, adaptar, evoluir e construir sobre fundações abertas.
+</p>
+<strong> Francisco Gonçalves (2026)</strong>
+</div>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/FragmentosCaos-codeberg"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
