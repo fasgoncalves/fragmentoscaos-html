@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Centros de Dados em Portugal: Infra-estrutura Estratégica ou Nova Dependência Digital?</title>
+<meta name="description" content="Centros de Dados em Portugal: Infra-estrutura Estratégica ou Nova Dependência Digital?">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Centros de Dados em Portugal: Infra-estrutura Estratégica ou Nova Dependência Digital?</h1>
+      <p class="meta">Publicado em 2026-05-21 12:32:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_0000000060e871f49e621ab52bce04a9.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia,serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+    <meta itemprop="headline" content="Centros de Dados em Portugal: Infra-estrutura Estratégica ou Nova Dependência Digital?">
+    <meta itemprop="description" content="Uma reflexão crítica sobre o Plano Nacional de Centros de Dados, a soberania digital portuguesa e o risco de Portugal se transformar apenas numa plataforma eléctrica e territorial para interesses tecnológicos externos.">
+    <meta itemprop="datePublished" content="2026-05-20T21:30:00+01:00">
+    <meta itemprop="dateModified" content="2026-05-20T21:30:00+01:00">
+    <meta itemprop="author" content="Francisco Gonçalves">
+    <meta itemprop="publisher" content="Fragmentos do Caos">
+    <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/fc_logo_round.png">
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+      <meta itemprop="name" content="Fragmentos do Caos">
+      <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+        <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/05/file_0000000060e871f49e621ab52bce04a9.png">
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#111; border:1px solid #444; border-radius:14px; padding:18px; margin:20px 0;">
+    <h3 style="color:#ffcc66 !important; margin-top:0; text-align:left;">
+      <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+    </h3>
+    <ul style="margin-left:20px;">
+      <li>O Governo aprovou o Plano Nacional de Centros de Dados e o respectivo Plano de Acção 2026-2027.</li>
+      <li>O plano pretende atrair investimento, acelerar licenciamento, coordenar acesso à rede eléctrica e posicionar Portugal como plataforma europeia de dados e inteligência artificial.</li>
+      <li>Grandes projectos em Sines, envolvendo Microsoft, Start Campus, Nscale e NVIDIA, colocam Portugal no mapa europeu da computação intensiva.</li>
+      <li>O risco estratégico é evidente: Portugal pode tornar-se apenas território, energia e licenciamento rápido para infra-estruturas controladas por terceiros.</li>
+      <li>A oportunidade só será verdadeiramente nacional se houver soberania digital, capacidade computacional pública, transferência tecnológica, formação avançada e benefício directo para empresas, universidades e cidadãos portugueses.</li>
+    </ul>
+  </div>
+
+  <h2 style="color:#ffcc66 !important; font-size:34px; text-align:center; line-height:1.4;">
+    <span style="color:#ffcc66 !important;">Centros de Dados em Portugal:<br>Infra-estrutura Estratégica ou Nova Dependência Digital?</span>
+  </h2>
+
+  <div style="border-left:4px solid #ffcc66; background:#111; padding:18px; margin:26px 0; font-style:italic; color:#ffdd99;">
+    Portugal não pode limitar-se a ser uma tomada eléctrica atlântica para os impérios digitais do século XXI. Centros de dados podem ser uma oportunidade histórica, mas apenas se forem acompanhados por soberania tecnológica, inteligência nacional e capacidade própria de criação de valor.
+  </div>
+
+  <p>
+    Há momentos em que uma boa notícia deve ser recebida com prudência, não com fanfarra.
+    O <strong>PNCD - Plano Nacional de Centros de Dados</strong>, recentemente aprovado pelo Governo, é apresentado como uma grande oportunidade para colocar Portugal no centro da economia europeia dos dados, da computação intensiva e da inteligência artificial.
+    E, em parte, pode sê-lo.
+  </p>
+
+  <p>
+    Portugal tem vantagens reais: localização atlântica, cabos submarinos, energia renovável, estabilidade geográfica, ligação entre continentes e algum capital humano qualificado.
+    Sines, em particular, tornou-se uma peça estratégica neste tabuleiro global, onde dados, energia e inteligência artificial começam a formar uma nova geopolítica.
+  </p>
+
+  <p>
+    Mas é precisamente por isso que devemos pensar melhor.
+    Quando uma infra-estrutura se torna estratégica, deixa de ser apenas um negócio.
+    Passa a ser soberania.
+    Passa a ser poder.
+    Passa a ser futuro.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">A sedução dos grandes números</span>
+  </h3>
+
+  <p>
+    O discurso oficial e empresarial fala em milhares de milhões de euros, dezenas de milhares de empregos, investimento estrangeiro, aceleração de licenciamento, prazos máximos de decisão, articulação com a rede eléctrica e criação de um ecossistema nacional de serviços.
+  </p>
+
+  <p>
+    Tudo isto soa bem.
+    Tão bem que quase se ouve ao fundo a música institucional dos powerpoints ministeriais, sempre acompanhada daquela palavra mágica que em Portugal serve para abrir todas as portas e fechar quase todas as perguntas: <strong>investimento</strong>.
+  </p>
+
+  <p>
+    Mas convém perguntar: investimento para quem?
+    Valor acrescentado para quem?
+    Controlo estratégico por quem?
+    Propriedade intelectual onde?
+    Capacidade computacional ao serviço de quem?
+  </p>
+
+  <p>
+    Porque uma coisa é Portugal atrair centros de dados.
+    Outra, muito diferente, é Portugal construir uma verdadeira política tecnológica nacional em torno desses centros de dados.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">O risco de sermos apenas o chão, a água e a energia</span>
+  </h3>
+
+  <p>
+    O perigo é simples: Portugal pode transformar-se numa plataforma física para infra-estruturas digitais de terceiros.
+    Fornecemos terreno, ligação eléctrica, licenciamento acelerado, apoio institucional, eventualmente mecanismos de redução de risco para o capital privado, e no fim ficamos com a parte menos nobre da cadeia de valor.
+  </p>
+
+  <p>
+    Ficamos com o betão.
+    Ficamos com os cabos.
+    Ficamos com os consumos energéticos.
+    Ficamos com a pressão sobre o território.
+    Ficamos com alguns empregos de construção, manutenção, segurança, operação e serviços associados.
+  </p>
+
+  <p>
+    Mas a inteligência, os modelos, os algoritmos, os dados, a propriedade intelectual, os serviços de alto valor, a facturação global e o poder estratégico podem continuar fora do país.
+  </p>
+
+  <p>
+    E então teremos criado, com grande pompa, não uma política de soberania digital, mas uma nova forma de dependência: mais sofisticada, mais brilhante, mais tecnológica, mas ainda dependência.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Centros de dados não são, por si só, soberania digital</span>
+  </h3>
+
+  <p>
+    É necessário dizer isto com clareza: um centro de dados em território português não significa automaticamente soberania digital portuguesa.
+  </p>
+
+  <p>
+    A soberania digital exige controlo sobre dados críticos, capacidade computacional própria, cibersegurança, software auditável, infra-estruturas públicas resilientes, investigação aplicada, empresas nacionais fortes e modelos de inteligência artificial capazes de servir a língua, a cultura, a ciência, a administração pública e a economia real do país.
+  </p>
+
+  <p>
+    Sem isso, podemos ter edifícios cheios de GPUs, mas vazios de estratégia nacional.
+    Podemos ter máquinas poderosíssimas a trabalhar em Portugal, mas não para Portugal.
+    Podemos ter energia portuguesa a alimentar inteligência estrangeira, enquanto as nossas escolas, hospitais, universidades, tribunais, PME e laboratórios continuam tecnologicamente dependentes, subfinanciados e presos à velha burocracia.
+  </p>
+
+  <p>
+    Seria a versão digital da antiga tragédia portuguesa: exportamos matéria-prima, importamos valor acrescentado.
+    Antes era minério, cortiça, mão-de-obra ou território turístico.
+    Agora pode ser energia, localização e silêncio estratégico.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">A pergunta que falta fazer</span>
+  </h3>
+
+  <p>
+    A pergunta essencial não é se Portugal deve ter centros de dados.
+    Deve.
+    A pergunta é outra:
+  </p>
+
+  <p style="font-size:22px; color:#ffdd99; text-align:center; padding:20px;">
+    <strong>Portugal quer ser dono de parte da inteligência computacional do futuro, ou apenas senhorio com quadro eléctrico?</strong>
+  </p>
+
+  <p>
+    Esta é a pergunta que devia estar no centro do debate público.
+    Não basta anunciar projectos.
+    Não basta acelerar licenciamentos.
+    Não basta criar portais para investidores.
+    Não basta receber hyperscalers com tapete vermelho.
+  </p>
+
+  <p>
+    É preciso garantir que a infra-estrutura instalada em Portugal deixa capacidade, conhecimento, soberania e valor estrutural no país.
+    Caso contrário, estaremos apenas a construir catedrais digitais onde outros rezam, outros mandam e outros recolhem o dízimo.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">As contrapartidas que Portugal devia exigir</span>
+  </h3>
+
+  <p>
+    Se Portugal vai disponibilizar território, energia, facilitação administrativa e enquadramento público favorável, então deve exigir contrapartidas claras.
+    Não como gesto hostil ao investimento estrangeiro, mas como acto elementar de inteligência estratégica.
+  </p>
+
+  <p>
+    Primeiro, deve existir uma quota de capacidade computacional reservada ao Estado, universidades, laboratórios públicos, centros de investigação e PME tecnológicas portuguesas.
+    Não uma esmola simbólica, mas uma capacidade real, utilizável, programada e auditável.
+  </p>
+
+  <p>
+    Segundo, deve ser criado um programa nacional de inteligência artificial soberana, assente em modelos abertos, dados públicos devidamente tratados, respeito ético, transparência e aplicações concretas na saúde, justiça, educação, ciência, administração pública e indústria.
+  </p>
+
+  <p>
+    Terceiro, deve haver transferência tecnológica obrigatória.
+    Não basta contratar serviços locais de segurança, limpeza, construção ou manutenção.
+    É necessário formar engenheiros, arquitectos de cloud, especialistas em IA, técnicos de redes, peritos em cibersegurança, investigadores e empresas nacionais capazes de subir na cadeia de valor.
+  </p>
+
+  <p>
+    Quarto, deve haver energia renovável adicional.
+    Não se pode apenas capturar capacidade eléctrica existente e apresentá-la como verde.
+    Projectos desta escala devem contribuir para aumentar a produção limpa, reforçar a rede e não prejudicar consumidores, indústria local ou objectivos ambientais.
+  </p>
+
+  <p>
+    Quinto, deve haver uma política séria de reutilização de calor, gestão da água, integração territorial e reversibilidade das infra-estruturas.
+    O território não pode ser tratado como se fosse uma folha branca ao serviço da pressa financeira.
+  </p>
+
+  <p>
+    Sexto, os dados críticos do Estado português e dos cidadãos portugueses devem obedecer a regras de jurisdição, segurança, continuidade operacional e controlo democrático.
+    A nuvem não pode ser apenas uma palavra bonita para designar dependência invisível.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">O papel do Estado: facilitador ou guardião?</span>
+  </h3>
+
+  <p>
+    O Estado português tem aqui uma escolha.
+    Pode limitar-se a ser facilitador de investimento, desbloqueador de licenças, gestor de contactos e animador de conferências.
+    Ou pode ser guardião do interesse nacional.
+  </p>
+
+  <p>
+    A primeira opção é fácil.
+    Produz comunicados, fotografias, manchetes e discursos.
+    A segunda é difícil.
+    Obriga a pensar a vinte anos, a negociar com firmeza, a perceber tecnologia, a proteger soberania e a resistir à tentação provinciana de aceitar qualquer investimento como se fosse maná caído do céu.
+  </p>
+
+  <p>
+    Portugal precisa de investimento, sim.
+    Mas precisa ainda mais de critério.
+    Um país pobre em estratégia aceita tudo.
+    Um país maduro escolhe, exige, orienta e transforma.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">A oportunidade ainda existe</span>
+  </h3>
+
+  <p>
+    Seria errado rejeitar esta oportunidade.
+    Os centros de dados são uma peça fundamental da economia digital.
+    A inteligência artificial, a ciência dos dados, a simulação, a medicina personalizada, a indústria avançada, a cibersegurança e os serviços públicos modernos dependem cada vez mais de capacidade computacional.
+  </p>
+
+  <p>
+    Portugal não deve ficar fora deste movimento.
+    Pelo contrário, deve entrar nele com inteligência, ambição e visão estratégica.
+  </p>
+
+  <p>
+    Mas entrar não é ajoelhar.
+    Receber investimento não é abdicar de soberania.
+    Acelerar licenciamento não é suspender pensamento crítico.
+    Falar de futuro não é entregar o futuro a quem já controla quase tudo.
+  </p>
+
+  <p>
+    A oportunidade existe se Portugal conseguir transformar estes projectos numa alavanca para criar uma verdadeira economia nacional dos dados, da computação e da inteligência artificial.
+    Caso contrário, será apenas mais uma estação de serviço da globalização tecnológica: limpa, moderna, iluminada, mas onde os grandes camiões passam, abastecem e seguem viagem.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Recomendação final</span>
+  </h3>
+
+  <p>
+    A recomendação é clara: Portugal deve apoiar o Plano Nacional de Centros de Dados, mas deve condicioná-lo a uma estratégia de soberania digital verificável.
+  </p>
+
+  <p>
+    Cada grande projecto deveria responder publicamente a algumas perguntas simples:
+  </p>
+
+  <ul style="margin-left:20px;">
+    <li>Que capacidade computacional fica disponível para instituições portuguesas?</li>
+    <li>Que conhecimento técnico será transferido para universidades, politécnicos e empresas nacionais?</li>
+    <li>Que parte da cadeia de valor será capturada por empresas portuguesas?</li>
+    <li>Que garantias existem sobre energia, água, território e impacto ambiental?</li>
+    <li>Que protecção existe para dados críticos e serviços essenciais?</li>
+    <li>Que mecanismos impedem Portugal de ser apenas infra-estrutura física ao serviço de soberanias digitais alheias?</li>
+  </ul>
+
+  <p>
+    Sem estas respostas, o país deve desconfiar.
+    Não por medo da tecnologia, mas precisamente por compreender a sua importância.
+  </p>
+
+  <p>
+    A tecnologia é demasiado importante para ser deixada apenas aos investidores.
+    A soberania é demasiado preciosa para ser embrulhada em brochuras comerciais.
+    E o futuro é demasiado sério para ser vendido em parcelas industriais com ligação à rede eléctrica.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Epílogo: entre a tomada e a inteligência</span>
+  </h3>
+
+  <p>
+    Portugal tem diante de si uma escolha luminosa e perigosa.
+    Pode ser apenas uma tomada atlântica para alimentar os cérebros artificiais dos outros.
+    Ou pode usar essa tomada para acender finalmente uma inteligência tecnológica própria.
+  </p>
+
+  <p>
+    A diferença entre as duas opções chama-se visão.
+    E a visão, infelizmente, não se instala por decreto, nem se compra por megawatt.
+  </p>
+
+  <p>
+    Constrói-se com pensamento livre, exigência pública, competência técnica, coragem política e uma ideia simples:
+    um país pequeno não pode dar-se ao luxo de ser ingénuo.
+  </p>
+
+  <p style="font-size:22px; color:#ffdd99; text-align:center; padding:22px;">
+    <strong>Centros de dados, sim.<br>
+    Colonização digital com fita azul e discurso ministerial, não.</strong>
+  </p>
+
+  <div style="background:#111; border:1px solid #333; border-radius:14px; padding:18px; margin:30px 0;">
+    <h3 style="color:#ffcc66 !important; text-align:left;">
+      <span style="color:#ffcc66 !important;">Referências e contexto</span>
+    </h3>
+    <ul style="margin-left:20px;">
+      <li><a href="https://diariodarepublica.pt/dr/detalhe/resolucao-conselho-ministros/70-2026-1084345989" style="color:#ffcc66;">Resolução do Conselho de Ministros n.º 70/2026 — Plano Nacional de Centros de Dados</a></li>
+      <li><a href="https://portugal.gov.pt/gc25/comunicacao/comunicados/perguntas-e-respostas-plano-nacional-de-dados" style="color:#ffcc66;">Governo — Perguntas e Respostas sobre o Plano Nacional de Dados</a></li>
+      <li><a href="https://www.reuters.com/business/microsoft-plans-invest-10-billion-portugal-ai-data-hub-bloomberg-news-reports-2025-11-11/" style="color:#ffcc66;">Reuters — Microsoft e infra-estrutura de IA em Sines</a></li>
+      <li><a href="https://www.nscale.com/press-releases/nscale-start-campus" style="color:#ffcc66;">Nscale — Expansão com GPUs NVIDIA Rubin em Sines</a></li>
+    </ul>
+  </div>
+
+  <div style="border-top:1px solid #ffcc78; margin-top:34px; padding-top:18px; color:#ffcca0;">
+    <p>
+      <strong>Artigo de opinião por :
+      <a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" style="color:#ffcc66;">Francisco Gonçalves</a></strong><br>
+      Fragmentos do Caos — pensamento crítico, tecnologia, cidadania e futuro.
+    </p>
+    <p style="font-size:14px; color:#c9b58a;">
+      Artigo desenvolvido em co-autoria editorial com <strong>Augustus Veritas.</strong>
+    </p>
+  </div>
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">A velha dependência com roupa nova</span>
+</h3>
+
+<p>
+  Há ainda uma suspeita legítima que não deve ser afastada com ingenuidade:
+  a de que esta grande corrida aos centros de dados possa tornar-se apenas mais uma forma de consolidar a dependência portuguesa de grandes fornecedores tecnológicos globais.
+</p>
+
+<p>
+  Durante décadas, Portugal comprou software, licenças, sistemas operativos, plataformas de produtividade, serviços cloud e soluções empresariais quase sempre aos mesmos gigantes.
+  Muitas vezes sem estratégia própria, sem alternativas nacionais, sem verdadeira capacidade negocial e sem uma visão de soberania tecnológica.
+</p>
+
+<p>
+  A Microsoft, como outros grandes operadores globais, continua a vender software e serviços em Portugal com a facilidade com que se vendem pipocas à entrada de um cinema:
+  o público entra, paga, consome e raramente pergunta quem controla a máquina, quem define o preço, quem recolhe os dados e quem fica dono da sala.
+</p>
+
+<p>
+  O risco agora é que, com a desculpa da inteligência artificial e da infra-estrutura crítica, se passe para uma nova fase:
+  já não compramos apenas o software;
+  damos também o território, a energia, os cabos, os licenciamentos acelerados e o enquadramento político para que a dependência se torne ainda mais profunda.
+</p>
+
+<p>
+  A questão não é demonizar a Microsoft, a NVIDIA, a Amazon, a Google ou qualquer outro gigante tecnológico.
+  A questão é saber se Portugal tem uma estratégia própria ou se continua apenas a comportar-se como cliente obediente,
+  fornecedor de espaço físico e consumidor entusiasmado de soluções desenhadas, controladas e facturadas a partir de fora.
+</p>
+
+<p>
+  Uma política tecnológica nacional não pode confundir parceria com submissão,
+  nem investimento estrangeiro com abdicação estratégica.
+  Porque um país que compra tudo feito, aloja tudo dos outros e pensa pouco por si próprio,
+  pode acabar muito moderno por fora e profundamente dependente por dentro.
+</p>
+<strong>Francisco Gonçalves (2026)</strong>
+<div style="background:#111; border-left:4px solid #ffcc66; border-radius:12px; padding:20px; margin:34px 0; color:#e8eef4; font-family:Georgia,serif; line-height:2.1; text-align:left;">
+
+  <h3 style="color:#ffcc66 !important; text-align:left; margin-top:0;">
+    <span style="color:#ffcc66 !important;">Uma Nota final</span>
+  </h3>
+
+  <p>
+    Quem observa Portugal desde 1974 percebe que o cenário muda, os cartazes mudam, os nomes mudam, a tecnologia muda — mas o mecanismo repete-se demasiadas vezes.
+  </p>
+
+  <p>
+    Antes era a modernização administrativa.
+    Depois foram os fundos europeus.
+    Depois a sociedade da informação.
+    Depois a inovação.
+    Depois a cloud.
+    Agora a inteligência artificial e os centros de dados.
+  </p>
+
+  <p>
+    E quase sempre a mesma peça: grandes palavras, grandes fotografias, grandes promessas — e pouca exigência sobre <strong>quem fica dono do valor criado</strong>.
+  </p>
+
+  <p>
+    A questão não é ser contra os centros de dados.
+    A questão é ser contra mais uma vaga de entusiasmo provinciano em que Portugal oferece o palco, a electricidade e a reverência, enquanto outros escrevem o guião, cobram os bilhetes e levam a bilheteira.
+  </p>
+
+  <p>
+    Este circo já passou muitas vezes pela aldeia.
+    Só mudaram os palhaços — e agora usam fato azul-escuro, crachá de conferência e falam em <em>ecosystem</em>.
+  </p>
+
+</div>
+<strong>Francisco Gonçalves </strong>
+  
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/FragmentosCaos-codeberg"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+
+</div>
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
