@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vigilant Guard: dar olhos de IA ao ZoneMinder sem entregar a segurança à nuvem</title>
+<meta name="description" content="Vigilant Guard: dar olhos de IA ao ZoneMinder sem entregar a segurança à nuvem">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Vigilant Guard: dar olhos de IA ao ZoneMinder sem entregar a segurança à nuvem</h1>
+      <p class="meta">Publicado em 2026-05-29 11:35:50</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_000000008e3c720a82b99ec7c078b973.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia,serif; line-height:2.2; padding:10px; text-align:left;">
+
+<div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+  <meta itemprop="headline" content="Vigilant Guard: dar olhos de IA ao ZoneMinder sem entregar a casa à nuvem">
+  <meta itemprop="datePublished" content="2026-05-29T10:00:00+01:00">
+  <meta itemprop="dateModified" content="2026-05-29T10:00:00+01:00">
+  <meta itemprop="description" content="Artigo técnico sobre o Vigilant Guard, uma solução local que integra ZoneMinder, YOLOv8, socket UNIX, ntfy e reconhecimento facial opcional para detecção de humanos em eventos de videovigilância.">
+  <meta itemprop="author" content="Francisco Gonçalves">
+  <meta itemprop="publisher" content="Fragmentos do Caos">
+  <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/05/file_000000008e3c720a82b99ec7c078b973.png">
+  <meta itemprop="mainEntityOfPage" content="https://www.fragmentoscaos.eu/vigilant-guard-zoneminder-yolo-ia-local/">
+</div>
+
+<div style="background:#111; border:1px solid #444; padding:18px; margin:20px 0; border-radius:10px;">
+  <h3 style="color:#ffcc66 !important; margin-top:0; text-align:left;">
+    <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+  </h3>
+  <ul style="margin-left:20px;">
+    <li><strong>Nome da solução:</strong> Vigilant Guard.</li>
+    <li><strong>Objectivo:</strong> detectar humanos em eventos do ZoneMinder usando IA local.</li>
+    <li><strong>Motor principal:</strong> YOLOv8, em execução CPU.</li>
+    <li><strong>Integração:</strong> filtro ZoneMinder → script shell → socket UNIX → serviço Python.</li>
+    <li><strong>Alertas:</strong> ntfy para telemóvel ou outros clientes compatíveis.</li>
+    <li><strong>Reconhecimento facial:</strong> opcional, com base de dados MySQL/MariaDB.</li>
+    <li><strong>Filosofia:</strong> sem cloud obrigatória, sem dependência externa, controlo local.</li>
+  </ul>
+</div>
+
+<h2 style="color:#ffcc66 !important; font-size:34px; text-align:center; line-height:1.3;">
+  <span style="color:#ffcc66 !important;">Vigilant Guard: dar olhos de IA ao ZoneMinder sem entregar a casa à nuvem</span>
+</h2>
+
+<div style="border-left:4px solid #ffcc66; background:#111; padding:16px 20px; margin:24px 0; font-style:italic; color:#ffdda0;">
+  Há soluções tecnológicas que nascem de grandes planos estratégicos. Outras nascem de uma necessidade muito simples: uma câmara vê movimento, mas o sistema precisa de saber se aquilo é uma pessoa, uma sombra, um gato, uma folha ao vento ou apenas mais um falso positivo com pretensões dramáticas.
+</div>
+
+<p>
+O <strong>Vigilant Guard</strong> nasceu dessa necessidade prática: acrescentar ao <strong>ZoneMinder</strong> uma camada local de inteligência artificial capaz de analisar eventos de movimento, detectar humanos e enviar alertas úteis para o telemóvel, sem depender de serviços externos, plataformas fechadas ou vigilância em nuvem.
+</p>
+
+<p>
+A ideia é simples, mas poderosa: o ZoneMinder continua a fazer aquilo que sabe fazer bem — capturar vídeo, detectar movimento e criar eventos. O Vigilant Guard entra depois, como um segundo observador, mais selectivo, mais atento e menos impressionável perante sombras nocturnas.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">1. O problema clássico da videovigilância doméstica</span>
+</h3>
+
+<p>
+Quem usa sistemas de videovigilância conhece bem o dilema: se a sensibilidade é baixa, o sistema falha eventos importantes; se a sensibilidade é alta, começa a disparar alertas por tudo e por nada. Uma nuvem passa diante da luz, uma árvore mexe, um insecto atravessa a lente, e o sistema entra em modo apocalipse.
+</p>
+
+<p>
+O ZoneMinder é uma ferramenta robusta e flexível, mas a detecção tradicional de movimento baseia-se sobretudo em alterações de imagem. Isso é suficiente para perceber que "algo mudou", mas não para perceber <strong>o que mudou</strong>.
+</p>
+
+<p>
+É precisamente aí que entra o Vigilant Guard: ele não substitui o ZoneMinder; acrescenta-lhe discernimento.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">2. Arquitectura geral da solução</span>
+</h3>
+
+<p>
+A arquitectura foi desenhada para ser simples, local e auditável. Nada de magia nebulosa em servidores distantes. Tudo corre dentro da própria infra-estrutura do utilizador.
+</p>
+
+<pre style="background:#050505; color:#d8f3dc; border:1px solid #333; padding:16px; overflow:auto; border-radius:8px;">
+ZoneMinder
+   ↓
+Filtro de evento
+   ↓
+notify-image.sh
+   ↓
+Socket UNIX /tmp/humans_socket
+   ↓
+Vigilant Guard
+   ↓
+YOLOv8
+   ↓
+face_recognition opcional
+   ↓
+MySQL/MariaDB opcional
+   ↓
+ntfy / recortes / alertas
+</pre>
+
+<p>
+O ZoneMinder cria o evento. Um filtro executa o script <code>notify-image.sh</code>. Esse script envia o caminho do evento para um socket UNIX. O serviço Python <strong>Vigilant Guard</strong> recebe esse caminho, analisa imagens críticas como <code>alarm.jpg</code> e <code>snapshot.jpg</code>, detecta presença humana com YOLOv8 e envia alerta via ntfy.
+</p>
+
+<p>
+A cadeia é curta, clara e depurável. E, como todos os bons sistemas UNIX, quando falha, deixa pistas — desde que tenhamos logs suficientes e paciência de artesão.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">3. O papel do socket UNIX</span>
+</h3>
+
+<p>
+Uma das decisões mais importantes foi usar um <strong>socket UNIX</strong> local em vez de HTTP, API REST ou outro mecanismo mais pesado. O socket é rápido, simples e adequado para comunicação entre processos na mesma máquina.
+</p>
+
+<p>
+O caminho usado é:
+</p>
+
+<pre style="background:#050505; color:#d8f3dc; border:1px solid #333; padding:16px; overflow:auto; border-radius:8px;">
+/tmp/humans_socket
+</pre>
+
+<p>
+Houve, porém, um detalhe crítico: o ZoneMinder executa o filtro como utilizador <code>www-data</code>, enquanto o serviço Python corre como <code>root</code>. Se o socket for criado como <code>root:root</code> com permissões restritivas, o script do ZoneMinder não consegue entregar eventos.
+</p>
+
+<p>
+A solução foi criar o socket com grupo <code>www-data</code>:
+</p>
+
+<pre style="background:#050505; color:#d8f3dc; border:1px solid #333; padding:16px; overflow:auto; border-radius:8px;">
+srw-rw---- 1 root www-data ... /tmp/humans_socket
+</pre>
+
+<p>
+Este pequeno pormenor é o tipo de detalhe que separa um sistema "quase a funcionar" de um sistema realmente operacional. A informática, como a vida, também se perde muitas vezes numa porta fechada por permissões.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">4. Detecção humana com YOLOv8</span>
+</h3>
+
+<p>
+O motor principal de detecção é o <strong>YOLOv8</strong>, usando o modelo leve <code>yolov8n.pt</code>. Esta escolha foi deliberada: o sistema corre numa máquina virtual sem processador gráfico dedicado, pelo que a solução tinha de funcionar em CPU.
+</p>
+
+<p>
+A configuração típica usada foi:
+</p>
+
+<pre style="background:#050505; color:#d8f3dc; border:1px solid #333; padding:16px; overflow:auto; border-radius:8px;">
+HUMANS_YOLO_MODEL=/opt/VigilantGuard/models/yolov8n.pt
+HUMANS_MAX_EVENT_FRAMES=4
+HUMANS_MAX_IMAGE_WIDTH=960
+HUMANS_PERSON_CONF=0.35
+HUMANS_MIN_PERSON_AREA_RATIO=0.003
+</pre>
+
+<p>
+O parâmetro <code>HUMANS_PERSON_CONF</code> controla o grau de confiança mínimo exigido ao modelo. Valores mais baixos aumentam a sensibilidade, mas também podem aumentar falsos positivos. Valores mais altos reduzem ruído, mas podem falhar pessoas em imagens escuras, parciais ou distantes.
+</p>
+
+<p>
+A solução procura um equilíbrio: detectar suficientemente bem sem transformar cada sombra numa emergência doméstica.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">5. Porque analisar alarm.jpg e snapshot.jpg</span>
+</h3>
+
+<p>
+Num evento do ZoneMinder, nem todas as imagens têm o mesmo valor. Algumas podem estar vazias, atrasadas ou capturadas antes de a pessoa estar claramente visível. Por isso, o Vigilant Guard dá prioridade a duas imagens essenciais:
+</p>
+
+<ul style="margin-left:20px;">
+  <li><code>alarm.jpg</code> — normalmente a imagem associada ao momento de alarme.</li>
+  <li><code>snapshot.jpg</code> — imagem de referência do evento.</li>
+</ul>
+
+<p>
+A lógica foi ajustada para garantir que ambas são analisadas sempre que existirem. Só depois são escolhidas imagens adicionais do evento, distribuídas ao longo da sequência.
+</p>
+
+<p>
+Este detalhe melhora a probabilidade de detectar a pessoa, sobretudo quando a passagem pela câmara é rápida.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">6. Reconhecimento facial opcional</span>
+</h3>
+
+<p>
+Depois de detectar uma pessoa, o sistema pode tentar identificar o rosto através da biblioteca <code>face_recognition</code>, comparando os encodings faciais com uma base de dados MySQL ou MariaDB.
+</p>
+
+<p>
+A tabela pode ter uma estrutura simples:
+</p>
+
+<pre style="background:#050505; color:#d8f3dc; border:1px solid #333; padding:16px; overflow:auto; border-radius:8px;">
+CREATE TABLE faces (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    encoding MEDIUMTEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+</pre>
+
+<p>
+O reconhecimento facial é, contudo, opcional. A solução continua útil mesmo sem ele: detecta humanos, recorta a figura e envia alerta. A identificação nominal só acontece quando há rosto visível, com qualidade suficiente e previamente registado.
+</p>
+
+<p>
+Na prática, o YOLO responde à pergunta: <strong>"há uma pessoa?"</strong>. O reconhecimento facial tenta responder à pergunta seguinte: <strong>"quem é?"</strong>.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">7. Alertas via ntfy</span>
+</h3>
+
+<p>
+O envio de alertas é feito através de <strong>ntfy</strong>, uma solução simples, leve e muito adequada para notificações em sistemas próprios.
+</p>
+
+<p>
+Uma mensagem típica pode indicar:
+</p>
+
+<pre style="background:#050505; color:#d8f3dc; border:1px solid #333; padding:16px; overflow:auto; border-radius:8px;">
+👤 Figura humana detectada — http://servidor/uploads/humano_20260529_xxxxx.jpg
+</pre>
+
+<p>
+Ou, quando o rosto é reconhecido:
+</p>
+
+<pre style="background:#050505; color:#d8f3dc; border:1px solid #333; padding:16px; overflow:auto; border-radius:8px;">
+🧑 Rosto identificado: Nome — http://servidor/uploads/rosto_nome_xxxxx.jpg
+</pre>
+
+<p>
+O resultado é uma cadeia de vigilância muito prática: a câmara vê, o ZoneMinder cria evento, o Vigilant Guard confirma se há humano, e o telemóvel recebe apenas aquilo que interessa.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">8. Serviço systemd: transformar script em sentinela</span>
+</h3>
+
+<p>
+Para funcionar de forma contínua, o Vigilant Guard corre como serviço <code>systemd</code>:
+</p>
+
+<pre style="background:#050505; color:#d8f3dc; border:1px solid #333; padding:16px; overflow:auto; border-radius:8px;">
+sudo systemctl status Vigilant-Guard.service
+sudo journalctl -u Vigilant-Guard.service -f
+</pre>
+
+<p>
+O serviço cria o socket, carrega os rostos conhecidos, inicializa o modelo YOLO e fica à espera de caminhos de eventos enviados pelo script do ZoneMinder.
+</p>
+
+<p>
+A utilização de <code>systemd</code> permite reinício automático, limites de CPU, prioridade reduzida e integração limpa no arranque do sistema.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">9. Limites e afinação</span>
+</h3>
+
+<p>
+O Vigilant Guard não resolve sozinho todos os problemas de videovigilância. Se o ZoneMinder não criar evento, o Vigilant Guard não será chamado. O primeiro elo da cadeia continua a ser a configuração das zonas, sensibilidade, área mínima e critérios de movimento no próprio ZoneMinder.
+</p>
+
+<p>
+A afinação divide-se em dois níveis:
+</p>
+
+<ul style="margin-left:20px;">
+  <li><strong>No ZoneMinder:</strong> zonas de detecção, sensibilidade, áreas ignoradas, contagem mínima de frames em alarme.</li>
+  <li><strong>No Vigilant Guard:</strong> confiança YOLO, área mínima da pessoa, número de imagens analisadas por evento, largura máxima da imagem.</li>
+</ul>
+
+<p>
+Se o sistema detectar pessoas a mais — por exemplo, transeuntes na rua — a primeira solução deve ser ajustar as zonas no ZoneMinder. É melhor evitar que o evento seja criado do que pedir à IA que corrija uma má geometria de vigilância.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">10. Um projecto local, simples e publicável</span>
+</h3>
+
+<p>
+O Vigilant Guard nasceu de uma necessidade concreta, mas tem potencial para ser útil a outros utilizadores de ZoneMinder. Muitos querem acrescentar detecção humana às suas câmaras, mas não querem depender de plataformas fechadas, subscrições, cloud obrigatória ou caixas negras comerciais.
+</p>
+
+<p>
+Esta solução segue outra filosofia: software local, configuração explícita, logs legíveis, integração simples e controlo total pelo utilizador.
+</p>
+
+<p>
+Não pretende ser uma plataforma universal de vigilância inteligente. Pretende ser uma ferramenta clara, pequena e eficaz: recebe eventos, analisa imagens, detecta humanos e avisa.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">Conclusão: um vigia digital com olhos novos</span>
+</h3>
+
+<p>
+O Vigilant Guard representa uma forma pragmática de acrescentar inteligência artificial ao ZoneMinder sem desmontar a arquitectura existente. Em vez de substituir o sistema de videovigilância, acrescenta-lhe uma camada de interpretação.
+</p>
+
+<p>
+O resultado é um vigia digital mais atento: não apenas vê movimento, mas tenta perceber se esse movimento corresponde a uma pessoa.
+</p>
+
+<p>
+E talvez seja essa a melhor definição desta pequena solução: um <strong>vigilante nocturno bem acordado</strong>, alimentado por Python, YOLO, UNIX sockets e alguma teimosia técnica. Daquela teimosia boa, artesanal, que transforma pequenos problemas em sistemas úteis.
+</p>
+
+<div style="border-top:1px solid #ffcc78; margin-top:32px; padding-top:18px; color:#ffcca0;">
+  <p><strong>Autor:</strong> <a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" style="color:#ffcc66 !important; text-decoration:none;">Francisco Gonçalves</a></p>
+  Co-autoria técnica e editorial:<strong> Augustus Veritas.</strong></p>
+  <p style="font-size:0.95em; color:#cfcfcf;">Artigo técnico publicado no âmbito dos projectos de experimentação tecnológica, software livre, inteligência artificial local e infra-estruturas independentes do Fragmentos do Caos.
+</p>
+<strong>Projecto brevemente a publicar em repositório no github.</strong>
+</p>
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/FragmentosCaos-codeberg"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+</div>
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

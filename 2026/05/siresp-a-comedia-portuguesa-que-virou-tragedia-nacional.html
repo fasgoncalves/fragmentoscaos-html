@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SIRESP: A Comédia Portuguesa que Virou Tragédia Nacional</title>
+<meta name="description" content="SIRESP: A Comédia Portuguesa que Virou Tragédia Nacional">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">SIRESP: A Comédia Portuguesa que Virou Tragédia Nacional</h1>
+      <p class="meta">Publicado em 2026-05-29 12:59:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000fdf472468ad7453bc62df929.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, serif; line-height:2.2; padding:10px; text-align:left;">
+
+<div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+  <meta itemprop="headline" content="SIRESP: A Comédia Portuguesa que Virou Tragédia Nacional">
+  <meta itemprop="description" content="Crónica crítica e jocosa sobre o SIRESP, os milhões gastos, as falhas sucessivas, a burocracia política e a incapacidade portuguesa de construir um sistema de comunicações de emergência verdadeiramente fiável.">
+  <meta itemprop="datePublished" content="2026-05-25">
+  <meta itemprop="dateModified" content="2026-05-25">
+  <meta itemprop="author" content="Francisco Gonçalves">
+  <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+    <meta itemprop="name" content="Fragmentos do Caos">
+    <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+      <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/fc_logo_round.png">
+    </span>
+  </span>
+  <span itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+    <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/05/file_00000000fdf472468ad7453bc62df929.png">
+  </span>
+</div>
+
+<div style="background:#111; border:1px solid #444; border-radius:12px; padding:18px; margin:18px 0;">
+  <h3 style="color:#ffcc66 !important; margin-top:0; text-align:left;">
+    <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+  </h3>
+  <ul style="margin-left:20px;">
+    <li>O SIRESP é a rede de comunicações de emergência e segurança do Estado português.</li>
+    <li>A Renascença confirmou, em 2025, que o Estado português já gastara cerca de 720 milhões de euros com o SIRESP desde 2006.</li>
+    <li>O sistema ficou associado a falhas graves nos incêndios de 2017, incluindo Pedrógão Grande.</li>
+    <li>Em 2025, durante o apagão ibérico, voltaram a ser noticiadas falhas e dificuldades de comunicação envolvendo Protecção Civil, bombeiros, forças de segurança e INEM.</li>
+    <li>Em 2026, durante a tempestade Kristin, foram registados danos significativos em infraestruturas críticas do SIRESP.</li>
+    <li>O Governo anunciou novos investimentos, reforços, transições, recomendações e planos para o futuro do sistema.</li>
+    <li>A RTP noticiou, em Maio de 2026, que o novo SIRESP poderá demorar mais de dez anos a ficar totalmente operacional.</li>
+  </ul>
+</div>
+
+<h2 style="color:#ffcc66 !important; font-size:34px; text-align:center; line-height:1.35;">
+  <span style="color:#ffcc66 !important;">SIRESP</span><br>
+  <span style="color:#ffcc66 !important;">A Comédia Portuguesa que Virou Tragédia Nacional</span>
+</h2>
+
+<div style="border-left:4px solid #ffcc66; background:#151515; padding:16px 20px; margin:24px 0; font-style:italic; color:#ffdda0;">
+  Portugal conseguiu transformar uma rede de comunicações de emergência numa novela interminável: cara, dramática, burocrática, recorrente e, no momento decisivo, com tendência para ficar sem rede.
+</div>
+
+<p>
+Há invenções portuguesas que mereciam figurar nos manuais internacionais de ciência política aplicada ao absurdo. O SIRESP é uma delas. Não por ser tecnicamente impossível, nem por Portugal não ter engenheiros, técnicos, operadores, militares, bombeiros, especialistas em comunicações e gente capaz de fazer melhor. Nada disso. O problema é mais profundo, mais nacional e, portanto, mais trágico: Portugal tem uma extraordinária capacidade para pegar numa necessidade vital, cobri-la de contratos, administrações, relatórios, ministros, empresas, auditorias, indemnizações, transições e comunicados — e depois descobrir, com espanto teatral, que a coisa falha quando é precisa.
+</p>
+
+<p>
+O SIRESP devia ser simples na sua missão: garantir comunicações críticas do Estado em situações de emergência e segurança. Incêndios, catástrofes, apagões, acidentes graves, operações de socorro, forças de segurança, Protecção Civil, bombeiros, INEM. Em resumo: quando tudo corre mal, o SIRESP devia correr bem.
+</p>
+
+<p>
+Mas Portugal, país dado à poesia administrativa e à metafísica do remendo, conseguiu criar uma espécie de objecto político não identificado: uma rede que custa como sistema essencial, é anunciada como pilar crítico, é defendida como infra-estrutura estratégica, mas reaparece ciclicamente nas notícias como paciente crónico ligado à máquina dos milhões públicos.
+</p>
+
+<p>
+É o milagre português: uma rede de emergência que vive em estado permanente de emergência.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">A rede que devia salvar comunicações e acabou por precisar de socorro</span>
+</h3>
+
+<p>
+A ideia original era nobre. O Estado precisava de uma rede segura, fiável, interoperável e resiliente para coordenar comunicações críticas. Até aqui, nada a dizer. O problema começa quando a execução nacional entra em cena, vestida com o seu fato habitual: contrato complexo numa mão, responsabilidade difusa na outra, e uma pequena nuvem de nevoeiro institucional a acompanhar.
+</p>
+
+<p>
+Ao longo dos anos, o SIRESP tornou-se uma palavra quase mitológica. Já não designa apenas uma rede. Designa um modo português de gerir sistemas críticos: muito dinheiro, muita solenidade, muitas explicações, muitas promessas e, quando chega o fogo, a tempestade ou o apagão, uma desagradável tendência para a frase: "houve constrangimentos".
+</p>
+
+<p>
+Constrangimentos é uma palavra maravilhosa. Serve para tudo. Se falha, é constrangimento. Se cai, é constrangimento. Se não comunica, é constrangimento. Se os bombeiros recorrem a telemóveis, rádios antigos ou telefones satélite, é constrangimento. Se ninguém percebe bem quem responde por quê, é naturalmente outro constrangimento.
+</p>
+
+<p>
+Em Portugal, a palavra "falha" foi substituída por "constrangimento" para poupar sofrimento aos contratos.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">Setecentos e vinte milhões: a pequena gorjeta do absurdo</span>
+</h3>
+
+<p>
+A Renascença confirmou, em 2025, que o Estado português gastara cerca de 720 milhões de euros com o SIRESP desde 2006. Setecentos e vinte milhões. Não estamos a falar de trocos perdidos entre almofadas ministeriais. Estamos a falar de uma montanha de dinheiro público.
+</p>
+
+<p>
+Com esse valor, um cidadão ingénuo poderia pensar que Portugal teria construído uma rede de comunicações de emergência robusta, redundante, independente, auditada, testada até à exaustão, protegida contra falhas energéticas, com cobertura territorial séria e preparada para os piores cenários.
+</p>
+
+<p>
+Mas o cidadão ingénuo esquece-se de um detalhe: está em Portugal.
+</p>
+
+<p>
+Aqui, uma obra pública, um sistema informático, uma rede crítica ou uma plataforma do Estado não são apenas instrumentos ao serviço do cidadão. São também ecossistemas. Têm estudos, pareceres, gabinetes, comissões, gestores, subgestores, consultores, adjudicações, alterações, reforços, prorrogações, contratos de manutenção, transições, auditorias e aquele perfume nacional a "vamos agora resolver definitivamente".
+</p>
+
+<p>
+O problema é que o "definitivamente" português tem prazo de validade aproximado de uma conferência de imprensa.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">Pedrógão: quando a comédia deixou de ter graça</span>
+</h3>
+
+<p>
+Há assuntos em que a ironia deve baixar a voz. Pedrógão Grande é um deles.
+</p>
+
+<p>
+Em 2017, a tragédia dos incêndios expôs falhas profundas de coordenação, comunicação e resposta. A RTP noticiou que a chamada "caixa negra" da Protecção Civil revelava falhas de comunicação no momento de maior expansão do incêndio, dificultando respostas a pedidos de ajuda. Foram relatadas quebras constantes da rede, saturação de comunicações e recurso a meios alternativos.
+</p>
+
+<p>
+Quando um sistema de emergência falha num momento destes, não falha apenas tecnicamente. Falha moralmente. Porque a tecnologia, nestes casos, não é luxo. É linha de vida.
+</p>
+
+<p>
+É fácil, anos depois, cobrir tudo com relatórios, declarações, responsabilidades partilhadas e linguagem institucional. Mas há uma verdade que devia ficar gravada no betão de todas as administrações públicas: numa emergência real, uma comunicação falhada pode ser a diferença entre socorro e abandono.
+</p>
+
+<p>
+E é aqui que a comédia portuguesa se transforma em tragédia nacional.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">O apagão de 2025 e a arte de tropeçar duas vezes no mesmo cabo</span>
+</h3>
+
+<p>
+Depois de 2017, seria razoável esperar que Portugal tratasse o SIRESP como prioridade absoluta. Não prioridade de discurso. Prioridade de Estado. Daquelas que se testam, auditam, financiam, corrigem, simulam e submetem a cenários extremos.
+</p>
+
+<p>
+Mas em 2025 veio o apagão ibérico e, com ele, voltaram as notícias sobre falhas e dificuldades de comunicação. Protecção Civil, bombeiros, INEM e forças de segurança sentiram dificuldades. O sistema que devia resistir quando a energia falha revelou vulnerabilidades precisamente quando a energia falhou.
+</p>
+
+<p>
+É quase uma peça de teatro do absurdo: uma rede crítica concebida para emergências descobre que as emergências têm o mau hábito de acontecer em condições adversas.
+</p>
+
+<p>
+Quem poderia imaginar que um sistema de comunicações de emergência teria de funcionar quando há apagões, incêndios, tempestades, destruição física de infraestruturas, falhas de transmissão, sobrecarga, pressão operacional e caos no terreno?
+</p>
+
+<p>
+Provavelmente qualquer bombeiro de aldeia. Mas nem sempre os bombeiros de aldeia são convidados a desenhar os PowerPoints da República.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">Kristin, antenas derrubadas e o regresso triunfal do remendo</span>
+</h3>
+
+<p>
+Em 2026, a tempestade Kristin trouxe novo capítulo. O documento governamental sobre o reforço da resiliência da rede SIRESP fala em impactos críticos: torres derrubadas, circuitos terrestres inoperacionais, circuitos satélite afectados, falhas de energia e degradação severa de cobertura em zonas de montanha.
+</p>
+
+<p>
+Claro que uma tempestade severa pode destruir infraestruturas. Ninguém sério negará isso. A natureza não lê cadernos de encargos. O vento não respeita organogramas. A chuva não pede autorização ao Ministério da Administração Interna.
+</p>
+
+<p>
+Mas precisamente por isso se chama sistema crítico. Porque deve ser pensado para falhar o menos possível, recuperar depressa, ter redundâncias reais, autonomia energética, vias alternativas de transmissão e planos operacionais testados.
+</p>
+
+<p>
+Se um sistema crítico só funciona bem quando tudo à volta está a funcionar bem, então não é um sistema crítico. É um sistema optimista.
+</p>
+
+<p>
+E Portugal tem sido excessivamente optimista com o dinheiro dos contribuintes.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">A linguagem ministerial: música de elevador para incêndio florestal</span>
+</h3>
+
+<p>
+Perante cada falha, surge a mesma orquestra verbal: "reforço da resiliência", "transição gradual", "modernização", "continuidade operacional", "autonomia energética", "redundância", "modelo futuro", "equipa de trabalho", "recomendações", "implementação faseada".
+</p>
+
+<p>
+São palavras bonitas. Tão bonitas que quase apagam o cheiro a fumo.
+</p>
+
+<p>
+O problema é que Portugal sofre de uma doença administrativa crónica: acredita que nomear correctamente o problema equivale a resolvê-lo. Se escrevermos "resiliência" suficientes vezes, talvez as antenas ganhem coragem. Se dissermos "redundância" com voz grave, talvez os circuitos se dupliquem por respeito institucional. Se anunciarmos "transição gradual", talvez o calendário tenha pena de nós.
+</p>
+
+<p>
+Mas a realidade, essa criatura insolente, insiste em perguntar: funciona?
+</p>
+
+<p>
+E quando a resposta é hesitante, surgem novos relatórios.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">O novo SIRESP: daqui a mais de dez anos falamos</span>
+</h3>
+
+<p>
+A RTP noticiou, em Maio de 2026, que o novo SIRESP poderá demorar mais de dez anos a ficar totalmente operacional, com a desactivação da rede TETRA a não estar fixada e a não dever ocorrer antes de 2038.
+</p>
+
+<p>
+Isto é de uma beleza quase barroca. Depois de anos de polémicas, tragédias, falhas, apagões, tempestades, milhões, relatórios e promessas, a solução definitiva aparece no horizonte — mas num horizonte suficientemente distante para já estar reformada quando chegar.
+</p>
+
+<p>
+Mais de dez anos. Em tecnologia de comunicações, dez anos são uma era geológica. Em Portugal, são apenas o tempo normal para descobrir que a solução anterior precisa de uma nova solução transitória.
+</p>
+
+<p>
+O país vive numa sucessão de transições permanentes. Tudo está em transição. A saúde está em transição. A justiça está em transição. A educação está em transição. A habitação está em transição. O SIRESP está em transição. Portugal parece uma estação ferroviária onde todos os comboios estão anunciados, mas nenhum chega à plataforma.
+</p>
+
+<p>
+E quando chega, vem atrasado, sem carruagens suficientes e com uma comissão independente para avaliar a experiência do passageiro.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">O regresso dos entendidos e a dança das cadeiras críticas</span>
+</h3>
+
+<p>
+Como se o enredo precisasse de mais um acto, em Maio de 2026 surgiu nova polémica sobre a liderança da empresa que gere a rede. O Ministério da Administração Interna rejeitou ilegalidades na gestão anterior de Paulo Viegas Nunes e defendeu não existir impedimento à sua nomeação. José Luís Carneiro considerou-o uma das pessoas que mais sabe de comunicações no país.
+</p>
+
+<p>
+Não cabe aqui julgar pessoas, nem substituir tribunais, auditorias ou órgãos competentes. A questão é outra: como é que, num sistema tão crítico, tão caro, tão marcado por falhas e polémicas, a discussão pública volta sempre ao mesmo teatro português — nomes, exonerações, defesas políticas, suspeições, reacções partidárias e declarações de idoneidade?
+</p>
+
+<p>
+O cidadão comum, esse ser cada vez mais cansado de pagar bilhete para assistir à mesma peça, pergunta apenas: a rede funciona?
+</p>
+
+<p>
+Mas a política portuguesa responde frequentemente com outra coisa: "a personalidade em causa tem currículo", "não há ilegalidades", "é servidor do Estado", "a nomeação é adequada", "o processo será esclarecido", "o Governo dará explicações".
+</p>
+
+<p>
+Tudo interessante. Tudo institucional. Tudo talvez necessário.
+</p>
+
+<p>
+Mas quando arde a serra, cai a energia ou a tempestade arranca torres, o bombeiro no terreno não comunica por currículo. Comunica por rede.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">O país dos responsáveis sem responsabilidade</span>
+</h3>
+
+<p>
+O SIRESP é também um caso exemplar da grande arte portuguesa: criar sistemas onde todos estiveram envolvidos, todos deram contributos, todos aprovaram alguma coisa, todos herdaram problemas, todos anunciaram melhorias — mas, no fim, ninguém parece inteiramente responsável.
+</p>
+
+<p>
+É uma responsabilidade em nevoeiro. Como aquelas manhãs húmidas em que se vê apenas a silhueta das instituições, mas nunca a face de quem devia responder.
+</p>
+
+<p>
+O Estado contrata. O privado opera. O Governo supervisiona. A empresa gere. Os técnicos alertam. As entidades utilizam. Os ministros anunciam. O Parlamento ouve. Os relatórios recomendam. As auditorias examinam. Os jornais noticiam. Os cidadãos pagam.
+</p>
+
+<p>
+E quando falha, a culpa circula com uma elegância quase coreográfica.
+</p>
+
+<p>
+Portugal inventou a roda da irresponsabilidade: gira muito, avança pouco e atropela sempre o contribuinte.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">Uma rede crítica não pode ser gerida como decoração administrativa</span>
+</h3>
+
+<p>
+O SIRESP não é um portal de marcação de férias, uma aplicação municipal para queixas de buracos, nem um formulário digital para irritar reformados. É uma rede crítica de Estado. Quando falha, pode comprometer operações de socorro, segurança pública, coordenação entre entidades e resposta a catástrofes.
+</p>
+
+<p>
+Por isso, a exigência deveria ser brutal: auditoria técnica permanente, testes reais de stress, simulações nacionais, redundância independente, autonomia energética robusta, cobertura territorial rigorosa, avaliação pública, supervisão parlamentar competente, relatórios legíveis para cidadãos e consequências claras para falhas graves de gestão.
+</p>
+
+<p>
+Não basta dizer que se vai reforçar. Não basta dizer que se vai modernizar. Não basta anunciar medidas. Portugal anuncia demasiado e executa de menos.
+</p>
+
+<p>
+O país precisa de menos cerimónias de apresentação e mais sistemas que funcionem quando chove, arde, venta ou escurece.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">A comédia institucional</span>
+</h3>
+
+<p>
+Há algo profundamente cómico — se não fosse trágico — nesta repetição nacional. O sistema falha. Surge indignação. O Governo promete. O Parlamento convoca. Os especialistas comentam. Os antigos responsáveis explicam. Os novos responsáveis anunciam. Os jornalistas perguntam. Os partidos acusam. Aparece uma comissão. Sai um relatório. Entram recomendações. Aprova-se verba. Fala-se em futuro.
+</p>
+
+<p>
+Depois passa o tempo.
+</p>
+
+<p>
+E quando a realidade volta a bater à porta, descobre-se que o futuro ainda estava em concurso, em faseamento, em transição, em análise, em estudo, em calendarização ou em "processo de implementação".
+</p>
+
+<p>
+Portugal é extraordinário nesta arte: consegue estar sempre a resolver definitivamente o mesmo problema.
+</p>
+
+<p>
+O SIRESP já não é apenas uma rede. É um género literário. Uma tragicomédia administrativa com capítulos de incêndio, apagão, tempestade, relatório, verba, nomeação e promessa.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">O que deveria ser feito, sem teatro</span>
+</h3>
+
+<p>
+Se Portugal fosse um país governado por adultos estratégicos, o SIRESP teria de ser tratado como infra-estrutura crítica de soberania. Não como dossier partidário, nem como activo administrativo, nem como palco para danças de cadeiras.
+</p>
+
+<p>
+Seria necessário fazer, pelo menos, o seguinte:
+</p>
+
+<ul style="margin-left:20px;">
+  <li>auditoria técnica independente, pública e compreensível;</li>
+  <li>inventário completo dos pontos de falha da rede;</li>
+  <li>testes nacionais periódicos em cenários extremos;</li>
+  <li>redundância real, não apenas decorativa;</li>
+  <li>autonomia energética robusta em todas as estações críticas;</li>
+  <li>cobertura efectiva das zonas rurais, de montanha e de maior risco;</li>
+  <li>interoperabilidade com meios alternativos, incluindo satélite e redes móveis críticas;</li>
+  <li>planos de contingência treinados por bombeiros, Protecção Civil, INEM, forças de segurança e autarquias;</li>
+  <li>responsabilização clara de gestores e governantes;</li>
+  <li>publicação regular de indicadores de disponibilidade, falhas, tempos de recuperação e incidentes.</li>
+</ul>
+
+<p>
+A segurança dos portugueses não pode depender de fé administrativa. Precisa de engenharia, testes, redundância, humildade técnica e responsabilidade política.
+</p>
+
+<p>
+Uma rede crítica não se benze. Verifica-se.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">Conclusão: quando a emergência espera pela próxima verba</span>
+</h3>
+
+<p>
+O SIRESP é um espelho cruel do Portugal contemporâneo: um país que gasta muito, explica muito, promete muito, remenda muito e responsabiliza pouco.
+</p>
+
+<p>
+Começou como promessa de modernidade. Tornou-se símbolo de fragilidade. Foi vendido como sistema crítico. Acabou por se tornar caso recorrente de crítica pública. Devia garantir comunicações em emergência. Passou a precisar ele próprio de socorro político, técnico e financeiro.
+</p>
+
+<p>
+A comédia está nos comunicados, nas transições, nas palavras pomposas, nos milhões sucessivos, nas defesas institucionais e na eterna capacidade nacional de anunciar o futuro enquanto o presente continua mal amanhado.
+</p>
+
+<p>
+A tragédia está no resto: nos incêndios, nos apagões, nas tempestades, nos bombeiros no terreno, nos autarcas a recorrer a telefones satélite, nos pedidos de ajuda, nos cidadãos vulneráveis e na possibilidade real de uma comunicação falhada custar vidas.
+</p>
+
+<p>
+Por isso, o SIRESP devia deixar de ser tratado como tema técnico para especialistas e passar a ser encarado como questão moral da República.
+</p>
+
+<p>
+Porque um Estado que não consegue garantir comunicações críticas em emergência não está apenas mal equipado.
+</p>
+
+<p>
+Está perigosamente mal governado.
+</p>
+
+<div style="background:#111; border-left:4px solid #ffcc66; border-radius:10px; padding:18px 22px; margin:32px 0; color:#e8eef4;">
+  <h3 style="color:#ffcc66 !important; margin-top:0; text-align:left;">
+    <span style="color:#ffcc66 !important;">Nota Final</span>
+  </h3>
+
+  <p>
+    Esta crónica não acusa criminalmente pessoas ou entidades. Acusa politicamente um modo de funcionamento. Um modo de funcionamento que, ao longo de décadas, permitiu que um sistema crítico acumulasse custos, polémicas, falhas, remendos e explicações sem que o país sinta que alguém responde verdadeiramente pelo resultado final.
+  </p>
+
+  <p>
+    O SIRESP não é apenas uma rede de comunicações. É uma lição sobre o Estado português: quando a responsabilidade se dilui, a factura fica inteira; quando a técnica falha, a política discursa; quando a emergência chega, o cidadão descobre se as promessas tinham cobertura.
+  </p>
+
+  <p style="color:#ffcc66;">
+    <strong>Portugal não precisa de mais comissões para descobrir que uma rede de emergência deve funcionar em emergência. Precisa de competência, auditoria, redundância, coragem e responsabilização.</strong>
+  </p>
+
+  <p>
+    O resto é teatro. E neste caso, teatro demasiado caro para uma plateia que já pagou bilhete vezes demais.
+  </p>
+</div>
+
+<div style="background:#111; border:1px solid #444; border-radius:12px; padding:18px; margin:28px 0;">
+  <h3 style="color:#ffcc66 !important; margin-top:0; text-align:left;">
+    <span style="color:#ffcc66 !important;">Referências consultadas</span>
+  </h3>
+  <ul style="margin-left:20px;">
+    <li>
+      <a href="https://rr.pt/noticia/politica/2025/05/05/fact-check-ja-gastamos-700-milhoes-de-euros-no-siresp-como-diz-andre-ventura/424187/" target="_blank" rel="noopener" style="color:#ffcc66;">
+        Renascença — Fact check sobre cerca de 720 milhões de euros gastos com o SIRESP desde 2006
+      </a>
+    </li>
+    <li>
+      <a href="https://www.rtp.pt/noticias/pais/caixa-negra-da-protecao-civil-revela-falhas-do-siresp-no-inicio-de-incendio_n1010702" target="_blank" rel="noopener" style="color:#ffcc66;">
+        RTP — "Caixa negra" da Protecção Civil revela falhas do SIRESP no início do incêndio de Pedrógão
+      </a>
+    </li>
+    <li>
+      <a href="https://www.rtp.pt/noticias/pais/falhas-da-rede-siresp-obrigaram-a-recorrer-a-metodos-alternativos_v1714199" target="_blank" rel="noopener" style="color:#ffcc66;">
+        RTP — Falhas da rede SIRESP obrigaram a recorrer a métodos alternativos
+      </a>
+    </li>
+    <li>
+      <a href="https://portugal.gov.pt/api/media/edge/Project/Portal-do-Governo/Portal-do-Governo/gc25/documentos/administracao-interna/20260505-mai-reforco-resiliencia-siresp.pdf" target="_blank" rel="noopener" style="color:#ffcc66;">
+        Governo de Portugal — Reforço da Resiliência da Rede SIRESP, Maio de 2026
+      </a>
+    </li>
+    <li>
+      <a href="https://www.rtp.pt/noticias/pais/novo-siresp-demorara-mais-de-dez-anos-a-ficar-totalmente-operacional_n1739125" target="_blank" rel="noopener" style="color:#ffcc66;">
+        RTP — Novo SIRESP demorará mais de dez anos a ficar totalmente operacional
+      </a>
+    </li>
+    <li>
+      <a href="https://www.rtp.pt/noticias/pais/propostas-sobre-futuro-do-siresp-apresentadas-hoje_n1738982" target="_blank" rel="noopener" style="color:#ffcc66;">
+        RTP — Propostas sobre o futuro do SIRESP e recomendações para modernização da rede
+      </a>
+    </li>
+    <li>
+      <a href="https://www.jornaldenegocios.pt/empresas/telecomunicacoes/detalhe/governo-autoriza-ate-26-milhoes-para-manter-siresp-em-2026-enquanto-prepara-substituicao" target="_blank" rel="noopener" style="color:#ffcc66;">
+        Jornal de Negócios — Governo autoriza até 26 milhões para manter SIRESP em 2026 enquanto prepara substituição
+      </a>
+    </li>
+    <li>
+      <a href="https://www.rtp.pt/noticias/pais/mai-rejeita-ilegalidades-na-gestao-do-siresp-durante-presidencia-de-paulo-viegas-nunes_n1743362" target="_blank" rel="noopener" style="color:#ffcc66;">
+        RTP — MAI rejeita ilegalidades na gestão do SIRESP durante presidência de Paulo Viegas Nunes
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div style="border-top:1px solid #ffcc78; margin-top:32px; padding-top:18px; color:#ffcca0;">
+  <p>
+    <strong>
+      <a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" target="_blank" rel="noopener" style="color:#ffcc66; text-decoration:none;">
+        Francisco Gonçalves
+      </a>
+    </strong><br>
+    <em>Fragmentos do Caos</em>
+  </p>
+  <p style="font-size:14px;">
+    Crónica em co-autoria Editorial com <strong>Augustus Veritas</strong>, ao serviço da lucidez, da memória crítica e da inquietação criadora.
+  </p>
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/FragmentosCaos-codeberg"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+</div>
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
