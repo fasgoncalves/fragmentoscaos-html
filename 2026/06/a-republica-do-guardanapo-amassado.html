@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A República do Guardanapo Amassado</title>
+<meta name="description" content="A República do Guardanapo Amassado">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A República do Guardanapo Amassado</h1>
+      <p class="meta">Publicado em 2026-06-06 13:40:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000f7a871f4bb7baad9da3aa8f5.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia,serif; line-height:2.15; padding:18px; text-align:left;">
+<h2 style="color:#ffcc66 !important; font-size:34px; text-align:center; margin-bottom:10px;">
+    <span style="color:#ffcc66 !important;">A República do Guardanapo Amassado</span></h2>
+<p style="text-align:center; color:#ffcca0; font-style:italic; font-size:18px;">
+    Crónica tragicómica sobre políticos, partidos e outros fenómenos meteorológicos da democracia portuguesa</p>
+
+<div style="background:#111; border-left:4px solid #ffcc66; padding:16px; margin:24px 0; color:#f2e3bd; font-style:italic;">
+    Há países que têm História. Portugal tem actas, comissões parlamentares, pareceres jurídicos, inquéritos, contra-inquéritos, audições, fugas de informação, conferências de imprensa e um senhor muito sério a dizer que "é preciso deixar trabalhar as instituições".</div>
+As instituições, coitadas, trabalham. Trabalham tanto que chegam sempre cansadas ao momento da verdade. E quando finalmente chegam, a verdade já prescreveu, mudou de morada fiscal ou está em Bruxelas com crachá diplomático.
+
+Portugal não é uma república. É uma sala de espera com bandeira.
+
+No centro do palco está sempre o político português, esse animal mitológico meio tribuno, meio contabilista criativo, meio vítima de si próprio. Entra em cena com ar grave, mão no peito e frase ensaiada:
+<p style="color:#ffcc66; font-size:20px; text-align:center;">
+    "Estou de consciência tranquila."</p>
+
+    É uma frase extraordinária. Em Portugal, quando alguém diz que está de consciência tranquila, o cidadão prudente verifica logo se ainda tem a carteira no bolso, a escritura da casa na gaveta e a paciência em estado respirável.
+
+A consciência tranquila tornou-se a versão política do ambientador de casa de banho. Não resolve o problema, mas deixa uma fragrância institucional por cima do desastre.
+<h3 style="color:#ffcc66 !important;">
+    <span style="color:#ffcc66 !important;">O Hamlet de Vilar de Maçada</span></h3>
+Tivemos Sócrates, figura trágica por excelência, quase shakespeariana, mas em versão TGV que nunca chegou. Homem de gravata, verbo eléctrico e convicção blindada, atravessou a política portuguesa como um cometa: iluminou muita coisa, incendiou outra tanta e deixou atrás de si uma cauda judicial tão longa que já devia pagar portagem própria.
+
+Sócrates é o Hamlet de Vilar de Maçada:
+<p style="color:#ffcca0; font-style:italic; text-align:center;">
+    ser ou não ser arguido, eis a questão.</p>
+
+    Mas a peça é tão longa que até o fantasma do pai de Hamlet já teria pedido transferência para outro tribunal.
+<h3 style="color:#ffcc66 !important;">
+    <span style="color:#ffcc66 !important;">Costa, o prestidigitador sorridente</span></h3>
+Depois veio António Costa, o prestidigitador sorridente. Costa tinha aquela arte rara de cair sempre de pé, como os gatos e certos contratos públicos. Governava com um sorriso de quem acabara de perceber que os portugueses já não distinguem estabilidade de anestesia.
+
+Chamavam-lhe habilidade política; talvez fosse. Mas há habilidades que, depois de muito usadas, começam a parecer truques de casino.
+
+Costa saiu de São Bento pela porta da suspeita política e entrou na Europa pela porta grande da diplomacia continental. Portugal olhou para aquilo com o espanto habitual de quem vê uma panela queimada ser promovida a chefe de cozinha.
+
+Não se sabe se foi castigo, prémio ou reciclagem diplomática. A União Europeia, essa grande máquina de lavar roupa política, tem programas para tudo: algodão, sintéticos, delicados e ex-primeiros-ministros.
+<h3 style="color:#ffcc66 !important;">
+    <span style="color:#ffcc66 !important;">Montenegro e a transparência fosca</span></h3>
+Entretanto chegou Montenegro, prometendo seriedade, competência, normalidade e outras palavras que em Portugal deviam vir com garantia de dois anos ou livro de reclamações.
+
+Surgiu como o homem que vinha limpar a casa. Mas, mal entrou, tropeçou na mobília da Spinumviva, esse nome que parece uma clínica de fisioterapia para colunas vertebrais políticas.
+<p style="color:#ffcca0; font-size:20px; text-align:center;">
+    Spinumviva.</p>
+
+    Só o nome já parece escrito por um consultor que cobra à sílaba.
+
+E Montenegro, em vez de abrir janelas, explicar tudo e deixar entrar ar, fez aquilo que a política portuguesa sabe fazer melhor: invocou reserva, privacidade, protecção, terceiros, cautelas, recursos e aquela névoa jurídica onde a transparência entra jovem e sai reformada.
+
+O cidadão português, que é pobre mas não é completamente distraído, pergunta:
+<p style="color:#ffcc66; font-style:italic; text-align:center;">
+    "Então mas quem governa não devia ser mais transparente que uma montra lavada?"</p>
+
+    Resposta do sistema:
+<p style="color:#ffcca0; font-style:italic; text-align:center;">
+    "Depende da montra, do vidro, do regulamento aplicável e da interpretação constitucional da esfericidade do candeeiro."</p>
+
+    É nisto que somos grandes. Não resolvemos problemas: fabricamos nevoeiro à medida.
+<h3 style="color:#ffcc66 !important;">
+    <span style="color:#ffcc66 !important;">Os partidos, essas confrarias com logótipo</span></h3>
+Os partidos políticos, por sua vez, são confrarias com logótipo.
+
+O PS diz que é o partido do povo, mas o povo raramente é convidado para a sala onde se decide o seu destino.
+
+O PSD diz que é reformista, mas reforma sobretudo o discurso de quatro em quatro anos.
+
+O CDS reaparece de tempos a tempos como aqueles familiares antigos que ninguém sabe bem se ainda vivem na mesma morada.
+
+O Chega grita contra o sistema enquanto aprende, com assinalável entusiasmo, as vantagens acústicas de fazer parte dele.
+
+O Bloco acusa todos de tudo com a superioridade moral de quem nunca teve de gerir uma repartição pública às nove da manhã.
+
+O PCP continua em 1975, com boa memória, má adaptação e uma relação sentimental com o século XX.
+
+O Livre tenta ser civilizado num país onde a civilização é frequentemente confundida com fraqueza.
+
+O PAN aparece para lembrar que os animais merecem respeito — e, olhando para o Parlamento, percebe-se a urgência zoológica da mensagem.
+
+No fundo, todos prometem o futuro. Mas entregam-nos sempre uma factura do passado.
+<h3 style="color:#ffcc66 !important;">
+    <span style="color:#ffcc66 !important;">A procissão da governabilidade</span></h3>
+A política portuguesa é uma procissão onde cada partido carrega o seu santo, a sua dívida moral e o seu departamento de comunicação.
+
+Uns levam cravos, outros levam calculadoras, outros levam tochas, outros levam PowerPoints. O povo segue atrás, com a vela na mão e o IMI no bolso, esperando que Nossa Senhora da Governabilidade faça um milagre orçamental.
+
+De quatro em quatro anos, dizem-nos que chegou a hora da mudança.
+
+E o país muda, de facto.
+
+Muda o slogan. Muda o cenário. Muda o assessor. Muda o grafismo do programa eleitoral.
+
+O essencial fica sentado, com contrato sem termo, a beber café no gabinete.
+<h3 style="color:#ffcc66 !important;">
+    <span style="color:#ffcc66 !important;">"Mas os outros também"</span></h3>
+Portugal tem uma relação curiosa com a corrupção, a suspeita e o abuso de poder. Não gosta, claro. Condena, evidentemente. Indigna-se, profundamente.
+
+Mas depois vota, esquece, desculpa, relativiza e pergunta:
+<p style="color:#ffcc66; font-size:22px; text-align:center;">
+    "Mas os outros não faziam igual?"</p>
+
+    Esta frase devia estar inscrita no frontão da República:
+<div style="background:#151515; border:1px solid #444; padding:18px; margin:24px 0; text-align:center;">
+<p style="color:#ffcc66; font-size:24px; margin:0;">
+      <strong>"Mas os outros também."</strong></p>
+
+
+</div>
+É o nosso hino moral alternativo.
+
+Roubaram? "Mas os outros também."
+
+Mentiram? "Mas os outros também."
+
+Manipularam? "Mas os outros também."
+
+Falharam? "Mas os outros também."
+
+Com este princípio, não há decadência que não encontre absolvição popular. Somos um povo que transformou a comparação com o pior numa filosofia de Estado.
+<h3 style="color:#ffcc66 !important;">
+    <span style="color:#ffcc66 !important;">Os sacerdotes do óbvio</span></h3>
+E depois há os comentadores, esses sacerdotes do óbvio.
+
+Passam noites inteiras em estúdios televisivos a explicar o inexplicável com ar de quem está a revelar a estrutura secreta do universo, quando na verdade estão apenas a dizer que o PS quer ganhar, o PSD não quer perder, o Chega quer crescer, o Presidente quer aparecer, e o país quer sobreviver.
+
+A política tornou-se uma novela sem fim.
+
+Sócrates foi a temporada judicial.
+
+Costa foi a temporada do sorriso táctico.
+
+Montenegro é a temporada da transparência fosca.
+
+Ventura é o trailer permanente de uma série de incêndios.
+
+Marcelo foi durante anos o narrador com afecto, beijo, selfie e comentário ao domingo. Um Presidente tão presente que por vezes parecia estar em directo dentro do nosso frigorífico, a avaliar a frescura dos iogurtes constitucionais.
+<h3 style="color:#ffcc66 !important;">
+    <span style="color:#ffcc66 !important;">O povo, esse sobrevivente atlântico</span></h3>
+E o povo?
+
+O povo trabalha, paga, cala, protesta no café, encolhe os ombros, partilha indignações no Facebook e depois continua.
+
+O povo português é uma mistura de estoicismo romano, fadiga atlântica e desconto no Continente. Aguenta tudo com uma dignidade triste e uma ironia quase genética.
+
+Somos especialistas em sobreviver ao absurdo.
+
+Talvez porque o absurdo, entre nós, não é acidente. É património imaterial.
+<h3 style="color:#ffcc66 !important;">
+    <span style="color:#ffcc66 !important;">O país que podia ser uma oficina de futuro</span></h3>
+O mais trágico é que Portugal podia ser outra coisa.
+
+Podia ser um pequeno país inteligente, ágil, culto, tecnológico, honesto, exigente, capaz de transformar escala em precisão e periferia em laboratório.
+
+Podia ser uma oficina de futuro plantada junto ao Atlântico.
+
+Mas preferimos muitas vezes ser uma comissão de acompanhamento de oportunidades perdidas.
+
+E lá seguem os políticos, todos muito preocupados com o país, desde que o país não atrapalhe demasiado a carreira.
+
+Falam de reformas estruturais com a mesma convicção com que um barbeiro careca recomenda champô milagroso.
+
+Prometem simplificação administrativa e criam três portais, cinco autenticações, sete códigos e uma linha de apoio que nunca atende.
+
+Chamam a isto modernização.
+
+Nós, que já vimos mainframes, disquetes, modems, certificados digitais, Simplex, e-Clics, balcões únicos e repartições múltiplas, sabemos reconhecer uma treta quando ela chega embrulhada em PDF.
+<h3 style="color:#ffcc66 !important;">
+    <span style="color:#ffcc66 !important;">A ferrugem da democracia</span></h3>
+No fim, talvez o problema não seja só termos maus políticos.
+
+Talvez o problema seja termos criado um ecossistema onde a mediocridade não é penalizada, a esperteza é confundida com inteligência e a falta de vergonha é tratada como competência negocial.
+
+A política portuguesa não caiu do céu.
+
+Nasceu cá.
+
+Foi criada à nossa mesa.
+
+Foi alimentada com favores, cunhas, medo, clubite, reverência e aquela velha frase:
+<p style="color:#ffcc66; font-size:22px; text-align:center;">
+    "Não te metas nisso."</p>
+
+    Pois talvez esteja na hora de nos metermos.
+
+Não com ódio. Não com fanatismo. Não com tribos.
+
+Mas com cidadania adulta, memória longa e uma exigência simples: quem governa deve servir, explicar, responder e sair quando perde a confiança.
+
+A democracia não é uma romaria onde vamos de quatro em quatro anos beijar a mão aos partidos.
+
+A democracia é uma oficina.
+
+E está cheia de ferrugem.
+
+Mas ainda há ferramentas.
+<div style="background:#111; border:1px solid #444; padding:20px; margin:28px 0; color:#f2e3bd;">
+<p style="font-size:21px; color:#ffcc66; margin-top:0;">
+      <strong>Epílogo</strong></p>
+
+      Enquanto houver cidadãos que não aceitam ser tratados como figurantes na peça dos mesmos de sempre, ainda há esperança.
+
+Pequena, teimosa, mal paga, pouco televisiva — mas esperança.
+<p style="color:#ffcc66; font-size:24px; text-align:center;">
+      <strong>Porque Portugal pode estar amolgado.</strong></p>
+<p style="color:#ffcca0; font-size:24px; text-align:center;">
+      <strong>Mas ainda não está homologado.</strong></p>
+
+
+</div>
+<div style="border-top:1px solid #ffcc78; margin-top:34px; padding-top:18px; color:#ffcca0; font-size:15px;">
+
+      <strong>Nota editorial:</strong> Esta crónica é uma peça de sátira política e opinião. As figuras públicas aqui referidas são tratadas no plano literário, humorístico e crítico, não constituindo imputação judicial nem conclusão factual sobre matérias ainda sujeitas a apreciação pública, política ou legal.
+
+<strong>Crónica humorística por
+<a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" style="color:#ffcc66; text-decoration:none;">Francisco Gonçalves</a>
+&amp; Augustus Veritas</strong>
+<p style="color:#ffcc67;"><strong>
+A política portuguesa dá tragédia, comédia, farsa, opereta e, quando se descuida, sketch dos Monty Python traduzido por uma secretaria de Estado.</strong>
+</p>
+</div>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/FragmentosCaos-codeberg"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
