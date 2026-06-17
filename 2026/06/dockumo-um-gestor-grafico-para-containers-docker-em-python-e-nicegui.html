@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dockumo: um gestor gráfico para containers Docker em Python e NiceGUI</title>
+<meta name="description" content="Dockumo: um gestor gráfico para containers Docker em Python e NiceGUI">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Dockumo: um gestor gráfico para containers Docker em Python e NiceGUI</h1>
+      <p class="meta">Publicado em 2026-06-15 15:20:16</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_000000006f1472438c4aa308e6be9887.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia,serif; line-height:2.2; padding:10px; text-align:left;"><div itemscope itemtype="https://schema.org/TechArticle" style="display:none;">
+  <meta itemprop="headline" content="Dockumo: um gestor gráfico para containers Docker em Python e NiceGUI">
+  <meta itemprop="description" content="Artigo técnico sobre o Dockumo Manager, uma aplicação em Python e NiceGUI para gestão gráfica de containers Docker, inspirada na lógica do Virtumo para máquinas virtuais.">
+  <meta itemprop="author" content="Francisco Gonçalves">
+  <meta itemprop="datePublished" content="2026-06-15">
+  <meta itemprop="dateModified" content="2026-06-15">
+  <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+    <meta itemprop="name" content="Fragmentos do Caos">
+    <span itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+      <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/06/file_000000006f1472438c4aa308e6be9887.png">
+    </span>
+  </span>
+</div><div style="background:#111; border:1px solid #444; padding:18px; margin:20px 0; border-radius:10px;">
+  <h3 style="color:#ffcc66 !important; margin-top:0; text-align:left;">
+    <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+  </h3>
+  <ul style="margin-left:20px;">
+    <li><strong>Nome do projecto:</strong> Dockumo Manager.</li>
+    <li><strong>Objectivo:</strong> gestão gráfica de containers Docker através de uma interface web em NiceGUI.</li>
+    <li><strong>Linguagem:</strong> Python.</li>
+    <li><strong>Motor de gestão:</strong> Docker SDK for Python.</li>
+    <li><strong>Interface:</strong> NiceGUI.</li>
+    <li><strong>Funções principais:</strong> criar, importar imagens, listar, arrancar, parar, reiniciar, alterar e eliminar containers.</li>
+    <li><strong>Inspiração conceptual:</strong> Virtumo, mas aplicado à gestão de containers Docker.</li>
+    <li><strong>Regra de ouro:</strong> nunca expor directamente à Internet uma interface com acesso ao Docker daemon.</li>
+  </ul>
+</div><h2 style="color:#ffcc66 !important; font-size:34px; text-align:center;">
+  <span style="color:#ffcc66 !important;">Dockumo: um gestor gráfico para containers Docker em Python e NiceGUI</span>
+</h2><div style="border-left:4px solid #ffcc66; padding:12px 18px; margin:24px 0; background:#111; font-style:italic; color:#f5e1a4;">
+  O Dockumo nasce de uma ideia simples: se é possível gerir máquinas virtuais através de uma aplicação gráfica própria, também deve ser possível gerir containers Docker sem ter de viver permanentemente agarrado à linha de comandos, esse templo austero onde os administradores de sistemas vão envelhecer com dignidade e café.
+</div><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">1. A origem da ideia</span>
+</h3><p>
+Depois do desenvolvimento conceptual do <strong>Virtumo</strong>, pensado para a gestão de máquinas virtuais, surgiu naturalmente a pergunta seguinte: porque não aplicar uma lógica semelhante ao universo dos containers Docker?
+</p><p>
+As máquinas virtuais continuam essenciais em muitas arquitecturas, sobretudo quando se pretende isolamento forte, sistemas operativos completos e ambientes persistentes. Mas os containers conquistaram um espaço próprio: são leves, rápidos, fáceis de recriar e muito úteis para serviços autónomos, aplicações web, bases de dados de teste, ferramentas administrativas, micro-serviços e laboratórios de desenvolvimento.
+</p><p>
+O <strong>Dockumo Manager</strong> nasce precisamente nesse território intermédio: não pretende substituir ferramentas como Portainer, Rancher ou Kubernetes. Pretende ser uma aplicação simples, controlada, legível e adaptável, construída em Python, para gerir containers Docker num servidor local, numa rede interna ou num ambiente de laboratório.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">2. O problema que o Dockumo tenta resolver</span>
+</h3><p>
+Docker é poderoso, mas a sua utilização diária pode tornar-se repetitiva. Listar containers, verificar estados, arrancar serviços, parar instâncias, importar imagens, criar novos containers com portas, volumes e variáveis de ambiente são tarefas simples, mas que exigem atenção.
+</p><p>
+A linha de comandos é excelente para quem sabe exactamente o que está a fazer. O problema começa quando se pretende uma visão global, rápida e operacional do estado do sistema. Nesse ponto, uma interface gráfica torna-se útil: não para esconder a técnica, mas para a organizar.
+</p><p>
+O Dockumo foi pensado com esse objectivo: colocar num único painel as operações essenciais de gestão de containers, mantendo a simplicidade e evitando aquela tragédia moderna em que uma ferramenta criada para simplificar acaba por precisar de três cursos, dois certificados e uma assinatura empresarial.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">3. Arquitectura geral</span>
+</h3><p>
+A arquitectura do Dockumo é deliberadamente simples:
+</p><ul style="margin-left:20px;">
+  <li><strong>NiceGUI</strong> fornece a interface gráfica web.</li>
+  <li><strong>Docker SDK for Python</strong> comunica com o Docker Engine.</li>
+  <li><strong>Docker daemon</strong> executa efectivamente as operações sobre containers e imagens.</li>
+  <li><strong>Browser</strong> apresenta o painel de controlo ao utilizador.</li>
+</ul><p>
+O fluxo lógico é o seguinte:
+</p><pre style="background:#050505; color:#d8e8ff; border:1px solid #333; padding:14px; overflow:auto; border-radius:8px;"><code>Utilizador
+   ↓
+Interface NiceGUI
+   ↓
+Código Python do Dockumo
+   ↓
+Docker SDK for Python
+   ↓
+Docker Engine
+   ↓
+Containers e imagens Docker</code></pre><p>
+Esta arquitectura tem uma vantagem importante: todo o controlo fica concentrado numa aplicação Python, facilmente auditável, modificável e extensível. Não há aqui magia negra, apenas código a chamar uma API. O que, convenhamos, já é suficientemente assustador quando mal feito.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">4. Funções principais</span>
+</h3><p>
+A primeira versão do Dockumo inclui as funções essenciais para gestão operacional de containers:
+</p><ul style="margin-left:20px;">
+  <li><strong>Visualizar containers:</strong> listagem de containers activos e parados.</li>
+  <li><strong>Consultar estado:</strong> indicação visual de containers em execução, parados ou com erro.</li>
+  <li><strong>Criar containers:</strong> criação manual a partir de uma imagem Docker.</li>
+  <li><strong>Containers pré-definidos:</strong> templates rápidos para serviços comuns.</li>
+  <li><strong>Importar imagens:</strong> operação de pull a partir do Docker Hub ou outro repositório configurado.</li>
+  <li><strong>Arrancar containers:</strong> função run/start.</li>
+  <li><strong>Parar containers:</strong> stop controlado.</li>
+  <li><strong>Reiniciar containers:</strong> restart.</li>
+  <li><strong>Alterar containers:</strong> nome, limites de memória, CPU e política de reinício.</li>
+  <li><strong>Eliminar containers:</strong> remoção controlada, com confirmação.</li>
+  <li><strong>Ver logs:</strong> consulta dos registos recentes de execução.</li>
+  <li><strong>Inspect JSON:</strong> visualização técnica da configuração completa do container.</li>
+</ul><p>
+A filosofia é simples: o Dockumo não tenta esconder o Docker. Tenta dar-lhe uma superfície de operação mais humana. O que, vindo da informática, já é quase um gesto de misericórdia.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">5. Containers pré-definidos</span>
+</h3><p>
+Uma das funções mais úteis é a criação de containers a partir de modelos pré-definidos. A ideia é permitir que serviços comuns possam ser criados rapidamente, sem repetir manualmente a mesma configuração.
+</p><p>
+Entre os templates iniciais estão:
+</p><ul style="margin-left:20px;">
+  <li><strong>Nginx:</strong> servidor web leve e rápido.</li>
+  <li><strong>Redis:</strong> serviço de cache e armazenamento chave-valor.</li>
+  <li><strong>MariaDB:</strong> base de dados relacional.</li>
+  <li><strong>PostgreSQL:</strong> base de dados relacional avançada.</li>
+  <li><strong>Adminer:</strong> ferramenta web para administração de bases de dados.</li>
+  <li><strong>Portainer CE:</strong> painel de gestão Docker.</li>
+  <li><strong>Uptime Kuma:</strong> monitorização de disponibilidade de serviços.</li>
+</ul><p>
+Estes modelos permitem acelerar a criação de serviços úteis num servidor doméstico, laboratório técnico ou pequena infra-estrutura interna. Naturalmente, qualquer template pode ser melhorado, endurecido em termos de segurança ou adaptado a ambientes mais exigentes.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">6. Importação de imagens</span>
+</h3><p>
+O Dockumo permite importar imagens Docker através da operação de pull. Na prática, isto significa ir buscar uma imagem a um repositório, como o Docker Hub, e deixá-la disponível localmente para criação de containers.
+</p><p>
+Esta função é especialmente útil quando se pretende preparar previamente um conjunto de imagens, evitando depender da linha de comandos para cada operação. O utilizador pode importar imagens como:
+</p><pre style="background:#050505; color:#d8e8ff; border:1px solid #333; padding:14px; overflow:auto; border-radius:8px;"><code>nginx:latest
+mariadb:latest
+postgres:latest
+redis:latest
+adminer:latest
+louislam/uptime-kuma:latest</code></pre><p>
+Apesar da comodidade, esta função deve ser usada com critério. Imagens públicas devem ser escolhidas com cuidado, preferindo fontes oficiais ou projectos reconhecidos. Porque instalar uma imagem desconhecida no servidor é basicamente convidar um estranho para dentro de casa e entregar-lhe as chaves da cave.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">7. Alteração de containers: o que é possível e o que não é</span>
+</h3><p>
+Nem tudo num container pode ser alterado depois de criado. Esta é uma limitação importante do próprio modelo Docker.
+</p><p>
+O Dockumo permite alterar parâmetros como:
+</p><ul style="margin-left:20px;">
+  <li>nome do container;</li>
+  <li>limites de memória;</li>
+  <li>limites de CPU;</li>
+  <li>política de reinício.</li>
+</ul><p>
+Mas configurações como portas publicadas, volumes montados ou imagem base não são normalmente alteradas num container já criado. Para mudar esses elementos, a abordagem correcta é recriar o container com nova configuração.
+</p><p>
+Isto é importante porque evita falsas expectativas. Um gestor gráfico não deve fingir que consegue fazer aquilo que o motor subjacente não permite de forma limpa. A pior interface é aquela que sorri enquanto prepara uma catástrofe.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">8. Segurança: o ponto crítico</span>
+</h3><p>
+Qualquer aplicação com acesso ao Docker daemon deve ser tratada com enorme cuidado. Quem controla o Docker controla, em grande medida, o servidor. Isto não é exagero dramático; é arquitectura.
+</p><p>
+Por essa razão, o Dockumo deve ser usado preferencialmente:
+</p><ul style="margin-left:20px;">
+  <li>em rede local;</li>
+  <li>atrás de VPN;</li>
+  <li>com firewall restritiva;</li>
+  <li>atrás de proxy autenticado;</li>
+  <li>nunca exposto directamente à Internet sem protecção forte.</li>
+</ul><p>
+O socket Docker, normalmente localizado em <code>/var/run/docker.sock</code>, dá acesso directo ao Docker Engine. Expor esse socket ou uma aplicação que o controla é uma decisão séria. Em termos práticos, acesso ao Docker pode equivaler a acesso privilegiado ao host.
+</p><p>
+Por isso, a primeira regra do Dockumo é simples: conforto operacional sim; suicídio administrativo não.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">9. Instalação básica</span>
+</h3><p>
+Num sistema Linux com Docker já instalado, a instalação do Dockumo pode ser feita com um ambiente virtual Python:
+</p><pre style="background:#050505; color:#d8e8ff; border:1px solid #333; padding:14px; overflow:auto; border-radius:8px;"><code>python3 -m venv .venv
+source .venv/bin/activate
+pip install nicegui docker
+python dockumo_manager.py</code></pre><p>
+Depois, a aplicação pode ser acedida no browser através da porta configurada, por exemplo:
+</p><pre style="background:#050505; color:#d8e8ff; border:1px solid #333; padding:14px; overflow:auto; border-radius:8px;"><code>http://IP_DO_SERVIDOR:8088</code></pre><p>
+Naturalmente, num ambiente mais sério, a aplicação deve ser executada como serviço <code>systemd</code>, protegida por firewall e, se necessário, colocada atrás de um reverse proxy com autenticação.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">10. Exemplo de serviço systemd</span>
+</h3><p>
+Um exemplo simples de unidade <code>systemd</code> poderia ser:
+</p><pre style="background:#050505; color:#d8e8ff; border:1px solid #333; padding:14px; overflow:auto; border-radius:8px;"><code>[Unit]
+Description=Dockumo Manager
+After=docker.service network.target
+Requires=docker.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/dockumo
+ExecStart=/opt/dockumo/.venv/bin/python /opt/dockumo/dockumo_manager.py
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target</code></pre><p>
+O uso de <code>User=root</code> deve ser ponderado. Em alguns sistemas, pode ser substituído por um utilizador pertencente ao grupo <code>docker</code>. Mas também aqui há que perceber a consequência: pertencer ao grupo <code>docker</code> dá grande poder sobre o sistema. O Linux avisa, mas os humanos insistem em transformar permissões em decoração.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">11. Dockumo como ferramenta de aprendizagem e controlo</span>
+</h3><p>
+O Dockumo não é apenas uma ferramenta operacional. Também pode ser uma ferramenta pedagógica.
+</p><p>
+Ao mostrar visualmente containers, estados, imagens, logs e configurações, ajuda a compreender melhor o ciclo de vida de um container:
+</p><ul style="margin-left:20px;">
+  <li>imagem importada;</li>
+  <li>container criado;</li>
+  <li>container em execução;</li>
+  <li>container parado;</li>
+  <li>logs analisados;</li>
+  <li>configuração inspeccionada;</li>
+  <li>container eliminado ou recriado.</li>
+</ul><p>
+Esta visão torna mais claro aquilo que, na linha de comandos, pode ficar disperso por comandos sucessivos. Para quem administra sistemas, desenvolve aplicações ou mantém laboratórios próprios, esta clareza é uma vantagem concreta.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">12. Possível evolução do projecto</span>
+</h3><p>
+A primeira versão do Dockumo é funcional, mas abre caminho a várias evoluções:
+</p><ul style="margin-left:20px;">
+  <li>autenticação por utilizador e palavra-passe;</li>
+  <li>perfis de permissões;</li>
+  <li>gestão de volumes Docker;</li>
+  <li>gestão de redes Docker;</li>
+  <li>templates personalizados guardados em ficheiro JSON ou base de dados;</li>
+  <li>monitorização de CPU, memória e tráfego por container;</li>
+  <li>integração com ntfy para alertas;</li>
+  <li>backup e exportação de configurações;</li>
+  <li>modo escuro completo no estilo dos restantes painéis internos;</li>
+  <li>integração futura com o ecossistema Virtumo/Voltaire.</li>
+</ul><p>
+Uma evolução particularmente interessante seria transformar o Dockumo num módulo integrado num painel maior de administração local, unindo gestão de máquinas virtuais, containers, backups, monitorização, alertas e serviços internos. Uma espécie de centro de comando doméstico-profissional, mas sem a parte ridícula dos dashboards corporativos que têm gráficos a piscar e ninguém sabe para quê.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">13. Conclusão</span>
+</h3><p>
+O Dockumo é uma pequena ferramenta, mas aponta para uma ideia maior: recuperar controlo sobre a infra-estrutura.
+</p><p>
+Num tempo em que tudo parece empurrar os utilizadores para plataformas fechadas, subscrições, serviços opacos e dependências externas, construir ferramentas próprias continua a ser um acto de liberdade técnica. Não por romantismo ingénuo, mas por lucidez.
+</p><p>
+Gerir containers com uma interface própria, escrita em Python, compreensível e adaptável, é mais do que conforto. É também soberania operacional. É saber o que corre, onde corre, como corre e quando deve parar.
+</p><p>
+O Dockumo não pretende reinventar o Docker. Pretende apenas dar-lhe uma camada de comando mais clara, mais próxima do utilizador técnico e mais alinhada com uma filosofia simples: compreender antes de automatizar, controlar antes de delegar, construir antes de depender.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">Referências técnicas</span>
+</h3><ul style="margin-left:20px;">
+  <li><a href="https://docker-py.readthedocs.io/" target="_blank" rel="noopener" style="color:#ffcc66;">Docker SDK for Python — documentação oficial</a></li>
+  <li><a href="https://docker-py.readthedocs.io/en/stable/containers.html" target="_blank" rel="noopener" style="color:#ffcc66;">Docker SDK for Python — gestão de containers</a></li>
+  <li><a href="https://docs.docker.com/reference/api/engine/sdk/" target="_blank" rel="noopener" style="color:#ffcc66;">Docker Engine SDKs — documentação Docker</a></li>
+  <li><a href="https://docs.docker.com/engine/security/protect-access/" target="_blank" rel="noopener" style="color:#ffcc66;">Docker — proteger o acesso ao daemon</a></li>
+  <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html" target="_blank" rel="noopener" style="color:#ffcc66;">OWASP Docker Security Cheat Sheet</a></li>
+  <li><a href="https://nicegui.io/documentation" target="_blank" rel="noopener" style="color:#ffcc66;">NiceGUI — documentação oficial</a></li>
+</ul><div style="border-top:1px solid #ffcc78; margin-top:36px; padding-top:18px; color:#ffcca0;">
+  <p>
+    <strong>Autor:</strong>
+    <a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" target="_blank" rel="noopener" style="color:#ffcc66;">
+      Francisco Gonçalves
+    </a>
+  </p>
+  <p>
+    <strong>Co-autoria técnica e editorial:</strong> Augustus Veritas / OpenAI.
+  </p>
+  <p style="font-style:italic;">
+    Fragmentos do Caos — tecnologia, pensamento crítico e pequenas barricadas contra a mediocridade digital.
+  </p>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/FragmentosCaos-codeberg"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
