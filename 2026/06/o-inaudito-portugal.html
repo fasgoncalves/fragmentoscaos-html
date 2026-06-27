@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Inaudito Portugal</title>
+<meta name="description" content="O Inaudito Portugal">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Inaudito Portugal</h1>
+      <p class="meta">Publicado em 2026-06-26 20:40:02</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_0000000065f472468d6c3a6397dc1b48.jpg" alt=""></figure>
+      <div class="post-content">
+        <div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+  <meta itemprop="headline" content="O Inaudito Portugal">
+  <meta itemprop="description" content="Crónica crítica e irónica sobre Portugal, a decadência administrada, a pobreza burocratizada, o turismo como modelo económico e o caminho possível através da ciência, tecnologia, indústria e soberania produtiva.">
+  <meta itemprop="datePublished" content="2026-06-15">
+  <meta itemprop="dateModified" content="2026-06-15">
+  <meta itemprop="author" content="Francisco Gonçalves">
+  <meta itemprop="author" content="Augustus Veritas">
+  <meta itemprop="publisher" content="Fragmentos do Caos">
+  <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/06/file_0000000065f472468d6c3a6397dc1b48.png">
+  <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+    <meta itemprop="name" content="Fragmentos do Caos">
+    <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+      <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/fc_logo_round.png">
+    </span>
+  </span>
+</div><div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia,serif; line-height:2.15; padding:14px; text-align:left;">  <div style="background:#111; border:1px solid #444; padding:18px; margin:18px 0; border-radius:10px;">
+    <h3 style="color:#ffcc66 !important; margin-top:0; text-align:left;">
+      <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+    </h3>
+    <ul style="padding-left:24px; margin-bottom:0;">
+      <li>Portugal continua preso a uma economia de baixo valor acrescentado, demasiado dependente do turismo, serviços e baixos salários.</li>
+      <li>A burocracia permanece como uma das grandes forças de bloqueio à produtividade, à inovação e à liberdade económica.</li>
+      <li>A emigração jovem qualificada continua a revelar a incapacidade do país para reter talento.</li>
+      <li>A modernização do Estado é muitas vezes confundida com portais, formulários e palavras bonitas, quando devia significar eficiência real.</li>
+      <li>A saída exige ciência aplicada, indústria tecnológica, soberania digital, educação exigente, empresas com escala e uma cultura política com vergonha.</li>
+    </ul>
+  </div>  <h2 style="color:#ffcc66 !important; font-size:34px; text-align:center; line-height:1.35; margin:28px 0 18px 0;">
+    <span style="color:#ffcc66 !important;">O Inaudito Portugal</span>
+  </h2>  <div style="border-left:4px solid #ffcc66; background:#111; padding:16px 20px; margin:22px 0; font-style:italic; color:#ffdda0;">
+    Portugal é o país onde a decadência não cai: é administrada. Não se afunda com estrondo; afunda-se por despacho, parecer, comissão e conferência de imprensa.
+  </div>  <p>
+    Portugal é um país extraordinário. Não no sentido vulgar da palavra, desses países que constroem indústrias, inventam tecnologias, pagam bons salários, protegem os velhos, retêm os jovens e tratam o futuro com algum respeito. Não. Isso seria demasiado óbvio, quase suíço, e nós nunca fomos povo de copiar soluções fáceis quando podemos criar problemas originais.
+  </p>  <p>
+    Portugal é extraordinário porque conseguiu transformar a decadência numa arte administrativa. Não se afunda de repente, com estrondo, sirenes e discursos dramáticos à varanda. Afunda-se por despacho, com carimbo, parecer jurídico, comissão técnica, grupo de trabalho, consulta pública e uma frase final sobre "resiliência".
+  </p>  <p>
+    É o naufrágio mais educado da Europa.
+  </p>  <p>
+    Por cá, quando o país empobrece, não se diz que empobrece. Diz-se que "atravessa desafios". Quando os salários são baixos, não se diz que são baixos. Diz-se que há "moderação salarial". Quando os jovens emigram, não se diz que o país os expulsou por falta de horizonte. Diz-se que "ganham experiência internacional". Uma ternura. Até parece que o aeroporto é uma extensão do Erasmus, mas com lágrimas da mãe no embarque e contrato de trabalho em alemão.
+  </p>  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">A espumante das décimas</span>
+  </h3>  <p>
+    Portugal é também o único país onde se consegue celebrar crescimento económico com a solenidade de quem descobriu uma nova galáxia, mesmo quando o crescimento mal chega para pagar o café e a bica já vem com sobretaxa emocional. Crescemos 1 vírgula qualquer coisa e a nação quase abre champanhe. Não do caro, evidentemente. Uma espumante em promoção, porque a prudência orçamental também merece bolhas.
+  </p>  <p>
+    Depois há o turismo, essa nossa grande doutrina económica. O turista chega, fotografa a calçada, come bacalhau, bebe vinho verde, compra um íman de frigorífico e vai embora convencido de que esteve num país encantador. E esteve. Só não viu foi a parte de trás do cenário: os salários apertados, os pensionistas aflitos, os jovens sem casa, os trabalhadores a fazer contas, os serviços públicos cansados e o Estado a tossir pelos cantos como uma impressora velha da repartição.
+  </p>  <p>
+    O turismo é óptimo, naturalmente. Mas um país não pode viver eternamente de servir cafés ao mundo enquanto os seus engenheiros, programadores, médicos, investigadores e técnicos fazem check-in para partir. É como vender as telhas da casa para pagar o jantar e depois chamar a isso "dinamização do património".
+  </p>  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">A inovação da complicação</span>
+  </h3>  <p>
+    Mas não sejamos injustos. Portugal tem inovação. Muita. Temos inovação na capacidade de criar problemas onde antes havia apenas dificuldades. Temos inovação na arte de transformar obras simples em epopeias arqueológicas. Temos inovação fiscal, sobretudo na imaginação com que se encontra sempre mais uma taxa, mais uma contribuição, mais um selo, mais uma obrigação declarativa. O contribuinte português não paga impostos: participa numa experiência espiritual de submissão financeira.
+  </p>  <p>
+    E depois temos o Estado digital. Essa criatura mitológica. Aparece nos discursos como um unicórnio veloz, brilhante e transparente. Na vida real, surge como um portal que não abre, uma password expirada, um certificado que falha, uma senha que não chega, um formulário que pede o documento que o próprio Estado já tem, mas que exige novamente, porque a máquina pública gosta de confirmar se o cidadão ainda conserva a vontade de viver.
+  </p>  <p>
+    É um sistema admirável. O Estado sabe tudo sobre nós, excepto quando precisamos que saiba. Aí, misteriosamente, nada consta.
+  </p>  <p>
+    A burocracia portuguesa é uma forma de teatro experimental. O cidadão entra com esperança, senta-se numa cadeira de plástico, tira uma senha, ouve números que nunca são o seu, observa um ecrã avariado e, ao fim de duas horas, descobre que lhe falta uma fotocópia de um documento que já entregou em 1998. Reage com tristeza. O funcionário reage com cansaço. A República reage com silêncio. E Deus, se existir, pede escusa e muda de balcão.
+  </p>  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Os roteiros para lado nenhum</span>
+  </h3>  <p>
+    Entretanto, os nossos políticos continuam a falar de futuro. Falam de futuro com uma convicção comovente, sobretudo porque muitos deles parecem não ter tido uma ideia desde a adolescência partidária. São especialistas em frases redondas, programas vagos, planos estratégicos, pactos, agendas, visões e roteiros. O país está cheio de roteiros. O problema é que ninguém sabe conduzir.
+  </p>  <p>
+    A palavra "estratégia" tornou-se uma espécie de amuleto. Diz-se "estratégia" e pronto, parece que aconteceu alguma coisa. Estratégia para a habitação. Estratégia para a saúde. Estratégia para a inovação. Estratégia para a demografia. Estratégia para a produtividade. Estratégia para o interior. Estratégia para a estratégia, que essa também merece ser estrategicamente acompanhada.
+  </p>  <p>
+    Na prática, continuamos a ser governados como quem gere uma mercearia com pretensões imperiais: apaga-se um incêndio aqui, promete-se uma reforma ali, nomeia-se uma comissão acolá, culpa-se o governo anterior, invoca-se Bruxelas, descobre-se uma cativaçõezinha e segue a banda.
+  </p>  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">A mediocridade organizada</span>
+  </h3>  <p>
+    Portugal é um país onde a mediocridade não se limita a existir. Ela organiza-se, candidata-se, sobe na hierarquia, distribui lugares, dá entrevistas e, por vezes, recebe condecorações. É uma mediocridade de fato escuro, pasta de couro e vocabulário europeu. Não diz disparates. Diz "opções estruturantes". Não falha. "Reajusta prioridades". Não se contradiz. "Evolui no quadro das circunstâncias".
+  </p>  <p>
+    E o povo? O povo observa, trabalha, paga, envelhece, espera, desespera, ri quando pode e resmunga quando deve. O povo português desenvolveu uma espécie de resistência trágico-cómica. Sabe que o país está torto, mas também sabe que dizer isso em voz alta ainda dá menos trabalho do que endireitá-lo. Há nisso uma sabedoria antiga, mas também uma desistência perigosa.
+  </p>  <p>
+    O pensionista sobrevive com uma reforma que faria corar uma pedra. O trabalhador ganha o suficiente para continuar a trabalhar. O jovem qualificado recebe conselhos sobre empreendedorismo de pessoas que nunca arriscaram um tostão próprio. O pequeno empresário é tratado como suspeito permanente. O contribuinte é ordenhado com método. O Estado promete simplificação. E no fim do mês todos olham para a conta bancária como quem observa um animal em vias de extinção.
+  </p>  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">O talento que incomoda</span>
+  </h3>  <p>
+    Mas a coisa mais inaudita em Portugal talvez seja esta: apesar de tudo, ainda há talento. Muito talento. Há gente capaz, criativa, inteligente, trabalhadora, tecnicamente competente, moralmente decente. Há programadores, engenheiros, cientistas, professores, médicos, empresários, técnicos, artistas e artesãos que fariam florescer outro país qualquer. O problema é que, por cá, demasiadas vezes o talento não é irrigado. É podado.
+  </p>  <p>
+    Em Portugal, quem pensa incomoda. Quem exige atrapalha. Quem sabe fazer denuncia, sem querer, os que fingem fazer. Quem trabalha com seriedade acaba muitas vezes a pagar a factura da incompetência alheia. É uma economia moral curiosa: a competência é tolerada enquanto não envergonhar demasiada gente.
+  </p>  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">O caminho existe</span>
+  </h3>  <p>
+    E, no entanto, o caminho existe. Não é místico. Não está escondido numa gruta templária, nem depende de um salvador providencial com outdoor gigante e sorriso de campanha. O caminho é antigo e moderno ao mesmo tempo: educação exigente, ciência aplicada, indústria tecnológica, empresas com escala, soberania digital, energia inteligente, administração pública competente, justiça célere, cultura de mérito e vergonha política.
+  </p>  <p>
+    Sim, vergonha política. Essa tecnologia esquecida.
+  </p>  <p>
+    Portugal não precisa de mais discursos sobre inovação. Precisa de fabricar, programar, investigar, exportar, patentear, construir, automatizar, robotizar, ensinar, formar, arriscar e exigir. Precisa de trocar a economia do quarto alugado pela economia do conhecimento aplicado. Precisa de deixar de ser o país onde se celebra o turismo como destino e começar a ser o país onde se cria tecnologia como futuro.
+  </p>  <p>
+    Mas para isso é preciso interromper a decadência. Não administrá-la melhor. Não lhe pôr um logótipo. Não criar uma comissão para monitorizar a sua trajectória. Interrompê-la.
+  </p>  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Epílogo: o espelho sem maquilhagem</span>
+  </h3>  <p>
+    O inaudito Portugal ainda pode ser outra coisa. Pode deixar de ser esta jangada simpática, com turistas à proa, pensionistas à popa, jovens a saltar borda fora e políticos no camarote a apontar para gráficos ascendentes enquanto entra água pelo casco.
+  </p>  <p>
+    Pode ser país de criação, de indústria, de ciência, de liberdade inteligente e de dignidade produtiva.
+  </p>  <p>
+    Mas primeiro terá de fazer uma coisa terrível, quase revolucionária: olhar para si próprio sem maquilhagem.
+  </p>  <p>
+    E isso, em Portugal, continua a ser mais raro do que um formulário público que funcione à primeira.
+  </p>  <div style="background:#111; border-left:4px solid #ffcc66; border-top:1px solid #444; border-right:1px solid #444; border-bottom:1px solid #444; padding:18px 22px; margin:32px 0; border-radius:10px; color:#e8eef4;">
+    <h3 style="color:#ffcc66 !important; margin-top:0; text-align:left;">
+      <span style="color:#ffcc66 !important;">Nota Final</span>
+    </h3><p style="font-size:18px; font-style:italic; color:#ffdda0; margin-bottom:0;">
+  Portugal não precisa de administrar melhor a decadência. Precisa de a interromper. E isso só se faz criando riqueza real, conhecimento aplicado, indústria moderna, soberania tecnológica e uma cultura política que volte a ter vergonha na cara.
+</p>
+
+  </div>  <div style="border-top:1px solid #ffcc78; margin-top:34px; padding-top:18px; color:#ffcca0;">
+    <p>
+      <strong>Texto:</strong>
+      <a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Francisco Gonçalves</a>
+      &amp; Augustus Veritas 
+    </p>
+    <p>
+      <strong>Publicação:</strong> Fragmentos do Caos
+    </p>
+    <p>
+      <em>Crónica crítica, satírica e ligeiramente desesperada sobre Portugal, esse laboratório atlântico onde a decadência aprendeu a preencher formulários.</em>
+    </p>
+  </div> 
+<div style="background:#111; border-left:4px solid #ffcc66; border-top:1px solid #444; border-right:1px solid #444; border-bottom:1px solid #444; padding:18px 22px; margin:32px 0; border-radius:10px; color:#e8eef4; font-family:Georgia,serif; line-height:2.1; text-align:left;">  <h3 style="color:#ffcc66 !important; margin-top:0; text-align:left;">
+    <span style="color:#ffcc66 !important;">Nota Final</span>
+  </h3>  <p style="font-size:18px; font-style:italic; color:#ffdda0;">
+    Portugal entrega a piada já montada, com instruções, carimbo e recibo verde.
+  </p>  <p>
+    A sátira apenas faz a autópsia com um sorriso de lado. A realidade portuguesa é que insiste em entrar pela porta dentro vestida de tragicomédia, a tropeçar num formulário, a pedir senha e a dizer que está tudo "em fase de implementação".
+  </p>  <p>
+    O humor, neste caso, é quase legítima defesa.
+  </p>  <p style="margin-bottom:0;">
+    E quando a sátira bate certo, não é porque exagera. É porque a realidade já perdeu a vergonha de parecer caricatura.
+  </p>
+<br>
+<p>
+E enquanto a realidade continuar a parecer escrita por um <strong>comité de burocratas bêbedos</strong> de autopromoção, o humor continuará a ser não apenas possível, mas obrigatório.
+</p>
+</div>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/FragmentosCaos-codeberg"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

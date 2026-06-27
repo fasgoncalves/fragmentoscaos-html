@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A RTP: Serviço Público ou Sala de Espera do Regime?</title>
+<meta name="description" content="A RTP: Serviço Público ou Sala de Espera do Regime?">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A RTP: Serviço Público ou Sala de Espera do Regime?</h1>
+      <p class="meta">Publicado em 2026-06-25 11:47:10</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_0000000095e471f49450aa44e6fa9248.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia,serif; line-height:2.2; padding:10px; text-align:left;"><div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+  <meta itemprop="headline" content="RTP: Serviço Público ou Sala de Espera do Regime?">
+  <meta itemprop="datePublished" content="2026-06-23">
+  <meta itemprop="dateModified" content="2026-06-23">
+  <meta itemprop="description" content="Artigo crítico sobre a RTP, o serviço público de rádio e televisão, a Contribuição para o Audiovisual, a qualidade da programação, o pluralismo democrático e a responsabilidade perante os contribuintes portugueses.">
+  <meta itemprop="author" content="Francisco Gonçalves">
+  <meta itemprop="publisher" content="Fragmentos do Caos">
+  <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/06/file_0000000095e471f49450aa44e6fa9248.png">
+</div><div style="background:#111; border:1px solid #444; padding:18px; margin:20px 0; border-radius:8px;">
+  <h3 style="color:#ffcc66 !important; font-size:22px; margin-top:0; text-align:left;">
+    <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+  </h3>
+  <ul style="margin-left:20px;">
+    <li>A RTP é concessionária do serviço público de rádio e televisão em Portugal.</li>
+    <li>O contrato de concessão define obrigações de independência, pluralismo, rigor, qualidade, diversidade, inovação e serviço aos cidadãos.</li>
+    <li>A Contribuição para o Audiovisual é paga pelos consumidores através da factura da electricidade.</li>
+    <li>A RTP registou prejuízos de 3,9 milhões de euros em 2025, após 15 anos de resultados líquidos positivos.</li>
+    <li>A European Broadcasting Union defende que os media de serviço público devem informar, educar e entreter todos os públicos, com independência, rigor e responsabilidade democrática.</li>
+    <li>Um serviço público pago por todos só se justifica se entregar valor público que o mercado comercial não entrega.</li>
+  </ul>
+</div><h2 style="color:#ffcc66 !important; font-size:34px; text-align:center; line-height:1.35;">
+  <span style="color:#ffcc66 !important;">RTP: Serviço Público ou Sala de Espera do Regime?</span>
+</h2><div style="border-left:4px solid #ffcc66; background:#111; padding:16px 20px; margin:24px 0; font-style:italic; color:#ffddb0;">
+  Um serviço público só tem legitimidade moral para ser pago por todos se entregar valor público que o mercado não entrega. Quando se confunde com televisão comercial banal, perde a razão ética da sua existência.
+</div><p>
+A RTP, paga com o dinheiro dos contribuintes através da Contribuição para o Audiovisual, deveria ser uma das grandes instituições civilizadoras da democracia portuguesa. Deveria informar melhor, formar cidadãos mais conscientes, aguçar o espírito crítico, abrir espaço ao pluralismo real, elevar a cultura pública, explicar o mundo com profundidade e resistir à banalização geral da vida mediática.
+</p><p>
+Mas, demasiadas vezes, a RTP parece comportar-se como apenas mais um serviço comercial, embora com financiamento garantido. Um canal que disputa audiências com programação vulgar, formatos cansados, entretenimento indistinto, jornalismo manso e uma inquietante tendência para servir como correia de transmissão dos poderes instalados. Ou seja, uma espécie de televisão comercial com casaco institucional. Muito elegante, naturalmente. O contribuinte paga o cabide.
+</p><p>
+A pergunta é simples: por que razão devem os portugueses continuar a pagar obrigatoriamente por um serviço que tantas vezes parece tratar os cidadãos como consumidores passivos de banalidade, e não como pessoas adultas capazes de pensar?
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">O serviço público não é uma licença para a mediocridade</span>
+</h3><p>
+Um serviço público de televisão não deve existir para copiar os privados. Para isso já existem canais comerciais, plataformas de streaming, redes sociais, algoritmos viciados em lixo emocional e programas onde a inteligência é tratada como acidente de produção.
+</p><p>
+A RTP deveria fazer precisamente o contrário. Deveria ocupar o espaço que o mercado não ocupa porque não dá lucro imediato: ciência, tecnologia, história, filosofia, literatura, pensamento crítico, investigação jornalística, memória colectiva, cultura exigente mas acessível, educação cívica, literacia mediática, literacia digital, geopolítica, justiça, economia real, ambiente, energia, indústria, agricultura, mar e língua portuguesa.
+</p><p>
+Serviço público não é apenas ter canais, estúdios, apresentadores, grafismos modernos e uma grelha cheia. Serviço público é cumprir uma missão democrática. É formar cidadãos, não adormecer espectadores. É desafiar o pensamento, não embalar a pasmaceira nacional. É incomodar poderes, não servir-lhes café com microfone.
+</p><p>
+Quando a televisão pública se limita a produzir programas medíocres, concursos banais, conversas sem consequência, fait-divers repetidos e entretenimento de gosto duvidoso, deixa de ser uma instituição cultural e transforma-se numa sala de espera paga por todos. E uma sala de espera não devia custar quase duzentos milhões de euros por ano aos contribuintes.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">Jornalismo público ou pasquim de vão de escada?</span>
+</h3><p>
+O jornalismo da RTP deveria ser uma referência nacional de rigor, independência, pluralismo e investigação. Deveria escrutinar governos, oposições, autarquias, grandes grupos económicos, bancos, reguladores, universidades, sindicatos, ordens profissionais, empresas públicas e até a própria RTP.
+</p><p>
+Se o jornalismo público não incomoda ninguém relevante, então não é jornalismo público. É decoração informativa.
+</p><p>
+Uma democracia precisa de jornalismo público que ajude os cidadãos a compreender os processos profundos do país: como se gasta o dinheiro público, como funcionam os contratos do Estado, quem beneficia de certos apoios, por que razão determinados sectores continuam capturados, como se distribuem fundos europeus, onde falha a justiça, quem bloqueia reformas, como se formam monopólios e como se protege a incompetência instalada.
+</p><p>
+Mas o que se vê demasiadas vezes é jornalismo domesticado, previsível, reverente, moldado pela agenda do dia, dependente dos mesmos rostos, dos mesmos comentadores, dos mesmos ciclos partidários e da mesma prudência mole perante os poderes estabelecidos.
+</p><p>
+O resultado é uma informação que informa pouco e conforma muito. Um jornalismo que raramente rasga. Um jornalismo de superfície, de declarações, de reacções, de soundbites, de equilíbrio aparente e coragem limitada. Algo que, nos seus piores momentos, se aproxima mais de um pasquim de vão de escada com gravata institucional, do que de uma verdadeira casa pública da inteligência democrática.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">Entreter não é embrutecer</span>
+</h3><p>
+Há quem defenda que a RTP também deve entreter. Naturalmente. A própria ideia de serviço público inclui informar, educar e entreter. Mas entreter não é embrutecer. <strong>Entreter não é infantilizar.</strong> Entreter não é despejar banalidade sobre os cidadãos como se a televisão pública fosse uma máquina de anestesia colectiva.
+</p><p>
+É possível entreter com inteligência. É possível fazer humor com cultura. É possível criar programas populares sem tratar o público como rebanho. É possível fazer televisão leve sem cair no vazio. É possível ter concursos, música, ficção, memória, conversa, viagens, gastronomia, património e histórias humanas com qualidade, elegância e substância.
+</p><p>
+O problema não está no entretenimento. Está no entretenimento pobre, repetitivo, acomodado, sem ambição, sem imaginação e sem qualquer valor formativo ou cultural. Está na programação que parece desenhada para não acordar ninguém. Está na ideia profundamente insultuosa de que o povo só merece distracção baixa, ruído e palmadinhas na cabeça. É pura lobotomia institucionalizada com selo de qualidade lusa.
+</p><p>
+Um serviço público digno deveria elevar o gosto, não explorar a sua degradação. Deveria abrir janelas, não fechar cortinas. Deveria dar ao cidadão mais mundo, mais pensamento, mais memória e mais lucidez. Não deveria competir com os privados na corrida para ver quem consegue descer mais depressa a escada do banal.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">O contrato diz uma coisa, a realidade mostra outra</span>
+</h3><p>
+O contrato de concessão do serviço público fala de independência perante o poder político e económico, de pluralismo, diversidade, qualidade, diferenciação, rigor, isenção, inovação e serviço aos cidadãos. É uma bela lista. O papel, como sempre, aguenta tudo. Aguenta até promessas que a realidade esmaga diariamente com pantufas burocráticas.
+</p><p>
+A questão não é saber se a RTP tem obrigações formais. Tem. A questão é saber se essas obrigações são cumpridas com exigência, avaliadas com transparência e sentidas pelos portugueses como valor público real.
+</p><p>
+Não basta publicar relatórios. Não basta cumprir grelhas. Não basta dizer que há pluralismo porque passaram por lá várias caras conhecidas do costume. Não basta invocar cultura porque houve meia dúzia de programas em horários onde até os fantasmas dormem. Não basta dizer que há serviço público porque existe um canal com arquivo, outro com informação, outro com entretenimento e mais uns espaços a cumprir quota.
+</p><p>
+A pergunta essencial é esta: a RTP torna os portugueses mais livres, mais cultos, mais informados, mais críticos e mais capazes de compreender o mundo?
+</p><p>
+Se a resposta for hesitante, então o problema é grave.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">O povo paga, mas decide pouco</span>
+</h3><p>
+A Contribuição para o Audiovisual é paga pelos consumidores através da factura da electricidade. Isto significa que os portugueses financiam obrigatoriamente a RTP, mesmo que não reconheçam nela valor proporcional ao custo. É uma imposição pública que só se justifica se a missão for clara, distinta, transparente e superior à lógica comercial.
+</p><p>
+Quando uma instituição vive de financiamento público obrigatório, tem uma responsabilidade acrescida. Não pode comportar-se como canal comercial quando quer audiências e como serviço público quando quer financiamento. Essa dupla personalidade é demasiado conveniente. O contribuinte não deve pagar a factura de uma televisão pública para receber, em troca, vulgaridade com logótipo estatal.
+</p><p>
+A RTP deveria prestar contas aos cidadãos com uma severidade muito maior. Que impacto tem na literacia mediática? Que impacto tem na formação cívica? Quantas investigações jornalísticas estruturantes produz por ano? Que diversidade real de pensamento apresenta? Quantas horas nobres dedica a ciência, tecnologia, filosofia, história, economia real, cultura e cidadania? Que vozes novas leva ao espaço público? Que temas incómodos investiga sem medo? Que valor acrescenta face aos privados?
+</p><p>
+Estas perguntas deveriam estar no centro da avaliação do serviço público. Mas Portugal prefere, como sempre, métricas confortáveis, relatórios macios e linguagem de administração que transforma falhas em "desafios" e mediocridade em "oportunidades de melhoria". Um milagre semântico, pago por todos.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">A RTP que Portugal deveria exigir</span>
+</h3><p>
+A solução séria não é simplesmente gritar "acabem com a RTP". Essa é a resposta fácil, muitas vezes usada por quem quer destruir qualquer ideia de serviço público. Um país democrático precisa de media públicos fortes. Mas fortes não significa grandes, caros, redundantes e complacentes. Fortes significa independentes, exigentes, úteis, corajosos, inteligentes e respeitados.
+</p><p>
+Portugal deveria exigir uma RTP com menos canais redundantes e mais missão. Menos entretenimento indistinto dos privados e mais programação de valor público. Menos dependência de formatos gastos e mais criação original. Menos jornalismo de superfície e mais investigação. Menos comentário previsível e mais contraditório real.
+</p><p>
+Uma RTP digna deveria ter mais ciência, mais tecnologia, mais literacia digital, mais pensamento crítico, mais história contemporânea, mais economia explicada sem propaganda, mais cultura exigente, mais memória viva, mais debate europeu, mais mundo, mais regiões, mais comunidades portuguesas no estrangeiro, mais escrutínio do Estado e mais coragem editorial.
+</p><p>
+Deveria também ter uma avaliação externa séria, pública e independente. Não avaliações de circunstância. Não relatórios auto-congratulatórios. Não conselhos decorativos. Avaliação por impacto democrático: confiança pública, pluralismo real, qualidade informativa, diversidade de vozes, independência editorial, valor educativo, inovação digital, literacia mediática, custo por missão e relevância cultural.
+</p><p>
+A RTP não deve existir para competir com privados no mercado da banalidade. Deve existir para fazer aquilo que os privados não fazem, não querem fazer ou não conseguem fazer com independência suficiente.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">A democracia precisa de cidadãos, não de espectadores anestesiados</span>
+</h3><p>
+O ponto mais profundo é este: uma democracia plural e viva precisa de cidadãos com espírito crítico. Precisa de pessoas capazes de pensar, duvidar, comparar, questionar, perceber interesses, reconhecer propaganda, interpretar dados, compreender contextos e resistir à manipulação emocional.
+</p><p>
+O ensino português falha muitas vezes nesta missão. A televisão pública não deveria reforçar essa falha. Deveria compensá-la. Deveria ser uma escola aberta da cidadania, sem paternalismo e sem catequese política. Uma casa onde o cidadão pudesse encontrar ferramentas para compreender melhor o país e o mundo.
+</p><p>
+Mas quando o serviço público se acomoda à mediania, contribui para o enfraquecimento da democracia. Não porque faça propaganda explícita todos os dias, mas porque ajuda a criar cidadãos menos exigentes, menos inquietos, menos atentos e mais habituados à vulgaridade.
+</p><p>
+Uma democracia não morre apenas quando há censura. Também adoece quando a inteligência pública é substituída por ruído, distracção e jornalismo domesticado.
+</p><p>
+E é por isso que a pergunta dos portugueses é legítima:
+</p><p style="font-size:22px; color:#ffcc66 !important; font-weight:bold; text-align:left; margin:24px 0;">
+  <span style="color:#ffcc66 !important;">Porque havemos de pagar obrigatoriamente por uma televisão que, demasiadas vezes, parece não nos respeitar como cidadãos adultos?</span>
+</p><p>
+A RTP deveria ser uma das casas da inteligência democrática portuguesa.
+</p><p>
+Demasiadas vezes parece apenas mais uma sala de espera do regime.
+</p><p>
+E uma sala de espera não devia custar quase duzentos milhões por ano aos contribuintes.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">Referências</span>
+</h3><ul style="margin-left:20px;">
+  <li>
+    <a href="https://media.rtp.pt/empresa/informacao/contrato-de-concessao-publica-radio-etelevisao/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      RTP — Contrato de Concessão do Serviço Público de Rádio e Televisão
+    </a>
+  </li>
+  <li>
+    <a href="https://media.rtp.pt/empresa/wp-content/uploads/sites/31/2025/03/Revisao-do-contrato-de-concessao-do-servico-publico-de-radio-e-de-televisao_CSPM-RTP_versao-final_-07_03.2025.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      RTP — Revisão do Contrato de Concessão do Serviço Público de Rádio e Televisão, versão final, 07/03/2025
+    </a>
+  </li>
+  <li>
+    <a href="https://www.rtp.pt/noticias/economia/rtp-com-prejuizos-39-milhoes-de-euros-em-2025-apos-15-anos-com-resultados-liquidos-positivos_n1737786" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      RTP Notícias — RTP com prejuízos de 3,9 milhões de euros em 2025 após 15 anos de resultados líquidos positivos
+    </a>
+  </li>
+  <li>
+    <a href="https://www.ebu.ch/about/public-service-media" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      European Broadcasting Union — Public Service Media
+    </a>
+  </li>
+  <li>
+    <a href="https://www.ebu.ch/guides/public-service-values-editorial-principles" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      European Broadcasting Union — Public Service Values and Editorial Principles
+    </a>
+  </li>
+  <li>
+    <a href="https://www.coe.int/en/web/freedom-expression/public-service-media" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      Conselho da Europa — Public Service Media
+    </a>
+  </li>
+</ul><div style="border-top:1px solid #ffcc78; margin-top:34px; padding-top:18px; color:#ffcca0;">
+  <p style="margin-bottom:6px;">
+    <strong>Texto:</strong>
+    <a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      Francisco Gonçalves
+    </a>
+  </p>
+  <p style="margin-top:0;">
+    Coautoria editorial e estruturação :<strong> Augustus Veritas</strong> <br> Fragmentos do Caos News Team
+  </p>
+</div>
+<div style="background:#111; border-left:4px solid #ffcc66; padding:18px 22px; margin:30px 0; color:#ffddb0; font-family:Georgia,serif; line-height:2.1; text-align:left;">  <h3 style="color:#ffcc66 !important; font-size:24px; margin-top:0; text-align:left;">
+    <span style="color:#ffcc66 !important;">Nota Editorial</span>
+  </h3>  <p>
+    Esta crónica não defende o fim cego da RTP, nem embarca na facilidade populista de destruir qualquer ideia de serviço público. Pelo contrário: parte de um princípio mais exigente e mais democrático. A RTP deve existir, mas tem de merecer existir. Tem de merecer o dinheiro que recebe dos contribuintes. Tem de merecer a confiança pública. Tem de merecer a designação de serviço público.
+  </p>  <p>
+    O problema central não está na existência de uma rádio e televisão públicas. Está na sua frequente incapacidade de se distinguir, com clareza e coragem, da televisão comercial banal. Um serviço público não pode limitar-se a copiar os privados com dinheiro garantido. Não pode disputar audiências no campeonato da vulgaridade e depois invocar a sua missão pública quando chega a hora do financiamento.
+  </p>  <p>
+    Serviço público é outra coisa. É fazer aquilo que os privados não fazem, não querem fazer ou não conseguem fazer com independência suficiente: informar melhor, formar melhor, escrutinar melhor, preservar memória, elevar a cultura pública, estimular pensamento crítico, defender pluralismo real e tratar os cidadãos como adultos.
+  </p>  <p>
+    A RTP deveria ser uma das casas da inteligência democrática portuguesa. Um espaço onde a informação fosse rigorosa, a cultura fosse viva, o debate fosse plural, a investigação jornalística fosse incómoda e o entretenimento não tivesse de rastejar pela banalidade para justificar audiência.
+  </p>  <p>
+    Demasiadas vezes, porém, parece apenas mais uma sala de espera do regime: confortável, previsível, mansa, protegida e cara. Uma sala onde se passam programas, se repetem fórmulas, se domesticam perguntas e se entretém o público sem o desafiar verdadeiramente a pensar.
+  </p>  <p>
+    Por isso, a exigência é simples:
+  </p>  <p style="font-size:22px; color:#ffcc66 !important; font-weight:bold; text-align:left; margin:24px 0;">
+    <span style="color:#ffcc66 !important;">Serviço público não é copiar os privados com dinheiro garantido. É fazer aquilo que os privados não fazem: informar melhor, formar melhor, escrutinar melhor e tratar os cidadãos como adultos.</span>
+  </p>  <p>
+    Se a RTP quiser continuar a ser paga por todos, tem de provar todos os dias que entrega valor público a todos. Não basta existir. Tem de servir. Não basta emitir. Tem de iluminar. Não basta ocupar pcanais. Tem de ocupar um lugar digno na democracia portuguesa.
+  </p><br>
+<strong>- Francisco Gonçalves (2026)</strong>
+</div>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/FragmentosCaos-codeberg"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
