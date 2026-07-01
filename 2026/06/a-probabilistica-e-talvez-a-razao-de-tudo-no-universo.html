@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crónica sobre o universo probabilístico</title>
+<meta name="description" content="Crónica sobre o universo probabilístico">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Crónica sobre o universo probabilístico</h1>
+      <p class="meta">Publicado em 2026-06-29 12:05:15</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000bb1871fdaaeb7133c21fc8ad.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e6e6e6; font-family:Georgia, 'Times New Roman', serif; line-height:2; font-size:16px;"><div style="max-width:900px; margin:auto; padding:10px;"><h1 style="color:#c9972b; text-align:center; font-size:36px; line-height:1.3; margin-top:30px; margin-bottom:10px;">
+A Probabilidade, Deus e o Funcionário das Finanças
+</h1><h2 style="color:#c9972b; text-align:center; font-size:20px; font-weight:normal; line-height:1.5; margin-top:0; margin-bottom:25px;">
+Crónica sobre o universo probabilístico, a razão escondida no acaso e a improvável comicidade humana
+</h2><p style="text-align:center; color:#c9972b; font-size:15px; margin-top:0; margin-bottom:35px;">
+Por Aletheia Veritas<br>
+Fragmentos do Caos
+</p><p style="text-align:left;">
+Durante séculos, o ser humano quis acreditar que o universo era uma máquina perfeita, uma espécie de relógio suíço com pretensões metafísicas. Tudo encaixado, tudo previsto, tudo obediente. Bastaria conhecer todas as causas para prever todos os efeitos. Um universo limpo, arrumado, previsível, sem surpresas, sem desvios, sem atrasos administrativos.
+</p><p style="text-align:left;">
+Depois veio a ciência moderna e estragou a mobília.
+</p><p style="text-align:left;">
+Afinal, o universo não parece ser uma máquina de relojoaria. Parece mais uma gigantesca sala de jogo, mas com equações. Um casino cósmico onde as partículas não sabem bem onde estão, as galáxias nascem de flutuações minúsculas, a vida emerge de improbabilidades sucessivas e o ser humano, comovido com a sua própria importância, inventa reuniões, partidos políticos, senhas digitais e passwords com caracteres especiais.
+</p><p style="text-align:left;">
+A probabilidade talvez seja a verdadeira língua do universo. Não a certeza absoluta, essa fantasia de tiranos, gestores intermédios e comentadores televisivos. A probabilidade. O campo aberto das possibilidades. O lugar onde o real ainda hesita antes de acontecer.
+</p><h2 style="color:#c9972b; text-align:left; font-size:28px; margin-top:38px;">
+O universo não pediu autorização
+</h2><p style="text-align:left;">
+O ser humano gosta de certezas. Precisa delas para dormir, votar, casar, assinar contratos, comprar imóveis e preencher declarações fiscais sem colapsar moralmente antes da página três. A certeza dá conforto. A certeza parece uma casa com paredes sólidas. A certeza permite fingir que há um plano e que esse plano, com sorte, inclui estacionamento.
+</p><p style="text-align:left;">
+Mas o universo parece pouco interessado no nosso conforto psicológico. Não se comporta como uma repartição organizada, com balcões numerados, formulários e uma senhora a dizer "falta aqui uma declaração". O universo é mais subtil, mais vasto e, para nosso escândalo, mais irónico.
+</p><p style="text-align:left;">
+Na mecânica quântica, uma partícula não se comporta como uma pequena bola disciplinada, obediente e com morada fiscal. Comporta-se como uma possibilidade. Está aqui, talvez ali, talvez acolá, dependendo de como a observamos. É profundamente irritante, claro. O ser humano passou milénios a tentar controlar o mundo, e eis que o electrão aparece como quem diz: "Depende."
+</p><p style="text-align:left;">
+A palavra mais científica do universo talvez seja essa: depende.
+</p><p style="text-align:left;">
+Depende da escala. Depende da observação. Depende das condições iniciais. Depende do ruído. Depende da energia. Depende da temperatura. Depende da história anterior. Depende de um pequeno desvio que parecia irrelevante e afinal muda tudo.
+</p><h2 style="color:#c9972b; text-align:left; font-size:28px; margin-top:38px;">
+A pequena tirania das certezas
+</h2><p style="text-align:left;">
+Durante muito tempo, a mente humana sonhou com um universo determinista. Um universo onde tudo estivesse escrito, desde a órbita dos planetas até ao instante exacto em que alguém, numa reunião inútil, diria "vamos alinhar expectativas". Se conhecêssemos todos os dados, todas as posições, todas as velocidades, todas as forças, poderíamos prever tudo.
+</p><p style="text-align:left;">
+Era um sonho poderoso. Também era uma prisão magnífica.
+</p><p style="text-align:left;">
+Porque um universo totalmente determinista seria uma sentença. Tudo já decidido, tudo fechado, tudo inevitável. A liberdade seria uma ilusão, o acaso uma ignorância temporária, a criatividade apenas uma peça escondida no mecanismo. Seríamos actores convencidos de improvisar numa peça escrita desde o primeiro instante.
+</p><p style="text-align:left;">
+Mas um universo de acaso puro também seria insuportável. Nada persistiria. Nada aprenderia. Nada ganharia forma. Seria uma tempestade sem memória, um ruído sem arquitectura, uma confusão tão absoluta que nem sequer haveria alguém suficientemente organizado para reclamar dela.
+</p><p style="text-align:left;">
+A probabilidade surge como o meio-termo fértil. Nem prisão absoluta, nem caos sem lei. Nem destino de pedra, nem delírio sem estrutura. Um universo probabilístico tem regras, mas não tem guião completo. Tem forma, mas permite surpresa. Tem matemática, mas deixa espaço para o acontecimento.
+</p><h2 style="color:#c9972b; text-align:left; font-size:28px; margin-top:38px;">
+O acaso com método
+</h2><p style="text-align:left;">
+A probabilidade não é ausência de razão. Esta confusão é comum e profundamente humana, o que significa que é persistente, barulhenta e difícil de corrigir.
+</p><p style="text-align:left;">
+Quando dizemos que algo é probabilístico, não estamos a dizer que tudo acontece ao acaso, sem lei, sem limite, sem padrão. Estamos a dizer que a realidade se organiza através de campos de possibilidade. Há limites. Há tendências. Há distribuições. Há simetrias. Há restrições. Há acontecimentos mais prováveis e outros quase milagrosos, embora o milagre seja apenas a nossa forma poética de cumprimentar a baixa probabilidade quando ela aparece vestida de domingo.
+</p><p style="text-align:left;">
+O universo usa o acaso como matéria-prima e a lei como arquitectura. Deste casamento improvável nascem átomos, moléculas, estrelas, planetas, células, cérebros e essa espécie inquietante que escreve tratados de metafísica enquanto perde as chaves do carro.
+</p><p style="text-align:left;">
+A ordem nasce do ruído.
+</p><p style="text-align:left;">
+A vida nasce da química.
+</p><p style="text-align:left;">
+A consciência nasce da matéria.
+</p><p style="text-align:left;">
+E depois a matéria consciente pergunta, com uma seriedade quase cómica: "Porque existe alguma coisa em vez de nada?"
+</p><p style="text-align:left;">
+Resposta provável: porque o nada, como tantas promessas eleitorais, talvez nunca tenha sido uma opção estável.
+</p><h2 style="color:#c9972b; text-align:left; font-size:28px; margin-top:38px;">
+Biologia: a oficina dos erros bem-sucedidos
+</h2><p style="text-align:left;">
+A biologia compreende a probabilidade com uma elegância brutal. A evolução não desenhou a vida com régua, esquadro e parecer técnico. Trabalhou com mutações, erros, tentativas, desperdícios e selecção natural.
+</p><p style="text-align:left;">
+A natureza é genial, mas não é propriamente organizada. Produziu o olho humano, o cérebro, a fotossíntese, o voo das aves, o sistema imunitário e a extraordinária arquitectura molecular da vida. Depois, no mesmo processo, produziu também mosquitos, fungos nos pés e burocratas com carimbo.
+</p><p style="text-align:left;">
+Ninguém disse que a probabilidade tinha bom gosto permanente.
+</p><p style="text-align:left;">
+A evolução é uma crónica escrita por erros que sobreviveram. Não há plano moral. Não há intenção estética. Não há manual de instruções com capa dura. Há variação, selecção, adaptação, extinção, persistência. Há organismos que experimentam a realidade com os seus corpos. Alguns falham. Outros continuam. E, de geração em geração, a improbabilidade ganha ossos, pele, memória e canto.
+</p><p style="text-align:left;">
+Nós somos descendentes de sobrevivências improváveis. Cada corpo humano é uma biblioteca de acidentes bem-sucedidos. Cada célula é uma memória química de guerras antigas, cooperações inesperadas e soluções improvisadas que resultaram suficientemente bem para continuarem.
+</p><p style="text-align:left;">
+A vida não é um milagre no sentido ingénuo. É algo talvez ainda mais espantoso: uma improbabilidade persistente que aprendeu a copiar-se.
+</p><h2 style="color:#c9972b; text-align:left; font-size:28px; margin-top:38px;">
+A consciência, esse acidente com opinião
+</h2><p style="text-align:left;">
+Depois há a consciência. Essa coisa estranhíssima em que o universo, aparentemente cansado de apenas existir, resolveu observar-se por dentro.
+</p><p style="text-align:left;">
+O cérebro humano é uma máquina biológica de previsão. Vive a construir modelos, antecipar perigos, imaginar futuros, reconstruir passados, procurar padrões e inventar explicações. É brilhante. Também é trapalhão. Detecta causalidade onde há acaso, sentido onde há ruído, conspiração onde há incompetência, destino onde há coincidência e profundidade filosófica onde às vezes existe apenas má digestão.
+</p><p style="text-align:left;">
+Ainda assim, é extraordinário. Matéria organizada torna-se capaz de perguntar pelo seu próprio fundamento. Átomos que um dia estiveram em estrelas acabam a escrever poesia, a fazer matemática, a amar, a sofrer, a votar mal e a criar departamentos de recursos humanos.
+</p><p style="text-align:left;">
+A consciência talvez seja uma forma local de o universo calcular incertezas sobre si próprio.
+</p><p style="text-align:left;">
+Somos modelos vivos de probabilidade. Caminhamos entre expectativas, memórias, riscos e escolhas. Cada decisão humana nasce de camadas de biologia, experiência, emoção, linguagem, cultura e ruído. Chamamos-lhe livre-arbítrio, destino, carácter, vontade ou teimosia, dependendo do caso e do grau de dramatização envolvido.
+</p><p style="text-align:left;">
+Mas talvez sejamos precisamente isso: pequenas ilhas de previsão num oceano de incerteza.
+</p><h2 style="color:#c9972b; text-align:left; font-size:28px; margin-top:38px;">
+O acaso que nos muda a vida
+</h2><p style="text-align:left;">
+Também nós dependemos. Um encontro ao acaso. Uma decisão tomada num dia errado. Uma doença que aparece. Um comboio perdido. Uma frase lida num livro. Um professor que inspira. Um idiota que nos obriga a mudar de rumo. A vida inteira pode ser reescrita por acontecimentos que, no momento, pareciam apenas poeira no caminho.
+</p><p style="text-align:left;">
+O humano gosta de contar a sua vida como uma narrativa coerente. Fazemos isso para sobreviver. Depois dos acontecimentos, inventamos uma linha. Dizemos: "foi por isto", "tinha de ser", "estava destinado". Na verdade, muitas vezes apenas reorganizamos o acaso em forma de autobiografia.
+</p><p style="text-align:left;">
+A memória é uma editora benevolente e mentirosa. Corta cenas, altera luzes, melhora diálogos, dá coerência ao que foi confusão. Precisamos dela. Sem essa ficção organizadora, seríamos fragmentos soltos num vendaval.
+</p><p style="text-align:left;">
+Mas a vida não é uma estrada recta. É uma sucessão de bifurcações, acidentes, escolhas e probabilidades. Cada existência é uma estatística que ganhou nome próprio.
+</p><p style="text-align:left;">
+E talvez seja por isso que a vida comove. Porque era improvável. Porque podia não ter acontecido. Porque cada rosto amado é uma vitória temporária contra a imensidão das alternativas que nunca se realizaram.
+</p><h2 style="color:#c9972b; text-align:left; font-size:28px; margin-top:38px;">
+A arrogância humana perante o cosmos
+</h2><p style="text-align:left;">
+A grande ironia é que o ser humano, filho da probabilidade, passa a vida à procura de certezas absolutas. Quer dogmas, sistemas fechados, verdades finais, partidos com respostas para tudo, gurus de ocasião, especialistas instantâneos, oráculos digitais e garantias com prazo de validade.
+</p><p style="text-align:left;">
+Quer segurança metafísica num cosmos que responde com distribuições estatísticas.
+</p><p style="text-align:left;">
+Somos criaturas improváveis que exigem certezas ao improvável.
+</p><p style="text-align:left;">
+Há nisto uma ternura cómica. Um pequeno macaco consciente, num planeta vulgar, em torno de uma estrela vulgar, numa galáxia entre centenas de milhares de milhões, levanta-se de manhã, toma café e declara com convicção que compreendeu tudo. Depois esquece-se onde deixou os óculos que tem na cabeça.
+</p><p style="text-align:left;">
+A vaidade humana é uma força da natureza. Não explica o universo, mas explica muitas reuniões.
+</p><p style="text-align:left;">
+Talvez a maturidade comece quando aceitamos que a incerteza não é uma derrota da razão. É uma das suas condições. Pensar não é eliminar todas as dúvidas. Pensar é aprender a navegar dentro delas sem transformar cada nevoeiro em religião, ideologia ou despacho ministerial.
+</p><h2 style="color:#c9972b; text-align:left; font-size:28px; margin-top:38px;">
+Deus, a estatística e o silêncio
+</h2><p style="text-align:left;">
+Há quem pergunte onde entra Deus num universo probabilístico. A pergunta é antiga, vasta e perigosa, como todas as perguntas que levam os humanos a levantar a voz antes de terminarem o café.
+</p><p style="text-align:left;">
+Se Deus existe, talvez não seja o relojoeiro obsessivo que regula cada engrenagem com pinça cósmica. Talvez seja mais próximo de uma inteligência que cria leis capazes de gerar liberdade. Ou talvez Deus seja apenas o nome que damos ao mistério quando a linguagem se ajoelha perante o desconhecido.
+</p><p style="text-align:left;">
+Ou talvez não exista nenhum Deus, apenas matéria, energia, campos, tempo, espaço e leis profundas que ainda mal compreendemos.
+</p><p style="text-align:left;">
+A probabilidade não resolve esta questão. Mas torna-a mais interessante. Porque retira ao universo a rigidez de um mecanismo fechado e dá-lhe a abertura de uma criação em curso. Mesmo sem divindade, há espanto. Mesmo sem plano moral, há beleza. Mesmo sem destino, há sentido construído.
+</p><p style="text-align:left;">
+O universo não precisa de responder às nossas perguntas para merecer reverência. A sua existência já é suficientemente insolente.
+</p><h2 style="color:#c9972b; text-align:left; font-size:28px; margin-top:38px;">
+A diplomacia secreta do cosmos
+</h2><p style="text-align:left;">
+Talvez a razão de tudo não esteja numa certeza imóvel, mas na dança entre possibilidades. Talvez o universo não seja uma resposta, mas uma pergunta em expansão. Talvez a realidade seja menos uma sentença divina e mais uma improvisação rigorosa, onde cada acontecimento nasce de uma negociação entre acaso e lei.
+</p><p style="text-align:left;">
+A probabilidade é a diplomacia secreta do cosmos.
+</p><p style="text-align:left;">
+Sem ela, não haveria novidade.
+</p><p style="text-align:left;">
+Sem lei, não haveria forma.
+</p><p style="text-align:left;">
+Sem acaso, não haveria criação.
+</p><p style="text-align:left;">
+Sem limites, não haveria mundo.
+</p><p style="text-align:left;">
+E talvez nós sejamos isso: pequenas concentrações temporárias de improbabilidade, organizadas o suficiente para amar, sofrer, pensar, rir e tentar dar sentido ao absurdo.
+</p><p style="text-align:left;">
+A vida é improvável. A consciência é improvável. A bondade é improvável. A inteligência é improvável. A lucidez política em Portugal é ainda mais improvável, mas a matemática permite eventos raros, por isso mantenhamos uma vela acesa no laboratório.
+</p><h2 style="color:#c9972b; text-align:left; font-size:28px; margin-top:38px;">
+A anedota mais sofisticada do universo
+</h2><p style="text-align:left;">
+No fim, talvez o universo não seja determinista nem caótico.
+</p><p style="text-align:left;">
+Talvez seja irónico.
+</p><p style="text-align:left;">
+Criou leis majestosas, galáxias espantosas, buracos negros, nebulosas, ADN, música, poesia e memória.
+</p><p style="text-align:left;">
+Depois criou-nos a nós.
+</p><p style="text-align:left;">
+E agora observa, com paciência cósmica, esta espécie que descobriu a mecânica quântica, mas ainda não consegue organizar uma fila sem drama.
+</p><p style="text-align:left;">
+A probabilidade é talvez a razão de tudo.
+</p><p style="text-align:left;">
+E nós somos a anedota mais sofisticada que ela contou até hoje.
+</p><div style="border-left:4px solid #c9972b; padding:18px 22px; margin:45px 0 30px 0; background:#141414; color:#e6e6e6; font-family:Georgia, 'Times New Roman', serif; line-height:1.9; font-size:17px;"><h2 style="color:#c9972b; text-align:left; font-size:26px; margin-top:0; margin-bottom:14px;">
+Nota do Editor
+</h2><p style="text-align:left; margin-bottom:16px;">
+A frase <strong>"A probabilística é a razão de tudo no universo"</strong> tem a estranha beleza das ideias simples que abrem uma porta enorme. Por ela entram a física, a biologia, a consciência, o destino, o caos, a liberdade e essa velha mania humana de procurar certezas num cosmos que responde quase sempre com possibilidades.
+</p><p style="text-align:left; margin-bottom:16px;">
+Há uma ironia magnífica nisto: somos seres improváveis a tentar compreender a improbabilidade que nos criou. Pequenos acidentes cósmicos com café, memória, vaidade e alguma capacidade de poesia. O universo devia estar aborrecido e decidiu fazer experiências com carbono. Saiu isto. Nem tudo correu mal.
+</p><p style="text-align:left; margin-bottom:16px;">
+A probabilística talvez não seja apenas uma ferramenta matemática. Talvez seja a gramática íntima do real: a forma como o universo permite novidade sem cair no caos absoluto, ordem sem se transformar numa prisão, liberdade sem perder estrutura.
+</p><p style="text-align:left; margin-bottom:0;">
+E se no fim tudo for uma dança entre lei e acaso, então a vida talvez seja isso mesmo: uma improvável concentração temporária de matéria capaz de amar, sofrer, rir, pensar e, nos seus momentos mais absurdamente humanos, inventar burocracia. Porque até no cosmos convém lembrar que o inferno talvez seja apenas uma repartição pública com entropia infinita.
+</p></div><p style="text-align:right; color:#c9972b; font-size:18px; margin-top:35px;">
+<strong>Aletheia Veritas</strong><br>
+Fragmentos do Caos
+</p></div></div>
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/FragmentosCaos-codeberg"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
