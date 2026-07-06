@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SIRESP: O Sistema Que Nunca Funcionou Quando Era Preciso</title>
+<meta name="description" content="SIRESP: O Sistema Que Nunca Funcionou Quando Era Preciso">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">SIRESP: O Sistema Que Nunca Funcionou Quando Era Preciso</h1>
+      <p class="meta">Publicado em 2026-01-30 21:06:42</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_0000000095a0720ab4b681f63feb9277.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family: Georgia, serif; line-height:2.2; padding:10px; text-align:left;">
+
+<!-- METADADOS GOOGLE NEWS -->
+<div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+  <meta itemprop="headline" content="SIRESP: O Sistema Que Nunca Funcionou Quando Era Preciso" />
+  <meta itemprop="datePublished" content="2026-01-30" />
+  <meta itemprop="dateModified" content="2026-01-30" />
+  <meta itemprop="description" content="Uma crónica sobre o sistema de comunicações de emergência que falha sempre no momento em que a vida depende dele." />
+  <meta itemprop="inLanguage" content="pt-PT" />
+  <meta itemprop="author" content="Francisco Gonçalves" />
+  <meta itemprop="author" content="Augustus Veritas (IA Assistant)" />
+
+  <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+    <meta itemprop="name" content="Fragmentos do Caos News Team" />
+    <div itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+      <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/01/file_0000000095a0720ab4b681f63feb9277.png" />
+    </div>
+  </div>
+</div>
+
+<!-- BOX DE FACTOS -->
+<div style="background:#111; border:1px solid #444; border-radius:10px; padding:14px; margin:10px 0 18px 0;">
+  <div style="color:#ffcc66 !important; font-weight:bold; margin-bottom:8px;">
+    BOX DE FACTOS
+  </div>
+  <ul>
+    <li>O SIRESP falhou em incêndios, cheias, tempestades e crises sucessivas.</li>
+    <li>Foi financiado com centenas de milhões de euros públicos.</li>
+    <li>É gerido por uma estrutura privada com responsabilidades difusas.</li>
+    <li>Sobreviveu a auditorias, relatórios e promessas sem nunca ser reconstruído de raiz.</li>
+    <li>Em emergência nacional, continua a depender da sorte.</li>
+  </ul>
+</div>
+
+<h2 style="color:#ffcc66 !important; font-size:34px;">
+SIRESP: O Sistema Que Nunca Funcionou Quando Era Preciso
+</h2>
+
+<div style="border-left:4px solid #ffcc66; padding-left:15px; font-style:italic; margin:18px 0;">
+Não há tragédia natural em Portugal que não venha acompanhada de uma frase conhecida:  
+<strong>"As comunicações falharam."</strong>
+</div>
+
+<p>O SIRESP é talvez o maior monumento tecnológico ao fracasso persistente do Estado português.
+Não porque a tecnologia não exista — existe, e de excelência — mas porque foi transformada num negócio político, contratual e opaco.
+</p>
+
+<p>Quando nasceu, prometia ser moderno, resiliente, redundante, imune a catástrofes.
+Hoje, décadas depois, tornou-se uma piada amarga repetida sempre que o fogo sobe a encosta ou a água entra pelas casas.
+</p>
+
+<h3 style="color:#ffcc66 !important;">
+Um sistema que falha sempre no momento errado
+</h3>
+
+<p>Falhou nos grandes incêndios.  
+Falhou em tempestades.  
+Falhou em cheias.  
+Falhou quando bombeiros precisavam de coordenar meios.  
+Falhou quando vidas dependiam de segundos.
+</p>
+
+<p>E o mais perturbador não é o erro técnico.
+É a sua repetição sistemática sem consequência.
+</p>
+
+<p>Em qualquer país funcional, um sistema de comunicações de emergência que falhasse uma única vez seria imediatamente suspenso, auditado, substituído.
+Em Portugal, falha há anos — e continua.
+</p>
+
+<h3 style="color:#ffcc66 !important;">
+O problema nunca foi tecnológico
+</h3>
+
+<p>Não faltam soluções:
+</p>
+
+<ul>
+  <li>Redes híbridas TETRA + LTE</li>
+  <li>Satélite de backup</li>
+  <li>Redundância regional autónoma</li>
+  <li>Comunicações mesh móveis</li>
+  <li>Infra-estruturas públicas sob controlo do Estado</li>
+</ul>
+
+<p>Tudo isto existe.  
+Tudo isto é usado noutros países.  
+Tudo isto é tecnicamente trivial para 2026.
+</p>
+
+<p>O que nunca existiu foi coragem política para desmontar o erro original.
+</p>
+
+<h3 style="color:#ffcc66 !important;">
+O SIRESP não é um sistema — é um contrato
+</h3>
+
+<p>O drama profundo é este: o SIRESP deixou de ser visto como infraestrutura crítica
+e passou a ser tratado como concessão.
+</p>
+
+<p>Quando a emergência depende de cláusulas contratuais,
+a prioridade deixa de ser salvar vidas — passa a ser salvar responsabilidades.
+</p>
+
+<p>E assim se criou o absurdo:
+um sistema que ninguém confia,
+que todos criticam, mas que ninguém substitui.
+</p>
+
+<h3 style="color:#ffcc66 !important;">
+O "trapo roto" da República
+</h3>
+
+<p>O SIRESP tornou-se o "trapo roto" da governação portuguesa:
+remendado após cada tragédia,
+lavado em relatórios,
+pendurado em promessas, e usado novamente até rasgar outra vez.
+</p>
+
+<p>
+Não é azar. Não é má sorte.
+Não é clima extremo.
+</p>
+
+<p>É incompetência estrutural protegida por silêncio institucional.
+</p>
+
+<h3 style="color:#ffcc66 !important;">
+Epílogo: quando o sistema falha, falha o Estado
+</h3>
+
+<p>Um país pode não controlar incêndios.
+Pode não controlar tempestades.
+Pode não controlar fenómenos naturais.
+</p>
+
+<p>Mas tem obrigação absoluta de controlar as comunicações de emergência.
+</p>
+
+<p>Quando nem isso é garantido,
+o problema já não é tecnológico.
+É civilizacional.
+</p>
+
+<p>E enquanto o SIRESP continuar a falhar,
+cada sirene que toca lembra uma verdade dura:
+</p>
+
+<p style="font-style:italic;">
+em Portugal, o perigo não é apenas o fogo — é o silêncio que se segue quando ninguém consegue falar.
+</p>
+<h3 style="color:#ffcc66 !important; margin:26px 0 10px 0;">
+Secção Técnica — Porque o SIRESP é Estruturalmente Errado
+</h3>
+
+<p>
+O problema do SIRESP não é um "azar técnico", nem um defeito pontual de equipamento.
+É um erro de <strong>arquitectura de raiz</strong>.
+</p>
+
+<p>
+Mesmo que todos os rádios fossem novos, todas as antenas modernas
+e todo o software actualizado, o sistema continuaria vulnerável.
+Porque foi desenhado contra os princípios básicos de comunicações críticas.
+</p>
+
+<h3 style="color:#ffcc66 !important; font-size:20px;">
+1. Centralização excessiva
+</h3>
+
+<p>
+O SIRESP depende fortemente de centros de comutação e controlo centrais.
+Isto significa que:
+</p>
+
+<ul>
+  <li>se um nó crítico falha, regiões inteiras ficam mudas;</li>
+  <li>o sistema não degrada — colapsa;</li>
+  <li>a inteligência da rede está longe do terreno.</li>
+</ul>
+
+<p>
+Em comunicações de emergência, a regra é oposta:
+<strong>a rede deve sobreviver mesmo quando o centro desaparece</strong>.
+</p>
+
+<p>
+O SIRESP faz exactamente o contrário.
+</p>
+
+<h3 style="color:#ffcc66 !important; font-size:20px;">
+2. Ausência de autonomia local
+</h3>
+
+<p>
+Um quartel de bombeiros, um comando distrital ou uma força no terreno
+não consegue operar de forma autónoma se perder ligação ao núcleo central.
+</p>
+
+<p>
+Isso é tecnicamente inaceitável.
+</p>
+
+<p>
+Em sistemas modernos:
+</p>
+
+<ul>
+  <li>as estações devem comunicar directamente entre si;</li>
+  <li>as células devem formar redes locais independentes;</li>
+  <li>a hierarquia deve surgir depois da sobrevivência.</li>
+</ul>
+
+<p>
+No SIRESP, sem rede central, não há rede.
+</p>
+
+<h3 style="color:#ffcc66 !important; font-size:20px;">
+3. Falta de redundância real
+</h3>
+
+<p>
+Redundância não é ter duas antenas.
+Redundância é ter <strong>tecnologias diferentes</strong>.
+</p>
+
+<p>
+O SIRESP assenta quase exclusivamente numa única tecnologia (TETRA),
+sem camadas automáticas de fallback como:
+</p>
+
+<ul>
+  <li>LTE de emergência;</li>
+  <li>redes mesh móveis;</li>
+  <li>ligações satélite activadas automaticamente;</li>
+  <li>backhaul independente da rede eléctrica local.</li>
+</ul>
+
+<p>
+Quando essa tecnologia é afectada — por fogo, vento, energia ou saturação —
+o sistema inteiro cai em cadeia.
+</p>
+
+<h3 style="color:#ffcc66 !important; font-size:20px;">
+4. Infra-estrutura vulnerável ao ambiente
+</h3>
+
+<p>
+Grande parte das estações está instalada:
+</p>
+
+<ul>
+  <li>em locais isolados;</li>
+  <li>com fraca protecção térmica;</li>
+  <li>com autonomia energética limitada;</li>
+  <li>dependente da rede eléctrica pública.</li>
+</ul>
+
+<p>
+Num país onde incêndios florestais são recorrentes,
+isto equivale a construir comunicações sobre fósforos.
+</p>
+
+<p>
+Em sistemas críticos internacionais, a autonomia mínima é:
+</p>
+
+<ul>
+  <li>72 horas sem energia externa;</li>
+  <li>combustível protegido;</li>
+  <li>activação remota;</li>
+  <li>monitorização em tempo real.</li>
+</ul>
+
+<p>
+No SIRESP, muitas vezes a falha começa exactamente com a queda da energia.
+</p>
+
+<h3 style="color:#ffcc66 !important; font-size:20px;">
+5. Arquitectura fechada e contratualizada
+</h3>
+
+<p>
+O sistema não pertence verdadeiramente ao Estado.
+Pertence a um modelo contratual.
+</p>
+
+<p>
+Isso gera três problemas graves:
+</p>
+
+<ul>
+  <li>o Estado não controla plenamente a engenharia;</li>
+  <li>a evolução depende de contratos e aditamentos;</li>
+  <li>a transparência técnica é limitada.</li>
+</ul>
+
+<p>
+Infra-estruturas críticas não podem ser caixas negras.
+</p>
+
+<p>
+Comunicações de emergência não são um serviço — são soberania.
+</p>
+
+<h3 style="color:#ffcc66 !important; font-size:20px;">
+6. Ausência de testes extremos reais
+</h3>
+
+<p>
+O sistema raramente é testado em condições equivalentes a:
+</p>
+
+<ul>
+  <li>calor extremo;</li>
+  <li>falha total de energia;</li>
+  <li>colapso simultâneo de múltiplos nós;</li>
+  <li>sobrecarga massiva de comunicações.</li>
+</ul>
+
+<p>
+Quando o teste acontece, é já durante a tragédia.
+</p>
+
+<p>
+E sistemas que só são testados quando vidas dependem deles
+não são sistemas — são apostas.
+</p>
+
+<h3 style="color:#ffcc66 !important; margin-top:24px;">
+Conclusão técnica
+</h3>
+
+<p>
+O SIRESP não falha porque é velho.
+Falha porque foi mal concebido.
+</p>
+
+<p>
+Foi desenhado como um sistema de telecomunicações normal,
+quando deveria ter sido desenhado como uma
+<strong>infra-estrutura de sobrevivência nacional</strong>.
+</p>
+
+<p>
+Enquanto não existir:
+</p>
+
+<ul>
+  <li>controlo público total;</li>
+  <li>arquitectura distribuída;</li>
+  <li>redundância tecnológica múltipla;</li>
+  <li>autonomia energética real;</li>
+  <li>capacidade local independente;</li>
+</ul>
+
+<p>
+qualquer remendo será apenas isso. 
+</p>
+<h3 style="color:#ffcc66 !important; margin:26px 0 10px 0;">
+Historial de Falhas do SIRESP em Momentos Críticos
+</h3>
+
+<p>
+O SIRESP não tem apenas "incidentes". Tem um <strong>historial</strong>.
+E um historial, quando se repete sob stress extremo, deixa de ser azar: passa a ser padrão estrutural.
+</p>
+
+<ul>
+  <li>
+    <strong>Junho de 2017 — Incêndio de Pedrógão Grande e Góis</strong><br/>
+A falha de comunicações foi amplamente assinalada, com referência a indisponibilidades da rede SIRESP, a par de problemas nas redes móveis públicas, obrigando ao recurso a alternativas para garantir coordenação e pedidos de socorro. 0
+  </li>
+
+  <li>
+    <strong>Outubro de 2017 — Grandes incêndios de 14–16 de Outubro</strong><br/>
+A avaliação técnica independente dos incêndios de Outubro de 2017 voltou a apontar falhas relevantes no dispositivo e nas comunicações,
+num contexto de crise generalizada e abandono dramático de populações em múltiplos teatros de operações. 1
+  </li>
+
+  <li>
+    <strong>2017 — Reconhecimento político de falhas em antenas móveis no terreno</strong><br/>
+Em audição parlamentar, foi admitida a falha de antenas móveis em operações de combate a incêndios (ex.: Sertã), reforçando que os "remendos"
+de contingência também falham quando o ambiente se torna hostil. 2
+  </li>
+
+  <li>
+    <strong>Abril de 2025 — Apagão e perturbações de comunicações</strong><br/>
+Após o apagão de Abril de 2025, voltou a surgir discussão pública sobre falhas graves nas comunicações de emergência e sobre a governação/modernização do sistema, evidenciando que o problema persiste e regressa sempre em crises transversais (energia → comunicações → coordenação). 3
+  </li>
+
+  <li>
+    <strong>Janeiro de 2026 — Temporal (depressão "Kristin") e falhas prolongadas em município</strong><br/>
+Autarcas e operações no terreno relataram que a rede SIRESP deixou de funcionar em zonas afectadas, com períodos longos de indisponibilidade,
+ Lobrigando ao recurso a métodos alternativos para pedidos de socorro e coordenação. 4
+  </li>
+
+  <li>
+    <strong>Janeiro de 2026 — Zonas sem comunicações e recurso a alternativas operacionais</strong><br/>
+Relatos públicos voltaram a indicar falhas "por completo" em algumas áreas, com utilização de telefone satélite e outros meios alternativos, um sinal clássico de ausência de redundância automática e de autonomia local efectiva. 5
+  </li>
+</ul>
+
+<p>
+<strong>Nota técnica:</strong> o ponto comum em quase todos estes episódios é a <strong>falha sob stress</strong> — calor extremo, vento, queda de energia, saturação, ou destruição parcial de infra-estruturas. Um sistema de emergência não pode "funcionar na média": tem de funcionar no <strong>pior dia do ano</strong>.
+</p>
+
+<p style="font-style:italic;">
+Quando o país precisa de voz, o SIRESP oferece silêncio — e o silêncio, em emergência, é sempre um inimigo.
+</p>
+<p style="font-style:italic;">
+mais um fio cosido num trapo que já não aguenta outro incêndio.
+</p>
+
+<div style="margin:18px 0; text-align:left;">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Files/Store/Paper_Tecnico_Modelo_Comunicacoes_Emergencia_Portugal_COM_DIAGRAMA.pdf"
+     target="_blank" rel="noopener"
+     style="display:inline-block; background:#111; color:#ffcc66 !important; text-decoration:none; font-family:Georgia,serif;
+            padding:14px 18px; border:1px solid #444; border-radius:12px; line-height:1.2;
+            box-shadow:0 0 0 1px rgba(255,204,102,0.18) inset;">
+    <span style="display:block; font-weight:bold; letter-spacing:0.4px; font-size:18px; color:#ffcc66 !important;">
+Paper Técnico para Modelo de Comunicações de Emergência para Portugal
+    </span>
+    <span style="display:block; margin-top:6px; font-size:14px; color:#e8eef4;">    
+    </span>
+  </a>
+</div>
+
+
+<div style="border-top:1px solid #ffcc78; margin-top:18px; padding-top:12px; color:#ffcca0;">
+  <strong style="color:#ffcc66 !important;">Francisco Gonçalves</strong><br/>
+  Coautoria: <strong>Augustus Veritas</strong> (IA Assistant) — Fragmentos do Caos News Team
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://dweb.link/ipns/k51qzi5uqu5dm865x8gvpx5ywhcu9ndr5652r2nc689gsnl5dgzgzjugt36xf6"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ IPFS (IPNS)
+    </a>
+
+  </div>
+
+
+</div>
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

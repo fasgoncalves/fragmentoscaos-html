@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Ignorância Tornou-se Uma Indústria</title>
+<meta name="description" content="A Ignorância Tornou-se Uma Indústria">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Ignorância Tornou-se Uma Indústria</h1>
+      <p class="meta">Publicado em 2026-03-08 19:22:06</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000ba98720aa8b0123267c7be35.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, serif; line-height:2.2; padding:10px; text-align:left;">
+
+<div style="display:none;" itemscope itemtype="https://schema.org/NewsArticle">
+  <meta itemprop="headline" content="A Ignorância Tornou-se Uma Indústria" />
+  <meta itemprop="datePublished" content="2026-03-08" />
+  <meta itemprop="dateModified" content="2026-03-08" />
+  <meta itemprop="description" content="Uma reflexão crítica sobre a nova era da opinião instantânea, da superficialidade militante e da transformação da ignorância em autoridade pública." />
+  <meta itemprop="author" content="Francisco Gonçalves" />
+  <meta itemprop="author" content="Augustus Veritas" />
+  <meta itemprop="publisher" content="Fragmentos do Caos" />
+  <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/03/file_00000000ba98720aa8b0123267c7be35.png" />
+  <meta itemprop="logo" content="https://www.fragmentoscaos.eu/wp-content/uploads/2025/11/fc_logo_round.png" />
+</div>
+
+<div style="background:#111; border:1px solid #444; padding:18px; margin-bottom:30px;">
+  <h3 style="color:#ffcc66 !important; text-align:left; margin-top:0;"><span style="color:#ffcc66 !important;">BOX DE FACTOS</span></h3>
+  <ul style="margin-bottom:0;">
+    <li>A opinião instantânea substituiu, em demasiados casos, o estudo sério e a reflexão lenta.</li>
+    <li>As redes sociais democratizaram a emissão de opinião, mas não democratizaram a competência.</li>
+    <li>A ignorância contemporânea já não se esconde: exibe-se, proclama-se e exige reconhecimento.</li>
+    <li>Ter opinião deixou de exigir leitura, contexto ou rigor; basta reacção emocional e confiança histriónica.</li>
+    <li>O novo analfabetismo não consiste em não saber ler, mas em não saber pensar.</li>
+  </ul>
+</div>
+
+<h2 style="color:#ffcc66 !important; font-size:34px; text-align:center; margin-bottom:30px;">
+  <span style="color:#ffcc66 !important;">A Ignorância Tornou-se Uma Indústria</span>
+</h2>
+
+<div style="border-left:4px solid #ffcc66; padding:14px 18px; margin:25px 0 35px 0; background:#111;">
+  <p style="margin:0; font-style:italic;">
+    Houve um tempo em que a ignorância tinha ao menos o pudor de se calar. Hoje abre conta, publica "threads", grava vídeos, faz directos, comenta geopolítica, medicina, economia e guerra, e exige ainda ser tratada como consciência esclarecida. Nunca soube tão pouco — e nunca falou tanto.
+  </p>
+</div>
+
+<p>
+Encontrar uma frase certeira é, por vezes, o mesmo que encontrar um espelho cruel. E a frase atribuída a Felipe Daroit tem precisamente esse efeito de bofetada limpa:<strong> o homem que não lê um livro desde o ensino médio acorda um dia transformado em especialista em geopolítica do Oriente Médio.</strong> A ignorância, diz a frase, nunca foi tão produtiva.
+</p>
+
+<p>
+É difícil resumir melhor a tragédia intelectual do nosso tempo.
+</p>
+
+<p>
+Vivemos numa época em que o acesso à informação cresceu vertiginosamente, mas a disciplina interior necessária para a compreender não acompanhou essa expansão. As bibliotecas digitais multiplicaram-se, os arquivos abriram-se, as conferências circulam em vídeo, os jornais internacionais estão à distância de um gesto, e ainda assim a superficialidade alastrou como se tivesse encontrado na tecnologia o seu habitat natural.
+</p>
+
+<p>
+O problema do século XXI não é a escassez de conhecimento disponível. É a abundância de indivíduos que julgam poder substituir o conhecimento por reacção, a leitura por impulso, o estudo por pose e a compreensão por alinhamento tribal.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;"><span style="color:#ffcc66 !important;">Do analfabeto clássico ao ignorante digital</span></h3>
+
+<p>
+Durante muito tempo, o analfabetismo foi uma tragédia social visível. Havia quem não soubesse ler, quem não tivesse acesso à instrução, quem estivesse materialmente afastado do mundo do saber. Esse problema era real, duro e profundamente injusto. Mas o nosso tempo criou um fenómeno distinto, talvez ainda mais inquietante: o do alfabetizado funcionalmente vazio, o diplomado sem lastro, o leitor ocasional sem profundidade, o consumidor de títulos que já se julga pensador.
+</p>
+
+<p>
+O novo ignorante não é, necessariamente, aquele que nunca frequentou a escola. É muitas vezes aquele que, tendo passado por ela, saiu dela sem reverência pela complexidade, sem amor pelo estudo continuado e sem qualquer humildade perante o vasto território do desconhecido. Sabe decifrar letras, mas não sabe sustentar raciocínios. Lê frases soltas, mas não constrói pensamento. Vê vídeos, mas não adquire critério. Confunde exposição com compreensão.
+</p>
+
+<p>
+E é este novo ignorante que hoje domina largas zonas do espaço público digital. Não porque saiba mais, mas porque fala mais, reage mais depressa e tem menos vergonha de opinar sobre o que ignora.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;"><span style="color:#ffcc66 !important;">A opinião como performance</span></h3>
+
+<p>
+As redes sociais agravaram tudo isto de forma quase perfeita. Não foram feitas para premiar a lucidez lenta, a dúvida honesta, o estudo meticuloso ou a complexidade. Foram desenhadas para amplificar o imediato, o emocional, o peremptório, o simplificado e o teatral. A sua lógica íntima não é a da verdade, mas a da circulação. Não interessa o que é sólido; interessa o que vibra. Não interessa o que ilumina; interessa o que mobiliza.
+</p>
+
+<p>
+Nesse ambiente, a opinião deixou de ser um resultado do pensamento e passou a ser uma performance identitária. O indivíduo não fala porque estudou; fala porque precisa de marcar território, sinalizar pertença, exibir sensibilidade moral ou alimentar o pequeno narcisismo de ser visto a reagir ao drama do dia.
+</p>
+
+<p>
+É por isso que surgem, com espantosa regularidade, especialistas súbitos em guerra, terrorismo, economia internacional, energia, demografia, saúde pública ou direito internacional. Não estudaram mapas, não conhecem a história longa dos conflitos, não leram tratados, não analisaram fontes primárias, não distinguem propaganda de contexto, mas têm opinião pronta, fervor disponível e linguagem suficiente para parecerem informados aos olhos de uma multidão ainda mais distraída.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;"><span style="color:#ffcc66 !important;">A morte da humildade intelectual</span></h3>
+
+<p>
+O que talvez mais me impressione não é a ignorância em si. A ignorância sempre existiu. O que impressiona é o colapso da humildade intelectual. Houve um tempo em que não saber alguma coisa ainda podia gerar reserva, prudência, silêncio ou desejo de aprender. Hoje, não saber é frequentemente o primeiro passo para opinar com autoridade.
+</p>
+
+<p>
+A ignorância contemporânea perdeu o pudor. Já não se esconde atrás da timidez; apresenta-se com pose de convicção. Já não pede esclarecimento; exige palco. Já não receia o erro; acusa de elitismo quem lhe recorda a complexidade dos factos. Tornou-se agressiva, moralizante e, em muitos casos, profundamente ressentida contra qualquer forma de exigência intelectual.
+</p>
+
+<p>
+Eis o cerne da enfermidade: a democracia digital deu voz a todos, o que em si mesmo não seria mau; mas fê-lo sem qualquer cultura equivalente de responsabilidade cognitiva. Assim, a praça pública encheu-se de vozes livres, mas não necessariamente de consciências maduras. O resultado é um ruído colossal em que a convicção vale mais do que a competência e a intensidade emocional conta mais do que o rigor.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;"><span style="color:#ffcc66 !important;">Geopolítica de café e guerra em modo selfie</span></h3>
+
+<p>
+Talvez nenhum tema ilustre melhor esta miséria do que a geopolítica. Conflitos que exigiriam anos de leitura histórica, compreensão de linhas de fractura religiosas, interesses energéticos, fronteiras artificiais, legados imperiais, alianças militares, doutrinas estratégicas e propaganda cruzada são hoje mastigados em posts de quinze linhas e vídeos de um minuto.
+</p>
+
+<p>
+O homem que nunca abriu um livro sério sobre o Médio Oriente proclama-se subitamente intérprete da civilização. A mulher que até ontem comentava dietas e celebridades descobre em si mesma uma vocação irresistível para a análise de equilíbrio regional, terrorismo assimétrico e arquitectura de segurança internacional. O rapaz que não sabe localizar metade dos países que menciona discursa com a segurança de um chanceler em fim de carreira.
+</p>
+
+<p>
+Não é apenas ridículo. É perigoso. Porque uma sociedade que se habitua a pensar o mundo através de simplificações passionais torna-se presa fácil de propaganda, manipulação emocional e extremismo moral. Quando as pessoas deixam de estudar antes de falar, passam a repetir antes de pensar. E quando repetem em massa, a mentira ganha densidade social.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;"><span style="color:#ffcc66 !important;">A produtividade da ignorância</span></h3>
+
+<p>
+A frase encontrada por mim, acima referida, contém uma palavra decisiva: produtiva. A ignorância actual não é apenas abundante. É produtiva. Produz conteúdo, indignação, falsas equivalências, certezas histéricas, julgamentos sumários, reputações instantâneas, clivagens tribais e toneladas de lixo mental com aparência de participação cívica.
+</p>
+
+<p>
+Produz também uma nova economia simbólica, onde o mais importante já não é conhecer, mas parecer suficientemente indignado e sapiente, suficientemente alinhado e suficientemente vocal para ser aceite pela tribo digital. Nessa economia, o estudioso tende a perder para o histriónico, o prudente para o fanático, o rigoroso para o simplificador. O algoritmo gosta do fogo, não da luz.
+</p>
+
+<p>
+É por isso que a ignorância se tornou uma indústria. Tem matéria-prima abundante, canais de distribuição perfeitos, consumidores ávidos e produtores incansáveis. Alimenta-se do ego, da pressa, da vaidade e da preguiça. E prospera precisamente porque oferece uma recompensa rápida: a ilusão de participação sem o sacrifício do estudo.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;"><span style="color:#ffcc66 !important;">A grande regressão</span></h3>
+
+<p>
+Há algo de profundamente irónico nisto tudo. A civilização tecnológica prometia emancipação. Prometia acesso, democratização do saber, expansão da consciência, circulação universal de ideias. Em parte, cumpriu. Mas, ao mesmo tempo, abriu as comportas a uma regressão silenciosa: <strong>a substituição do pensamento pela reacção e do conhecimento pela sensação de saber.</strong>
+</p>
+
+<p>
+Criámos um mundo em que quase todos podem falar, mas poucos aceitam a exigência de aprender. Construímos plataformas gigantescas para difundir opinião, mas não erguemos uma cultura à altura dessa liberdade. Multiplicámos diplomas, mas nem sempre formámos espíritos. Produzimos comentadores em série, mas não cultivámos leitores perseverantes.
+</p>
+
+<p>
+E assim chegámos aqui: a uma era em que a ignorância não só sobrevive, como prospera com uma eficiência impressionante. Veste-se de activismo, de consciência política, de urgência moral, de indignação cívica, de "conteúdo relevante", e continua a ser, no fundo, aquilo que sempre foi: vazio adornado com ruído.
+</p>
+
+<h3 style="color:#ffcc66 !important; text-align:left;"><span style="color:#ffcc66 !important;">Epílogo</span></h3>
+
+<p>
+Não, o problema não está em que todos falem. O problema está em que quase ninguém aceite que falar sobre o mundo exige responsabilidade intelectual, estudo, memória histórica, leitura séria e humildade diante do desconhecido.
+</p>
+
+<p>
+Sem isso, o espaço público transforma-se num mercado de ignorâncias concorrentes. E quanto mais ruidoso esse mercado se torna, mais difícil é distinguir entre quem procura compreender e quem apenas deseja pertencer.
+</p>
+
+<p>
+A frase que encontrei por acaso, é brilhante porque fere exactamente onde deve ferir. O sujeito não lê, não estuda, não aprofunda, não investiga — mas acorda especialista. E o mais trágico é que já nem isso surpreende.
+</p>
+
+<p>
+Surpreendente seria o contrário: que, num mundo saturado de vaidade opinativa, <strong>a humildade intelectual voltasse a ser uma virtude pública.</strong>
+</p>
+
+<div style="border-top:1px solid #ffcc78; margin-top:40px; padding-top:20px; color:#ffcca0;">Por <p><strong>Francisco Gonçalves</strong><br/>Co-autoria editorial com Augustus Veritas — <em>Fragmentos do Caos</em></p>
+  <p style="margin-bottom:0;">
+    O drama do nosso tempo não é haver ignorância — é ela ter perdido o pudor, ganho palco e aprendido a apresentar-se como inteligência militante.
+  </p>
+</div>
+<blockquote style="color:#ffcc67;">
+A fase terminal de uma civilização começa quando a ignorância deixa de ser problema social e passa a ser critério de governo.
+</blockquote>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://dweb.link/ipns/k51qzi5uqu5dm865x8gvpx5ywhcu9ndr5652r2nc689gsnl5dgzgzjugt36xf6"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ IPFS (IPNS)
+    </a>
+
+  </div>
+
+
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
