@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Humanidade: Entre a Máquina e a Barbárie</title>
+<meta name="description" content="A Humanidade: Entre a Máquina e a Barbárie">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Humanidade: Entre a Máquina e a Barbárie</h1>
+      <p class="meta">Publicado em 2026-03-18 14:01:47</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/03/file_00000000852072469e35dfc881a4fe12_b09f336e.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, serif; line-height:2.2; padding:10px;">
+
+  <div style="background:#111; border:1px solid #444; padding:18px; margin:0 0 30px 0;">
+    <h3 style="margin-top:0; text-align:left;"><span style="color:#ffcc66 !important;">BOX DE FACTOS</span></h3>
+    <ul style="margin:0; padding-left:22px; text-align:left;">
+      <li>A História mostra uma repetição persistente dos mesmos mecanismos de desumanização, ódio colectivo e violência legitimada.</li>
+      <li>O Holocausto, o genocídio do Rwanda e Srebrenica provaram que a barbárie começa muito antes das armas: começa na linguagem, nos símbolos e na propaganda.</li>
+      <li>Relatórios internacionais recentes alertam para o regresso da linguagem desumanizante contra migrantes, minorias e populações vulneráveis.</li>
+      <li>As redes sociais amplificaram impulsos antigos: tribalismo, reacção instantânea, linchamento moral e polarização extrema.</li>
+      <li>O verdadeiro atraso da humanidade não é técnico, mas moral e emocional.</li>
+      <li>A civilização continua demasiado vezes a preferir ídolos, slogans e inimigos ao pensamento livre e consciente.</li>
+    </ul>
+  </div>
+
+  <h2 style="text-align:center; color:#ffcc66 !important; font-size:34px; margin-bottom:22px;">
+    <span style="color:#ffcc66 !important;">A Humanidade: a eterna infância armada</span>
+  </h2>
+
+  <div style="border-left:4px solid #ffcc66; padding:14px 18px; margin:0 0 30px 0; background:#111; font-style:italic; color:#f3d58a; text-align:left;">
+    A humanidade gaba-se do seu progresso, mas continua demasiadas vezes a agir como uma criatura ancestral com instrumentos modernos: mais veloz na técnica, mas não necessariamente mais lúcida na consciência.
+  </div>
+
+  <p style="text-align:left;">
+    Há tragédias que não começam com canhões. Começam com símbolos. Começam com palavras. Começam com a velha e suja necessidade de reduzir o outro a caricatura, a ameaça, a impureza, a peso morto, a animal, a traidor, a herege, a invasor. E depois, quando a linguagem termina de cavar o fosso, a violência entra com a naturalidade de quem apenas vai concluir um trabalho já iniciado.
+  </p>
+
+  <p style="text-align:left;">
+    A humanidade gaba-se do seu progresso como um actor medíocre se gaba do brilho do cenário, esquecendo-se de que o texto continua miserável. Construímos máquinas prodigiosas, aceleradores de partículas, satélites, inteligência artificial, cirurgias de precisão, redes planetárias de comunicação. Mas, por baixo desse aparato cintilante, permanece demasiadas vezes a mesma criatura ancestral: tribal, insegura, narcísica, supersticiosa, emocionalmente infantil. A tecnologia avançou a uma velocidade vertiginosa; a consciência moral ficou, em demasiados casos, a arrastar correntes de barro antigo.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">O mal quase nunca começa com sangue</span>
+  </h3>
+
+  <p style="text-align:left;">
+    A História mostra-o com uma crueldade quase pedagógica. O Holocausto não começou nas câmaras de gás; começou na degradação do humano em linguagem política e propaganda metódica. O Museu Memorial do Holocausto dos Estados Unidos recorda precisamente isso: a perseguição nazi começou com palavras de ódio, escalou para discriminação e desumanização, e culminou no genocídio. O processo não foi súbito nem irracional no sentido caótico; foi racionalizado, administrado, burocratizado, transformado em rotina de Estado. É isso que torna o mal histórico tão assustador: não a explosão da loucura, mas a organização fria da desumanização.
+  </p>
+
+  <p style="text-align:left;">
+    Rwanda ofereceu ao mundo a mesma lição, e o mundo fingiu novamente surpresa, como se o horror viesse sempre mascarado e nunca anunciando ao que vinha. As Nações Unidas sublinham que, no genocídio de 1994 contra os Tutsi, décadas de discurso de ódio alimentaram tensões étnicas, espalharam rumores e desumanizaram os alvos antes da matança. Noutra formulação igualmente clara, a ONU descreve a passagem "das palavras à violência" e recorda como a rádio RTLM se tornou arma letal ao transformar seres humanos em alvos legítimos. Primeiro retirou-se humanidade; depois retirou-se vida.
+  </p>
+
+  <p style="text-align:left;">
+    Também nos Balcãs, em pleno coração europeu e sob o olhar de uma civilização que se julgava vacinada contra o regresso da barbárie, a mesma engrenagem reapareceu. O Tribunal Penal Internacional para a ex-Jugoslávia condenou Ratko Mladić por genocídio, perseguição, extermínio, assassínio e deportação, entre outros crimes, ligados à limpeza étnica e ao massacre de Srebrenica. E, décadas depois, o Museu Memorial do Holocausto continua a alertar para a persistência da negação, dos insultos étnicos e da glorificação de criminosos de guerra na Bósnia-Herzegovina. A barbárie raramente morre; muitas vezes apenas muda de roupa e aprende a falar em conferências.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">O presente não está inocente</span>
+  </h3>
+
+  <p style="text-align:left;">
+    Nada disto pertence apenas ao passado. Essa é a ilusão confortável dos povos adormecidos: imaginar que os monstros históricos vivem em museus e não nos reflexos diários das sociedades actuais. O Comité das Nações Unidas para a Eliminação da Discriminação Racial advertiu em Março de 2026 para o uso crescente de linguagem derrogatória e desumanizante contra migrantes, refugiados e requerentes de asilo por figuras políticas do mais alto nível nos Estados Unidos, alertando que tal retórica pode incitar discriminação racial e crimes de ódio. O relatório não descreve uma anomalia distante; descreve um padrão eterno: quando o poder chama "fardo" ao vulnerável, prepara a multidão para aceitar o inaceitável.
+  </p>
+
+  <p style="text-align:left;">
+    Do mesmo modo, o Comité Internacional da Cruz Vermelha advertiu no seu <em>Humanitarian Outlook 2026</em> que a desumanização está a espalhar-se em múltiplos conflitos e que a linguagem desumanizante, frequentemente ecoada por líderes políticos e amplificada pelas redes sociais, alimenta o medo, polariza comunidades e ajuda a justificar violações contra civis. É uma frase seca, quase administrativa, mas nela cabe um século inteiro de cadáveres. Porque quando a humanidade perde a capacidade de ver um rosto no outro, tudo se torna possível: o bombardeamento do bairro, a fome transformada em instrumento, a deportação tratada como limpeza, a tortura disfarçada de segurança.
+  </p>
+
+  <p style="text-align:left;">
+    Entretanto, os governos respondem muitas vezes não à raiz do problema, mas ao seu ruído. Espanha anunciou em Março de 2026 uma ferramenta para monitorizar o ódio e a polarização nas redes sociais, num reconhecimento tácito de que o espaço digital se tornou amplificador industrial de impulsos antigos. A tecnologia, que poderia servir o esclarecimento, tornou-se também a grande fábrica contemporânea da reacção instantânea, da indignação tribal, da simplificação grosseira, do linchamento moral em tempo real. O ser humano descobriu finalmente como automatizar a sua própria imaturidade.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">A recusa de pensar</span>
+  </h3>
+
+  <p style="text-align:left;">
+    E eis o centro da tragédia: a maioria não quer realmente pensar. Pensar dói. Pensar obriga a suspender certezas, a tolerar complexidade, a admitir ambiguidades, a reconhecer humanidade em quem discorda de nós. Pensar exige musculatura interior, e a civilização moderna produziu abundância material sem produzir, na mesma medida, espessura ética. Por isso, tantos preferem ídolos a ideias, slogans a reflexão, pertença a verdade, catarse a lucidez. A ideologia oferece aquilo que a maturidade recusa oferecer: identidade instantânea, inocência automática e licença emocional para odiar.
+  </p>
+
+  <p style="text-align:left;">
+    No fundo, o drama da espécie é este: continuamos a confundir coesão com obediência, convicção com fanatismo, identidade com exclusão, justiça com vingança. O outro continua a ser, para demasiados, não uma consciência autónoma, mas um obstáculo, um erro, uma ameaça, um corpo estranho. E enquanto assim for, a História continuará a repetir-se não porque seja fatal, mas porque a nossa preguiça moral a mantém em rotação.
+  </p>
+
+  <p style="text-align:left;">
+    As grandes civilizações caíram muitas vezes não por falta de inteligência, mas por défice de consciência. Tinham exércitos, leis, templos, comércio, arte, técnica, administração — e continuavam a cultivar humilhação, mitos de superioridade, violência ritualizada, ódios hereditários. Também nós temos os nossos templos: parlamentos vazios de grandeza, redes sociais cheias de cólera, televisões que comercializam tribalismo, líderes que inflamam ressentimentos e públicos que chamam "liberdade" ao direito de repetir estupidez em coro.
+  </p>
+
+  <p style="text-align:left;">
+    A humanidade não está condenada por falta de conhecimento. Está ameaçada por excesso de infantilidade emocional com instrumentos cada vez mais potentes. Esse é o verdadeiro abismo contemporâneo: mãos tecnológicas, cérebro calculista, alma por educar.
+  </p>
+
+  <p style="text-align:left;">
+    E talvez a pergunta mais cruel seja esta: quantos genocídios, quantas guerras, quantos massacres, quantas purgas, quantas fogueiras, quantos campos, quantas ruínas serão ainda precisos para que o ser humano compreenda que toda a idolatria acaba por exigir sacrifícios humanos?
+  </p>
+
+  <p style="text-align:left;">
+    Talvez a resposta seja sombria. Talvez muitos nunca aprendam. Talvez a civilização seja apenas uma película fina sobre um fundo ainda mal domado. Mas é precisamente por isso que pensar continua a ser um acto de resistência. Pensar, de verdade, é recusar a tribo quando ela pede cegueira. É recusar o símbolo quando ele exige joelhos. É recusar o ódio quando ele se apresenta vestido de justiça.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Referências históricas e actuaes</span>
+  </h3>
+
+  <div style="background:#111; border:1px solid #333; padding:18px; margin:20px 0 28px 0; text-align:left;">
+    <p style="margin-top:0; text-align:left;"><strong>• Museu Memorial do Holocausto dos Estados Unidos</strong> — sobre a progressão da perseguição nazi do discurso de ódio à desumanização e ao genocídio.</p>
+    <p style="text-align:left;"><a href="https://www.ushmm.org/antisemitism/holocaust-denial-and-distortion/explaining-holocaust-denial" target="_blank" style="color:#ffcc66 !important;">https://www.ushmm.org/antisemitism/holocaust-denial-and-distortion/explaining-holocaust-denial</a></p>
+
+    <p style="text-align:left;"><strong>• Nações Unidas</strong> — sobre o papel do discurso de ódio no genocídio do Rwanda e a passagem das palavras à violência.</p>
+    <p style="text-align:left;"><a href="https://www.un.org/en/hate-speech/understanding-hate-speech/hate-speech-and-real-harm" target="_blank" style="color:#ffcc66 !important;">https://www.un.org/en/hate-speech/understanding-hate-speech/hate-speech-and-real-harm</a></p>
+
+    <p style="text-align:left;"><strong>• Tribunal Penal Internacional para a ex-Jugoslávia</strong> — sobre Srebrenica, crimes de guerra e condenação de Ratko Mladić.</p>
+    <p style="text-align:left;"><a href="https://www.icty.org/en/press/icty-convicts-ratko-mladi%C4%87-for-genocide-war-crimes-and-crimes-against-humanity" target="_blank" style="color:#ffcc66 !important;">https://www.icty.org/en/press/icty-convicts-ratko-mladi%C4%87-for-genocide-war-crimes-and-crimes-against-humanity</a></p>
+
+    <p style="text-align:left;"><strong>• Comité da ONU para a Eliminação da Discriminação Racial</strong> — Março de 2026, sobre linguagem desumanizante contra migrantes e risco de crimes de ódio.</p>
+    <p style="text-align:left;"><a href="https://www.ohchr.org/en/press-releases/2026/03/usa-racial-profiling-and-racist-hate-speech-political-leaders-heightened" target="_blank" style="color:#ffcc66 !important;">https://www.ohchr.org/en/press-releases/2026/03/usa-racial-profiling-and-racist-hate-speech-political-leaders-heightened</a></p>
+
+    <p style="text-align:left;"><strong>• Comité Internacional da Cruz Vermelha</strong> — <em>Humanitarian Outlook 2026</em>, sobre a expansão da desumanização nos conflitos actuaes.</p>
+    <p style="text-align:left;"><a href="https://www.icrc.org/en/article/humanitarian-outlook-2026" target="_blank" style="color:#ffcc66 !important;">https://www.icrc.org/en/article/humanitarian-outlook-2026</a></p>
+
+    <p style="margin-bottom:0; text-align:left;"><strong>• Reuters</strong> — Março de 2026, sobre a criação em Espanha de uma ferramenta de monitorização do ódio e da polarização nas redes sociais.</p>
+    <p style="margin-bottom:0; text-align:left;"><a href="https://www.reuters.com/world/spain-launch-tool-monitor-hate-social-media-pm-sanchez-says-2026-03-11/" target="_blank" style="color:#ffcc66 !important;">https://www.reuters.com/world/spain-launch-tool-monitor-hate-social-media-pm-sanchez-says-2026-03-11/</a></p>
+  </div>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Epílogo</span>
+  </h3>
+
+  <p style="text-align:left;">
+    Talvez este seja o retrato mais duro da nossa espécie: uma inteligência capaz de mapear galáxias e decifrar o código da vida, mas ainda incapaz, em demasiados momentos, de vencer a sua própria pequenez tribal. O drama não está em não sabermos; está em sabermos e, apesar disso, insistirmos no mesmo abismo.
+  </p>
+
+  <div style="border-top:1px solid #ffcc78; margin-top:35px; padding-top:18px; color:#ffcca0; text-align:left;">
+    <p style="margin:0 0 10px 0;"><strong>Frase final demolidora:</strong></p>
+    <p style="margin:0; font-size:1.12em;">
+      <strong>A humanidade não fracassa por falta de memória histórica; fracassa porque, mesmo depois de conhecer o horror, continua a preferir o ídolo ao pensamento e o inimigo à consciência.</strong>
+    </p>
+    <p style="margin:18px 0 0 0;">— <strong>Francisco Gonçalves</strong>, com  co-autoria Editorial de <strong>Augustus Veritas</strong></p>
+  </div>
+<div style="margin:28px 0; text-align:center;">
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos/livros/a-luz-do-outro/" target="_blank"
+     style="display:inline-block; background:linear-gradient(135deg,#1a1a1a,#2b2b2b); color:#ffcc66 !important; border:1px solid #ffcc66; padding:14px 28px; text-decoration:none; font-family:Georgia,serif; font-size:18px; font-weight:bold; letter-spacing:0.5px; border-radius:10px; box-shadow:0 0 12px rgba(255,204,102,0.18), inset 0 0 8px rgba(255,204,102,0.08); transition:all 0.3s ease;">
+    📖 Ler o Livro : A Luz do Outro
+  </a>
+</div>
+  
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/FragmentosCaos-codeberg"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

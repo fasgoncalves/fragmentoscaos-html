@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Apocalipse Vende, a Água Não: tecnologia, medo e a arte de governar pela escassez</title>
+<meta name="description" content="O Apocalipse Vende, a Água Não: tecnologia, medo e a arte de governar pela escassez">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Apocalipse Vende, a Água Não: tecnologia, medo e a arte de governar pela escassez</h1>
+      <p class="meta">Publicado em 2026-01-18 23:28:34</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/01/file_00000000a9dc720abea1704c8663a51d_20b39e11.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family: Georgia, serif; line-height:2.2; padding:10px;">
+
+  <!-- Metadados Google News (oculto) -->
+  <div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+    <meta itemprop="headline" content="O Apocalipse Vende, a Água Não: tecnologia, medo e a arte de governar pela escassez" />
+    <meta itemprop="datePublished" content="2026-01-18T23:00:00+00:00" />
+    <meta itemprop="dateModified" content="2026-01-18T23:00:00+00:00" />
+    <meta itemprop="description" content="Uma crónica sobre a indústria do apocalipse, a narrativa da escassez e o óbvio esquecido: os problemas do mundo não se resolvem com slogans, mas com ciência, engenharia e coragem." />
+    <meta itemprop="inLanguage" content="pt-PT" />
+    <meta itemprop="author" content="Francisco Gonçalves" />
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+      <meta itemprop="name" content="Fragmentos do Caos" />
+      <div itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+        <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/01/file_00000000a9dc720abea1704c8663a51d.png" />
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#111; border:1px solid #444; border-radius:10px; padding:12px; margin:10px 0;">
+    <div style="font-weight:bold; letter-spacing:1px; margin-bottom:8px;">
+      <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+    </div>
+    <ul style="margin:0; padding-left:18px; text-align:left;">
+      <li><strong>O apocalipse dá audiências.</strong> A água potável não se fabrica com conferências.</li>
+      <li><strong>Dessalinização e transporte de água</strong> são tecnologias conhecidas — o que falha é a escala e a decisão.</li>
+      <li><strong>A narrativa da escassez</strong> serve o medo, e o medo serve o controlo.</li>
+      <li><strong>Inovação não é magia:</strong> é engenharia + energia + logística + manutenção.</li>
+      <li><strong>O futuro</strong> não pertence aos que anunciam catástrofes; pertence aos que constroem soluções.</li>
+    </ul>
+  </div>
+
+  <h2 style="text-align:center; margin:18px 0 10px 0;">
+    <span style="color:#ffcc66 !important; font-size:34px;">
+      O Apocalipse Vende, a Água Não
+    </span>
+  </h2>
+
+  <div style="border-left:4px solid #ffcc66; padding:10px 14px; margin:12px 0 18px 0; background:rgba(255,204,102,0.06); font-style:italic; text-align:left;">
+    Há uma diferença entre <strong>prever o fim do mundo</strong> e <strong>impedir que o mundo acabe</strong>.
+A primeira dá palco. A segunda dá trabalho.
+  </div>
+
+  <p style="text-align:left;">
+    Há dias em que a realidade portuguesa (e não só) parece um palco de opereta: luzes fortes, discursos inflamados, gravatas alinhadas — e, por detrás do pano, a máquina continua velha, rangendo como um elevador que nunca viu manutenção.
+Fala-se com solenidade do "apocalipse da água", do "colapso climático", do "fim inevitável", como se a História tivesse fechado a porta e atirado a chave ao mar.
+  </p>
+
+  <p style="text-align:left;">
+    E depois acontece o escândalo maior: alguém faz o que sempre se fez quando o desespero é verdadeiro e a inteligência ainda respira — <strong>constrói</strong>. Um país de deserto olha para o mar e diz: "eu não aceito a sentença".
+E a sentença, de repente, começa a tremer.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">A indústria do fim do mundo</h3>
+
+  <p style="text-align:left;">
+    A tragédia, quando é repetida todos os dias, torna-se produto. Há quem viva dela: vende-se a catástrofe em pacotes, em relatórios, em painéis, em "estratégias", em logótipos com folhas verdes e promessas a dez anos que nunca chegam a ser presentes.
+  </p>
+
+  <p style="text-align:left;">
+    O apocalipse tem uma vantagem política: <strong>dispensa resultados</strong>. Basta anunciar, lamentar, convocar, e no fim pedir mais uma dose de "responsabilidade" ao cidadão comum — como se o cidadão fosse ministro da energia, director de infraestruturas, ou administrador de bacias hidrográficas.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">O óbvio esquecido: água é engenharia</h3>
+
+  <p style="text-align:left;">
+    A água não é poesia — embora possa ser. A água é também <strong>mecânica</strong>, <strong>tubagem</strong>,
+<strong>pressão</strong>, <strong>filtração</strong>, <strong>energia</strong>, <strong>manutenção</strong>.
+O planeta está cheio de água; o desafio é torná-la utilizável onde faz falta. E isso faz-se com tecnologia, com investimento, com planeamento, com coragem.
+  </p>
+
+  <p style="text-align:left;">
+    Não há "milagre". Há método. Há ciência. Há a humildade de reconhecer que um problema real não se resolve com um slogan, mas com um projecto: fases, custos, riscos, redundâncias, auditoria técnica, e uma gestão que não seja um concurso de vaidades.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">O miúdo e o ministro</h3>
+
+  <p style="text-align:left;">
+    Um miúdo faz regos na terra e percebe o essencial: <strong>se a água não chega, cria-se um caminho</strong>.
+Um ministro faz regos em palavras e esquece o essencial: <strong>se a água não chega, cria-se um projecto</strong>.
+O miúdo quer resolver. O ministro quer gerir a narrativa. O miúdo pensa em função. O ministro pensa em fotografia.
+  </p>
+
+  <p style="text-align:left;">O que nos falta, muitas vezes, não é tecnologia: é a mentalidade que a permite. Uma sociedade que educa para obedecer, para aceitar, para repetir — acaba governada por gente que confunde <strong>prudência</strong> com <strong>imobilismo</strong>.
+E o imobilismo, no século XXI, é apenas um nome elegante para decadência, pobreza e repressão civilizacional.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">O medo como ferramenta de governo</h3>
+
+  <p style="text-align:left;">
+    A narrativa da escassez é útil. O medo é útil. O cidadão com medo aceita mais facilmente o inevitável, paga mais facilmente o imposto, cala mais facilmente a pergunta inconveniente: "Mas por que razão não estamos a construir
+soluções à altura do tempo em que vivemos?"
+  </p>
+
+  <p style="text-align:left;">
+    Repare-se: quando há vontade política e alinhamento estratégico, as obras aparecem. Quando não há, aparecem os "planos". Um plano é uma promessa sem betão. Um plano é uma ponte desenhada num guardanapo. Um plano é, tantas vezes, o nome técnico da procrastinação.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">A água do futuro tem quatro ingredientes</h3>
+
+  <p style="text-align:left;">
+    Se quisermos falar sério — sem teatralidade — a água do futuro exige quatro coisas simples e difíceis:
+<strong>energia abundante</strong> (idealmente limpa), <strong>infraestrutura robusta</strong>, <strong>gestão honesta</strong>
+e <strong>competência técnica</strong>. Onde falhar uma delas, entra o espectáculo. Onde existirem as quatro, entra a vida.
+  </p>
+
+  <p style="text-align:left;">
+    E sim: a tecnologia pode — e vai — ganhar esta batalha. Mas não sozinha. Precisa de uma sociedade que respeite quem constrói, quem mede, quem testa, quem mantém. Precisa de governos que deixem de ser clubes de retórica e passem a ser oficinas de solução.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">Epílogo: o apocalipse não é destino</h3>
+
+  <p style="text-align:left;">
+    Eu recuso o fatalismo. Recuso a liturgia do "não há alternativa". O apocalipse é uma narrativa confortável para quem não quer mexer no sistema. Mas a água, essa, não quer saber de narrativas. A água responde a válvulas, a membranas, a bombas, a equações, a quilómetros de decisão.
+  </p>
+
+  <p style="text-align:left;">
+    E quando alguém, algures no deserto, prova que é possível — não está apenas a dessalinizar água. Está a dessalinizar a mentira: a mentira de que somos pequenos, impotentes, condenados. Não somos. Só fomos, demasiadas vezes, governados por gente que tem medo do futuro — e por isso o vende em pedaços.
+  </p>
+
+  <p style="text-align:left;">O século XXI não pede resignação. Pede <strong>imaginação aplicada</strong>. Pede <strong>tecnologia com ética</strong>.
+Pede <strong>um país que volte a ser adulto</strong>.
+  </p>
+
+  <div style="margin-top:18px; padding-top:12px; border-top:1px solid #ffcc78; color:#ffcca0; text-align:left;">Artigo da Autoria de :
+<strong>Francisco Gonçalves</strong><br/>
+    <span style="opacity:0.9;">Crónica para <strong>Fragmentos do Caos</strong> — co-autoria Editorial por Augustus Veritas.</span>
+  </div>
+
+  
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TAP: o elefante branco que voa sempre com o bolso do contribuinte por baixo</title>
+<meta name="description" content="TAP: o elefante branco que voa sempre com o bolso do contribuinte por baixo">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">TAP: o elefante branco que voa sempre com o bolso do contribuinte por baixo</h1>
+      <p class="meta">Publicado em 2026-05-06 12:58:39</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/file_00000000b3c0724694e00326d1342076.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia,serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+    <meta itemprop="headline" content="TAP: o elefante branco que voa sempre com o bolso do contribuinte por baixo">
+    <meta itemprop="datePublished" content="2026-05-02T13:30:00+01:00">
+    <meta itemprop="dateModified" content="2026-05-02T13:30:00+01:00">
+    <meta itemprop="description" content="Crónica crítica sobre a TAP, a privatização parcial, a maior frota de sempre, o risco público e a eterna factura suportada pelos contribuintes portugueses.">
+    <meta itemprop="author" content="Francisco Gonçalves e Augustus">
+    <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/05/file_00000000b3c0724694e00326d1342076.png">
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+      <meta itemprop="name" content="Fragmentos do Caos">
+      <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+        <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2025/11/fc_logo_round.png">
+      </div>
+    </div>
+    <meta itemprop="mainEntityOfPage" content="https://www.fragmentoscaos.eu/">
+  </div>
+
+  <div style="background:#111; border:1px solid #444; padding:18px; margin:20px 0; border-radius:10px;">
+    <h3 style="color:#ffcc66 !important; text-align:left; margin-top:0;">
+      <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+    </h3>
+    <ul style="margin-left:20px; padding-left:18px;">
+      <li>A TAP prepara-se para atingir a maior frota operacional da sua história, podendo chegar a cerca de 106 aviões.</li>
+      <li>A companhia prevê receber novos Airbus A320neo, A321neo e A330neo.</li>
+      <li>Em 2025, a TAP apresentou lucro líquido de apenas 4,1 milhões de euros, uma queda acentuada face ao ano anterior.</li>
+      <li>O Estado português continua a ser accionista maioritário da companhia.</li>
+      <li>O processo de privatização prevê a venda de uma participação minoritária, mantendo o Estado o controlo.</li>
+      <li>A TAP recebeu nos últimos anos apoios públicos de grande dimensão, incluindo ajuda de reestruturação aprovada pela Comissão Europeia.</li>
+      <li>O risco fundamental permanece: se a companhia voltar a falhar, o contribuinte português poderá ser novamente chamado a pagar a factura.</li>
+      <li>A questão central não é apenas se a TAP deve crescer, mas quem suporta o risco desse crescimento.</li>
+    </ul>
+  </div>
+
+  <h2 style="color:#ffcc66 !important; font-size:34px; text-align:left; line-height:1.35;">
+    <span style="color:#ffcc66 !important;">TAP: o elefante branco que voa sempre com o bolso do contribuinte por baixo</span>
+  </h2>
+
+  <div style="border-left:4px solid #ffcc66; padding:14px 18px; margin:24px 0; background:#111; font-style:italic; color:#ffcca0;">
+    A TAP não é apenas uma companhia aérea. É o espelho voador de um Estado que nunca sabe quando deve mandar, quando deve vender, quando deve sair — e quando deve parar de pedir aos portugueses que paguem a viagem.
+  </div>
+
+  <p>Há empresas que são empresas.</p>
+
+  <p>Há símbolos que são símbolos.</p>
+
+  <p>E depois há a TAP: essa criatura híbrida, meio companhia aérea, meio bandeira nacional, meio altar patriótico, meio buraco orçamental com asas.</p>
+
+  <p>Sempre que a TAP reaparece nas notícias, Portugal volta à mesma liturgia. Fala-se de "activo estratégico", "hub atlântico", "ligações ao Brasil", "diáspora", "soberania aérea", "interesse nacional", "marca Portugal". Tudo palavras respeitáveis. Todas elas com gravata, perfume institucional e tendência para acabarem na carteira do contribuinte.</p>
+
+  <p>Agora surge a notícia de que a TAP se prepara para ter a maior frota de sempre, podendo chegar a cerca de 106 aviões operacionais, com novos Airbus A320neo, A321neo e A330neo. Em teoria, isto poderia ser sinal de confiança, crescimento e modernização. Numa empresa privada robusta, com lucros sólidos, capital próprio forte e accionistas disponíveis para assumir riscos, seria apenas uma decisão empresarial.</p>
+
+  <p>Mas a TAP não é uma empresa normal.</p>
+
+  <p>A TAP é uma empresa onde, quando corre bem, se diz que é estratégica; quando corre mal, se diz que é nacional; e quando precisa de dinheiro, descobre-se subitamente que é de todos nós.</p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">A pergunta que ninguém consegue evitar</span>
+  </h3>
+
+  <p>Em 2025, a TAP apresentou lucro líquido de apenas 4,1 milhões de euros, uma queda de 92% face ao ano anterior, apesar de receitas operacionais de 4,31 mil milhões de euros, mais de 16 milhões de passageiros transportados e EBITDA de 725,8 milhões.</p>
+
+  <p>Ou seja: há actividade, há receita, há movimento, há aviões cheios — mas a margem líquida é microscópica para uma companhia exposta a combustível, câmbios, guerras, recessões, greves, aeroportos saturados e concorrência feroz.</p>
+
+  <p>E é aqui que a pergunta se torna inevitável:</p>
+
+  <p style="color:#ffcca0; font-size:20px; border-left:4px solid #ffcc66; padding-left:16px;">
+    Quem paga se a aposta correr mal?
+  </p>
+
+  <p>A resposta é desagradavelmente simples: enquanto o Estado continuar como dono maioritário, o risco último continua a repousar sobre os contribuintes portugueses.</p>
+
+  <p>O Governo está a avançar com a privatização parcial da TAP, vendendo até 49,9% do capital: 44,9% a um investidor de referência e até 5% reservados aos trabalhadores. O Estado, porém, mantém 50,1%, ficando com o controlo maioritário.</p>
+
+  <p>Isto levanta uma contradição monumental. Portugal quer vender a TAP, mas não quer largar o volante. Quer atrair capital privado, mas manter o controlo político. Quer que alguém ponha dinheiro, aceite riscos, traga gestão, integre a TAP numa rede global — mas sem mexer demasiado na bandeira, no hub, nas rotas, nos equilíbrios regionais, nos compromissos políticos e nos fantasmas nacionais.</p>
+
+  <p>É como vender metade de um avião e avisar o comprador de que o cockpit continua reservado ao Estado, a rota é decidida em Conselho de Ministros e, em caso de turbulência, a factura passa pela Autoridade Tributária.</p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Comprar uma minoria com o Estado no cockpit</span>
+  </h3>
+
+  <p>Naturalmente, isto reduz o apetite dos compradores. E os que ficam não são filantropos apaixonados por azulejo português, fado e pastel de nata servido a 35 mil pés.</p>
+
+  <p>Air France-KLM e Lufthansa olham para a TAP pelo que ela vale estrategicamente: Brasil, Atlântico, África lusófona, América do Norte, slots, marca, rede e posição geográfica. Há interesse, sim. Mas há também cautela. E não admira.</p>
+
+  <p>Comprar uma companhia aérea é sempre entrar num negócio de margens frágeis, capital intensivo, ciclos violentos e riscos externos brutais. Comprar uma participação minoritária numa companhia onde o Estado quer continuar a mandar é entrar num casamento em que a sogra dorme no quarto ao lado com a chave do cofre.</p>
+
+  <p>A TAP tem valor, sim. Negá-lo seria absurdo. Mas valor estratégico não é desculpa para irresponsabilidade financeira.</p>
+
+  <p>O problema português é que há décadas ninguém sabe decidir o que a TAP deve ser. Se deve ser empresa competitiva, companhia de bandeira, instrumento de política externa, garantia de ligações à diáspora, pilar turístico, laboratório sindical, brinquedo partidário, reserva patriótica ou monumento nacional com turbinas.</p>
+
+  <p>Como Portugal nunca escolhe, tenta ser tudo ao mesmo tempo. E quando uma empresa tenta ser tudo, normalmente acaba por ser sobretudo cara.</p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">A memória curta de um país que paga</span>
+  </h3>
+
+  <p>A história recente devia tornar-nos prudentes.</p>
+
+  <p>A Comissão Europeia aprovou, em 2021, ajuda de reestruturação de 2,55 mil milhões de euros para a TAP, ao abrigo das regras europeias de auxílios de Estado. O próprio Governo português referiu então que, somando outros montantes autorizados relacionados com a pandemia, se chegava a mais de 3,1 mil milhões de euros de apoio autorizado.</p>
+
+  <p>Isto não é troco. Isto não é "apoio pontual". Isto é dinheiro público a uma escala que deveria exigir memória, pudor e prestação de contas.</p>
+
+  <p>O Tribunal Geral da União Europeia rejeitou, em Dezembro de 2025, a contestação da Ryanair contra a aprovação dos 2,55 mil milhões de euros de ajuda à reestruturação da TAP, confirmando a validade jurídica do apoio. Mas validade jurídica não é absolvição política.</p>
+
+  <p>A pergunta continua de pé:</p>
+
+  <p style="color:#ffcca0; font-size:20px; border-left:4px solid #ffcc66; padding-left:16px;">
+    Quantas vezes pode um país pobre salvar uma companhia aérea antes de admitir que há algo profundamente errado no modelo?
+  </p>
+
+  <p>Portugal é um país com salários baixos, serviços públicos sob pressão, habitação inacessível, jovens qualificados a emigrar, ferrovia degradada, saúde em tensão, escolas envelhecidas, justiça lenta e Estado fiscalmente voraz.</p>
+
+  <p>Neste contexto, cada euro que entra para salvar ou proteger uma empresa deve ser escrutinado com dureza. Não por ódio à TAP. Mas por respeito pelos portugueses que pagam.</p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">A maior frota de sempre — confiança ou risco ampliado?</span>
+  </h3>
+
+  <p>E aqui entra a questão da frota recorde.</p>
+
+  <p>Aviões novos podem ser mais eficientes, menos consumidores, mais competitivos e necessários para substituir aeronaves antigas. Isso é verdade. Mas aviões novos também trazem compromissos: leasing, financiamento, manutenção, tripulações, seguros, formação, slots, combustível, taxas, peças, logística e pressão para encher lugares.</p>
+
+  <p>Uma frota maior só é virtude se houver procura sustentável e margem suficiente para transformar crescimento em lucro real.</p>
+
+  <p>Caso contrário, é apenas risco ampliado com pintura nova.</p>
+
+  <p>O sector aéreo é cruel. Uma companhia pode parecer saudável em anos bons e entrar rapidamente em crise quando o combustível sobe, a procura cai, a geopolítica explode, os aeroportos entopem ou a concorrência comprime preços.</p>
+
+  <p>A própria TAP já sentiu como custos operacionais, concorrência e constrangimentos aeroportuários podem apertar resultados, mesmo com passageiros e receitas a crescer.</p>
+
+  <p>É por isso que a frase "maior frota de sempre" devia ser recebida com menos fanfarra e mais auditoria.</p>
+
+  <ul style="margin-left:20px; padding-left:18px;">
+    <li>Maior frota para quê?</li>
+    <li>Com que financiamento?</li>
+    <li>Com que risco residual?</li>
+    <li>Com que plano de rotas?</li>
+    <li>Com que margem?</li>
+    <li>Com que sensibilidade ao preço do combustível?</li>
+    <li>Com que impacto no processo de privatização?</li>
+    <li>Com que responsabilidades para o Estado se o comprador privado não aparecer, desistir ou exigir garantias?</li>
+    <li>Com que protecção para o contribuinte?</li>
+  </ul>
+
+  <p>Porque a TAP tem este dom nacional: tudo nela começa como estratégia e acaba como encargo.</p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Vender sem largar, crescer sem explicar</span>
+  </h3>
+
+  <p>Há ainda outro ponto. A privatização parcial em tempos de incerteza pode ser vendida como pragmatismo, mas também pode transformar-se num negócio fraco para o Estado.</p>
+
+  <p>Se o mercado estiver cauteloso, se os compradores exigirem desconto pelo risco político, se a minoria não lhes der controlo suficiente, se as condições impostas forem demasiado rígidas, Portugal pode acabar por vender barato o que quer preservar caro.</p>
+
+  <p>E depois ficamos com o pior dos mundos: Estado ainda maioritário, parceiro privado limitado, obrigações estratégicas pesadas, risco público remanescente e uma companhia obrigada a crescer para justificar uma narrativa política.</p>
+
+  <p>A TAP devia ser tratada com uma honestidade brutal: ou é uma empresa que deve viver de mercado, concorrência, capital privado e gestão profissional; ou é uma infra-estrutura pública estratégica, e então o Estado deve assumir claramente que quer pagar por ela, explicando quanto, porquê e com que retorno social mensurável.</p>
+
+  <p>O que não pode continuar é esta névoa portuguesa em que a TAP é privada quando convém à eficiência, pública quando convém ao resgate, estratégica quando convém à retórica, e comercial quando convém esconder a factura.</p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">A companhia de bandeira e a bandeira da irresponsabilidade</span>
+  </h3>
+
+  <p>Os políticos arrastam isto há décadas porque a TAP é demasiado simbólica para ser gerida friamente e demasiado cara para ser mantida sentimentalmente.</p>
+
+  <p>Ninguém quer ser o responsável por "perder a companhia de bandeira". Mas todos aceitam, com espantosa ligeireza, que o contribuinte seja o passageiro silencioso em todos os voos de risco.</p>
+
+  <p>E o contribuinte nem sequer acumula milhas.</p>
+
+  <p>Portugal precisa de decidir se quer uma companhia aérea nacional ou uma política pública de conectividade. São coisas diferentes.</p>
+
+  <p>Uma política pública de conectividade pode ser contratada, subsidiada de forma transparente, limitada, auditável e orientada para rotas essenciais. Uma companhia aérea nacional, pelo contrário, tende a transformar-se num universo de interesses: sindicatos, administrações, partidos, regiões, turismo, aeroportos, fornecedores, consultoras e patriotismo de ocasião.</p>
+
+  <p>A TAP pode ter futuro. Mas só terá futuro decente se deixar de ser tratada como mito.</p>
+
+  <p>Empresas não se gerem com saudade. Companhias aéreas não sobrevivem com hinos. Aviões não voam com discursos parlamentares.</p>
+
+  <p>Voam com capital, eficiência, procura, gestão, disciplina e margem.</p>
+
+  <p>E se não houver margem, alguém paga. Em Portugal, esse alguém tem nome conhecido: o contribuinte.</p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Epílogo — A maior lucidez de sempre</span>
+  </h3>
+
+  <p>A TAP está à venda, mas não está realmente solta.</p>
+
+  <p>Está em crescimento, mas continua frágil.</p>
+
+  <p>Tem interessados, mas não compradores incondicionais.</p>
+
+  <p>Tem valor estratégico, mas também memória de resgate.</p>
+
+  <p>Tem aviões novos, mas um país velho na forma de decidir.</p>
+
+  <p>A grande pergunta não é se a TAP vai ter a maior frota de sempre.</p>
+
+  <p>A grande pergunta é se Portugal vai ter, finalmente, a maior lucidez de sempre.</p>
+
+  <p>Porque um país pobre não pode continuar a confundir orgulho nacional com garantia bancária eterna.</p>
+
+  <p style="color:#ffcc66; font-size:22px; margin-top:28px;">
+    <strong>A TAP não é apenas uma companhia aérea. É o espelho voador de um Estado que nunca sabe quando deve mandar, quando deve vender, quando deve sair — e quando deve parar de pedir aos portugueses que paguem a viagem.</strong>
+  </p>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Nota editorial — O patriotismo não pode ser cheque em branco</span>
+  </h3>
+
+  <div style="border-left:4px solid #ffcc66; padding:16px 20px; margin:26px 0; background:#111; color:#e8eef4; font-style:italic;">
+    <p>A TAP é talvez um dos símbolos mais perfeitos da incapacidade portuguesa de separar interesse nacional, orgulho simbólico, gestão empresarial e responsabilidade financeira.</p>
+
+    <p>Uma companhia aérea pode ser relevante para a conectividade do país, para o turismo, para a diáspora, para as ligações atlânticas e para a presença internacional de Portugal. Mas essa relevância não pode funcionar como salvo-conduto eterno para decisões pouco transparentes, crescimentos arriscados ou novas exposições do contribuinte.</p>
+
+    <p>Se a TAP é estratégica, o Estado deve explicar quanto custa essa estratégia, que retorno traz e que limites existem para o apoio público. Se a TAP é uma empresa comercial, então deve viver sob regras comerciais, com capital, gestão e risco assumidos por quem dela beneficia.</p>
+
+    <p><strong style="color:#ffcc66;">O patriotismo não pode continuar a servir de cheque em branco. Muito menos quando quem assina é o contribuinte e quem decide raramente paga a factura.</strong></p>
+  </div>
+
+  <h3 style="color:#ffcc66 !important; text-align:left;">
+    <span style="color:#ffcc66 !important;">Referências documentais e jornalísticas</span>
+  </h3>
+
+  <ul style="margin-left:20px; padding-left:18px;">
+    <li>
+      Público — <em>TAP prepara-se para ter a maior frota de sempre</em>:<br>
+      <a href="https://www.publico.pt/2026/05/02/economia/noticia/tap-preparase-maior-frota-2173161" target="_blank" rel="noopener" style="color:#ffcc66;">https://www.publico.pt/2026/05/02/economia/noticia/tap-preparase-maior-frota-2173161</a>
+    </li>
+    <li>
+      Reuters — <em>Portugal's TAP profit slumps 92% on one-off charge, says bookings solid</em>:<br>
+      <a href="https://www.reuters.com/business/portugals-tap-profit-slumps-92-oneoff-charge-says-bookings-solid-2026-04-09/" target="_blank" rel="noopener" style="color:#ffcc66;">https://www.reuters.com/business/portugals-tap-profit-slumps-92-oneoff-charge-says-bookings-solid-2026-04-09/</a>
+    </li>
+    <li>
+      Governo de Portugal — <em>TAP's privatisation moves to final phase with two bidders</em>:<br>
+      <a href="https://www.portugal.gov.pt/en/gc25/communication/news/taps-privatisation-moves-to-final-phase-with-two-bidders" target="_blank" rel="noopener" style="color:#ffcc66;">https://www.portugal.gov.pt/en/gc25/communication/news/taps-privatisation-moves-to-final-phase-with-two-bidders</a>
+    </li>
+    <li>
+      Reuters — <em>Air France-KLM submits offer for minority stake in Portugal's TAP airline</em>:<br>
+      <a href="https://www.reuters.com/business/air-france-klm-submits-offer-minority-stake-portugals-tap-airline-2026-04-02/" target="_blank" rel="noopener" style="color:#ffcc66;">https://www.reuters.com/business/air-france-klm-submits-offer-minority-stake-portugals-tap-airline-2026-04-02/</a>
+    </li>
+    <li>
+      Comissão Europeia — Aprovação da ajuda de reestruturação à TAP:<br>
+      <a href="https://ec.europa.eu/commission/presscorner/detail/es/ip_21_7069" target="_blank" rel="noopener" style="color:#ffcc66;">https://ec.europa.eu/commission/presscorner/detail/es/ip_21_7069</a>
+    </li>
+    <li>
+      Governo de Portugal — Comissão Europeia aprova ajuda de reestruturação da TAP:<br>
+      <a href="https://portugal.gov.pt/en/gc22/communication/news/european-commission-approves-tap-airlines-restructuring-aid" target="_blank" rel="noopener" style="color:#ffcc66;">https://portugal.gov.pt/en/gc22/communication/news/european-commission-approves-tap-airlines-restructuring-aid</a>
+    </li>
+    <li>
+      Reuters — <em>Ryanair loses challenge against Portuguese airline TAP's 2.55 billion euros state aid</em>:<br>
+      <a href="https://www.reuters.com/sustainability/boards-policy-regulation/ryanair-loses-challenge-against-portuguese-airline-taps-255-billion-euros-state-2025-12-10/" target="_blank" rel="noopener" style="color:#ffcc66;">https://www.reuters.com/sustainability/boards-policy-regulation/ryanair-loses-challenge-against-portuguese-airline-taps-255-billion-euros-state-2025-12-10/</a>
+    </li>
+    <li>
+      Reuters — <em>Portuguese airline TAP's profit slides, hit by competition and bottlenecks</em>:<br>
+      <a href="https://www.reuters.com/markets/europe/portuguese-airline-taps-profit-slides-hit-by-competition-bottlenecks-2025-08-28/" target="_blank" rel="noopener" style="color:#ffcc66;">https://www.reuters.com/markets/europe/portuguese-airline-taps-profit-slides-hit-by-competition-bottlenecks-2025-08-28/</a>
+    </li>
+  </ul>
+
+  <div style="border-top:1px solid #ffcc78; margin-top:36px; padding-top:18px; color:#ffcca0;">
+    <p>
+      <strong>Crónica de <a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" target="_blank" rel="noopener" style="color:#ffcc66;">Francisco Gonçalves</a></strong><br>
+      Com coautoria editorial de <strong>Augustus Veritas</strong>, para o projecto Fragmentos do Caos.
+    </p>
+    <p style="font-size:14px; color:#c9b27c;">
+      Uma reflexão crítica sobre a TAP, a privatização parcial, a maior frota de sempre, o risco público e a relação crónica entre orgulho nacional e factura fiscal.
+    </p>
+  </div>
+
+  
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://dweb.link/ipns/k51qzi5uqu5dm865x8gvpx5ywhcu9ndr5652r2nc689gsnl5dgzgzjugt36xf6"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ IPFS (IPNS)
+    </a>
+
+  </div>
+
+
+
+</div>
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

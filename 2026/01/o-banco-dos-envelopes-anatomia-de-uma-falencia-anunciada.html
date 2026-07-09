@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Banco dos Envelopes: anatomia de uma falência anunciada</title>
+<meta name="description" content="O Banco dos Envelopes: anatomia de uma falência anunciada">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Banco dos Envelopes: anatomia de uma falência anunciada</h1>
+      <p class="meta">Publicado em 2026-01-09 14:28:56</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/01/file_0000000034fc71f4856a33832eab8e08_3de37433.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family: Georgia, serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <!-- Google News / Schema.org metadata (oculto) -->
+  <div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+    <meta itemprop="headline" content="O Banco dos Envelopes: anatomia de uma falência anunciada" />
+    <meta itemprop="datePublished" content="2026-01-09T13:10:00+00:00" />
+    <meta itemprop="dateModified" content="2026-01-09T13:10:00+00:00" />
+    <meta itemprop="description" content="Trinta anos de carreira sem um único envelope — e de repente, em plena crise, um banco distribui dinheiro vivo. Quando a ruptura de padrão fala mais alto do que mil relatórios." />
+    <meta itemprop="author" content="Francisco Gonçalves" />
+    <meta itemprop="publisher" content="Fragmentos do Caos" />
+    <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/01/file_0000000034fc71f4856a33832eab8e08.png" />
+  </div>
+
+  <!-- NOTA EDITORIAL / ENQUADRAMENTO (bloco blindado) -->
+  <div style="background:#111; border:1px solid #444; border-radius:12px; padding:14px; margin:10px 0 18px 0; text-align:left;">
+    <div style="font-weight:700; letter-spacing:1px; margin-bottom:8px;">
+      <span style="color:#ffcc66 !important;">NOTA EDITORIAL / ENQUADRAMENTO</span>
+    </div>
+
+    <p style="margin:0 0 10px 0;">
+      O texto que se segue é uma <strong>crónica de reflexão cívica</strong> e um <strong>testemunho pessoal</strong>, escrito a partir de experiência directa vivida pelo autor e da sua memória dos acontecimentos, tal como foram então percebidos e hoje recordados.
+    </p>
+
+    <p style="margin:0 0 10px 0;">
+      Esta publicação <strong>não constitui</strong> nem pretende constituir <strong>imputação de factos criminais</strong>, <strong>acusação jurídica</strong> ou atribuição de responsabilidade penal a pessoas concretas. Qualquer referência a entidades, cargos ou figuras públicas surge apenas no plano <strong>histórico, institucional, político e moral</strong>, no âmbito do legítimo exercício da <strong>liberdade de expressão</strong> e do <strong>direito de crítica</strong> em democracia.
+    </p>
+
+    <p style="margin:0 0 10px 0;">
+      As interpretações e leituras apresentadas são de natureza <strong>opinativa</strong>, não substituem investigação oficial, auditoria forense ou apreciação judicial, e destinam-se exclusivamente a contribuir para o <strong>debate público</strong>, a <strong>memória colectiva</strong> e a exigência de <strong>transparência</strong> e <strong>responsabilização</strong> em matérias de interesse geral.
+    </p>
+
+    <p style="margin:0;">
+      Por respeito aos leitores e ao rigor, evita-se aqui qualquer afirmação peremptória sobre a <strong>legalidade</strong> de procedimentos internos, limitando-se o autor a relatar o que viveu e a formular perguntas cívicas que, num Estado de direito, são não só legítimas como necessárias.
+<br>
+Por último, e num tom de provocação, pergunto-vos, caros leitores, altos magistrados da nação e políticos deste Portugal : É este o legado e o país que querem deixar como futuro, para os vossos filhos e netos?!
+<br>
+- Francisco Gonçalves 
+    </p>
+  </div>
+
+  <!-- 1️⃣ BOX DE FACTOS -->
+  <div style="background:#111; border:1px solid #444; border-radius:12px; padding:14px; margin:6px 0 18px 0;">
+    <div style="font-weight:700; letter-spacing:1px; margin-bottom:8px;">
+      <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+    </div>
+
+    <ul style="margin:0; padding-left:18px;">
+      <li><strong>Testemunho directo:</strong> em <strong>2007/2008</strong>, todos os trabalhadores receberam um <strong>envelope com dinheiro vivo</strong>, rondando <strong>+€450</strong> por pessoa. Cargos mais altos recebiam ainda mais. Tudo dinheiro vivo.</li>
+      <li><strong>Universo:</strong> num banco nacional, isto significa <strong>centenas de milhares a mais de um milhão de euros em numerário físico</strong>.</li>
+      <li><strong>Ruptura de padrão:</strong> o autor trabalha desde <strong>1977</strong> e <strong>nunca</strong> recebeu dinheiro vivo de entidade empregadora — excepto dos pais, quando estudante.</li>
+      <li><strong>Anomalia operacional:</strong> prémios em numerário são incompatíveis com práticas modernas de <strong>compliance, auditoria e AML</strong>.</li>
+      <li><strong>Tese:</strong> quando o dinheiro aparece sem história, a história já está a apodrecer por dentro.</li>
+    </ul>
+  </div>
+
+  <!-- 2️⃣ TÍTULO -->
+  <h2 style="color:#ffcc66 !important; font-size:34px; text-align:center; margin:6px 0 10px 0;">
+    O Banco dos Envelopes: anatomia de uma falência anunciada
+  </h2>
+
+  <!-- 3️⃣ EXCERTO -->
+  <div style="border-left:4px solid #ffcc66; padding:10px 12px; margin:10px 0 18px 0; font-style:italic; color:#ffd98a;">
+    Trabalhei desde 1977. Atravessei empresas, sectores, países, culturas. Nunca recebi dinheiro vivo de um empregador. Até ali. Quando o envelope apareceu, o banco já estava a morrer — só ainda não sabíamos.
+  </div>
+
+  <!-- 4️⃣ CORPO -->
+  <p>
+    Em 2007 e 2008 o mundo financeiro já ardia, e o cheiro a fumo entrava pelas portas giratórias como uma verdade mal disfarçada.
+Foi nessa altura — e isto não é rumor, é memória vivida — que um banco distribuiu, no fim de ano, a cada funcionário um envelope com dinheiro vivo.
+Não era transferência. Não era recibo detalhado. Não era "processamento normal". Era o velho ritual da nota dobrada: discreta, quente, quase íntima.
+  </p>
+
+  <p>O valor rondava os <strong>450 euros</strong>.
+Pode parecer "pouco". O diabo está no plural.
+Multipliquemos por um universo típico de um grupo bancário nacional: <strong>milhares</strong>.
+E de repente temos uma imagem absurda e, por isso mesmo, reveladora: <strong>mais de um milhão de euros em notas</strong>, a circularem em envelopes, num ambiente que vive de controlo, registo e rastreabilidade.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin:18px 0 6px 0;">A prova que desmonta a desculpa: 1977 → nunca → Banif</h3>
+  <p>Há um detalhe que destrói qualquer tentativa de normalização deste episódio.
+Comecei a trabalhar em <strong>1977</strong>.
+Passei por informática pesada, indústria, banca, telecomunicações, gestão, projectos internacionais, culturas organizacionais diversas.
+Em mais de <strong>três décadas de carreira</strong>, <strong>nunca</strong> recebi dinheiro vivo de uma entidade empregadora ou outro qualquer cliente. Tudo através dos bancos e devidos impostos, elevados, liquidados. 
+  </p>
+
+  <p>
+    Nunca.
+    Nem em bónus.
+    Nem em prémios.
+    Nem em "gratificações".
+    Nem em "mimos".
+  </p>
+
+  <p>A única excepção na minha vida foi quando era estudante e os meus pais me davam algum dinheiro para ajudar.
+Isto é decisivo.
+Porque um banco <strong>não é pai</strong>.
+Um banco <strong>não dá mesadas</strong>.
+Um banco <strong>não educa</strong>.
+Um banco <strong>contrata, paga, regista e responde</strong>.
+  </p>
+
+  <p>Quando uma instituição financeira começa a comportar-se como tio generoso de aldeia, não estamos perante cultura.
+Estamos perante <strong>ruptura de padrão</strong>.
+E em análise séria, as rupturas de padrão são sempre sinais.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin:18px 0 6px 0;">A pergunta que não se faz é sempre a mais perigosa</h3>
+  <p>De onde veio aquele dinheiro?
+Não "em teoria". Em concreto.
+Quem o mandou levantar?
+De que conta saiu?
+Em que rubrica entrou?
+Quem assinou a autorização?
+Quem transportou?
+Quem guardou?
+Quem conferiu?
+Que auditor viu?
+Que supervisor aceitou como normal?
+  </p>
+
+  <p>Um banco não é uma quermesse. Não é uma feira. Não é uma junta de freguesia com caixa de sapatos.
+Um banco é, por definição, uma máquina de confiança, e a confiança tem um requisito técnico: <strong>rasto</strong>.
+Quando o rasto desaparece, não estamos perante generosidade.
+Estamos perante um sistema que já não acredita na sua própria limpeza.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin:18px 0 6px 0;">O envelope como linguagem de regime</h3>
+  <p>O envelope é mais do que dinheiro: é uma mensagem.
+Diz "toma" sem dizer "declaro".
+Diz "fica bem visto" sem dizer "presta contas" e "não contes a ninguém".
+É um carinho rápido, uma pequena anestesia, um gesto que cria sentinento de pertença e, ao mesmo tempo, evita perguntas.
+  </p>
+
+  <p>E aqui entra o que custa admitir: em instituições que se aproximam do abismo, a gestão por vezes troca liderança por sedação.
+Não é preciso que seja conspiração. Basta que seja cultura.
+Uma cultura onde a normalidade se vai tornando elástica, até caber o inaceitável.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin:18px 0 6px 0;">Marques dos Santos e a sombra maior</h3>
+  <p>Este texto não é um julgamento em tribunal. É um julgamento moral e cívico.
+ E é por isso que o nome de <strong>Marques dos Santos</strong> surge aqui como símbolo de uma pergunta maior:
+como é que se dirige um banco, ano após ano, sem que práticas anómalas gerem consequência pública, apuramento e responsabilidade?
+  </p>
+
+  <p>Porque, quando um banco cai, dizem-nos sempre que a queda foi "inesperada".
+O país adora esta palavra: inesperado.
+O inesperado é a forma elegante de dizer "ninguém quis ver".
+Mas quem vive lá dentro vê os sinais: os desvios pequenos, os hábitos estranhos, o folclore que não é folclore — é <strong>alarme</strong>.
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin:18px 0 6px 0;">Portugal, o país onde o prejuízo não tem pai</h3>
+  <p>Há uma doença nacional que não está nos livros de medicina: chama-se <strong>orfandade do erro</strong>.
+O erro acontece, o prejuízo cresce, o rombo abre, e no fim o país fica a olhar para a cratera como quem olha para uma tempestade:
+"foi o tempo".
+"foi a conjuntura".
+"foi a herança".
+"foi o mercado".
+"foi a vida".
+  </p>
+
+  <p>E entretanto, o cidadão paga.
+Paga com impostos.
+Paga com serviços degradados.
+Paga com salários magros.
+Paga com a vergonha subtil de viver num lugar onde a responsabilidade é sempre de alguém "mais abaixo", "mais longe" ou "já reformado".
+  </p>
+
+  <h3 style="color:#ffcc66 !important; margin:18px 0 6px 0;">O que um país sério faria com esta memória</h3>
+  <p>Um país sério trataria este episódio como o que é: <strong>um indício material de anomalia</strong>.
+Não para perseguir trabalhadores (que receberam), mas para investigar decisores (que decidiram) e processos (que permitiram).
+Com auditoria forense retroactiva.
+Com cruzamento de rubricas.
+Com identificação de autorizações.
+Com responsabilização, se houver matéria para isso.
+  </p>
+
+  <p>Em Portugal, a resposta típica é mais discreta: uma sobrancelha levantada, um "não sei", um "não me lembro", e a vida segue.
+Mas a vida não segue: a factura acumula-se.
+E a factura, um dia, volta — sempre volta — sob a forma de resgate, de colapso, de austeridade, de empobrecimento colectivo.
+  </p>
+
+  <!-- 5️⃣ EPÍLOGO -->
+  <h3 style="color:#ffcc66 !important; margin:18px 0 6px 0;">Epílogo: o envelope não era prémio — era sintoma</h3>
+  <p>O que hoje me inquieta não é o dinheiro que entrou no envelope.
+É a naturalidade com que se aceitou que um banco operasse, por instantes, como se a lei fosse uma cortina e a ética um adereço.
+O envelope não era um prémio.
+Era um sintoma.
+E os sintomas, quando são ignorados, tornam-se destino.
+</p><p>
+Se a prática foi só do Banif, ou outros bancos nacionais também usaram estes esquemas, é mais uma pergunta incómoda que vos deixo, como cidadão responsável, e que escreve e investiga com rigor, por uma democracia mais saudável e um país de dignidade e justiça para todos, sem excepções ou imunidades da ignominia.
+  </p>
+
+  <!-- 6️⃣ ASSINATURA -->
+  <div style="border-top:1px solid #ffcc78; margin-top:18px; padding-top:10px; color:#ffcca0;">
+    <strong>Francisco Gonçalves</strong><br>
+    <span style="opacity:0.9;">Fragmentos do Caos — memória, lâmina e responsabilidade. E para que a História se faça de memórias e da verdade vivida. E que no futuro este texto ajude a dissipar nevoeiros e venha sem opacidade e a impunidade seja castigada severamente.</span><br>
+    <span style="opacity:0.85;">Co-autoria editorial: Augustus Veritas [ assistente de IA ]</span>
+  </div>
+
+  
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

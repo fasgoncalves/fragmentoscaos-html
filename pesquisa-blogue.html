@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pesquisa — Fragmentos do Caos</title>
+</head>
+
+<body style="margin:0;background:#0b0b0b;color:#e8eef4;font-family:Georgia,serif;line-height:2.0;">
+  <div style="max-width:1050px;margin:0 auto;padding:14px 12px 44px 12px;">
+
+    <div style="padding:14px 14px 12px 14px;border:1px solid #2f2f2f;border-radius:18px;background:#0f0f0f;">
+      <h2 style="margin:0 0 6px 0;text-align:left;">
+        <span style="color:#ffcc66 !important;">Pesquisa — Fragmentos do Caos</span>
+      </h2>
+
+      <div style="opacity:.88;text-align:left;">
+        Pesquisa por <strong>título</strong> e <strong>excerto</strong>. (Acentos não contam.)
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+        <input id="q"
+               type="search"
+               placeholder="Escreve aqui… (ex.: habitação, IA, SIRESP, democracia)"
+               style="flex:1;min-width:240px;padding:12px 12px;border-radius:14px;border:1px solid #444;background:#111;color:#e8eef4;outline:none;font-size:16px;">
+        <button id="clear"
+                style="padding:12px 14px;border-radius:14px;border:1px solid #444;background:#141414;color:#ffcc66;cursor:pointer;font-size:15px;">
+          Limpar
+        </button>
+      </div>
+
+      <div id="meta" style="margin-top:10px;opacity:.82;text-align:left;"></div>
+    </div>
+
+    <div id="results" style="margin-top:14px;"></div>
+
+    <div style="margin-top:18px;padding-top:14px;border-top:1px solid #2a2a2a;opacity:.85;text-align:left;">
+      Dica: se não encontrares, tenta uma palavra “núcleo” (ex.: <em>estado</em>, <em>energia</em>, <em>finanças</em>).
+    </div>
+
+  </div>
+
+<script>
+(function () {
+  // =========================
+  // AJUSTA APENAS ISTO SE PRECISARES
+  const INDEX_URL = "./index.html";
+  // =========================
+
+  const $q = document.getElementById("q");
+  const $clear = document.getElementById("clear");
+  const $results = document.getElementById("results");
+  const $meta = document.getElementById("meta");
+
+  let posts = [];
+  let ready = false;
+
+  function norm(s) {
+    return (s || "")
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function escapeHtml(s) {
+    return (s || "").replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[c]));
+  }
+
+  function toAbsoluteLike(href) {
+    if (!href) return "";
+    // Mantém http(s)
+    if (/^https?:\/\//i.test(href)) return href;
+    // Mantém raiz
+    if (href.startsWith("/")) return href;
+    // Caso seja relativo, mantém relativo (melhor para IPFS + GitPages quando está na mesma árvore)
+    return href.replace(/^\.\//, "");
+  }
+
+  function score(post, tokens, phrase) {
+    const t = norm(post.title);
+    const x = norm(post.excerpt);
+    const u = norm(post.url);
+
+    let s = 0;
+
+    // frase inteira (se existir) dá bónus
+    if (phrase && (t.includes(phrase) || x.includes(phrase))) s += 8;
+
+    for (const k of tokens) {
+      if (!k) continue;
+      if (t.includes(k)) s += 8;      // título pesa mais
+      if (x.includes(k)) s += 3;      // excerto pesa menos
+      if (u.includes(k)) s += 1;
+    }
+
+    return s;
+  }
+
+  function cardHtml(p) {
+    const title = escapeHtml(p.title || p.url);
+    const date = p.date ? escapeHtml(p.date) : "";
+    const excerpt = escapeHtml(p.excerpt || "");
+    const url = escapeHtml(p.url);
+    const pdf = p.pdf ? escapeHtml(p.pdf) : "";
+
+    const pdfBtn = pdf
+      ? `<a href="${pdf}" target="_blank" rel="noopener"
+            style="display:inline-block;padding:8px 12px;border-radius:12px;border:1px solid #444;text-decoration:none;color:#e8eef4;background:#121212;">
+            PDF
+         </a>`
+      : "";
+
+    return `
+      <div role="button" tabindex="0" data-url="${url}"
+           style="
+             padding:14px 14px 12px 14px;
+             border:1px solid #333;
+             border-radius:18px;
+             background:#0f0f0f;
+             margin:12px 0;
+             cursor:pointer;
+             box-shadow: 0 6px 18px rgba(0,0,0,.28);
+           "
+           onmouseover="this.style.borderColor='#555'"
+           onmouseout="this.style.borderColor='#333'">
+
+        <div style="font-size:19px;line-height:1.45;text-align:left;">
+          <span style="color:#ffcc66 !important;">${title}</span>
+        </div>
+
+        ${date ? `<div style="margin-top:6px;opacity:.75;text-align:left;font-size:13px;">${date}</div>` : ""}
+
+        ${excerpt ? `<div style="margin-top:10px;opacity:.92;text-align:left;">${excerpt}</div>` : ""}
+
+        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="${url}"
+             style="display:inline-block;padding:8px 12px;border-radius:12px;border:1px solid #444;text-decoration:none;color:#ffcc66;background:#111;">
+            Abrir artigo
+          </a>
+          ${pdfBtn}
+          <span style="opacity:.78;font-size:13px;align-self:center;">
+            (clicar no cartão também abre)
+          </span>
+        </div>
+      </div>
+    `;
+  }
+
+  function render(query) {
+    const q = norm(query);
+
+    if (!ready) {
+      $meta.textContent = "A carregar índice…";
+      return;
+    }
+
+    if (!q) {
+      $meta.textContent = `Índice carregado: ${posts.length} artigos. Escreve para pesquisar.`;
+      $results.innerHTML = "";
+      return;
+    }
+
+    const tokens = q.split(" ").filter(Boolean);
+    const phrase = tokens.join(" ");
+
+    const hits = posts
+      .map(p => ({ p, s: score(p, tokens, phrase) }))
+      .filter(x => x.s > 0)
+      .sort((a,b) => b.s - a.s)
+      .slice(0, 50);
+
+    $meta.textContent = hits.length
+      ? `Encontrados: ${hits.length} (a mostrar até 50)`
+      : "Nada encontrado. Experimenta outra palavra.";
+
+    $results.innerHTML = hits.map(x => cardHtml(x.p)).join("");
+  }
+
+  function attachCardSelection() {
+    $results.addEventListener("click", (e) => {
+      const card = e.target.closest("[data-url]");
+      if (!card) return;
+
+      // se clicou num <a>, deixa o browser tratar
+      if (e.target.tagName && e.target.tagName.toLowerCase() === "a") return;
+
+      const url = card.getAttribute("data-url");
+      if (url) window.location.href = url;
+    });
+
+    $results.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter") return;
+      const card = e.target.closest("[data-url]");
+      if (!card) return;
+      const url = card.getAttribute("data-url");
+      if (url) window.location.href = url;
+    });
+  }
+
+  async function loadIndex() {
+    $meta.textContent = "A carregar índice…";
+
+    const r = await fetch(INDEX_URL, { cache: "no-store" });
+    const html = await r.text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
+
+    // ⭐ Só artigos: .post-block
+    const blocks = Array.from(doc.querySelectorAll(".post-block"));
+
+    posts = blocks.map(b => {
+      const aTitle = b.querySelector("h2 a");
+      const title = (aTitle?.textContent || "").trim();
+      const url = toAbsoluteLike(aTitle?.getAttribute("href") || "");
+
+      // data em <em> dentro de um <p>
+      const em = b.querySelector("p em");
+      const date = (em?.textContent || "").trim();
+
+      // excerto: primeiro <p> que não seja data nem "Ver PDF"
+      const ps = Array.from(b.querySelectorAll("p"));
+      let excerpt = "";
+      for (const p of ps) {
+        const txt = (p.textContent || "").trim();
+        if (!txt) continue;
+        if (p.querySelector("em")) continue;
+        if (p.querySelector("a") && /ver\s+pdf/i.test(txt)) continue;
+        excerpt = txt;
+        break;
+      }
+
+      // link PDF (se existir)
+      const pdfA = Array.from(b.querySelectorAll("a[href]"))
+        .find(x => /fragmentoscaos-pdf/i.test(x.getAttribute("href") || ""));
+
+      const pdf = toAbsoluteLike(pdfA?.getAttribute("href") || "");
+
+      return { title, url, date, excerpt, pdf };
+    })
+    .filter(p => p.title && p.url);
+
+    // Dedup por URL
+    const seen = new Set();
+    posts = posts.filter(p => (seen.has(p.url) ? false : (seen.add(p.url), true)));
+
+    ready = true;
+    render($q.value);
+  }
+
+  // UI
+  $q.addEventListener("input", () => render($q.value));
+  $clear.addEventListener("click", () => { $q.value = ""; $q.focus(); render(""); });
+
+  attachCardSelection();
+  loadIndex().catch(err => {
+    console.error(err);
+    $meta.textContent = "Falha a carregar o índice. Confirma o caminho INDEX_URL.";
+  });
+
+})();
+</script>
+
+</body>
+</html>
+

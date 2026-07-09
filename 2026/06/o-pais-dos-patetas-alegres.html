@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O País dos Patetas Alegres</title>
+<meta name="description" content="O País dos Patetas Alegres">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O País dos Patetas Alegres</h1>
+      <p class="meta">Publicado em 2026-06-24 11:20:25</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/06/file_00000000a3bc71f4a77e54f9ea80790e_7173f34c.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia,serif; line-height:2.2; padding:10px; text-align:left;"><div itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+  <meta itemprop="headline" content="O País dos Patetas Alegres">
+  <meta itemprop="datePublished" content="2026-06-23">
+  <meta itemprop="dateModified" content="2026-06-23">
+  <meta itemprop="description" content="Artigo crítico sobre Portugal, a baixa produtividade, o Estado pesado, a burocracia, os desajustamentos de competências, a transformação digital incompleta e a ilusão de progresso num país ainda preso à mediania institucional.">
+  <meta itemprop="author" content="Francisco Gonçalves">
+  <meta itemprop="publisher" content="Fragmentos do Caos">
+  <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/06/file_00000000a3bc71f4a77e54f9ea80790e.png">
+</div><div style="background:#111; border:1px solid #444; padding:18px; margin:20px 0; border-radius:8px;">
+  <h3 style="color:#ffcc66 !important; font-size:22px; margin-top:0; text-align:left;">
+    <span style="color:#ffcc66 !important;">BOX DE FACTOS</span>
+  </h3>
+  <ul style="margin-left:20px;">
+    <li>A Comissão Europeia assinala que a produtividade portuguesa continua limitada por baixa inovação, desajustamentos de competências e constrangimentos estruturais no ambiente empresarial.</li>
+    <li>A mesma avaliação europeia recomenda simplificação administrativa, aceleração dos procedimentos judiciais e redução da burocracia.</li>
+    <li>A OCDE identifica em Portugal problemas ligados ao envelhecimento da população, escassez de competências, fraco investimento e necessidade de melhorar a eficiência da despesa pública.</li>
+    <li>O relatório europeu da Década Digital 2025 aponta desafios na adopção de inteligência artificial pelas empresas e na formação em competências digitais básicas.</li>
+    <li>A Reuters noticiou em Maio de 2026 que o investimento directo estrangeiro em Portugal caiu 34% em 2025, embora a AICEP tenha registado captação relevante de investimento orientado para exportação.</li>
+    <li>Portugal continua a confundir sobrevivência económica com sucesso estrutural, como se estar de pé fosse o mesmo que caminhar para algum lado.</li>
+  </ul>
+</div><h2 style="color:#ffcc66 !important; font-size:34px; text-align:center; line-height:1.35;">
+  <span style="color:#ffcc66 !important;">O País dos Patetas Alegres</span>
+</h2><div style="border-left:4px solid #ffcc66; background:#111; padding:16px 20px; margin:24px 0; font-style:italic; color:#ffddb0;">
+  Portugal ri muitas vezes sem perceber de quê. Ri porque ainda há fundos, ainda há turismo, ainda há consumo, ainda há festa, ainda há palco. Mas o futuro não ri. Cobra.
+</div><p>
+Portugal continua a ser, em demasiadas áreas da sua vida pública e económica, o país dos patetas alegres. Gente que sorri em conferências, inaugura portais, anuncia estratégias, inventa siglas, distribui fundos, celebra indicadores parciais e depois olha para o país real como se a mediocridade fosse apenas uma fase passageira do clima.
+</p><p>
+Mas riem de quê?
+</p><p>
+Riem talvez porque ainda confundem sobrevivência com sucesso. O país cresce um pouco, recebe fundos europeus, mantém algum equilíbrio orçamental, exporta em certos sectores, atrai turismo, vende imobiliário, alimenta serviços e consegue, graças a empresas sérias e a profissionais competentes, não cair completamente da cadeira. Depois os patetas olham para meia dúzia de números positivos e concluem que o modelo funciona.
+</p><p>
+É como ver uma casa a arder no rés-do-chão e celebrar porque o sótão ainda tem cortinas.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">O riso da inconsciência</span>
+</h3><p>
+O riso dos patetas alegres não é riso de vitória. É riso de inconsciência. É o riso de quem vive protegido das consequências das próprias decisões. Muitos decisores políticos, gestores públicos, administradores pardacentos, consultores de regime e figurantes da economia subsidiada não sentem o frio que as empresas reais sentem todos os dias.
+</p><p>
+Não sofrem com licenças paradas durante meses. Não sofrem com tribunais lentos. Não sofrem com impostos sobre impostos. Não sofrem com sistemas informáticos fossilizados. Não sofrem com burocracias desenhadas por almas mortas. Não sofrem com a dificuldade de contratar talento, pagar bons salários e competir num mercado global cada vez mais rápido.
+</p><p>
+Para essa elite administrativa, Portugal é uma sucessão de painéis, relatórios, comissões, estratégias e fotografias. Para quem trabalha, empreende, investe e arrisca, Portugal é muitas vezes uma corrida com pesos nos tornozelos e uma repartição pública a atirar areia para a pista.
+</p><p>
+A Comissão Europeia foi clara no diagnóstico: a produtividade portuguesa continua limitada por baixa inovação, desajustamentos de competências e constrangimentos estruturais no ambiente empresarial. Recomendou simplificação administrativa, aceleração da justiça e redução da burocracia. Traduzindo do dialecto elegante de Bruxelas: o nosso motor económico continua preso a ferrugem institucional.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">O Estado que pesa sobre quem produz</span>
+</h3><p>
+Portugal quer investimento estrangeiro, empresas inovadoras, talento tecnológico, salários melhores e economia sofisticada. Mas continua a arrastar um Estado pesado, caro, lento, despesista e frequentemente hostil à criação de valor. Um Estado que, em vez de servir a economia produtiva, demasiadas vezes a inspecciona, tributa, complica, atrasa e moraliza.
+</p><p>
+As empresas falhadas, próximas dos circuitos certos ou embrulhadas em narrativas convenientes, encontram muitas vezes apoios, fundos, programas, incubadoras, agendas e perdões implícitos. As empresas sérias, comprometidas com inovação real, começam logo por ser sugadas por impostos, contribuições, taxas, obrigações declarativas, certificações, licenças, prazos absurdos e uma burocracia que parece ter sido desenhada no século passado por alguém com rancor contra a iniciativa privada.
+</p><p>
+Portugal gosta de dizer que apoia o empreendedorismo. Mas, na prática, muitas vezes apoia melhor a encenação do empreendedorismo do que o empreendedorismo produtivo. Apoia o palco, a fotografia, o consórcio, o evento, a candidatura. A oficina real, o programador sério, a pequena empresa exportadora, a equipa técnica competente e o empresário que trabalha sem padrinhos ficam entregues ao labirinto.
+</p><p>
+E depois perguntam por que razão o investimento estrangeiro sério hesita. O investidor sólido não olha apenas para benefícios fiscais ou para slogans de estabilidade. Olha para justiça económica, previsibilidade fiscal, rapidez administrativa, qualidade das competências, energia, habitação, infraestruturas digitais, segurança jurídica, contratação, despedimento, licenciamento, compras públicas e capacidade de execução. Se para cada passo tiver de atravessar um pântano de carimbos, pareceres e interpretações contraditórias, vai para outro país. O capital global não espera pelo funcionário português que foi almoçar e regressa filosoficamente às três.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">A ilusão dos diplomas</span>
+</h3><p>
+Portugal gosta também de celebrar a subida do número de licenciados e mestres. É positivo que haja mais formação superior. Mas há uma diferença brutal entre ter diplomas e ter competências úteis para os desafios tecnológicos que estão a chegar. A inteligência artificial não vai perguntar quantos certificados estão pendurados na parede. Vai exigir matemática, lógica, programação, dados, engenharia, pensamento crítico, adaptação, criatividade técnica e capacidade de aprender depressa.
+</p><p>
+O país continua, em demasiados casos, a formar jovens para empregos que já não existem ou que deixarão de existir nos próximos anos. Forma para funções administrativas, repetitivas, burocráticas e previsíveis, precisamente o território onde a IA, a automação e os sistemas inteligentes vão entrar com maior brutalidade.
+</p><p>
+A escola e a universidade portuguesas continuam frequentemente mais preocupadas com títulos do que com domínio efectivo. Mais preocupadas com percursos formais do que com capacidade real. Mais preocupadas com teorias desligadas da produção do que com problemas concretos. O resultado é uma geração que possui diplomas, mas muitas vezes não possui ferramentas profundas para competir num mundo onde a velocidade de obsolescência do conhecimento está a acelerar.
+</p><p>
+O relatório europeu da Década Digital 2025 aponta precisamente desafios na adopção de inteligência artificial pelas empresas portuguesas e na formação em competências digitais básicas. Esta é a parte trágica: queremos entrar na era da inteligência artificial, mas ainda temos demasiadas organizações e trabalhadores sem literacia digital sólida. É como querer construir um satélite numa oficina onde ainda se procura a chave de fendas certa.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">Sistemas novos com cérebro velho</span>
+</h3><p>
+A modernização tecnológica portuguesa sofre de um equívoco profundo: instalar plataformas novas não significa ter pensamento novo. Muitos sistemas de informação continuam presos à lógica mental da década de 60 do século passado: centralização opaca, processos rígidos, hierarquias inflexíveis, dados fechados, integração deficiente, compras lentas, dependência de fornecedores e ausência de arquitectura estratégica.
+</p><p>
+Chama-se a isto transformação digital. Muitas vezes é apenas burocracia com login.
+</p><p>
+O país criou portais, formulários digitais, autenticações, balcões electrónicos e aplicações. Mas em demasiadas áreas o cidadão continua a sentir que está perante a mesma máquina antiga, apenas vestida com uma interface mais recente. O processo continua absurdo. A decisão continua lenta. A responsabilidade continua difusa. O sistema continua a pedir documentos que o próprio Estado já tem. A diferença é que agora a incompetência também envia notificações.
+</p><p>
+Nas empresas privadas, o problema repete-se noutro tom. Muitos gestores e administradores continuam presos a modelos hierárquicos pardacentos, lentos, defensivos e avessos ao risco. Num tempo em que os mercados exigem flexibilidade, adaptação e rapidez, continuam a gerir como se o mundo esperasse pacientemente pelo próximo comité executivo.
+</p><p>
+Mas o mundo não espera.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">Time-to-market ou morte lenta</span>
+</h3><p>
+A economia contemporânea é cada vez mais definida por ciclos curtos de produto, pressão sobre margens, concorrência global, automação, inteligência artificial, cadeias de valor mutáveis e clientes que mudam de fornecedor com um clique. Neste mundo, o <em>time-to-market</em> não é detalhe de gestão. É sobrevivência.
+</p><p>
+Empresas lentas morrem. Estados lentos empobrecem. Sistemas lentos afastam investimento. Hierarquias lentas matam talento. Decisões lentas destroem oportunidades. E Portugal continua muitas vezes a comportar-se como se pudesse responder aos desafios do século XXI com processos do século XX, mentalidades do século XIX e coragem política em regime de hibernação.
+</p><p>
+A OCDE tem insistido na necessidade de Portugal melhorar a eficiência da despesa pública, reforçar competências, responder ao envelhecimento da população e elevar a produtividade. Isto significa que não basta equilibrar contas no curto prazo. É preciso transformar a estrutura que produz riqueza. Caso contrário, o país ficará preso a uma forma elegante de estagnação: contas aceitáveis, produtividade baixa, salários modestos, jovens frustrados, empresas frágeis e Estado cada vez mais pesado sobre uma base económica estreita.
+</p><p>
+O que Portugal tenta fazer é impossível: quer salários altos sem produtividade alta; quer investimento sofisticado sem competências sofisticadas; quer inovação sem risco; quer empresas competitivas com burocracia sufocante; quer Estado social generoso sem economia produtiva bastante para o pagar; quer jovens qualificados sem estratégia industrial; quer IA sem literacia digital; quer reformas sem tocar nos interesses instalados.
+</p><p>
+Isto não é política económica. É espiritismo orçamental.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">O silêncio dos competentes</span>
+</h3><p>
+O que mais preocupa não é o riso dos patetas. É o silêncio dos competentes.
+</p><p>
+Muitos já perceberam. Alguns emigram. Outros trabalham para empresas estrangeiras a partir de Portugal. Outros criam pequenos projectos próprios. Outros desligam-se emocionalmente do país. Outros sobrevivem em estruturas onde sabem que a competência incomoda, a autonomia assusta e a lucidez é tratada como mau feitio.
+</p><p>
+Quando os melhores deixam de discutir o futuro comum, o país fica entregue aos que riem. E os que riem costumam rir até ao momento em que a conta chega. Depois fazem conferências sobre a necessidade de mudança, criam grupos de trabalho, encomendam estudos, reformulam estratégias e descobrem, com atraso patriótico, que afinal o mundo não esperou por Portugal.
+</p><p>
+A questão é simples: Portugal quer ser uma economia avançada ou quer continuar a representar o papel de economia moderna? Quer produzir valor ou produzir narrativas? Quer formar talento ou fabricar diplomas? Quer empresas livres e fortes ou empresas dependentes de apoios e favores? Quer um Estado ágil ou um Estado monstruoso que se alimenta de quem trabalha?
+</p><p>
+Enquanto estas perguntas não forem respondidas com coragem, continuaremos a assistir ao mesmo espectáculo: patetas alegres a rir no palco enquanto o país real paga a bilheteira.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">À espera de Fátima</span>
+</h3><p>
+Talvez Portugal continue, no fundo, à espera de um milagre de Fátima económico. Um milagre que traga investimento estrangeiro sério, produtividade elevada, empresas inovadoras, jovens preparados, Estado eficiente, justiça rápida, salários dignos, sistemas modernos e líderes competentes.
+</p><p>
+Mas os milagres não substituem reformas. A fé pode consolar indivíduos; não moderniza sistemas de informação, não simplifica impostos, não reestrutura escolas, não reduz burocracia, não cria empresas exportadoras, não paga salários de talento e não transforma gestores medíocres em líderes.
+</p><p>
+O milagre necessário seria profundamente terreno: cortar burocracia, simplificar o sistema fiscal, responsabilizar gestores públicos, modernizar a justiça económica, reestruturar a educação, apostar em formação técnica séria, pagar melhor o talento, proteger empresas produtivas, acabar com apoios clientelares, modernizar sistemas de informação e trocar hierarquias pardacentas por liderança competente.
+</p><p>
+Mas isso exige coragem. E coragem, em Portugal, continua a parecer uma aplicação incompatível com o sistema operativo do regime.
+</p><p>
+Portugal não precisa de mais milagres.
+</p><p>
+Precisa de menos patetas no circuito da decisão.
+</p><p>
+O país dos patetas alegres ri porque ainda confunde palco com destino.
+</p><p>
+Só que o futuro não aplaude.
+</p><p>
+Cobra.
+</p><h3 style="color:#ffcc66 !important; text-align:left;">
+  <span style="color:#ffcc66 !important;">Referências</span>
+</h3><ul style="margin-left:20px;">
+  <li>
+    <a href="https://reforms-investments.ec.europa.eu/european-semester-your-country/european-semester-documents-portugal_en" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      Comissão Europeia — European Semester Documents: Portugal
+    </a>
+  </li>
+  <li>
+    <a href="https://www.oecd.org/en/publications/oecd-economic-surveys-portugal-2026_025b3445-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      OCDE — OECD Economic Surveys: Portugal 2026
+    </a>
+  </li>
+  <li>
+    <a href="https://www.oecd.org/en/publications/oecd-economic-surveys-portugal-2026_025b3445-en/full-report/strengthening-labour-market-resilience-in-the-face-of-skill-shortages-and-ageing_4c3ecd4d.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      OCDE — Strengthening labour market resilience in the face of skill shortages and ageing
+    </a>
+  </li>
+  <li>
+    <a href="https://digital-strategy.ec.europa.eu/en/factpages/portugal-2025-digital-decade-country-report" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      Comissão Europeia — Portugal 2025 Digital Decade Country Report
+    </a>
+  </li>
+  <li>
+    <a href="https://digital-skills-jobs.europa.eu/en/european-interactive-map/portugal" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      European Digital Skills and Jobs Platform — Portugal
+    </a>
+  </li>
+  <li>
+    <a href="https://www.reuters.com/business/world-at-work/portugal-must-reform-labour-rules-fuel-growth-pm-says-2026-05-26/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      Reuters — "Portugal must reform labour rules to fuel growth, PM says"
+    </a>
+  </li>
+  <li>
+    <a href="https://www.reuters.com/business/world-at-work/portugals-parliament-rejects-labour-reform-blow-minority-government-2026-06-19/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      Reuters — "Portugal's parliament rejects labour reform in blow to minority government"
+    </a>
+  </li>
+  <li>
+    <a href="https://www.reuters.com/business/european-small-businesses-rush-into-ai-without-basic-digital-tools-study-shows-2025-10-08/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      Reuters — "European small businesses rush into AI without basic digital tools, study shows"
+    </a>
+  </li>
+</ul><div style="border-top:1px solid #ffcc78; margin-top:34px; padding-top:18px; color:#ffcca0;">
+  <p style="margin-bottom:6px;">
+    <strong>Texto:</strong>
+    <a href="https://www.fragmentoscaos.eu/sobre-francisco-goncalves/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+      Francisco Gonçalves
+    </a>
+  </p>
+  <p style="margin-top:0;">
+    Coautoria editorial e estruturação : <strong> Augustus Veritas </strong><br> Fragmentos do Caos News Team
+  </p>
+</div>
+<div style="background:#111; border-left:4px solid #ffcc66; padding:18px 22px; margin:30px 0; color:#ffddb0; font-family:Georgia,serif; line-height:2.1; text-align:left;">  <h3 style="color:#ffcc66 !important; font-size:24px; margin-top:0; text-align:left;">
+    <span style="color:#ffcc66 !important;">Nota Editorial</span>
+  </h3>  <p>
+    Esta crónica é uma grande pedrada no charco putrefacto da vida pública portuguesa. Não apenas no charco da política partidária, mas nesse pântano mais fundo onde se misturam a vaidade administrativa, a mediocridade organizada, a burocracia sem alma, a ausência de responsabilidade e a velha capacidade nacional de fingir modernidade sem transformar coisa nenhuma.
+  </p>  <p>
+    O texto não ataca apenas pessoas, governos ou episódios isolados. Ataca sobretudo um <strong>modelo mental</strong>: o de um país que quer parecer moderno sem se tornar moderno; que quer investimento sem reformar o Estado; que quer inovação sem competência; que quer inteligência artificial sem literacia digital; que quer produtividade sem pagar talento; que quer empresas fortes enquanto lhes suga o sangue fiscal; que quer futuro, mas continua governado por gestores de ontem, sistemas de anteontem e uma coragem política perdida algures num arquivo morto.
+  </p>  <p>
+    A imagem dos <strong>patetas alegres</strong> é dura, mas certeira. Denuncia essa alegria sonsa, esse optimismo oficial de salão, essa risota protegida de quem vive afastado das consequências reais das decisões que toma. Riem porque ainda não lhes chegou a factura. Mas a factura chega sempre. E, como manda a tradição nacional, chegará em nome do contribuinte, esse eterno patrocinador involuntário das fantasias do regime.
+  </p>  <p>
+    Portugal continua a confundir palco com destino, relatórios com reformas, diplomas com competência, portais digitais com modernização, fundos europeus com estratégia e propaganda com progresso. Mas o futuro não aplaude. O futuro cobra. E cobra com atraso económico, perda de talento, baixa produtividade, empresas frágeis, jovens mal preparados e um Estado cada vez mais pesado sobre uma economia cada vez mais estreita.
+  </p>  <p>
+    Por isso, esta frase deve ficar cravada como sentença editorial:
+  </p>  <p style="font-size:22px; color:#ffcc66 !important; font-weight:bold; text-align:left; margin:24px 0;">
+    <span style="color:#ffcc66 !important;">Portugal não precisa de mais milagres. Precisa de menos patetas no circuito da decisão.</span>
+  </p>  <p>
+    Não é uma frase de desespero. É uma exigência de lucidez. Porque nenhum país se salva enquanto continuar a promover incompetentes, premiar aparências, castigar talento, sufocar empresas sérias e entregar o futuro a quem confunde uma conferência de imprensa com uma estratégia nacional.
+  </p><br>
+<strong>- Francisco Gonçalves</strong>
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/FragmentosCaos-codeberg"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
