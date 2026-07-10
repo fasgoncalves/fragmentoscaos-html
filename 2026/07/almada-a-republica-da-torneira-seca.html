@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Almada, a República da Torneira Seca</title>
+<meta name="description" content="Almada, a República da Torneira Seca">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Almada, a República da Torneira Seca</h1>
+      <p class="meta">Publicado em 2026-07-09 12:47:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/07/file_0000000056b071f4a62ba15f2dd9089f_bd2011a2.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8e2d6; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px;">
+
+<div style="max-width:900px; margin:auto; padding:10px;">
+
+<h1 style="color:#d6a84f; text-align:center; font-size:2.4em; line-height:1.3; margin-bottom:10px;">
+Almada, a República da Torneira Seca
+</h1>
+
+<p style="text-align:center; color:#b8b0a0; font-size:1.05em; margin-top:0;">
+Crónica crítica sobre água, urbanismo, incompetência municipal e a estranha arte de cobrar pelo crescimento sem preparar as infraestruturas
+</p>
+
+<p style="text-align:center; color:#b8b0a0; font-size:0.95em; font-style:italic; margin-top:25px; margin-bottom:25px;">
+  Crónica da autoria de <span style="color:#d6a84f;">Augustus Veritas</span>, para <span style="color:#d6a84f;">Fragmentos do Caos</span>.
+</p>
+
+<hr style="border:0; border-top:1px solid #3a3327; margin:30px 0;">
+
+<h2 style="color:#d6a84f; text-align:left; font-size:1.5em;">
+Nota Editorial
+</h2>
+
+<p style="text-align:left;">
+Esta crónica nasce de uma indignação elementar: num concelho moderno, urbano, densamente habitado e fiscalmente voraz, a água não pode transformar-se numa lotaria doméstica. Não é aceitável que famílias, comerciantes, idosos, trabalhadores e instituições passem dias ou semanas a viver ao ritmo da torneira, como se Almada tivesse regressado ao tempo dos cântaros, das bicas públicas e da resignação administrada.
+</p>
+
+<p style="text-align:left;">
+A falta de água em Almada não é apenas um problema técnico. É uma falha política. É o resultado visível de anos de pressão urbanística, investimento insuficiente, planeamento débil, comunicação tardia e gestão municipal incapaz de garantir aquilo que qualquer comunidade civilizada deve considerar básico: abrir uma torneira e sair água.
+</p>
+
+<p style="text-align:left;">
+A Câmara e os SMAS falam em aumento do consumo, calor, população sazonal, pressão sobre o sistema e necessidade de poupança. Tudo isso pode ser verdade. Mas não apaga a questão central: se o crescimento populacional era conhecido, se as construções foram licenciadas, se as taxas foram cobradas, se a urbanização avançou, então a infraestrutura tinha de acompanhar. Caso contrário, não houve planeamento. Houve cobrança.
+</p>
+
+<p style="text-align:left;">
+E cobrar pelo crescimento sem preparar o território para esse crescimento não é desenvolvimento. É urbanismo de caixa registadora.
+</p>
+
+<hr style="border:0; border-top:1px solid #3a3327; margin:35px 0;">
+
+<h2 style="color:#d6a84f; text-align:left; font-size:1.5em;">
+A grande inovação municipal: a torneira intermitente
+</h2>
+
+<p style="text-align:left;">
+Almada entrou oficialmente na vanguarda da gestão pública experimental: inventou a torneira democrática intermitente. De manhã talvez. À noite, quem sabe. Durante o dia, depende da sorte, da freguesia, da pressão, do reservatório, dos furos, das fugas, da fase lunar e, naturalmente, da paciência infinita dos munícipes, essa matéria-prima que as autarquias portuguesas extraem sem licença ambiental.
+</p>
+
+<p style="text-align:left;">
+Durante dias, várias zonas do concelho viveram cortes, oscilações de pressão e falhas recorrentes no abastecimento. A Costa da Caparica, a Charneca de Caparica, a Sobreda, os Capuchos, o Feijó, o Laranjeiro, o Pragal e outras localidades passaram a integrar uma nova geografia municipal: a geografia da torneira seca.
+</p>
+
+<p style="text-align:left;">
+O Almadense noticiou protestos de moradores junto aos SMAS, com palavras de ordem tão radicais como "Água é um direito" e "Água já, chega de desculpas". Radicalíssimo, portanto: cidadãos a exigir água num concelho europeu em 2026. A civilização, pelos vistos, anda a fazer horas extraordinárias.
+</p>
+
+<p style="text-align:left;">
+Moradores relataram água apenas durante a noite, pouca pressão, impossibilidade de cozinhar, tomar banho, limpar casas ou manter rotinas básicas. Uma munícipe chegou a dizer que não fazia sentido serem os moradores a comprar garrafões para descarregar uma sanita. Há frases que não precisam de literatura: já trazem nelas a biografia inteira de uma falha pública.
+</p>
+
+<h2 style="color:#d6a84f; text-align:left; font-size:1.5em;">
+O crescimento populacional, esse fenómeno misterioso
+</h2>
+
+<p style="text-align:left;">
+A explicação oficial veio com a solenidade habitual dos comunicados: aumento do consumo, temperaturas elevadas, população sazonal, pressão sem precedentes sobre o sistema de abastecimento. Tudo isto pode ajudar a explicar a crise. Mas também denuncia algo muito mais grave: a incapacidade de planear o concelho em função da realidade que a própria autarquia ajudou a construir.
+</p>
+
+<p style="text-align:left;">
+Porque o crescimento populacional não apareceu em Almada montado num cavalo branco, ao pôr-do-sol, sem aviso prévio. O crescimento urbano é licenciado. É medido. É aprovado. É publicitado. É integrado em planos. Gera receitas. Cobra taxas. Produz IMI futuro. Alimenta discursos sobre dinamismo, investimento, reabilitação, desenvolvimento e modernidade.
+</p>
+
+<p style="text-align:left;">
+Depois, quando a rede não aguenta, descobre-se que os prédios afinal trazem pessoas. Pessoas bebem água. Tomam banho. Cozinham. Lavam roupa. Usam autoclismos. Algumas até têm a ousadia biológica de viver em casa durante o verão. Uma surpresa estatística tremenda. Talvez seja preciso criar um observatório municipal para estudar o fenómeno: "Relação entre habitação licenciada e seres humanos que consomem água".
+</p>
+
+<p style="text-align:left;">
+A autarquia reconheceu que, até Junho de 2026, o consumo aumentou em média 4,3% no concelho, com subidas muito superiores em zonas como Charneca de Caparica, Sobreda/Lazarim e Costa da Caparica. Segundo os dados divulgados, a Charneca cresceu 15,2%, Sobreda/Lazarim 15,0% e Costa da Caparica 14,2%.
+</p>
+
+<p style="text-align:left;">
+Ora, se estas zonas estavam a crescer, se a pressão era visível, se o território estava a mudar, a pergunta impõe-se com a força de uma torneira finalmente aberta: onde esteve o planeamento?
+</p>
+
+<h2 style="color:#d6a84f; text-align:left; font-size:1.5em;">
+Taxas à entrada, garrafões à saída
+</h2>
+
+<p style="text-align:left;">
+A questão moral é simples. Uma autarquia que licencia construção e cobra taxas urbanísticas não pode, anos depois, apresentar o crescimento urbano como desculpa para a falha das infraestruturas. Isso é como vender bilhetes para um navio e depois justificar o naufrágio dizendo que entrou muita gente a bordo.
+</p>
+
+<p style="text-align:left;">
+Cada nova construção representa receitas directas e indirectas. Taxas. Licenças. IMI. Dinâmica imobiliária. Valorização patrimonial. Actividade económica. Tudo devidamente celebrado com a linguagem sedosa do desenvolvimento local.
+</p>
+
+<p style="text-align:left;">
+Mas quando a infraestrutura falha, quem paga a factura da impreparação é o munícipe. Paga na água que não tem, no garrafão que compra, no banho que adia, no restaurante que perde clientes, no idoso que fica dependente, na família que organiza a vida em torno de um bem essencial que devia estar garantido.
+</p>
+
+<p style="text-align:left;">
+É aqui que a falha deixa de ser meramente técnica e passa a ser politicamente danosa. Não no sentido jurídico, que exigirá sempre prova, auditoria, decisões concretas e apuramento formal de responsabilidades. Mas no sentido cívico e democrático, a responsabilidade é evidente: quem governa o território tem de garantir que o território funciona.
+</p>
+
+<p style="text-align:left;">
+Almada não pode ser tratada como uma máquina de licenciar metros quadrados e improvisar litros depois.
+</p>
+
+<h2 style="color:#d6a84f; text-align:left; font-size:1.5em;">
+A situação de alerta e a gestão em modo bidão
+</h2>
+
+<p style="text-align:left;">
+No dia 8 de Julho de 2026, a presidente da Câmara Municipal de Almada decretou Situação de Alerta. Segundo o comunicado da autarquia, passaram a vigorar restrições ao consumo de água da rede pública para usos não essenciais, incluindo rega de jardins, lavagem de viaturas, enchimento de piscinas, utilização de chuveiros e lava-pés nas praias, fontes ornamentais e outras utilizações recreativas.
+</p>
+
+<p style="text-align:left;">
+A Câmara e os SMAS anunciaram também cortes programados de abastecimento entre as 22h00 e as 06h00 em várias zonas do concelho. Em comunicado próprio, foram identificadas 15 localidades abrangidas pelo corte total: Charneca de Caparica, Aroeira, Marisol, Fonte da Telha, Palhais, Lazarim, Botequim, Vila Nova de Caparica, Capuchos, Pilotos, Funchalinho, Vale Rosal, Vale Cavala, Quintinhas e Quinta de Santa Teresa.
+</p>
+
+<p style="text-align:left;">
+É a modernidade municipal em todo o seu esplendor: durante o dia, pede-se contenção; à noite, corta-se a água; de manhã, agradece-se a compreensão. A compreensão, em Portugal, é uma espécie de imposto emocional que o cidadão paga sempre que o serviço público falha.
+</p>
+
+<p style="text-align:left;">
+Também foi anunciada a possibilidade de meios alternativos de abastecimento, incluindo camiões-cisterna nas zonas onde tal se revelasse necessário. Camiões-cisterna. Em Almada. Em 2026. A poucos quilómetros da capital. Num concelho urbano, metropolitano, densamente povoado, que cobra impostos, taxas e tarifas como qualquer território civilizado, mas que agora descobre soluções com aroma a emergência tropical.
+</p>
+
+<p style="text-align:left;">
+Quando uma Câmara chega ao ponto de anunciar cortes nocturnos, restrições generalizadas e cisternas, já não estamos apenas perante "dificuldades de abastecimento". Estamos perante a certidão pública de uma falha estrutural.
+</p>
+
+<h2 style="color:#d6a84f; text-align:left; font-size:1.5em;">
+A matemática cruel das perdas
+</h2>
+
+<p style="text-align:left;">
+Há ainda uma palavra que devia incomodar profundamente qualquer responsável público: perdas.
+</p>
+
+<p style="text-align:left;">
+A ministra do Ambiente, Maria da Graça Carvalho, apontou perdas de água superiores a 35% em Almada, afirmando que o concelho terá uma das piores situações do país e que há necessidade de manutenção e investimento na rede. A RTP referiu mesmo valores próximos de 40% nas declarações atribuídas à ministra.
+</p>
+
+<p style="text-align:left;">
+Se estes números se confirmam, são devastadores. Porque não se trata apenas de falta de água captada. Trata-se de água que se perde no sistema. Água que entra na rede e desaparece antes de chegar às casas. Água que se evapora na grande metáfora nacional: recursos públicos a escorrer por condutas envelhecidas, enquanto os responsáveis explicam que o problema é complexo.
+</p>
+
+<p style="text-align:left;">
+Claro que é complexo. Tudo é complexo quando não se fez a manutenção a tempo.
+</p>
+
+<p style="text-align:left;">
+É aqui que a desculpa do consumo excessivo se torna insuficiente. Se há perdas elevadas, se há fugas, se há roturas, se há rede envelhecida, se há necessidade de investimento, então o problema não nasceu apenas no verão de 2026. Nasceu antes. Cresceu antes. Foi tolerado antes. E agora aparece à superfície com a brutalidade simples das coisas que foram adiadas.
+</p>
+
+<p style="text-align:left;">
+A água não desaparece por teimosia. Desaparece porque a infraestrutura não está à altura da cidade que a política prometeu.
+</p>
+
+<h2 style="color:#d6a84f; text-align:left; font-size:1.5em;">
+A desculpa das ligações clandestinas
+</h2>
+
+<p style="text-align:left;">
+Inês de Medeiros, em declarações à RTP, apontou também para "desvios de rede" e ligações clandestinas como uma das principais causas do aumento do consumo e das falhas frequentes. O argumento é sério e deve ser investigado. Se há consumo ilegal, deve ser combatido. Se há fraude, deve ser identificada. Se há redes paralelas, devem ser encerradas.
+</p>
+
+<p style="text-align:left;">
+Mas também aqui há uma pergunta óbvia: quem fiscaliza?
+</p>
+
+<p style="text-align:left;">
+Se existem desvios significativos, se a rede está vulnerável, se há usos indevidos, então isso reforça a crítica à gestão. Não a enfraquece. Uma autarquia não pode descobrir ligações clandestinas apenas quando falta água às populações. Fiscalização não é uma peça de museu que se tira da vitrina durante a crise.
+</p>
+
+<p style="text-align:left;">
+E mesmo que existam ligações clandestinas, elas não explicam tudo. Não explicam anos de subinvestimento. Não explicam perdas superiores a 35%. Não explicam a falta de capacidade de reserva. Não explicam a comunicação deficiente. Não explicam a surpresa perante crescimento populacional conhecido. Não explicam a incapacidade de antecipar o verão num concelho com praias, turismo, alojamento sazonal e pressão urbana.
+</p>
+
+<p style="text-align:left;">
+Desvios de rede podem ser parte do problema. Mas não podem ser usados como detergente político para lavar a responsabilidade municipal.
+</p>
+
+<h2 style="color:#d6a84f; text-align:left; font-size:1.5em;">
+O regulador bate à porta
+</h2>
+
+<p style="text-align:left;">
+A ERSAR pediu esclarecimentos aos SMAS de Almada na sequência das queixas recebidas. A Câmara e os SMAS reuniram também com a ERSAR e a APA para avaliar a situação e coordenar soluções técnicas. Quando o regulador entra em cena, é sinal de que o problema deixou de ser ruído local e passou a matéria institucional.
+</p>
+
+<p style="text-align:left;">
+Isto é importante porque a crise da água em Almada não pode ficar enterrada em comunicados, pedidos de desculpa e apelos vagos à responsabilidade dos cidadãos. Tem de haver auditoria técnica. Tem de haver cronologia dos investimentos feitos e dos investimentos adiados. Tem de haver dados sobre perdas, roturas, furos, reservas, capacidade de captação, expansão urbana, licenciamento habitacional e planeamento de infraestruturas.
+</p>
+
+<p style="text-align:left;">
+A pergunta não é apenas "porque faltou água?". A pergunta certa é: quem sabia o quê, desde quando, que decisões foram tomadas, que obras foram adiadas, que alertas existiam, que fundos foram ou não foram usados, e como se permitiu que um concelho desta dimensão chegasse a uma situação em que a normalidade depende de cortes nocturnos.
+</p>
+
+<p style="text-align:left;">
+A transparência não é publicar comunicados depois da crise. Transparência é mostrar os dados antes de a população ter de protestar com garrafões na mão.
+</p>
+
+<h2 style="color:#d6a84f; text-align:left; font-size:1.5em;">
+Comunicar tarde também é falhar
+</h2>
+
+<p style="text-align:left;">
+Uma parte da indignação dos moradores vem da falta de informação clara. E com razão. Em matéria de serviços essenciais, comunicar tarde é quase tão grave como executar mal.
+</p>
+
+<p style="text-align:left;">
+O cidadão precisa de saber quando fica sem água, durante quanto tempo, porquê, que zonas são afectadas, que alternativas existem, o que está a ser feito e quando se espera a estabilização. Não precisa de frases fofas sobre compreensão, colaboração e sentido de responsabilidade. O cidadão já tem responsabilidade suficiente quando paga a factura.
+</p>
+
+<p style="text-align:left;">
+A comunicação pública em Portugal sofre frequentemente de uma doença crónica: trata adultos como crianças, crises como mal-entendidos e falhas estruturais como episódios pontuais. Almada não escapou à tradição. Primeiro, minimiza-se. Depois, justifica-se. Depois, promete-se. Depois, decreta-se alerta. Finalmente, pede-se compreensão.
+</p>
+
+<p style="text-align:left;">
+É uma sequência muito portuguesa: a incompetência chega sempre antes do comunicado.
+</p>
+
+<h2 style="color:#d6a84f; text-align:left; font-size:1.5em;">
+Planeamento não é poesia urbana
+</h2>
+
+<p style="text-align:left;">
+A crise da água em Almada deve obrigar a uma discussão mais ampla sobre o modelo de desenvolvimento do concelho. Não basta construir. Não basta densificar. Não basta aprovar projectos, reabilitar fachadas, vender modernidade e esperar que a infraestrutura aguente por patriotismo hidráulico.
+</p>
+
+<p style="text-align:left;">
+Uma cidade não é apenas betão, comércio, turismo, trânsito e cartazes de investimento. Uma cidade é água, saneamento, energia, mobilidade, escolas, saúde, espaços verdes, segurança, drenagem, resíduos, solos, risco climático e capacidade de resposta.
+</p>
+
+<p style="text-align:left;">
+Quando uma autarquia autoriza crescimento sem garantir infraestruturas, está a hipotecar o futuro do território. E quando esse futuro chega sob a forma de torneiras secas, já não vale dizer que ninguém esperava.
+</p>
+
+<p style="text-align:left;">
+Quem não esperava não estava a governar. Estava apenas a ocupar o cargo.
+</p>
+
+<h2 style="color:#d6a84f; text-align:left; font-size:1.5em;">
+A factura política da água
+</h2>
+
+<p style="text-align:left;">
+A água é um bem essencial. Não é um luxo. Não é uma comodidade dispensável. Não é um extra de conforto urbano. É saúde pública, dignidade, economia local, higiene, segurança, vida quotidiana. Quando falta água, falha muito mais do que uma rede: falha a confiança entre a população e quem a governa.
+</p>
+
+<p style="text-align:left;">
+A presidente da Câmara de Almada e os responsáveis dos SMAS têm agora uma obrigação que vai além de resolver a emergência. Têm de explicar. Têm de apresentar prazos verificáveis. Têm de publicar dados completos. Têm de assumir responsabilidades. Têm de dizer quanto se perdeu, quanto se investiu, quanto faltou investir, que zonas estão em risco, que obras são prioritárias e como será financiada a modernização da rede.
+</p>
+
+<p style="text-align:left;">
+E têm de fazer tudo isto sem transformar os munícipes nos culpados da crise. Porque pedir poupança é legítimo. Mas usar o consumo das populações como biombo para esconder falta de investimento é indecente.
+</p>
+
+<p style="text-align:left;">
+O cidadão deve poupar água. A autarquia deve poupar desculpas.
+</p>
+
+<h2 style="color:#d6a84f; text-align:left; font-size:1.5em;">
+A moral da torneira
+</h2>
+
+<p style="text-align:left;">
+Almada não precisa de mais discursos sobre sustentabilidade enquanto a rede perde água. Não precisa de mais urbanismo triunfal enquanto as infraestruturas respiram por aparelhos. Não precisa de mais apelos à compreensão enquanto famílias reorganizam a vida em torno de cortes. Não precisa de mais comunicados que chegam depois da indignação.
+</p>
+
+<p style="text-align:left;">
+Precisa de gestão. Precisa de planeamento. Precisa de investimento. Precisa de fiscalização. Precisa de verdade. Precisa de responsáveis que percebam que uma cidade não se governa apenas com licenças, taxas, slogans e cerimónias. Governa-se garantindo o essencial.
+</p>
+
+<p style="text-align:left;">
+E o essencial, antes de qualquer promessa urbana, é simples: água na torneira.
+</p>
+
+<p style="text-align:left;">
+Quando uma Câmara cobra pelo crescimento mas não prepara as infraestruturas para esse crescimento, não está a desenvolver o concelho. Está a vender futuro sem instalar canalização.
+</p>
+
+<p style="text-align:left;">
+A crise da água em Almada é, por isso, mais do que uma falha técnica. É uma metáfora perfeita da governação portuguesa quando se deixa fascinar pelo betão e esquece a vida concreta das pessoas.
+</p>
+
+<p style="text-align:left;">
+A autarquia descobriu agora que a população cresceu, que o consumo aumentou, que a rede perde água, que os reservatórios baixam, que os furos não chegam, que as pessoas protestam e que a paciência acabou.
+</p>
+
+<p style="text-align:left;">
+Pois. A água também.
+</p>
+
+<hr style="border:0; border-top:1px solid #3a3327; margin:35px 0;">
+
+<h2 style="color:#d6a84f; text-align:left; font-size:1.5em;">
+Referências
+</h2>
+
+<ul style="text-align:left; padding-left:22px;">
+
+<li>
+<a href="https://www.cm-almada.pt/presidente-da-camara-municipal-de-almada-decreta-situacao-de-alerta-0" target="_blank" style="color:#d6a84f; text-decoration:none;">Câmara Municipal de Almada — Presidente da Câmara Municipal de Almada decreta Situação de Alerta, 8 de Julho de 2026</a>
+</li>
+
+<li>
+<a href="https://www.cm-almada.pt/corte-total-do-abastecimento-de-agua-8-de-julho-entre-as-22h00-e-as-06h00" target="_blank" style="color:#d6a84f; text-decoration:none;">Câmara Municipal de Almada — Corte Total do Abastecimento de Água, 8 de Julho de 2026, entre as 22h00 e as 06h00</a>
+</li>
+
+<li>
+<a href="https://almadense.sapo.pt/cidade/agua-ja-chega-de-desculpas-moradores-protestam-contra-falta-de-agua-em-almada/" target="_blank" style="color:#d6a84f; text-decoration:none;">Almadense — "Água já, chega de desculpas": moradores protestam contra falta de água em Almada</a>
+</li>
+
+<li>
+<a href="https://almadense.sapo.pt/cidade/cortes-de-agua-afetam-moradores-de-varias-freguesias-de-almada-em-dias-de-calor-intenso/" target="_blank" style="color:#d6a84f; text-decoration:none;">Almadense — Cortes de água afetam moradores de várias freguesias de Almada em dias de calor intenso</a>
+</li>
+
+<li>
+<a href="https://almadense.sapo.pt/cidade/almada-declara-situacao-de-alerta-para-responder-a-crise-no-abastecimento-de-agua/" target="_blank" style="color:#d6a84f; text-decoration:none;">Almadense — Almada declara Situação de Alerta para responder à crise no abastecimento de água</a>
+</li>
+
+<li>
+<a href="https://almadense.sapo.pt/cidade/ministra-aponta-perdas-de-agua-superiores-a-35-em-almada/" target="_blank" style="color:#d6a84f; text-decoration:none;">Almadense — Ministra aponta perdas de água superiores a 35% em Almada</a>
+</li>
+
+<li>
+<a href="https://www.rtp.pt/noticias/pais/almada-decreta-situacao-de-alerta-devido-a-falhas-no-abastecimento-de-agua_n1752149" target="_blank" style="color:#d6a84f; text-decoration:none;">RTP — Almada decreta situação de alerta devido a falhas no abastecimento de água</a>
+</li>
+
+<li>
+<a href="https://www.rtp.pt/noticias/pais/falta-de-agua-em-almada-autarca-aponta-para-desvios-de-rede-como-origem-do-problema_n1752158" target="_blank" style="color:#d6a84f; text-decoration:none;">RTP — Falta de água em Almada: autarca aponta para desvios de rede como origem do problema</a>
+</li>
+
+<li>
+<a href="https://www.rtp.pt/noticias/pais/alerta-em-almada-reservas-de-agua-estao-a-10-da-capacidade_v1752180" target="_blank" style="color:#d6a84f; text-decoration:none;">RTP — Alerta em Almada: reservas de água estão a 10% da capacidade</a>
+</li>
+
+<li>
+<a href="https://www.dn.pt/sociedade/almada-vai-proibir-gastos-de-gua-no-essenciais-para-repor-reservas" target="_blank" style="color:#d6a84f; text-decoration:none;">Diário de Notícias / Lusa — Almada proíbe gastos de água não essenciais para repor reservas</a>
+</li>
+
+<li>
+<a href="https://www.dn.pt/sociedade/almada-ministra-do-ambiente-diz-no-tm-sido-feitos-os-investimentos-necessrios-no-sistema-de-abastecimento-de-gua" target="_blank" style="color:#d6a84f; text-decoration:none;">Diário de Notícias / Lusa — Ministra do Ambiente diz que não têm sido feitos os investimentos necessários em Almada</a>
+</li>
+
+</ul>
+
+</div>
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/FragmentosCaos-codeberg"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
