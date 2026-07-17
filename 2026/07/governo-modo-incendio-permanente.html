@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Governo em Modo de Incêndio Permanente</title>
+<meta name="description" content="O Governo em Modo de Incêndio Permanente">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Governo em Modo de Incêndio Permanente</h1>
+      <p class="meta">Publicado em 2026-07-16 10:07:17</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/07/file_000000004a287243a569b053386797fb_a6dbebdd.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="O Governo em Modo de Incêndio Permanente">
+      <meta itemprop="description" content="Crónica política sobre o desgaste do Governo de Luís Montenegro, a crise Spinumviva, as falhas recentes na Educação e na Saúde e a diferença entre legitimidade eleitoral, responsabilidade política e responsabilidade criminal.">
+      <meta itemprop="datePublished" content="2026-07-16">
+      <meta itemprop="dateModified" content="2026-07-16">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/07/file_000000004a287243a569b053386797fb.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <p style="text-align:center; color:#d6a542; font-family:Arial, Helvetica, sans-serif; font-size:0.82em; font-weight:bold; letter-spacing:0.12em; text-transform:uppercase; margin:0 0 12px 0;">
+      Crónica política · Governo · Responsabilidade pública
+    </p>
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      O Governo em Modo de Incêndio Permanente
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      Montenegro, os ministros debaixo de fogo e uma governação que parece confundir autoridade com negação e responsabilidade com sobrevivência.
+    </p>
+
+    <p style="text-align:center; color:#aeb5bb; font-family:Arial, Helvetica, sans-serif; font-size:0.9em; margin-bottom:35px;">
+      Por <strong style="color:#d6a542;">Francisco Gonçalves</strong> · Fragmentos do Caos · 2026
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de rigor factual:</strong><br>
+        Esta é uma crónica de opinião e crítica política. Não atribui crimes a qualquer governante. A averiguação preventiva do DCIAP relativa à Spinumviva foi arquivada em 17 de Dezembro de 2025 por não ter sido identificada notícia da prática de ilícito criminal. A responsabilidade política, ética e governativa é, porém, distinta da responsabilidade criminal e permanece sujeita ao escrutínio democrático.
+      </p>
+    </div>
+
+    <p style="font-size:1.12em;">
+      Portugal já não parece ter um Governo. Tem uma central de emergência política, permanentemente ocupada a apagar incêndios que começaram dentro do próprio edifício.
+    </p>
+
+    <p>
+      Mal se apaga uma polémica, surge outra. Quando um ministro começa a respirar, outro aparece diante das câmaras a explicar que o desastre não foi exactamente um desastre, mas apenas um «constrangimento», um «imponderável» ou uma «percepção incorrecta». A língua portuguesa tornou-se, sob este Executivo, uma unidade especial de protecção civil: não resolve os problemas, mas cobre-os com vocabulário retardador de chama.
+    </p>
+
+    <p>
+      Luís Montenegro governa como se cada caso fosse uma ocorrência isolada. Uma pequena avaria administrativa. Um ruído da oposição. Uma injustiça mediática. Um azar estatístico. Contudo, quando as ocorrências se repetem, atravessam ministérios e atingem áreas tão sensíveis como a Saúde e a Educação, já não estamos perante uma sucessão de acidentes. Estamos perante um padrão.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.16em; font-style:italic; margin:0; text-align:left;">
+        Um Governo pode ser vítima de uma crise. Quando vive permanentemente em crise, começa a ser razoável suspeitar que o problema é o Governo.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A recondução eleitoral não foi uma absolvição
+    </h2>
+
+    <p>
+      O primeiro Governo de Montenegro caiu em Março de 2025, depois de perder uma moção de confiança apresentada no contexto da controvérsia sobre a Spinumviva, a empresa de consultadoria que fundara e que permanecera no universo familiar. A crise levou às eleições legislativas antecipadas de 18 de Maio de 2025.
+    </p>
+
+    <p>
+      A Aliança Democrática venceu essas eleições e Montenegro regressou como primeiro-ministro, tomando posse à frente do XXV Governo Constitucional em 5 de Junho de 2025. A escolha dos eleitores deve ser respeitada. Esta é a base da democracia, mesmo quando a democracia decide colocar novamente a mão sobre uma chapa ainda quente.
+    </p>
+
+    <p>
+      Mas uma vitória eleitoral não é um certificado de santidade. Não apaga perguntas anteriores, não transforma contradições em virtudes e não dispensa o governante de prestar contas. Os votos conferem legitimidade para governar. Não concedem imunidade à crítica, nem convertem automaticamente a confiança eleitoral em credibilidade ética ilimitada.
+    </p>
+
+    <p>
+      O Ministério Público viria a arquivar, em Dezembro de 2025, a averiguação preventiva relacionada com a Spinumviva, concluindo não existir notícia da prática de ilícito criminal. Este facto deve ser afirmado com clareza, porque a justiça não pode ser substituída pela vontade de condenar.
+    </p>
+
+    <p>
+      Mas também deve ser afirmado o inverso: <strong style="color:#fffaf0;">a ausência de matéria criminal não resolve, por magia, a questão política</strong>. Um primeiro-ministro pode não ter cometido crime algum e, ainda assim, ter gerido mal uma situação de potencial conflito de interesses, comunicado de forma insuficiente, fornecido esclarecimentos tardios ou permitido que a sua vida empresarial familiar contaminasse a confiança pública.
+    </p>
+
+    <p>
+      A responsabilidade criminal pergunta se foi violada a lei penal. A responsabilidade política pergunta se foi preservada a confiança necessária ao exercício do poder. São perguntas diferentes. Portugal, por vezes, finge não perceber a diferença, talvez porque a fasquia política foi instalada numa cave: se não houver acusação criminal, considera-se que tudo correu admiravelmente.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A técnica da confiança absoluta
+    </h2>
+
+    <p>
+      Perante cada nova crise, o primeiro-ministro costuma activar a fórmula ritual da «confiança» no governante atingido. Confiança total. Confiança inequívoca. Confiança inabalável. A expressão é repetida com tanta frequência que já parece fazer parte do mobiliário do Conselho de Ministros.
+    </p>
+
+    <p>
+      A confiança é importante numa equipa. Mas, num Governo, não pode servir de substituto à avaliação. Quando um ministro falha, a primeira obrigação do chefe do Executivo não é protegê-lo emocionalmente. É perceber o que aconteceu, quem decidiu, quem supervisionou, que consequências existiram e se continuam reunidas as condições para o exercício do cargo.
+    </p>
+
+    <p>
+      A confiança sem escrutínio transforma-se em cumplicidade administrativa. E a lealdade interna, quando colocada acima da responsabilidade pública, torna-se uma forma polida de irresponsabilidade.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.16em; font-style:italic; margin:0; text-align:left;">
+        Um ministro não deve permanecer no cargo porque o primeiro-ministro confia nele. Deve permanecer porque o país ainda pode confiar na sua competência.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Educação: digitalizar o caos
+    </h2>
+
+    <p>
+      A correcção digital dos exames nacionais de 2026 tornou-se um exemplo quase didáctico da distância entre a propaganda da modernização e a capacidade concreta de execução.
+    </p>
+
+    <p>
+      Foram digitalizadas mais de trezentas mil provas. O processo ficou marcado por problemas técnicos, atrasos, convocatórias tardias, trabalho extraordinário dos professores e alterações ao calendário inicialmente previsto. O Governo acabou por ajustar as datas de entrega das classificações e afixação das pautas.
+    </p>
+
+    <p>
+      Digitalizar um processo não é colocar-lhe um ecrã e esperar que a eficiência apareça por geração espontânea. Exige testes, redundância, apoio técnico, planeamento de carga, formação dos utilizadores e um plano de contingência. Tudo coisas aborrecidas, naturalmente, porque não cabem numa fotografia de inauguração.
+    </p>
+
+    <p>
+      O ministro Fernando Alexandre começou por desvalorizar muitos dos relatos de falhas, garantindo que nenhum aluno seria prejudicado. Entretanto, a realidade obrigou ao prolongamento dos prazos. É um velho método governativo: primeiro nega-se a dimensão do problema; depois adapta-se o calendário ao problema que alegadamente não existia.
+    </p>
+
+    <p>
+      Numa fase decisiva para milhares de estudantes e famílias, a administração pública não pode experimentar sistemas críticos como quem instala uma versão beta numa sexta-feira à tarde. Os exames nacionais não são um laboratório de improvisação digital. Mas o país continua a aprender que, em Portugal, a inovação chega frequentemente acompanhada de uma senha para aguardar e de um pedido de desculpas em formato PDF.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Saúde: os imponderáveis cuidadosamente planeados
+    </h2>
+
+    <p>
+      Na Saúde, a situação assume uma gravidade muito maior, porque já não estamos a falar apenas de prazos e plataformas. Estamos a falar de pessoas doentes, urgências, grávidas, crianças, profissionais exaustos e territórios onde a resposta pública pode tornar-se imprevisível.
+    </p>
+
+    <p>
+      Em Julho de 2026, a ministra da Saúde reconheceu que o planeamento não conseguiria responder a todas as necessidades das urgências durante o Verão e afirmou que seriam necessários aproximadamente o dobro dos profissionais para garantir a resposta desejada.
+    </p>
+
+    <p>
+      A palavra escolhida para enquadrar as dificuldades foi «imponderáveis». É uma palavra admirável. Tem a elegância de um cortinado pesado: cobre a janela e impede-nos de ver que, atrás dele, continuam a faltar médicos, equipas estáveis e capacidade de resposta.
+    </p>
+
+    <p>
+      Um imponderável é um acontecimento imprevisível. A falta recorrente de profissionais no SNS, os constrangimentos estivais, as dificuldades das urgências e a fragilidade de determinadas especialidades não nasceram esta semana, vindos de uma galáxia distante. São problemas conhecidos, repetidos e documentados.
+    </p>
+
+    <p>
+      Quando um problema previsível regressa todos os anos, já não é um imponderável. É planeamento insuficiente com vocabulário de emergência.
+    </p>
+
+    <p>
+      A ministra pode alegar, com razão, que muitos problemas são estruturais e anteriores ao actual Governo. Mas governar consiste precisamente em receber problemas anteriores e melhorar a realidade posterior. Caso contrário, bastaria nomear historiadores para os ministérios e pedir-lhes que explicassem, com excelente bibliografia, por que razão nada pôde ser feito.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O problema já não está apenas nos ministros
+    </h2>
+
+    <p>
+      Seria intelectualmente preguiçoso afirmar que todos os ministros falharam ou que todo o trabalho governativo é inútil. Nenhum Executivo é uma massa homogénea de incompetência, por mais esforço que alguns pareçam dedicar ao projecto.
+    </p>
+
+    <p>
+      Contudo, há demasiados focos simultâneos de desgaste. E quando se multiplicam os problemas de execução, comunicação e responsabilização, a questão deixa de poder ser resolvida com a substituição ocasional de uma peça.
+    </p>
+
+    <p>
+      O chefe do Governo escolhe os ministros, define prioridades, impõe métodos, coordena respostas e determina a cultura política do Executivo. Se a cultura dominante é negar primeiro, minimizar depois e corrigir apenas quando a realidade se torna impossível de esconder, então o problema é de liderança.
+    </p>
+
+    <p>
+      Montenegro apresenta-se frequentemente como um homem de firmeza. Mas firmeza não é persistir em todas as escolhas. Por vezes, a verdadeira firmeza consiste em admitir um erro, afastar um responsável, corrigir uma política e explicar ao país o que falhou.
+    </p>
+
+    <p>
+      Confundir firmeza com teimosia é um dos vícios tradicionais do poder. O governante acredita que mudar de posição demonstra fraqueza. Na realidade, continuar no erro para proteger a imagem demonstra apenas que a imagem passou a ser mais importante do que o país.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A governação pela comunicação
+    </h2>
+
+    <p>
+      Este Governo parece acreditar que muitos problemas podem ser administrados através da linguagem. Não se falha: enfrentam-se desafios. Não há caos: existem constrangimentos. Não falta planeamento: surgiram imponderáveis. Não existe recuo: procede-se a um ajustamento.
+    </p>
+
+    <p>
+      É a política transformada em departamento de relações públicas. As palavras deixam de descrever a realidade e passam a funcionar como almofadas colocadas à volta dela, para que a queda pareça menos ruidosa.
+    </p>
+
+    <p>
+      A comunicação é essencial num Governo. Mas não pode ser usada para produzir uma realidade alternativa. Quando a experiência quotidiana dos cidadãos contradiz a versão oficial, a propaganda deixa de convencer e começa a ofender.
+    </p>
+
+    <p>
+      Um estudante que espera pela classificação não precisa de ouvir que o processo está controlado. Precisa de um processo controlado. Uma pessoa que encontra uma urgência fechada não precisa de uma conferência de imprensa sobre reorganização. Precisa de cuidados de saúde.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.16em; font-style:italic; margin:0; text-align:left;">
+        A realidade possui uma inconveniente resistência à comunicação política: continua a existir depois de terminada a conferência de imprensa.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Legitimidade, competência e confiança
+    </h2>
+
+    <p>
+      Montenegro foi reconduzido democraticamente. Esse facto é incontornável e deve ser respeitado. Mas a democracia não termina no momento em que fecham as urnas.
+    </p>
+
+    <p>
+      Entre eleições, o Governo deve responder perante o Parlamento, a comunicação social, as instituições de fiscalização e os cidadãos. A legitimidade eleitoral permite governar. A competência permite governar bem. A transparência permite conservar a confiança.
+    </p>
+
+    <p>
+      Um Executivo pode possuir a primeira e perder as outras duas.
+    </p>
+
+    <p>
+      É precisamente esse o risco do Governo de Montenegro. Sobrevive politicamente, mas desgasta-se moralmente. Mantém os cargos, mas perde autoridade. Responde às crises, mas raramente transmite a impressão de as antecipar. Governa como quem atravessa uma casa escura, tacteando as paredes e anunciando, a cada embate, que o percurso decorre de acordo com o planeado.
+    </p>
+
+    <p>
+      Portugal não precisa de um Governo perfeito. Essa criatura não existe e, caso existisse, provavelmente seria imediatamente atacada por violar alguma tradição nacional. Precisa, porém, de um Governo competente, transparente e capaz de assumir responsabilidades.
+    </p>
+
+    <p>
+      Precisa de governantes que compreendam que o cargo não é um abrigo contra a crítica, mas uma exposição permanente a ela. Que a autoridade não se preserva negando falhas. Preserva-se corrigindo-as.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O país não pode viver de incêndio em incêndio
+    </h2>
+
+    <p>
+      Há um limite para a quantidade de crises que um Governo consegue apresentar como coincidências. Há um momento em que as desculpas deixam de explicar e começam a confirmar.
+    </p>
+
+    <p>
+      Quando a Educação improvisa, a Saúde reconhece que não consegue assegurar a resposta necessária e o primeiro-ministro continua marcado por uma crise ética que derrubou o seu primeiro Executivo, o país tem o direito de perguntar se está verdadeiramente a ser governado ou apenas administrado entre ocorrências.
+    </p>
+
+    <p>
+      A incompetência política não se mede apenas por grandes catástrofes. Mede-se também pela repetição de pequenos fracassos, pela incapacidade de prever o previsível, pela recusa de assumir erros e pelo hábito de proteger responsáveis até que a pressão pública torne a protecção insustentável.
+    </p>
+
+    <p>
+      Montenegro pode conservar a maioria relativa, a confiança do seu partido e a lealdade dos ministros. Mas nenhuma dessas coisas substitui a confiança do país.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:22px 26px; margin:38px 0; color:#f2f2f2;">
+      <p style="font-size:1.2em; font-style:italic; margin:0; text-align:left;">
+        A democracia não exige governantes sem falhas. Exige governantes que não transformem as falhas num método, a negação numa doutrina e a sobrevivência política no único programa que conseguem executar sem atrasos.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">
+      Nota Editorial
+    </h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        Esta crónica distingue deliberadamente a responsabilidade criminal da responsabilidade política. O arquivamento da averiguação preventiva relativa à Spinumviva impede que se apresente como provada qualquer prática criminal, mas não elimina o debate legítimo sobre transparência, conflitos de interesses, qualidade da comunicação e confiança pública.
+      </p>
+      <p style="text-align:left;">
+        A crítica aos sectores da Educação e da Saúde baseia-se em acontecimentos documentados no Verão de 2026: falhas e atrasos no processo de correcção digital dos exames nacionais, alteração do calendário das classificações e reconhecimento governamental de limitações na resposta das urgências.
+      </p>
+      <p style="text-align:left; margin-bottom:0;">
+        A opinião expressa pertence ao autor e insere-se no exercício democrático da crítica política, sem imputação de ilícitos não demonstrados.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Referências credíveis
+    </h2>
+
+    <ul style="padding-left:22px;">
+      <li>
+        <a href="https://www.reuters.com/world/europe/what-is-stake-portugal-if-election-is-called-2025-03-06/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Reuters — Contexto da moção de confiança, da crise política e da controvérsia Spinumviva, 6 de Março de 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://www.reuters.com/world/europe/portugals-pm-montenegro-keep-mostly-same-key-ministers-new-cabinet-after-re-2025-06-04/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Reuters — Recondução de Luís Montenegro e composição do novo Governo após as eleições de Maio de 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://dciap.ministeriopublico.pt/destaque/averiguacao-preventiva-spinumviva-arquivamento" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          DCIAP / Ministério Público — Arquivamento da averiguação preventiva relativa à Spinumviva, 17 de Dezembro de 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://marcelorebelodesousa.arquivo.presidencia.pt/atualidade/toda-a-atualidade/2025/06/presidente-da-republica-deu-posse-ao-xxv-governo-constitucional/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Presidência da República — Tomada de posse do XXV Governo Constitucional, 5 de Junho de 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://www.rtp.pt/noticias/pais/exames-nacionais-correcao-digital-das-provas-com-problemas-tecnicos_v1750206" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          RTP — Problemas técnicos na correcção digital dos exames nacionais, 29 de Junho de 2026
+        </a>
+      </li>
+      <li>
+        <a href="https://www.rtp.pt/noticias/pais/termina-hoje-o-prazo-para-correcao-dos-exames-nacionais-do-ensino-secundario_n1753193" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          RTP — Atrasos, trabalho extraordinário e conclusão da correcção de mais de 300 mil provas, Julho de 2026
+        </a>
+      </li>
+      <li>
+        <a href="https://portugal.gov.pt/gc25/comunicacao/noticias/exames-nacionais-calendario-e-ajustado-para-garantir-rigor-na-classificacao" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Portal do Governo — Alteração do calendário das classificações dos exames nacionais, 3 de Julho de 2026
+        </a>
+      </li>
+      <li>
+        <a href="https://www.rtp.pt/noticias/politica/imponderaveis-ministra-assume-constrangimentos-nas-urgencias-durante-o-verao_n1752133" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          RTP — Ministra da Saúde reconhece limitações da resposta das urgências durante o Verão de 2026
+        </a>
+      </li>
+      <li>
+        <a href="https://portugal.gov.pt/pt/gc25/primeiro-ministro/acerca" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Portal do Governo — Biografia oficial do primeiro-ministro Luís Montenegro
+        </a>
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

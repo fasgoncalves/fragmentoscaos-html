@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Atrelado que Sabia Demais</title>
+<meta name="description" content="O Atrelado que Sabia Demais">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Atrelado que Sabia Demais</h1>
+      <p class="meta">Publicado em 2026-07-17 09:33:18</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/07/file_000000001ff07243b9e963f8850c1b7f_5b8479a5.jpg" alt=""></figure>
+      <div class="post-content">
+        <style>
+.fc-chronic-news.fc-atrelado-neves {
+  --fc-bg: #111315;
+  --fc-panel: #191c1f;
+  --fc-panel-2: #202428;
+  --fc-text: #ece9e2;
+  --fc-muted: #b8b4ab;
+  --fc-accent: #d49a2a;
+  --fc-accent-soft: #f0c56d;
+  --fc-line: rgba(212,154,42,.32);
+  --fc-danger: #c76552;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(14px, 2.7vw, 30px);
+  background:
+    radial-gradient(circle at 92% 2%, rgba(212,154,42,.12), transparent 29%),
+    linear-gradient(180deg, #111315 0%, #15181b 100%);
+  color: var(--fc-text);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 18px;
+  box-shadow: 0 18px 55px rgba(0,0,0,.24);
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.68;
+  overflow-wrap: anywhere;
+}
+.fc-chronic-news.fc-atrelado-neves *,
+.fc-chronic-news.fc-atrelado-neves *::before,
+.fc-chronic-news.fc-atrelado-neves *::after {
+  box-sizing: border-box;
+}
+.fc-chronic-news.fc-atrelado-neves .fc-kicker {
+  margin: 0 0 8px;
+  color: var(--fc-accent-soft);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .77rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.fc-chronic-news.fc-atrelado-neves h1 {
+  margin: 0;
+  color: #fff8e9;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 6vw, 4.35rem);
+  line-height: .98;
+  letter-spacing: -.045em;
+}
+.fc-chronic-news.fc-atrelado-neves .fc-deck {
+  max-width: 810px;
+  margin: 18px 0 10px;
+  color: var(--fc-accent-soft);
+  font-size: clamp(1.05rem, 2.25vw, 1.35rem);
+  font-style: italic;
+  line-height: 1.45;
+}
+.fc-chronic-news.fc-atrelado-neves .fc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 16px 0 0;
+  padding-top: 13px;
+  border-top: 1px solid var(--fc-line);
+  color: var(--fc-muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .82rem;
+}
+.fc-chronic-news.fc-atrelado-neves .fc-note {
+  margin: 24px 0;
+  padding: 15px 17px;
+  background: linear-gradient(135deg, rgba(212,154,42,.13), rgba(255,255,255,.025));
+  border: 1px solid var(--fc-line);
+  border-left: 5px solid var(--fc-accent);
+  border-radius: 10px;
+  color: #e9e4d9;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .92rem;
+  line-height: 1.55;
+}
+.fc-chronic-news.fc-atrelado-neves .fc-dropcap::first-letter {
+  float: left;
+  margin: .08em .1em 0 0;
+  color: var(--fc-accent);
+  font-size: 4.2em;
+  font-weight: 800;
+  line-height: .72;
+}
+.fc-chronic-news.fc-atrelado-neves p {
+  margin: .78em 0;
+}
+.fc-chronic-news.fc-atrelado-neves h2 {
+  margin: 1.7em 0 .55em;
+  padding-bottom: .28em;
+  color: var(--fc-accent);
+  border-bottom: 1px solid var(--fc-line);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(1.28rem, 3vw, 1.8rem);
+  line-height: 1.18;
+}
+.fc-chronic-news.fc-atrelado-neves strong {
+  color: #fff5df;
+}
+.fc-chronic-news.fc-atrelado-neves em {
+  color: #f2d59d;
+}
+.fc-chronic-news.fc-atrelado-neves a {
+  color: var(--fc-accent-soft);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.fc-chronic-news.fc-atrelado-neves a:hover,
+.fc-chronic-news.fc-atrelado-neves a:focus {
+  color: #fff1c7;
+}
+.fc-chronic-news.fc-atrelado-neves blockquote {
+  margin: 1.25em 0;
+  padding: 12px 17px;
+  background: rgba(255,255,255,.035);
+  border-left: 4px solid var(--fc-accent);
+  color: #f2eadb;
+  font-size: 1.08rem;
+  font-style: italic;
+}
+.fc-chronic-news.fc-atrelado-neves ol {
+  margin: 1em 0 1.2em 1.2em;
+  padding: 0 0 0 1em;
+}
+.fc-chronic-news.fc-atrelado-neves li {
+  margin: .38em 0;
+}
+.fc-chronic-news.fc-atrelado-neves sup a {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .78em;
+  font-weight: 700;
+  text-decoration: none;
+}
+.fc-chronic-news.fc-atrelado-neves .fc-pullquote {
+  margin: 1.35em 0;
+  padding: 18px clamp(15px, 3vw, 27px);
+  background: var(--fc-panel-2);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 12px;
+  color: #fff3d4;
+  font-size: clamp(1.18rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+.fc-chronic-news.fc-atrelado-neves .fc-sources {
+  margin-top: 2.2em;
+  padding: 18px;
+  background: var(--fc-panel);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .88rem;
+}
+.fc-chronic-news.fc-atrelado-neves .fc-sources h2 {
+  margin-top: 0;
+}
+.fc-chronic-news.fc-atrelado-neves .fc-sources ol {
+  margin-bottom: 0;
+}
+.fc-chronic-news.fc-atrelado-neves .fc-signature {
+  margin-top: 2em;
+  padding-top: 1em;
+  border-top: 1px solid var(--fc-line);
+  color: var(--fc-muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .86rem;
+}
+@media (max-width: 620px) {
+  .fc-chronic-news.fc-atrelado-neves {
+    padding: 15px;
+    border-radius: 12px;
+  }
+  .fc-chronic-news.fc-atrelado-neves h1 {
+    font-size: clamp(2rem, 13vw, 3.25rem);
+  }
+  .fc-chronic-news.fc-atrelado-neves .fc-meta {
+    display: block;
+  }
+  .fc-chronic-news.fc-atrelado-neves .fc-meta span {
+    display: block;
+    margin: 4px 0;
+  }
+}
+</style>
+
+<article class="fc-chronic-news fc-atrelado-neves" lang="pt-PT">
+  <header>
+    <p class="fc-kicker">Crónica do caos · Política · Sátira</p>
+    <h1>O Atrelado que Sabia Demais</h1>
+    <p class="fc-deck">Uma novela negra portuguesa, com cocaína, obras particulares e estacionamento institucional.</p>
+    <div class="fc-meta">
+      <span><strong>Autor:</strong> Francisco Gonçalves</span>
+      <span><strong>Publicação:</strong> Fragmentos do Caos</span>
+      <span><strong>Data:</strong> 17 de Julho de 2026</span>
+    </div>
+  </header>
+
+  <aside class="fc-note">
+    <strong>Nota editorial:</strong> Esta crónica comenta, em registo humorístico e irónico, factos noticiados por diversos órgãos de comunicação social. A Polícia Judiciária abriu um inquérito para apurar como o veículo transitou para a posse de um particular. Não existe, à data desta publicação, prova pública de que Luís Neves tenha autorizado, conhecido ou participado no desaparecimento do atrelado. Mantêm-se integralmente a presunção de inocência e a distinção entre responsabilidade criminal, administrativa e política.
+  </aside>
+
+  <p class="fc-dropcap">Há países onde os veículos apreendidos ficam num parque de veículos apreendidos.</p>
+
+  <p>É um conceito administrativo extraordinariamente avançado: a polícia apreende um veículo, regista-o, guarda-o e impede que alguém o leve para passear. Parece simples, mas também parecia simples impedir que as urgências hospitalares fechassem por falta de médicos, e veja-se o optimismo imprudente em que vivíamos.</p>
+
+  <p>Em Portugal, um atrelado apreendido pela Polícia Judiciária em Dezembro de 2024, no âmbito da Operação Pacoba contra o tráfico de cocaína, desapareceu do parque de apreendidos do Seixal em 2025 e reapareceu nas instalações da Construbarcelos, em Barcelos. O veículo foi encontrado ligado a um camião da empresa, que realizou trabalhos para a PJ e obras particulares numa propriedade do actual ministro da Administração Interna, Luís Neves, antigo director nacional da Judiciária. A PJ confirmou a recuperação do atrelado e abriu um inquérito para apurar o percurso desta singular peça de património itinerante.<sup><a href="/#fc-ref-1">[1]</a></sup><sup><a href="/#fc-ref-2">[2]</a></sup><sup><a href="/#fc-ref-3">[3]</a></sup></p>
+
+  <p>Estamos, portanto, perante uma simples história portuguesa de mobilidade sustentável.</p>
+
+  <p>O atrelado saiu do Seixal, viajou até Barcelos e, aparentemente, não gastou um único cêntimo do Orçamento do Estado em portagens. Um exemplo de eficiência logística que poderá vir a ser estudado nos futuros cursos de Administração Pública, provavelmente numa cadeira intitulada <strong>Gestão Criativa do Património Apreendido</strong>.</p>
+
+  <h2>O veículo autónomo português</h2>
+
+  <p>Os automóveis autónomos ainda precisam de câmaras, radares, inteligência artificial e milhões de linhas de código. O atrelado português, mais evoluído, não precisou de nada disso.</p>
+
+  <p><strong>Desapareceu sozinho.</strong></p>
+
+  <p>Não há notícia de que tenha preenchido uma requisição de saída, solicitado autorização ao Ministério Público ou comunicado a mudança de residência à Autoridade Tributária. Limitou-se a abandonar discretamente o parque estatal e a procurar novas oportunidades no sector privado.</p>
+
+  <p>É a livre circulação de mercadorias levada a sério.</p>
+
+  <p>Segundo as notícias publicadas em 16 e 17 de Julho de 2026, o veículo tinha sido apreendido numa operação que desmantelou um grande laboratório de cocaína. Foi localizado por uma equipa de reportagem e, depois dos contactos dos jornalistas, a direcção nacional da PJ confirmou a recuperação do equipamento e a abertura de um inquérito.<sup><a href="/#fc-ref-1">[1]</a></sup><sup><a href="/#fc-ref-2">[2]</a></sup></p>
+
+  <p>É reconfortante saber que, apesar de o atrelado ter permanecido desaparecido, o jornalismo ainda conserva a capacidade técnica de reconhecer um objecto grande, comprido e estacionado à vista de todos.</p>
+
+  <p>Talvez o futuro da investigação criminal passe por uma nova metodologia:</p>
+
+  <ol>
+    <li>Apreender o objecto;</li>
+    <li>Perder o objecto;</li>
+    <li>Esperar que um jornalista encontre o objecto;</li>
+    <li>Abrir um inquérito para perceber como o objecto desenvolveu vida própria.</li>
+  </ol>
+
+  <h2>O empreiteiro multiusos</h2>
+
+  <p>A Construbarcelos não surge nesta história como uma empresa escolhida ao acaso pelo algoritmo nacional das coincidências.</p>
+
+  <p>A firma pertence a João dos Santos Carvalho, identificado nas notícias como amigo de Luís Neves. Realizou diversas obras para a Polícia Judiciária e trabalhos particulares na propriedade do ministro em São Teotónio, Odemira. A informação publicada refere que a empresa recebeu cerca de 1,9 milhões de euros em contratos públicos entre 2020 e 2025, valor que o próprio ministro confirmou publicamente.<sup><a href="/#fc-ref-3">[3]</a></sup><sup><a href="/#fc-ref-4">[4]</a></sup></p>
+
+  <p>Nada disto prova, por si só, a prática de qualquer crime.</p>
+
+  <p>Em Portugal, é perfeitamente possível alguém ser amigo de um antigo director nacional, trabalhar para a instituição que ele dirigia, fazer obras particulares para esse amigo e, por um conjunto de circunstâncias ainda inexplicadas, ter nas suas instalações um atrelado desaparecido da mesma instituição.</p>
+
+  <p>Também é possível ganhar o Euromilhões três vezes, ser atingido por um raio numa sala sem janelas e encontrar um empreiteiro que termine uma obra na data prevista.</p>
+
+  <p>A lei das probabilidades não proíbe acontecimentos improváveis. Limita-se a observá-los, perplexa, enquanto pede transferência para outro país.</p>
+
+  <p>O empreiteiro revela, assim, uma admirável versatilidade empresarial. Faz obras para particulares, presta serviços ao Estado e acolhe veículos cuja viagem ainda ninguém explicou.</p>
+
+  <p>É quase uma empresa de construção, logística, armazenamento e ilusionismo.</p>
+
+  <h2>A cadeia de custódia com engate de reboque</h2>
+
+  <p>A cadeia de custódia existe para garantir que provas, objectos e bens apreendidos não são alterados, substituídos, desviados ou utilizados por terceiros.</p>
+
+  <p>No caso português, parece ter sido introduzida uma inovação: a <strong>cadeia de custódia com engate de reboque</strong>.</p>
+
+  <p>O Diário de Notícias noticiou que, segundo as regras da instituição, a movimentação de bens apreendidos à ordem de processos-crime carece de autorização do director nacional da PJ. Luís Neves exercia esse cargo quando o atrelado foi apreendido e manteve-se em funções até assumir o Ministério da Administração Interna em Fevereiro de 2026.<sup><a href="/#fc-ref-1">[1]</a></sup><sup><a href="/#fc-ref-5">[5]</a></sup></p>
+
+  <p>Isto não significa que tenha autorizado a saída, que dela tivesse conhecimento ou que possua qualquer responsabilidade pessoal no desaparecimento.</p>
+
+  <p>Significa apenas que o problema ocorreu dentro da instituição que dirigia e que o veículo reapareceu na empresa de um amigo e empreiteiro que trabalhava para essa instituição e para o próprio.</p>
+
+  <p>Uma coincidência tão delicada que devia ser transportada com luvas e selada num saco de prova.</p>
+
+  <p>O ministro poderá afirmar que desconhecia tudo. É possível. Os dirigentes portugueses possuem frequentemente uma relação filosófica com os acontecimentos que ocorrem sob a sua autoridade: ocupam o cargo, recebem o vencimento, inauguram instalações e fazem discursos, mas permanecem metafisicamente separados de qualquer problema.</p>
+
+  <p>São responsáveis por tudo em teoria e por nada em concreto.</p>
+
+  <h2>O ministro da Administração Interna e o mistério exterior</h2>
+
+  <p>Luís Neves é ministro da Administração Interna desde 23 de Fevereiro de 2026, depois de ter dirigido a Polícia Judiciária.<sup><a href="/#fc-ref-5">[5]</a></sup></p>
+
+  <p>A designação do ministério tornou-se, entretanto, problemática.</p>
+
+  <p>A Administração era Interna, mas o atrelado estava no exterior.</p>
+
+  <p>A polícia era Judiciária, mas precisou de jornalistas.</p>
+
+  <p>O veículo estava apreendido, mas circulava.</p>
+
+  <p>O bem estava guardado, mas desapareceu.</p>
+
+  <p>E o empreiteiro era particular, embora pareça ter desenvolvido uma extraordinária proximidade geográfica com assuntos públicos.</p>
+
+  <p>Estamos perante um daqueles raros casos em que todas as palavras continuam correctas individualmente, mas a frase inteira deixa de fazer sentido.</p>
+
+  <h2>"Está tudo limpinho"</h2>
+
+  <p>Em explicações públicas anteriores sobre as obras realizadas pelo empreiteiro, Luís Neves afirmou que estava "tudo muito limpinho", embora reconhecendo que hoje agiria de forma diferente perante o escrutínio público.<sup><a href="/#fc-ref-4">[4]</a></sup></p>
+
+  <p>Numa novela que envolve um veículo apreendido numa operação contra o tráfico de cocaína, talvez <em>limpinho</em> não tenha sido o adjectivo mais prudente.</p>
+
+  <p>Mas não sejamos injustos.</p>
+
+  <p>O ministro poderia ter dito "não há nada a esconder", obrigando os jornalistas a procurar imediatamente outro armazém.</p>
+
+  <p>Poderia ter afirmado "ponho as mãos no fogo", causando uma mobilização preventiva da Protecção Civil.</p>
+
+  <p>Ou poderia ter garantido que "a montanha pariu um rato", levando alguém a inspeccionar os anexos da propriedade rural.</p>
+
+  <p>Escolheu "limpinho". Foi modesto.</p>
+
+  <h2>A versão oficial que falta</h2>
+
+  <p>Neste momento, há perguntas simples que exigem respostas igualmente simples:</p>
+
+  <blockquote>Quem autorizou a saída do atrelado? Quando saiu? Como saiu? Quem o transportou? Por que razão foi parar à Construbarcelos? Foi utilizado? Quem sabia? Quando percebeu a PJ que o veículo tinha desaparecido?</blockquote>
+
+  <p>E por que motivo foram jornalistas a encontrá-lo antes de uma instituição que dispõe de inspectores, bases de dados, vigilância e um orçamento considerável?</p>
+
+  <p>Não basta abrir um inquérito e esperar que o calendário produza amnésia colectiva.</p>
+
+  <p>A situação envolve a integridade da cadeia de custódia da Polícia Judiciária, a gestão de bens apreendidos e as relações entre um antigo director da instituição e um empresário contratado pela mesma. A confiança pública não se restaura com silêncio, indignação performativa ou comunicados escritos numa língua administrativa onde ninguém fez nada e tudo aconteceu.</p>
+
+  <h2>O último episódio</h2>
+
+  <p>Talvez o atrelado venha a ser considerado inocente.</p>
+
+  <p>Poderá explicar que apenas estava de passagem, que desconhecia o passado do camião ao qual se encontrava ligado e que nunca perguntou ao empreiteiro de onde vinham os contratos.</p>
+
+  <p>Talvez seja constituído testemunha protegida.</p>
+
+  <p>Talvez receba um cargo de assessoria no ministério, dada a experiência acumulada em circulação entre o sector público e o privado.</p>
+
+  <p>Talvez seja convidado para comentar segurança interna numa estação de televisão.</p>
+
+  <p>Em Portugal, a carreira de um atrelado está sempre em aberto.</p>
+
+  <p>Quanto ao ministro, beneficia naturalmente da presunção de inocência. Não existe, até ao momento, prova pública de que tenha autorizado, conhecido ou participado no desaparecimento do veículo.</p>
+
+  <p>Mas a responsabilidade política não exige necessariamente uma condenação criminal. Exige explicações completas, coerentes e verificáveis.</p>
+
+  <p>Porque um ministro da Administração Interna pode desconhecer muitas coisas.</p>
+
+  <p>Pode desconhecer a matrícula do atrelado, o percurso exacto, o nome do motorista ou a quantidade de combustível consumida.</p>
+
+  <p>O que não pode é governar como se todas as perguntas fossem mercadoria apreendida: guardadas num parque distante, sem inventário e à espera de desaparecer.</p>
+
+  <div class="fc-pullquote">Nesta novela negra portuguesa, ainda não sabemos quem conduziu o atrelado. Mas já percebemos quem está a ser rebocado por ele.</div>
+
+  <section class="fc-sources" aria-labelledby="fc-fontes-title">
+    <h2 id="fc-fontes-title">Referências e fontes consultadas</h2>
+    <ol>
+      <li id="fc-ref-1"><a href="https://www.dn.pt/pol%C3%ADtica/pj-apreende-atrelado-de-rede-de-cocana-em-empresa-de-empreiteiro-amigo-de-luis-neves" target="_blank" rel="noopener noreferrer"><strong>Diário de Notícias</strong> — "PJ recupera atrelado ligado a rede de cocaína em empresa de empreiteiro amigo de Luís Neves", 16 de Julho de 2026.</a></li>
+      <li id="fc-ref-2"><a href="https://www.rtp.pt/noticias/pais/atrelado-apreendido-pela-pj-aparece-agarrado-a-camiao-da-construbarcelos_n1753991" target="_blank" rel="noopener noreferrer"><strong>RTP Notícias / Antena 1</strong> — "Atrelado apreendido pela PJ aparece agarrado a camião da Construbarcelos", 17 de Julho de 2026.</a></li>
+      <li id="fc-ref-3"><a href="https://rr.pt/noticia/pais/2026/07/16/empreiteiro-do-mai-usava-atrelado-de-camiao-apreendido-pela-pj/478574/" target="_blank" rel="noopener noreferrer"><strong>Renascença</strong> — "Empreiteiro do MAI usava atrelado de camião apreendido pela PJ", 16 de Julho de 2026.</a></li>
+      <li id="fc-ref-4"><a href="https://eco.sapo.pt/2026/07/16/das-obras-na-pj-ao-amigo-empreiteiro-tudo-o-que-sabe-da-polemica-que-envolve-luis-neves/" target="_blank" rel="noopener noreferrer"><strong>ECO</strong> — "Das obras na PJ ao 'amigo' empreiteiro: tudo o que se sabe da polémica que envolve Luís Neves", 16 de Julho de 2026.</a></li>
+      <li id="fc-ref-5"><a href="https://portugal.gov.pt/gc25/area-de-governo/administracao-interna/ministro" target="_blank" rel="noopener noreferrer"><strong>Portal do Governo da República Portuguesa</strong> — Página oficial do ministro da Administração Interna, consultada em 17 de Julho de 2026.</a></li>
+    </ol>
+  </section>
+
+  <footer class="fc-signature">
+    <strong>Francisco Gonçalves</strong><br>
+    Fragmentos do Caos · 2026
+  </footer>
+</article><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

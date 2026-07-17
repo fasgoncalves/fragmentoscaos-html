@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Clube dos Escolhidos</title>
+<meta name="description" content="O Clube dos Escolhidos">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Clube dos Escolhidos</h1>
+      <p class="meta">Publicado em 2026-07-17 10:36:27</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/07/file_00000000ea1471f4bc17689ab93acf4d_2d4bc188.jpg" alt=""></figure>
+      <div class="post-content">
+        <style>
+.fc-chronic-news.fc-clube{--bg:#101214;--panel:#191c1f;--text:#ece8df;--muted:#b9b4aa;--accent:#d79a2b;--soft:#f1c876;--line:rgba(215,154,43,.32);box-sizing:border-box;width:100%;max-width:1080px;margin:0 auto;padding:clamp(14px,2.6vw,30px);background:radial-gradient(circle at 94% 4%,rgba(215,154,43,.12),transparent 28%),linear-gradient(180deg,#101214,#15181b);color:var(--text);border:1px solid rgba(255,255,255,.06);border-radius:18px;box-shadow:0 18px 55px rgba(0,0,0,.24);font-family:Georgia,"Times New Roman",serif;line-height:1.68;overflow-wrap:anywhere}.fc-chronic-news.fc-clube *{box-sizing:border-box}.fc-clube .fc-kicker{margin:0 0 8px;color:var(--soft);font-family:Arial,sans-serif;font-size:.77rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.fc-clube h1{margin:0;color:#fff7e7;font-size:clamp(2.15rem,6.2vw,4.55rem);line-height:.98;letter-spacing:-.045em}.fc-clube .fc-deck{max-width:840px;margin:18px 0 10px;color:var(--soft);font-size:clamp(1.04rem,2.2vw,1.34rem);font-style:italic;line-height:1.45}.fc-clube .fc-meta{display:flex;flex-wrap:wrap;gap:8px 16px;margin:16px 0 0;padding-top:13px;border-top:1px solid var(--line);color:var(--muted);font-family:Arial,sans-serif;font-size:.82rem}.fc-clube .fc-note{margin:24px 0;padding:15px 17px;background:linear-gradient(135deg,rgba(215,154,43,.13),rgba(255,255,255,.025));border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:10px;color:#e9e3d7;font-family:Arial,sans-serif;font-size:.92rem;line-height:1.55}.fc-clube .fc-dropcap::first-letter{float:left;margin:.08em .1em 0 0;color:var(--accent);font-size:4.2em;font-weight:800;line-height:.72}.fc-clube p{margin:.78em 0}.fc-clube h2{margin:1.7em 0 .55em;padding-bottom:.28em;color:var(--accent);border-bottom:1px solid var(--line);font-family:Arial,sans-serif;font-size:clamp(1.28rem,3vw,1.82rem);line-height:1.18}.fc-clube strong{color:#fff4dc}.fc-clube em{color:#f0d29b}.fc-clube a{color:var(--soft);text-decoration-thickness:1px;text-underline-offset:3px}.fc-clube blockquote{margin:1.25em 0;padding:13px 18px;background:rgba(255,255,255,.035);border-left:4px solid var(--accent);color:#f2eadb;font-size:1.08rem;font-style:italic}.fc-clube .fc-factbox{margin:1.3em 0;padding:16px 18px;background:#141719;border:1px solid var(--line);border-radius:12px;font-family:Arial,sans-serif;font-size:.92rem}.fc-clube .fc-pullquote{margin:1.35em 0;padding:18px;background:#202428;border:1px solid rgba(255,255,255,.07);border-radius:12px;color:#fff2d1;font-size:clamp(1.17rem,2.5vw,1.5rem);font-weight:700;line-height:1.4;text-align:center}.fc-clube .fc-sources{margin-top:2.2em;padding:18px;background:var(--panel);border:1px solid rgba(255,255,255,.07);border-radius:12px;font-family:Arial,sans-serif;font-size:.88rem}.fc-clube .fc-sources h2{margin-top:0}.fc-clube .fc-sources li{margin:.55em 0}.fc-clube .fc-signature{margin-top:2em;padding-top:1em;border-top:1px solid var(--line);color:var(--muted);font-family:Arial,sans-serif;font-size:.86rem}@media(max-width:620px){.fc-clube{padding:15px;border-radius:12px}.fc-clube h1{font-size:clamp(2.1rem,13vw,3.35rem)}.fc-clube .fc-meta{display:block}.fc-clube .fc-meta span{display:block;margin:4px 0}}
+</style><article class="fc-chronic-news fc-clube" lang="pt-PT">
+<header><p class="fc-kicker">Crónica do caos · Estado · Contratação pública</p><h1>O Clube dos Escolhidos</h1><p class="fc-deck">Um clube sem sede, sem estatutos publicados e com quotas pagas em favores, contratos e silêncios convenientes.</p><div class="fc-meta"><span><strong>Autor:</strong> Francisco Gonçalves</span><span><strong>Publicação:</strong> Fragmentos do Caos</span><span><strong>Data:</strong> 17 de Julho de 2026</span></div></header>
+<aside class="fc-note"><strong>Nota editorial:</strong> Esta crónica critica mecanismos estruturais de proximidade, exclusão e reduzida concorrência na contratação pública. Não imputa crimes a pessoas ou empresas concretas. A crítica incide sobre incentivos, procedimentos e padrões institucionais documentados por organismos nacionais e internacionais.</aside>
+<p class="fc-dropcap">Há em Portugal um clube exclusivo ao qual ninguém se candidata.</p>
+<p>Não tem formulário de adesão, página electrónica, morada fiscal visível ou regulamento afixado à porta. Não anuncia vagas, não publica critérios e não aceita currículos enviados por iniciativa própria.</p>
+<p>Entra-se por convite.</p><p>Ou por amizade.</p><p>Ou por parentesco.</p><p>Ou por uma dessas relações antigas, discretas e úteis que começam num jantar, continuam num congresso partidário e acabam num contrato público.</p>
+<p>É o <strong>Clube dos Escolhidos</strong>.</p>
+<p>Os seus membros não se reconhecem por cartão, emblema ou gravata. Reconhecem-se pelo modo como circulam entre gabinetes, empresas, institutos públicos, assessorias, fundações, autarquias e administrações. Hoje estão num ministério, amanhã numa consultora, depois numa empresa contratada pelo Estado e, alguns meses mais tarde, regressam ao aparelho público com uma experiência que o próprio aparelho lhes ajudou a fabricar.</p>
+<p>É um circuito fechado com aparência de mercado aberto.</p>
+<h2>A porta está aberta, mas só por dentro</h2>
+<p>Formalmente, qualquer empresa pode concorrer. Qualquer técnico pode apresentar uma proposta. Qualquer profissional competente pode oferecer os seus serviços.</p>
+<p>A lei garante igualdade, transparência e concorrência. O Tribunal de Contas recorda que a concorrência é um princípio essencial da contratação pública, indispensável à igualdade de acesso aos mercados e à protecção dos interesses financeiros públicos.<sup><a href="/#fc-ref-1">[1]</a></sup></p>
+<p>A realidade, menos literária e mais eficiente, garante outra coisa: a porta está aberta, mas a maçaneta fica do lado de dentro.</p>
+<p>Quem pertence ao círculo sabe antes. Sabe que vai haver concurso. Sabe quais serão as exigências. Sabe quem decide. Sabe que linguagem utilizar. Sabe quanto pode cobrar. Sabe até que erro é tolerável.</p>
+<p>O candidato exterior, esse estranho inconveniente que ainda acredita no mérito, recebe o anúncio quando tudo já parece ter sido pensado para alguém.</p>
+<p>Pode ter a melhor equipa, a melhor solução e o melhor preço.</p><p>Falta-lhe apenas o requisito essencial: ser conhecido.</p>
+<h2>A experiência circular</h2>
+<p>A justificação habitual é sempre impecável.</p><p>A empresa escolhida tem experiência.</p><p>Naturalmente que tem.</p><p>Foi escolhida antes.</p><p>E foi escolhida antes porque já tinha sido escolhida ainda antes.</p>
+<p>A experiência passa, assim, a ser uma espécie de herança hereditária. Quem ganhou contratos públicos acumula referências públicas. Quem acumula referências públicas torna-se mais elegível para novos contratos públicos. Quem nunca entrou continua sem experiência pública porque nunca entrou.</p>
+<p>É o milagre administrativo da experiência circular.</p><p>Os mesmos vencem porque já venceram.</p><p>Os outros perdem porque nunca lhes foi permitido vencer.</p>
+<p>E depois aparece um responsável político a explicar, com solenidade, que não existiam alternativas credíveis no mercado.</p><p>Existiam.</p><p>Estavam apenas fora da agenda telefónica.</p>
+<div class="fc-factbox"><p><strong>Um dado incómodo:</strong> no Relatório Anual da Contratação Pública de 2024, o Portal BASE registou o ajuste directo como o procedimento mais utilizado em número de contratos, representando 48,55% dos contratos publicados nesse ano.<sup><a href="/#fc-ref-2">[2]</a></sup></p><p>O ajuste directo é legal dentro dos limites previstos no Código dos Contratos Públicos. O problema começa quando a excepção concorrencial se transforma em hábito administrativo e a escolha repetida dos mesmos convidados passa a dispensar qualquer curiosidade pelo mercado.</p></div>
+<h2>O mérito como elemento decorativo</h2>
+<p>O mérito continua a ser mencionado em discursos, programas eleitorais e cerimónias de inauguração.</p><p>É uma palavra bonita, respeitável e completamente inofensiva.</p><p>Serve para decorar frases, como uma planta artificial num corredor ministerial.</p>
+<p>Na prática, o mérito sem relações é frequentemente visto como uma ameaça.</p>
+<p>Uma pessoa competente faz perguntas. Compara preços. Detecta falhas. Recusa instruções absurdas. Não percebe a utilidade de intermediários. E, defeito imperdoável, pode concluir que determinado contrato não devia existir.</p>
+<p>O incompetente bem relacionado é mais seguro. Não questiona o mecanismo que o alimenta. Não perturba a cadeia de favores. Não exige clareza onde a ambiguidade produz rendimento. E sabe que a sua sobrevivência depende menos do resultado do trabalho do que da preservação das relações.</p>
+<h2>O clube não precisa de conspirar</h2>
+<p>O Clube dos Escolhidos não necessita de reunir numa cave, à meia-noite, em redor de uma mesa coberta de documentos secretos.</p><p>Isso seria demasiado trabalhoso.</p>
+<p>O sistema funciona de forma muito mais simples. Todos sabem quem conhece quem. Todos sabem quem foi recomendado por quem. Todos sabem qual é a empresa próxima do partido, do gabinete, da autarquia ou do instituto. Todos sabem quem não deve ser contrariado.</p>
+<p>Não é necessária uma ordem explícita. Basta uma sugestão. Um telefonema. Uma frase vaga.</p>
+<blockquote>"Talvez fosse útil falar com esta empresa."<br>"Já trabalharam connosco."<br>"São pessoas de confiança."<br>"Conhecem bem o sector."</blockquote>
+<p>E assim se decide o futuro de contratos, projectos e serviços públicos com a tranquilidade de quem apenas está a fazer uma recomendação inocente.</p><p>A influência moderna raramente deixa impressões digitais.</p><p>Deixa contactos guardados.</p>
+<h2>Quando falham, são novamente escolhidos</h2>
+<p>Num mercado normal, uma empresa que falha perde clientes.</p><p>No clube português, uma empresa que falha pode ganhar um contrato adicional para corrigir a falha anterior.</p><p>É uma modalidade avançada de fidelização.</p>
+<p>O sistema não funcionou? É necessária manutenção. A plataforma caiu? É preciso reforço técnico. O projecto ficou incompleto? Será criada uma segunda fase. O orçamento foi ultrapassado? Convém contratar acompanhamento especializado.</p>
+<p>Cada falha gera uma nova oportunidade.</p><p>A incompetência deixa de ser um obstáculo e transforma-se num modelo de negócio recorrente.</p>
+<p>Os cidadãos pagam a primeira versão, a correcção, a correcção da correcção e o relatório final que conclui ter havido "constrangimentos operacionais".</p>
+<p>A expressão "constrangimentos operacionais" é uma das maiores invenções da Administração Pública. Permite descrever um desastre sem identificar um responsável.</p>
+<h2>Os excluídos invisíveis</h2>
+<p>Do lado de fora ficam milhares de profissionais competentes: engenheiros, programadores, arquitectos, investigadores, gestores e pequenos empresários. Pessoas que estudaram, trabalharam e construíram experiência real.</p>
+<p>Não aparecem nos jornais porque nunca receberam o contrato. Não constam das listas porque nunca foram convidadas. Não acumulam referências porque o sistema exige referências que apenas o próprio sistema pode conceder.</p>
+<p>Alguns emigram. Outros abandonam o sector. Muitos deixam de concorrer.</p>
+<p>Percebem que preparar propostas detalhadas para procedimentos desenhados à medida de terceiros é uma forma dispendiosa de teatro administrativo.</p>
+<p>E quando os melhores deixam de participar, o clube anuncia que não há alternativas no mercado.</p><p>É uma profecia cuidadosamente fabricada.</p>
+<p>A própria Comissão Europeia assinalou, num inquérito europeu, que mais de metade dos inquiridos considerava a corrupção prevalecente na contratação pública e que 27% afirmava já ter sido impedido de obter contratos por esse motivo.<sup><a href="/#fc-ref-3">[3]</a></sup></p>
+<h2>A alternância das cores</h2>
+<p>O mais interessante é que este clube não pertence verdadeiramente a um partido.</p>
+<p>Os partidos utilizam-no, alimentam-no e protegem-no, mas o clube é mais antigo e mais adaptável do que todos eles.</p>
+<p>Muda o Governo. Mudam os ministros. Mudam os secretários de Estado. Mudam os slogans. Os fornecedores sobrevivem.</p>
+<p>Uma empresa trabalha hoje para um partido, amanhã para outro e depois para uma autarquia onde ambos juram combater-se.</p>
+<p>A ideologia termina onde começa a facturação.</p>
+<p>No palco, os partidos insultam-se. Nos bastidores, partilham fornecedores, consultores e métodos.</p>
+<p>A luta política é feroz até ao momento em que chega a factura.</p><p>Aí instala-se uma admirável estabilidade democrática.</p>
+<h2>O Estado como rede privada</h2>
+<p>O problema não é existir amizade. As pessoas têm amigos. Os políticos conhecem empresários. Os empresários conhecem técnicos. Nada disso é, por si só, condenável.</p>
+<p>O problema começa quando as relações pessoais substituem critérios públicos.</p>
+<p>Quando a confiança privada ocupa o lugar da competência demonstrada.</p><p>Quando a proximidade vale mais do que o desempenho.</p><p>Quando o dinheiro de todos é distribuído segundo relações que pertencem apenas a alguns.</p>
+<p>Nesse momento, o Estado deixa de funcionar como instituição comum.</p><p>Transforma-se numa rede privada financiada colectivamente.</p><p>O contribuinte paga a quota.</p><p>Mas não pode entrar no clube.</p>
+<h2>O verdadeiro prejuízo</h2>
+<p>O prejuízo não se mede apenas em contratos caros, plataformas deficientes ou obras mal executadas.</p>
+<p>Mede-se também no talento desperdiçado. Nas empresas que nunca cresceram. Nos profissionais que partiram. Nas soluções que nunca foram testadas. Na inovação que ficou fora da porta.</p>
+<p>A OCDE considera a concorrência uma pedra angular de uma contratação pública eficiente: aumenta a inovação, melhora a qualidade e pode produzir poupanças significativas para o Estado.<sup><a href="/#fc-ref-4">[4]</a></sup></p>
+<p>Um país que exclui os competentes para proteger os próximos não fica apenas mais injusto.</p><p>Fica mais pobre. Mais lento. Mais dependente. Mais medíocre.</p>
+<p>E depois pergunta, com espanto institucional, por que razão os serviços falham, os projectos atrasam e os jovens qualificados procuram outros países.</p>
+<p>A resposta é simples.</p><p>O país mandou-os esperar à porta enquanto os amigos entravam pela garagem.</p>
+<h2>A selecção natural da mediocridade</h2>
+<p>Ao fim de décadas, o sistema produz exactamente aquilo para que foi construído.</p>
+<p>Não selecciona os mais competentes.</p><p>Selecciona os mais adaptados à rede.</p>
+<p>Sobrevivem aqueles que conhecem os códigos, os rostos, os jantares e os silêncios.</p>
+<p>É uma selecção natural, mas sem natureza e com pouca selecção.</p>
+<p>O resultado é uma elite de proximidade que confunde confiança com competência, repetição com experiência e permanência com qualidade.</p>
+<p>O clube continua a crescer. Não porque produza bons resultados. Mas porque controla quem avalia os resultados.</p>
+<p>O Tribunal de Contas tem repetidamente alertado para riscos associados a procedimentos excepcionais de contratação pública, incluindo deficiências de fundamentação, transparência e controlo.<sup><a href="/#fc-ref-5">[5]</a></sup> A Transparency International atribuiu a Portugal 56 pontos em 100 no Índice de Percepção da Corrupção de 2025, colocando o país no 46.º lugar entre 182 Estados e territórios.<sup><a href="/#fc-ref-6">[6]</a></sup></p>
+<h2>O dia em que a porta se abrir</h2>
+<p>A verdadeira reforma do Estado começará quando os contratos forem simples de consultar, os critérios forem objectivos, os conflitos de interesses forem levados a sério e os responsáveis deixarem de poder esconder-se atrás de entidades, departamentos e procedimentos.</p>
+<p>Começará quando falhar tiver consequências. Quando escolher mal tiver um custo. Quando a competência exterior deixar de ser tratada como uma intromissão. Quando os concursos deixarem de ser cerimónias públicas destinadas a legitimar decisões privadas.</p>
+<p>Até esse dia, o Clube dos Escolhidos continuará a funcionar.</p>
+<p>Discreto. Transversal. Resistente.</p>
+<p>Sem sede oficial e com filiais em todo o aparelho do Estado.</p>
+<p>Lá dentro, os membros garantem uns aos outros que tudo foi feito segundo a lei.</p>
+<p>Cá fora, os competentes continuam a enviar currículos para uma porta sem campainha.</p>
+<div class="fc-pullquote">E o país, sentado na recepção, paga a conta e espera ser atendido.</div>
+<section class="fc-sources"><h2>Referências e fontes consultadas</h2><ol>
+<li id="fc-ref-1"><a href="https://www.tcontas.pt/pt-pt/ProdutosTC/Relatorios/relatorios-oac/Documents/2021/relatorio-oac001-2021-pg.pdf" target="_blank" rel="noopener noreferrer"><strong>Tribunal de Contas</strong> — Relatório n.º 1/2021-OAC/PG: concorrência, igualdade de acesso aos mercados e protecção dos interesses financeiros públicos.</a></li>
+<li id="fc-ref-2"><a href="https://www.base.gov.pt/Base4/media/2oeld2oi/relat%C3%B3rio-anual-2024-contrata%C3%A7%C3%A3o-p%C3%BAblica.pdf" target="_blank" rel="noopener noreferrer"><strong>Portal BASE / IMPIC</strong> — Relatório Anual da Contratação Pública em Portugal 2024.</a></li>
+<li id="fc-ref-3"><a href="https://home-affairs.ec.europa.eu/news/rule-law-report-and-commission-surveys-show-concerns-over-governments-efforts-tackle-corruption-2024-07-24_en" target="_blank" rel="noopener noreferrer"><strong>Comissão Europeia</strong> — Inquéritos sobre corrupção e contratação pública na União Europeia, 24 de Julho de 2024.</a></li>
+<li id="fc-ref-4"><a href="https://www.oecd.org/en/publications/implementing-the-oecd-recommendation-on-public-procurement-in-oecd-and-partner-countries_02a46a58-en/full-report/implementation-of-the-oecd-recommendation-in-member-and-partner-countries_2305bb1b.html" target="_blank" rel="noopener noreferrer"><strong>OCDE</strong> — Implementação da Recomendação sobre Contratação Pública, 2025.</a></li>
+<li id="fc-ref-5"><a href="https://www.tcontas.pt/pt-pt/MenuSecundario/Noticias/Pages/n20241007-1.aspx" target="_blank" rel="noopener noreferrer"><strong>Tribunal de Contas</strong> — Alerta para riscos associados às medidas especiais de contratação pública, 7 de Outubro de 2024.</a></li>
+<li id="fc-ref-6"><a href="https://www.transparency.org/en/countries/portugal" target="_blank" rel="noopener noreferrer"><strong>Transparency International</strong> — Índice de Percepção da Corrupção 2025: Portugal, 56/100 e 46.º lugar entre 182 países e territórios.</a></li>
+<li><a href="https://transparencia.pt/portugal-continua-com-falhas-na-aplicacao-das-regras-de-contratacao-publica/" target="_blank" rel="noopener noreferrer"><strong>Transparência e Integridade Portugal</strong> — Riscos em procedimentos não concorrenciais e conflitos de interesses, 27 de Outubro de 2023.</a></li>
+<li><a href="https://www.concorrencia.pt/sites/default/files/processos/epr/Coment%C3%A1rios%20e%20Propostas%20AdC%20para%20o%20procedimento%20de%20avalia%C3%A7%C3%A3o%20pela%20CE%20das%20Diretivas%20de%20Contrata%C3%A7%C3%A3o%20P%C3%BAblica%20da%20UE.pdf" target="_blank" rel="noopener noreferrer"><strong>Autoridade da Concorrência</strong> — Comentários sobre as directivas europeias de contratação pública, 23 de Maio de 2025.</a></li>
+</ol></section>
+<section class="fc-editorial-note" style="margin:2rem 0 0;padding:1.25rem 1.35rem;background:linear-gradient(135deg,rgba(215,154,43,.12),rgba(255,255,255,.03));border:1px solid rgba(215,154,43,.35);border-left:5px solid #d79a2b;border-radius:12px;color:#ece8df;font-family:Georgia,'Times New Roman',serif;line-height:1.68;">
+  <h3 style="margin:0 0 .85rem;color:#d79a2b;font-family:Arial,Helvetica,sans-serif;font-size:1.2rem;letter-spacing:.02em;">
+    Nota Editorial
+  </h3>  <p style="margin:.65rem 0;">
+    Estamos perante uma <strong style="color:#fff4dc;">economia de submundo com aparência regulamentar</strong>: contratos publicados, procedimentos formalmente cumpridos, pareceres emitidos e, por baixo da mesa institucional, o mesmo circuito de nomes, relações e conveniências.
+  </p>  <p style="margin:.65rem 0;">
+    O aspecto mais perverso deste sistema é que raramente necessita de violar frontalmente a lei. Aprende antes a contorná-la com elegância administrativa. A exclusão pode fazer-se através de critérios técnicos desenhados à medida, experiência prévia impossível de obter, prazos reduzidos, ajustes directos sucessivos e convites distribuídos dentro da mesma rede. Tudo permanece legalmente apresentável e democraticamente apodrecido.
+  </p>  <p style="margin:.65rem 0;">
+    A economia deixa assim de premiar quem cria valor e passa a recompensar quem possui acesso. O talento independente é tratado como elemento estranho; a proximidade partidária, empresarial ou institucional transforma-se num certificado informal de competência.
+  </p>  <p style="margin:.65rem 0;">
+    Quando o resultado falha, ninguém abandona o circuito. Mudam-se os responsáveis, acrescenta-se uma nova fase ao projecto e contrata-se novamente o mesmo clube para reparar aquilo que o próprio clube estragou.
+  </p>  <blockquote style="margin:1rem 0 0;padding:.9rem 1rem;background:rgba(0,0,0,.18);border-left:4px solid #d79a2b;color:#fff1d2;font-style:italic;">
+    É uma economia onde o mercado está aberto nos discursos, mas fechado na agenda de contactos. O contribuinte financia, os amigos facturam e os competentes contemplam a montra. Uma magnífica máquina de fabricar mediocridade com selo oficial.
+  </blockquote>
+</section>
+<footer class="fc-signature"><strong>Francisco Gonçalves</strong><br>Fragmentos do Caos · 2026</footer>
+</article>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
