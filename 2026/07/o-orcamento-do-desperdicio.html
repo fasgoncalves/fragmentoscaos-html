@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Orçamento do Desperdício</title>
+<meta name="description" content="O Orçamento do Desperdício">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Orçamento do Desperdício</h1>
+      <p class="meta">Publicado em 2026-07-18 14:00:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/07/file_000000004f7871f4b02d656c4d757b58_c02ec817.jpg" alt=""></figure>
+      <div class="post-content">
+        <style>
+.fc-chronic-news.fc-orcamento-zero {
+  --fc-bg: #101214;
+  --fc-panel: #181b1e;
+  --fc-panel-2: #202428;
+  --fc-text: #ece8df;
+  --fc-muted: #b9b4aa;
+  --fc-accent: #d79a2b;
+  --fc-accent-soft: #f1c876;
+  --fc-line: rgba(215,154,43,.32);
+  --fc-red: #c86f5a;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(14px, 2.6vw, 30px);
+  background:
+    radial-gradient(circle at 93% 3%, rgba(215,154,43,.13), transparent 28%),
+    linear-gradient(180deg, #101214 0%, #15181b 100%);
+  color: var(--fc-text);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 18px;
+  box-shadow: 0 18px 55px rgba(0,0,0,.24);
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.68;
+  overflow-wrap: anywhere;
+}
+.fc-chronic-news.fc-orcamento-zero *,
+.fc-chronic-news.fc-orcamento-zero *::before,
+.fc-chronic-news.fc-orcamento-zero *::after {
+  box-sizing: border-box;
+}
+.fc-chronic-news.fc-orcamento-zero .fc-kicker {
+  margin: 0 0 8px;
+  color: var(--fc-accent-soft);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .77rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.fc-chronic-news.fc-orcamento-zero h1 {
+  margin: 0;
+  color: #fff7e7;
+  font-size: clamp(2.05rem, 6vw, 4.4rem);
+  line-height: .98;
+  letter-spacing: -.045em;
+}
+.fc-chronic-news.fc-orcamento-zero .fc-deck {
+  max-width: 850px;
+  margin: 18px 0 10px;
+  color: var(--fc-accent-soft);
+  font-size: clamp(1.04rem, 2.2vw, 1.34rem);
+  font-style: italic;
+  line-height: 1.45;
+}
+.fc-chronic-news.fc-orcamento-zero .fc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 16px 0 0;
+  padding-top: 13px;
+  border-top: 1px solid var(--fc-line);
+  color: var(--fc-muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .82rem;
+}
+.fc-chronic-news.fc-orcamento-zero .fc-note {
+  margin: 24px 0;
+  padding: 15px 17px;
+  background: linear-gradient(135deg, rgba(215,154,43,.13), rgba(255,255,255,.025));
+  border: 1px solid var(--fc-line);
+  border-left: 5px solid var(--fc-accent);
+  border-radius: 10px;
+  color: #e9e3d7;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .92rem;
+  line-height: 1.55;
+}
+.fc-chronic-news.fc-orcamento-zero .fc-dropcap::first-letter {
+  float: left;
+  margin: .08em .1em 0 0;
+  color: var(--fc-accent);
+  font-size: 4.2em;
+  font-weight: 800;
+  line-height: .72;
+}
+.fc-chronic-news.fc-orcamento-zero p {
+  margin: .78em 0;
+}
+.fc-chronic-news.fc-orcamento-zero h2 {
+  margin: 1.7em 0 .55em;
+  padding-bottom: .28em;
+  color: var(--fc-accent);
+  border-bottom: 1px solid var(--fc-line);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(1.28rem, 3vw, 1.82rem);
+  line-height: 1.18;
+}
+.fc-chronic-news.fc-orcamento-zero strong {
+  color: #fff4dc;
+}
+.fc-chronic-news.fc-orcamento-zero em {
+  color: #f0d29b;
+}
+.fc-chronic-news.fc-orcamento-zero a {
+  color: var(--fc-accent-soft);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.fc-chronic-news.fc-orcamento-zero a:hover,
+.fc-chronic-news.fc-orcamento-zero a:focus {
+  color: #fff0c5;
+}
+.fc-chronic-news.fc-orcamento-zero blockquote {
+  margin: 1.25em 0;
+  padding: 13px 18px;
+  background: rgba(255,255,255,.035);
+  border-left: 4px solid var(--fc-accent);
+  color: #f2eadb;
+  font-size: 1.08rem;
+  font-style: italic;
+}
+.fc-chronic-news.fc-orcamento-zero sup a {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .78em;
+  font-weight: 700;
+  text-decoration: none;
+}
+.fc-chronic-news.fc-orcamento-zero .fc-factbox {
+  margin: 1.3em 0;
+  padding: 16px 18px;
+  background: #141719;
+  border: 1px solid var(--fc-line);
+  border-radius: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .92rem;
+}
+.fc-chronic-news.fc-orcamento-zero .fc-factbox p {
+  margin: .45em 0;
+}
+.fc-chronic-news.fc-orcamento-zero .fc-pullquote {
+  margin: 1.35em 0;
+  padding: 18px clamp(15px, 3vw, 27px);
+  background: var(--fc-panel-2);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 12px;
+  color: #fff2d1;
+  font-size: clamp(1.17rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+.fc-chronic-news.fc-orcamento-zero .fc-editorial-note {
+  margin: 2rem 0 0;
+  padding: 1.25rem 1.35rem;
+  background: linear-gradient(135deg, rgba(215,154,43,.12), rgba(255,255,255,.03));
+  border: 1px solid rgba(215,154,43,.35);
+  border-left: 5px solid var(--fc-accent);
+  border-radius: 12px;
+  color: var(--fc-text);
+}
+.fc-chronic-news.fc-orcamento-zero .fc-editorial-note h3 {
+  margin: 0 0 .85rem;
+  color: var(--fc-accent);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: .02em;
+}
+.fc-chronic-news.fc-orcamento-zero .fc-sources {
+  margin-top: 2.2em;
+  padding: 18px;
+  background: var(--fc-panel);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .88rem;
+}
+.fc-chronic-news.fc-orcamento-zero .fc-sources h2 {
+  margin-top: 0;
+}
+.fc-chronic-news.fc-orcamento-zero .fc-sources ol {
+  margin: .8em 0 0 1.2em;
+  padding-left: 1em;
+}
+.fc-chronic-news.fc-orcamento-zero .fc-sources li {
+  margin: .58em 0;
+}
+.fc-chronic-news.fc-orcamento-zero .fc-signature {
+  margin-top: 2em;
+  padding-top: 1em;
+  border-top: 1px solid var(--fc-line);
+  color: var(--fc-muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .86rem;
+}
+@media (max-width: 620px) {
+  .fc-chronic-news.fc-orcamento-zero {
+    padding: 15px;
+    border-radius: 12px;
+  }
+  .fc-chronic-news.fc-orcamento-zero h1 {
+    font-size: clamp(2.05rem, 13vw, 3.3rem);
+  }
+  .fc-chronic-news.fc-orcamento-zero .fc-meta {
+    display: block;
+  }
+  .fc-chronic-news.fc-orcamento-zero .fc-meta span {
+    display: block;
+    margin: 4px 0;
+  }
+}
+</style>
+
+<article class="fc-chronic-news fc-orcamento-zero" lang="pt-PT">
+  <header>
+    <p class="fc-kicker">Crónica do caos · Finanças públicas · Reforma do Estado</p>
+    <h1>O Orçamento do Desperdício</h1>
+    <p class="fc-deck">A máquina pública que destrói riqueza para garantir a verba do próximo ano.</p>
+    <div class="fc-meta">
+      <span><strong>Autor:</strong> Francisco Gonçalves</span>
+      <span><strong>Publicação:</strong> Fragmentos do Caos</span>
+      <span><strong>Data:</strong> 17 de Julho de 2026</span>
+    </div>
+  </header>
+
+  <aside class="fc-note">
+    <strong>Nota de enquadramento:</strong> A dotação orçamental é uma autorização legal de despesa e não constitui, por si própria, um desperdício. A perversidade surge quando a despesa histórica se converte numa base quase automática para o orçamento seguinte e quando a subexecução é percepcionada como risco de perda futura de recursos. A crónica defende uma revisão exigente da despesa, não cortes cegos em serviços essenciais.
+  </aside>
+
+  <p class="fc-dropcap">Todos os anos, o Estado português realiza uma cerimónia solene em que anuncia quanto pretende gastar.</p>
+
+  <p>Chamamos-lhe Orçamento do Estado.</p>
+
+  <p>Ministros apresentam gráficos, deputados representam indignação, comentadores discutem décimas e o cidadão assiste ao espectáculo com a resignação de quem sabe que, no fim, será chamado à bilheteira para pagar tudo.</p>
+
+  <p>Mas escondida por baixo das grandes rubricas, das previsões económicas e dos discursos sobre rigor existe uma perversidade antiga, silenciosa e extraordinariamente eficaz na destruição de riqueza.</p>
+
+  <p>Chama-se dotação orçamental.</p>
+
+  <p>A dotação, por si só, é apenas uma autorização para gastar determinada quantia. O Conselho das Finanças Públicas define o Orçamento do Estado como a lei que integra a previsão das receitas e a autorização, ou dotação, das despesas para um horizonte anual.<sup><a href="/#fc-ref-1">[1]</a></sup> O problema começa quando esse limite passa a ser tratado como propriedade adquirida pelo organismo que o recebeu.</p>
+
+  <p>A partir desse momento, o dinheiro público deixa de ser um recurso a preservar.</p>
+
+  <p>Transforma-se numa verba que é preciso consumir.</p>
+
+  <h2>O crime administrativo de poupar</h2>
+
+  <p>Imaginemos um serviço público ao qual foram atribuídos dez milhões de euros.</p>
+
+  <p>Durante o ano, a direcção melhora processos, elimina despesas inúteis, digitaliza tarefas e consegue prestar o mesmo serviço gastando apenas oito milhões.</p>
+
+  <p>Numa economia racional, este resultado seria celebrado.</p>
+
+  <p>A equipa seria elogiada.</p>
+
+  <p>O método seria estudado.</p>
+
+  <p>Parte da poupança poderia ser aplicada em inovação, investigação ou melhoria dos serviços.</p>
+
+  <p>No Estado tradicional, porém, pode acontecer precisamente o contrário.</p>
+
+  <p>Quando chegar o orçamento seguinte, alguém perguntará:</p>
+
+  <blockquote>Se gastaram apenas oito milhões, para que precisam de dez?</blockquote>
+
+  <p>A eficiência torna-se assim uma confissão involuntária de que a dotação anterior era excessiva.</p>
+
+  <p>O organismo aprende rapidamente a lição.</p>
+
+  <p>Poupar pode significar perder verba.</p>
+
+  <p>Gastar tudo significa proteger o orçamento futuro.</p>
+
+  <p>Eis o milagre da gestão pública: cria-se um sistema onde o comportamento racional para cada organismo é irracional para o país inteiro.</p>
+
+  <h2>A febre do fim do ano</h2>
+
+  <p>É por isso que, quando o exercício se aproxima do fim, muitos serviços entram numa súbita actividade consumista.</p>
+
+  <p>Compram-se computadores que ainda não eram necessários.</p>
+
+  <p>Encomendam-se estudos destinados a provar aquilo que todos já sabiam.</p>
+
+  <p>Renovam-se móveis, contratam-se formações, adquirem-se licenças e descobrem-se necessidades urgentes que, curiosamente, permaneceram invisíveis durante os primeiros onze meses.</p>
+
+  <p>A prioridade não é criar valor.</p>
+
+  <p>É executar a verba.</p>
+
+  <p>A expressão parece técnica, responsável e quase virtuosa. Na verdade, pode significar apenas isto:</p>
+
+  <blockquote>Gastar o dinheiro antes que alguém perceba que não precisávamos dele.</blockquote>
+
+  <p>Não se trata apenas de uma suspeita produzida pela proverbial má disposição do contribuinte. Um estudo publicado na <em>American Economic Review</em>, com dados da contratação pública federal norte-americana, encontrou uma despesa na última semana do ano 4,9 vezes superior à média semanal e classificações de qualidade significativamente inferiores nos projectos de tecnologias de informação contratados no fim do exercício.<sup><a href="/#fc-ref-2">[2]</a></sup></p>
+
+  <div class="fc-factbox">
+    <p><strong>O incentivo é conhecido:</strong> quando as verbas não utilizadas expiram, os organismos podem ser levados a antecipar aquisições ou a financiar projectos de menor qualidade para não perderem recursos. Os autores do estudo concluíram também que permitir a transição de parte das verbas não utilizadas para o exercício seguinte pode melhorar a eficiência.<sup><a href="/#fc-ref-3">[3]</a></sup></p>
+  </div>
+
+  <p>A despesa deixa de ser um meio para atingir resultados.</p>
+
+  <p>Passa a ser o próprio resultado.</p>
+
+  <p>Um organismo que gastou toda a dotação é considerado bom executor. Outro que alcançou os mesmos objectivos com menos dinheiro pode ser acusado de fraca execução orçamental.</p>
+
+  <p>É como avaliar um condutor não pela distância percorrida ou pela segurança da viagem, mas pela quantidade de combustível que conseguiu consumir.</p>
+
+  <p>Quanto mais queimou, melhor geriu.</p>
+
+  <h2>A herança automática do passado</h2>
+
+  <p>O orçamento tradicional é frequentemente construído a partir da despesa existente.</p>
+
+  <p>Pega-se na base histórica, acrescentam-se previsões de inflação, novas necessidades, pressões políticas e uma margem prudente para futuras surpresas.</p>
+
+  <p>O passado torna-se, assim, o fundamento automático do futuro.</p>
+
+  <p>Se uma estrutura existia no ano anterior, presume-se que deve continuar.</p>
+
+  <p>Se um programa recebeu dinheiro, volta a recebê-lo.</p>
+
+  <p>Se um departamento possui funcionários, instalações e contratos, a sua permanência é tratada como prova suficiente de utilidade.</p>
+
+  <p>Raramente se regressa à pergunta inicial:</p>
+
+  <blockquote>Precisamos ainda disto?</blockquote>
+
+  <p>O Estado não é obrigado a justificar todos os anos, desde a origem, a existência de cada despesa.</p>
+
+  <p>É o contribuinte que tem de continuar a justificar por que razão ainda não entregou mais dinheiro.</p>
+
+  <p>Ano após ano, acumulam-se organismos, observatórios, comissões, institutos, projectos-piloto que nunca deixam de pilotar, sistemas informáticos eternamente provisórios e programas cuja principal realização consiste em sobreviver ao ministro que os criou.</p>
+
+  <p>A despesa pública ganha vida própria.</p>
+
+  <p>Nasce como medida temporária, cresce como projecto estratégico e envelhece como direito adquirido.</p>
+
+  <h2>Destruir riqueza com toda a legalidade</h2>
+
+  <p>O desperdício público não precisa de envolver corrupção para destruir riqueza.</p>
+
+  <p>Basta gastar recursos em algo que produz menos valor do que aquilo que esses recursos poderiam produzir noutro lugar.</p>
+
+  <p>Cada euro retirado ao contribuinte tem um custo de oportunidade.</p>
+
+  <p>Poderia ter sido investido numa empresa.</p>
+
+  <p>Aplicado na formação de um trabalhador.</p>
+
+  <p>Usado para desenvolver uma tecnologia.</p>
+
+  <p>Poupado para criar estabilidade familiar.</p>
+
+  <p>Dirigido para investigação científica.</p>
+
+  <p>Utilizado na modernização de um hospital, de uma escola ou de uma infra-estrutura.</p>
+
+  <p>Quando o Estado recolhe esse euro e o emprega numa actividade inútil, a sociedade não perde apenas o valor gasto.</p>
+
+  <p>Perde também tudo aquilo que esse dinheiro poderia ter criado.</p>
+
+  <p>O desperdício não é uma ausência de riqueza.</p>
+
+  <p>É a destruição activa de riqueza potencial.</p>
+
+  <p>E quando este mecanismo se repete todos os anos, deixa de ser um acidente.</p>
+
+  <p>Torna-se um modelo económico.</p>
+
+  <h2>O Estado que financia o passado</h2>
+
+  <p>Portugal afirma desejar mais inovação, investigação, produtividade e crescimento.</p>
+
+  <p>Os discursos são abundantes.</p>
+
+  <p>Fala-se em transição digital, inteligência artificial, ciência, indústria avançada, soberania tecnológica e modernização administrativa.</p>
+
+  <p>Depois chega o orçamento.</p>
+
+  <p>E grande parte dos recursos continua comprometida com estruturas antigas, procedimentos inúteis, redundâncias institucionais, rendas permanentes e despesas que ninguém ousa reavaliar.</p>
+
+  <p>O Estado proclama o futuro, mas financia o passado.</p>
+
+  <p>Pede aos investigadores que sejam competitivos internacionalmente, mas obriga-os a disputar verbas escassas enquanto protege despesas burocráticas por mera inércia.</p>
+
+  <p>Exige inovação às empresas, mas mantém organismos onde mudar um formulário exige três pareceres, duas assinaturas e uma comissão de acompanhamento.</p>
+
+  <p>Afirma querer criar riqueza, mas conserva incentivos que podem premiar quem gasta tudo e penalizar quem poupa.</p>
+
+  <p>O dinheiro que poderia financiar laboratórios, empresas tecnológicas, investigação médica, energia, computação científica ou inteligência artificial desaparece silenciosamente em milhares de pequenas despesas consideradas inevitáveis apenas porque aconteceram no ano anterior.</p>
+
+  <h2>A cura chama-se orçamento de base zero</h2>
+
+  <p>Existe uma alternativa.</p>
+
+  <p>Chama-se orçamento de base zero.</p>
+
+  <p>O princípio é desconcertantemente simples:</p>
+
+  <blockquote>Nenhuma despesa deve continuar apenas porque já existia.</blockquote>
+
+  <p>Em vez de começar pelo orçamento do ano anterior e acrescentar alguns valores, cada organismo seria obrigado a justificar periodicamente as suas actividades, programas e necessidades desde a base.</p>
+
+  <p>Para que existe este serviço?</p>
+
+  <p>Que problema resolve?</p>
+
+  <p>Que resultados produz?</p>
+
+  <p>Quanto custa?</p>
+
+  <p>Pode ser feito de forma mais eficiente?</p>
+
+  <p>Pode ser integrado noutro organismo?</p>
+
+  <p>A tecnologia permite automatizá-lo?</p>
+
+  <p>Há tarefas duplicadas?</p>
+
+  <p>O programa continua a ser necessário?</p>
+
+  <p>Que aconteceria se deixasse de existir?</p>
+
+  <p>São perguntas elementares.</p>
+
+  <p>Por isso mesmo, representam uma ameaça profunda para qualquer estrutura habituada a sobreviver sem ter de demonstrar utilidade.</p>
+
+  <p>A OCDE descreve o orçamento de base zero como uma técnica em que a despesa deve ser novamente justificada a partir de uma base nula, em vez de resultar de um ajustamento ao orçamento anterior. A região belga da Valónia introduziu uma iniciativa deste tipo em 2020 e complementou-a com revisões da despesa.<sup><a href="/#fc-ref-4">[4]</a></sup></p>
+
+  <h2>Não cortar por cortar</h2>
+
+  <p>O orçamento de base zero não deve ser confundido com uma operação cega de austeridade.</p>
+
+  <p>Cortar despesas indiscriminadamente é tão irracional como mantê-las automaticamente.</p>
+
+  <p>Há actividades públicas cujo valor não pode ser medido apenas no prazo de um ano.</p>
+
+  <p>A investigação fundamental pode demorar décadas a produzir resultados.</p>
+
+  <p>A prevenção sanitária evita custos futuros que nunca chegam a aparecer nas contas.</p>
+
+  <p>A manutenção de infra-estruturas parece dispensável até ao dia em que uma ponte, uma rede ou um sistema deixa de funcionar.</p>
+
+  <p>A educação, a ciência e a inovação exigem continuidade, estabilidade e visão de longo prazo.</p>
+
+  <p>A base zero não significa começar todos os anos a destruir instituições para depois as reconstruir.</p>
+
+  <p>Significa começar a análise sem presumir que qualquer despesa é eterna.</p>
+
+  <p>O objectivo não é gastar menos a qualquer preço.</p>
+
+  <p>É gastar melhor.</p>
+
+  <p>O FMI define as revisões da despesa como avaliações aprofundadas da despesa pública existente, destinadas a identificar possibilidades de reduzir ou redireccionar verbas de actividades de baixa prioridade, ineficientes ou ineficazes.<sup><a href="/#fc-ref-5">[5]</a></sup> A OCDE acrescenta que estas revisões ajudam a criar espaço orçamental e a alinhar os programas existentes com novas prioridades.<sup><a href="/#fc-ref-6">[6]</a></sup></p>
+
+  <h2>Uma reforma possível</h2>
+
+  <p>Uma aplicação sensata do orçamento de base zero poderia ser feita por ciclos.</p>
+
+  <p>Cada ministério, instituto ou programa seria profundamente revisto a cada três ou quatro anos.</p>
+
+  <p>Nos restantes anos, seriam acompanhados os resultados, os custos e os indicadores de desempenho.</p>
+
+  <p>As despesas deveriam ser organizadas por programas e objectivos, não apenas por organismos e rubricas contabilísticas.</p>
+
+  <p>Os responsáveis teriam de explicar o valor público produzido.</p>
+
+  <p>As poupanças não deveriam conduzir automaticamente a cortes na dotação seguinte.</p>
+
+  <p>Uma parte poderia permanecer no próprio organismo para modernização, formação ou investimento tecnológico.</p>
+
+  <p>Outra parte deveria alimentar um fundo nacional para investigação, inovação e transformação digital.</p>
+
+  <p>Assim, poupar deixaria de ser perigoso.</p>
+
+  <p>Passaria a ser recompensado.</p>
+
+  <p>A Administração Pública descobriria finalmente que eficiência não é gastar toda a verba.</p>
+
+  <p>É produzir o máximo valor público com os recursos necessários.</p>
+
+  <p>Esta lógica aproxima-se do chamado orçamento por desempenho. A OCDE sustenta que a ligação entre recursos e resultados mensuráveis permite priorizar melhor a despesa, reforçar a responsabilização e melhorar a prestação dos serviços públicos.<sup><a href="/#fc-ref-7">[7]</a></sup></p>
+
+  <h2>O fundo para o futuro</h2>
+
+  <p>Imaginemos que apenas uma pequena percentagem da despesa improdutiva fosse anualmente identificada e eliminada.</p>
+
+  <p>Esses recursos poderiam alimentar um fundo permanente para investigação científica, inteligência artificial, biotecnologia, tecnologias médicas, cibersegurança, energia, computação avançada, modernização dos serviços públicos, inovação empresarial e retenção de investigadores e técnicos qualificados.</p>
+
+  <p>Em vez de consumir dinheiro para proteger dotações antigas, o Estado transformaria poupança em capacidade futura.</p>
+
+  <p>Cada euro libertado de uma actividade inútil seria dirigido para algo capaz de produzir conhecimento, produtividade e riqueza.</p>
+
+  <p>Seria uma espécie de reciclagem económica.</p>
+
+  <p>Retirar recursos ao passado morto para financiar o futuro vivo.</p>
+
+  <h2>A resistência dos beneficiários</h2>
+
+  <p>Naturalmente, uma reforma desta natureza encontraria resistência.</p>
+
+  <p>Cada despesa tem um beneficiário.</p>
+
+  <p>Cada organismo possui dirigentes.</p>
+
+  <p>Cada programa tem defensores.</p>
+
+  <p>Cada contrato alimenta uma empresa.</p>
+
+  <p>Cada redundância garante algum poder.</p>
+
+  <p>As estruturas inúteis raramente se consideram inúteis.</p>
+
+  <p>Produzem relatórios que demonstram a importância dos seus próprios relatórios.</p>
+
+  <p>Criam indicadores que medem a actividade necessária para produzir esses indicadores.</p>
+
+  <p>Organizam conferências sobre o futuro do sector que administram desde um passado remoto.</p>
+
+  <p>E quando alguém propõe uma avaliação séria, respondem que o momento é inoportuno, que a matéria é complexa e que será necessário criar um grupo de trabalho.</p>
+
+  <p>O grupo de trabalho, naturalmente, precisará de uma dotação.</p>
+
+  <p>É assim que a burocracia se defende: transforma a tentativa de a reduzir numa nova despesa burocrática.</p>
+
+  <h2>Portugal já conhece o diagnóstico</h2>
+
+  <p>Em Julho de 2025, o Governo português aprovou o regime de revisão contínua da despesa pública, apresentando-o como instrumento para melhorar a qualidade da despesa, optimizar a afectação de recursos e criar margens para novas prioridades. A proposta do Orçamento do Estado para 2026 integrou essa revisão no ciclo orçamental.<sup><a href="/#fc-ref-8">[8]</a></sup><sup><a href="/#fc-ref-9">[9]</a></sup></p>
+
+  <p>O diagnóstico, portanto, já chegou ao Diário da República e às apresentações ministeriais.</p>
+
+  <p>Falta a parte menos ornamental: aplicar a revisão com independência, medir resultados, publicar conclusões, eliminar efectivamente o que não cria valor e impedir que a poupança seja absorvida por uma nova camada de burocracia.</p>
+
+  <p>Porque reformar no papel é uma especialidade nacional.</p>
+
+  <p>Reformar a despesa que alimenta estruturas, fornecedores e poderes instalados é outra ciência, ainda sem financiamento suficiente.</p>
+
+  <h2>O contribuinte involuntário</h2>
+
+  <p>No centro desta máquina encontra-se o contribuinte.</p>
+
+  <p>Não participa na decisão.</p>
+
+  <p>Não escolhe os programas.</p>
+
+  <p>Não avalia os resultados.</p>
+
+  <p>Não recebe dividendos quando há poupança.</p>
+
+  <p>É apenas chamado a financiar o mecanismo.</p>
+
+  <p>Se trabalha mais, paga mais.</p>
+
+  <p>Se uma empresa cresce, paga mais.</p>
+
+  <p>Se investe, consome ou poupa, o Estado encontra uma forma de participar.</p>
+
+  <p>Depois, parte desse dinheiro é utilizada não para melhorar o país, mas para garantir que determinada estrutura conserva a mesma dotação no ano seguinte.</p>
+
+  <p>O contribuinte não financia apenas os serviços públicos.</p>
+
+  <p>Financia também a incapacidade do Estado para distinguir o necessário do habitual.</p>
+
+  <h2>A contabilidade da mediocridade</h2>
+
+  <p>Um país não empobrece apenas quando perde fábricas, empresas ou trabalhadores qualificados.</p>
+
+  <p>Empobrece também quando consome recursos sem criar valor.</p>
+
+  <p>Quando protege despesas antigas e adia investimentos futuros.</p>
+
+  <p>Quando trata a execução orçamental como sucesso, independentemente dos resultados.</p>
+
+  <p>Quando recompensa o desperdício e castiga a poupança.</p>
+
+  <p>Quando mede o Estado pelo dinheiro que gastou em vez de o medir pelos problemas que resolveu.</p>
+
+  <p>A dotação transformada em direito adquirido é uma contabilidade da mediocridade.</p>
+
+  <p>Garante continuidade a tudo, excepto ao progresso.</p>
+
+  <h2>O orçamento que Portugal precisa</h2>
+
+  <p>Portugal não precisa apenas de um orçamento equilibrado.</p>
+
+  <p>Precisa de um orçamento inteligente.</p>
+
+  <p>Um orçamento que pergunte antes de pagar.</p>
+
+  <p>Que avalie antes de renovar.</p>
+
+  <p>Que elimine antes de aumentar impostos.</p>
+
+  <p>Que proteja o investimento produtivo e exponha o desperdício.</p>
+
+  <p>Que permita transferir recursos de estruturas ultrapassadas para ciência, tecnologia, inovação e criação de riqueza.</p>
+
+  <p>Que deixe de considerar sagrada toda a despesa herdada e suspeita toda a poupança alcançada.</p>
+
+  <p>O orçamento de base zero não resolveria todos os problemas do Estado.</p>
+
+  <p>Nenhum instrumento resolve sozinho décadas de inércia, clientelismo, medo da mudança e irresponsabilidade política.</p>
+
+  <p>Mas introduziria uma pergunta revolucionária no coração da máquina pública:</p>
+
+  <div class="fc-pullquote">Que valor recebemos por este dinheiro?</div>
+
+  <p>É uma pergunta simples.</p>
+
+  <p>Talvez por isso tenha sido evitada durante tanto tempo.</p>
+
+  <h2>A praga nacional</h2>
+
+  <p>A verdadeira praga não é a falta de dinheiro.</p>
+
+  <p>É a incapacidade de libertar dinheiro daquilo que já não serve.</p>
+
+  <p>Todos os anos, o Estado pede mais recursos à economia, mantém estruturas antigas e lamenta não dispor de verbas suficientes para investir no futuro.</p>
+
+  <p>É como um homem que enche a casa de objectos inúteis, recusa deitar algum fora e se queixa de não ter espaço para uma biblioteca.</p>
+
+  <p>A cura começa quando cada despesa deixa de ser considerada um direito e volta a ser tratada como aquilo que realmente é:</p>
+
+  <blockquote>Dinheiro retirado aos cidadãos, cuja utilização exige justificação.</blockquote>
+
+  <p>Até esse dia, continuaremos a assistir ao mesmo ritual.</p>
+
+  <p>O Estado arrecada.</p>
+
+  <p>A burocracia distribui.</p>
+
+  <p>Os organismos executam.</p>
+
+  <p>Os ministros anunciam.</p>
+
+  <p>E o contribuinte paga.</p>
+
+  <p>No final, todos garantem que o orçamento foi cumprido.</p>
+
+  <p>Só ninguém pergunta quanta riqueza foi destruída para cumprir essa extraordinária façanha.</p>
+
+  <section class="fc-editorial-note" aria-labelledby="fc-nota-editorial-title">
+    <h3 id="fc-nota-editorial-title">Nota Editorial</h3>
+
+    <p><strong>Nós somos a cura.</strong></p>
+
+    <p>A cura começa quando alguém recusa aceitar o desperdício como normal, a mediocridade como inevitável e a burocracia como destino. Pensar, denunciar, propor alternativas e insistir em melhores soluções já é uma forma de resistência.</p>
+
+    <p>Os sistemas apodrecem quando ninguém os interroga. E começam a mudar quando alguém pergunta, com a inconveniência própria das pessoas lúcidas:</p>
+
+    <blockquote>Que valor recebemos por este dinheiro?</blockquote>
+
+    <p>É uma pergunta simples. Talvez por isso assuste tanto quem vive da ausência dela.</p>
+  </section>
+
+  <section class="fc-sources" aria-labelledby="fc-fontes-title">
+    <h2 id="fc-fontes-title">Referências e fontes consultadas</h2>
+    <ol>
+      <li id="fc-ref-1"><a href="https://www.cfp.pt/pt/glossario/outras-despesas-de-capital" target="_blank" rel="noopener noreferrer"><strong>Conselho das Finanças Públicas</strong> — Definição do Orçamento do Estado como previsão de receitas e autorização ou dotação de despesas.</a></li>
+      <li id="fc-ref-2"><a href="https://www.aeaweb.org/articles?id=10.1257%2Faer.20131296" target="_blank" rel="noopener noreferrer"><strong>American Economic Review</strong> — Jeffrey B. Liebman e Neale Mahoney, "Do Expiring Budgets Lead to Wasteful Year-End Spending? Evidence from Federal Procurement", 2017.</a></li>
+      <li id="fc-ref-3"><a href="https://www.nber.org/papers/w19481" target="_blank" rel="noopener noreferrer"><strong>National Bureau of Economic Research</strong> — Versão de trabalho e síntese dos resultados sobre despesa de fim de exercício e transição de verbas não utilizadas.</a></li>
+      <li id="fc-ref-4"><a href="https://www.oecd.org/en/publications/oecd-economic-surveys-belgium-2024_c671124e-en/full-report/component-5.html" target="_blank" rel="noopener noreferrer"><strong>OCDE</strong> — <em>OECD Economic Surveys: Belgium 2024</em>, referência à introdução do orçamento de base zero na Valónia.</a></li>
+      <li id="fc-ref-5"><a href="https://www.imf.org/en/publications/fiscal-affairs-department-how-to-notes/issues/2022/09/20/how-to-design-and-institutionalize-spending-reviews-523364" target="_blank" rel="noopener noreferrer"><strong>Fundo Monetário Internacional</strong> — "How to Design and Institutionalize Spending Reviews", 2022.</a></li>
+      <li id="fc-ref-6"><a href="https://www.oecd.org/en/publications/quality-budget-institutions_8e811202-en/full-report/regular-spending-reviews_f483fc6d.html" target="_blank" rel="noopener noreferrer"><strong>OCDE</strong> — "Regular Spending Reviews", em <em>Quality Budget Institutions</em>, 2025.</a></li>
+      <li id="fc-ref-7"><a href="https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report/performance-budgeting_eb0a21ea.html" target="_blank" rel="noopener noreferrer"><strong>OCDE</strong> — "Performance Budgeting", em <em>Government at a Glance 2025</em>.</a></li>
+      <li id="fc-ref-8"><a href="https://portugal.gov.pt/gc25/comunicacao/noticias/governo-aprova-novos-diplomas-para-transformar-modelo-orcamental" target="_blank" rel="noopener noreferrer"><strong>Governo da República Portuguesa</strong> — Aprovação do regime jurídico da revisão da despesa, 4 de Julho de 2025.</a></li>
+      <li id="fc-ref-9"><a href="https://portugal.gov.pt/api/media/edge/Project/Portal-do-Governo/Portal-do-Governo/gc25/Files/Documentos/apresentacao-da-proposta-de-orcamento-do-estado-para-2026/apresentacao_da_proposta_de_orcamento_do_estado_para_2026.pdf" target="_blank" rel="noopener noreferrer"><strong>Ministério das Finanças</strong> — Apresentação da Proposta de Orçamento do Estado para 2026: integração da revisão da despesa no ciclo orçamental.</a></li>
+      <li id="fc-ref-10"><a href="https://www.cfp.pt/uploads/noticias_ficheiros/despesa_publica_pt_coimbra_ncc_14112019.pdf" target="_blank" rel="noopener noreferrer"><strong>Conselho das Finanças Públicas</strong> — "Despesa Pública em Portugal": orçamentação por programas, eficiência, identificação de despesas supérfluas e supressão de redundâncias.</a></li>
+    </ol>
+  </section>
+
+  <footer class="fc-signature">
+    <strong>Francisco Gonçalves</strong><br>
+    Fragmentos do Caos · 2026
+  </footer>
+</article>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

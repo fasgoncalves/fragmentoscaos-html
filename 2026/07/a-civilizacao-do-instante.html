@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Civilização do Instante</title>
+<meta name="description" content="A Civilização do Instante">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Civilização do Instante</h1>
+      <p class="meta">Publicado em 2026-07-18 11:15:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/07/file_000000004c0c81f4ae68f094855f70f3_8c14b1f7.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- FC-Chronic-News | Fragmentos do Caos -->
+<style>
+.fc-chronic-news{
+  --fc-bg:#111315;--fc-panel:#181b1f;--fc-text:#e9e9e6;--fc-muted:#aeb2b6;
+  --fc-accent:#d39a32;--fc-accent-soft:#efc675;--fc-line:#30353a;--fc-quote:#20242a;
+  box-sizing:border-box;width:100%;max-width:980px;margin:0 auto;
+  padding:clamp(14px,2.5vw,28px);background:var(--fc-bg);color:var(--fc-text);
+  border:1px solid var(--fc-line);border-radius:12px;
+  font-family:Georgia,"Times New Roman",serif;font-size:clamp(17px,1.9vw,19px);line-height:1.7;
+}
+.fc-chronic-news *,.fc-chronic-news *::before,.fc-chronic-news *::after{box-sizing:border-box}
+.fc-chronic-news header{margin:0 0 1.2rem}
+.fc-chronic-news .fc-kicker{margin:0 0 .35rem;color:var(--fc-accent-soft);font:700 .78rem/1.2 Arial,Helvetica,sans-serif;letter-spacing:.11em;text-transform:uppercase}
+.fc-chronic-news h1{margin:.08rem 0 .3rem;color:var(--fc-accent);font-size:clamp(2rem,5vw,3.3rem);line-height:1.08;letter-spacing:-.025em}
+.fc-chronic-news .fc-subtitle{margin:0;color:#f0dfbd;font-size:clamp(1.15rem,2.6vw,1.48rem);line-height:1.35;font-style:italic}
+.fc-chronic-news .fc-deck{margin:.65rem 0 0;color:#d7d8d6;font-size:clamp(1rem,2.2vw,1.2rem);line-height:1.5}
+.fc-chronic-news .fc-meta{display:flex;flex-wrap:wrap;gap:.35rem .9rem;margin:.85rem 0 0;color:var(--fc-muted);font:600 .82rem/1.4 Arial,Helvetica,sans-serif}
+.fc-chronic-news .fc-lead{margin:1.2rem 0;padding:1rem 1.1rem;background:var(--fc-panel);border-left:4px solid var(--fc-accent);border-radius:0 8px 8px 0;font-size:1.08em}
+.fc-chronic-news h2{margin:1.55rem 0 .55rem;color:var(--fc-accent);font-size:clamp(1.35rem,3vw,1.8rem);line-height:1.25}
+.fc-chronic-news p{margin:.72rem 0}.fc-chronic-news strong{color:#fff}.fc-chronic-news em{color:#f0dfbd}
+.fc-chronic-news a{color:var(--fc-accent-soft);text-decoration-thickness:1px;text-underline-offset:3px}.fc-chronic-news a:hover{color:#fff}.fc-chronic-news sup a{text-decoration:none}
+.fc-chronic-news blockquote{margin:1.35rem 0;padding:1rem 1.2rem;background:var(--fc-quote);border-left:4px solid var(--fc-accent);border-radius:0 8px 8px 0;color:#f4ead7;font-size:1.09em;font-style:italic}
+.fc-chronic-news .fc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin:1.2rem 0}
+.fc-chronic-news .fc-card{padding:.95rem;background:var(--fc-panel);border:1px solid var(--fc-line);border-radius:8px}
+.fc-chronic-news .fc-card b{display:block;margin-bottom:.3rem;color:var(--fc-accent-soft);font-family:Arial,Helvetica,sans-serif;font-size:.93rem}
+.fc-chronic-news .fc-litany{margin:1.15rem 0;padding:1rem 1.1rem;background:#15181b;border:1px solid #403722;border-radius:8px;text-align:center;font-size:1.05em}
+.fc-chronic-news .fc-conclusion{margin:1.45rem 0 0;padding:1.1rem 1.2rem;background:linear-gradient(135deg,#1e2124,#16181a);border:1px solid #4a3b21;border-radius:9px}
+.fc-chronic-news .fc-references{margin-top:1.75rem;padding-top:1rem;border-top:1px solid var(--fc-line)}
+.fc-chronic-news .fc-references h2{margin-top:0}.fc-chronic-news .fc-references ol{margin:.5rem 0 0;padding-left:1.35rem}
+.fc-chronic-news .fc-references li{margin:.58rem 0;color:#c9cccf;font-size:.88em;overflow-wrap:anywhere}
+.fc-chronic-news .fc-note{margin-top:1.35rem;padding:.9rem 1rem;color:#cfd2d4;background:#151719;border:1px solid var(--fc-line);border-radius:8px;font-size:.9em}
+.fc-chronic-news .fc-signature{margin:1.45rem 0 0;color:var(--fc-muted);font:600 .86rem/1.5 Arial,Helvetica,sans-serif;text-align:right}
+@media (max-width:720px){.fc-chronic-news{padding:14px;border-radius:8px}.fc-chronic-news .fc-grid{grid-template-columns:1fr}.fc-chronic-news h1{font-size:2.05rem}}
+</style>
+
+<article class="fc-chronic-news" lang="pt-PT">
+<header>
+<p class="fc-kicker">Crónica · Civilização, Democracia e Futuro</p>
+<h1>A Civilização do Instante</h1>
+<p class="fc-subtitle">Os bárbaros já estão dentro das muralhas</p>
+<p class="fc-deck">O culto da imagem, a economia de casino e a substituição do conhecimento pela emoção estão a produzir sociedades tecnologicamente avançadas, mas culturalmente desarmadas.</p>
+<div class="fc-meta"><span>Por Francisco Gonçalves</span><span>Fragmentos do Caos</span><span>17 de Julho de 2026</span></div>
+</header>
+
+<p class="fc-lead">No final do século XX, sobretudo após a queda do Muro de Berlim, o Ocidente julgou ter alcançado uma espécie de apogeu histórico. A democracia liberal parecia triunfante, a ciência prometia libertar o homem da ignorância e a prosperidade haveria de alargar-se progressivamente a todos. Talvez tenha sido o apogeu tecnológico e institucional do Ocidente. Não foi, certamente, o seu apogeu moral.</p>
+
+<p>Durante algumas décadas subsistiu uma promessa civilizacional: a educação permitiria mobilidade social, o trabalho seria recompensado, a ciência serviria o progresso, a democracia protegeria o cidadão e a economia permaneceria submetida às necessidades da sociedade. A promessa nunca foi integralmente cumprida, mas existia pelo menos como horizonte.</p>
+
+<p>Hoje, o horizonte foi substituído por um ecrã.</p>
+
+<h2>A civilização do instante</h2>
+<p>Estamos a criar <strong>gerações instantâneas</strong>. Não porque os jovens tenham nascido menos inteligentes ou menos capazes, mas porque todo o sistema económico, mediático e tecnológico recompensa aquilo que é rápido, emotivo, exibível e descartável.</p>
+
+<div class="fc-grid" aria-label="Valores trocados pela civilização do instante">
+<div class="fc-card"><b>Emoção antes da reflexão</b>A reacção imediata é premiada; a dúvida, indispensável ao pensamento, é tratada como fraqueza.</div>
+<div class="fc-card"><b>Imagem antes da substância</b>A aparência tornou-se uma credencial social capaz de substituir competência, carácter e experiência.</div>
+<div class="fc-card"><b>Fama antes do mérito</b>Ser conhecido vale mais do que ter construído conhecimento, servido a comunidade ou suportado décadas de trabalho.</div>
+<div class="fc-card"><b>Lucro antes do futuro</b>O resultado trimestral vence o investimento paciente; a valorização financeira vence a criação de riqueza real.</div>
+</div>
+
+<p>O conhecimento exige tempo, disciplina e capacidade para permanecer diante de uma dúvida sem procurar imediatamente uma resposta confortável. A economia da atenção exige exactamente o contrário: velocidade, simplificação e estímulo permanente.</p>
+<blockquote>Uma investigação científica pode demorar vinte anos. Uma mentira emocional percorre o mundo em vinte minutos.</blockquote>
+
+<p>O <em>Digital News Report 2026</em>, do Reuters Institute da Universidade de Oxford, assinala que, pela primeira vez, as plataformas digitais se tornaram globalmente mais utilizadas como fontes de notícias do que a televisão e os próprios sítios e aplicações noticiosos.<sup><a href="/#ref-1">[1]</a></sup> A mudança não é apenas tecnológica. É uma alteração da arquitectura mental da esfera pública.</p>
+
+<p>A notícia deixa de competir prioritariamente pela verdade e passa a competir pela atenção. Como a serenidade raramente se torna viral, vencem o medo, a indignação, o conflito e o escândalo. O algoritmo não conhece cidadania. Conhece retenção.</p>
+
+<h2>A imagem como destino social</h2>
+<p>A exposição mediática transformou-se numa pedagogia permanente. Milhões de jovens observam diariamente corpos perfeitos, fortunas instantâneas, viagens contínuas, casas impecáveis e vidas cuidadosamente iluminadas. Não vêem as equipas de marketing, os filtros, os contratos, as dívidas, a ansiedade nem a fabricação industrial daquela felicidade. Vêem apenas o resultado encenado.</p>
+
+<p>A pobreza antiga sofria a privação material. A pobreza contemporânea sofre também a <strong>humilhação comparativa permanente</strong>: o menos favorecido é exposto, a cada momento, à demonstração pública daquilo que não possui e talvez nunca venha a possuir.</p>
+
+<p>O relatório europeu da Organização Mundial da Saúde sobre adolescentes, redes sociais e jogos digitais revelou que a utilização problemática das redes sociais aumentou de 7% em 2018 para 11% em 2022; entre as raparigas, a prevalência chegou aos 13%.<sup><a href="/#ref-2">[2]</a></sup> As redes podem naturalmente aproximar pessoas e criar comunidades. Mas também podem converter a vida numa competição ininterrupta por reconhecimento.</p>
+
+<p>O sofrimento deixa então de ser interpretado como consequência de desigualdades económicas e sociais. É transformado numa falha pessoal. O indivíduo não pergunta por que razão a sociedade lhe nega oportunidades. Pergunta por que razão não é suficientemente belo, famoso, agressivo, desejável ou vendável.</p>
+
+<h2>A economia que negoceia o futuro e destrói o presente</h2>
+<p>A chamada economia de casino não nasceu dos contratos de futuros, que possuem uma função económica legítima. Os mercados de futuros permitem que produtores e consumidores se protejam contra variações de preços, transferindo riscos que poderiam ameaçar a actividade produtiva.<sup><a href="/#ref-3">[3]</a></sup></p>
+
+<p>O problema começa quando o instrumento deixa de servir a economia e a economia passa a servir o instrumento. A partir daí, negoceia-se repetidamente a expectativa sobre o valor de bens que outros ainda terão de produzir. A riqueza financeira reproduz-se a uma velocidade superior à riqueza real, enquanto o trabalhador, esse curioso acessório ainda necessário à economia, enfrenta salários comprimidos, precariedade, rendas elevadas e serviços públicos degradados.</p>
+
+<p>A OCDE concluiu que a expansão do sector financeiro e dos mercados bolsistas esteve associada a maior desigualdade de rendimentos nos países analisados.<sup><a href="/#ref-4">[4]</a></sup> A mesma organização advertiu que pode existir "demasiada finança": para além de determinado ponto, a expansão do crédito abranda o crescimento em vez de o promover.<sup><a href="/#ref-5">[5]</a></sup></p>
+
+<p>O Fundo Monetário Internacional assinalou, em 2025, riscos crescentes para a estabilidade financeira global, incluindo avaliações elevadas em mercados importantes, instituições fortemente alavancadas e ligações perigosas entre intermediários financeiros e bancos.<sup><a href="/#ref-6">[6]</a></sup></p>
+
+<p>É uma máquina admirável na sua perversidade: transforma habitação em activo especulativo, dívida em produto, risco em mercadoria e pessoas em custos operacionais. Depois chama a tudo isso inovação, porque "pilhagem sofisticada" não ficaria bem no relatório anual.</p>
+
+<h2>A frivolidade dos meios de comunicação</h2>
+<p>Os meios de comunicação poderiam funcionar como instrumentos de esclarecimento, mediação e responsabilização do poder. Mas grande parte deles foi absorvida pela mesma economia da atenção que deveria escrutinar.</p>
+
+<p>O debate complexo é comprimido até caber num título. O conhecimento especializado é colocado em confronto artificial com a opinião improvisada. A gritaria é apresentada como pluralismo. A personalidade mediática ocupa o lugar do investigador, do professor e do profissional que passou décadas a estudar o assunto.</p>
+
+<p>A televisão e as plataformas não perguntam apenas: "Isto é verdadeiro?" Perguntam primeiro: "Isto prende o público?" Quando a resposta à segunda pergunta determina a sobrevivência económica do órgão de informação, a verdade entra em estúdio como convidada secundária e sem garantia de tempo de antena.</p>
+
+<p>O resultado é uma sociedade permanentemente excitada, mas raramente informada. Conhece todos os escândalos do dia e quase nenhuma das estruturas que os produzem.</p>
+
+<h2>A democracia convertida em concurso de personalidade</h2>
+<p>A democracia exige cidadãos capazes de suportar complexidade, escutar argumentos contrários, aceitar factos desagradáveis e distinguir propostas de espectáculo. A civilização do instante forma consumidores de emoções organizados em tribos.</p>
+
+<p>Nesse ambiente, o político deixa de precisar de competência. Precisa de personagem. Não governa através de uma visão coerente, mas por meio de frases curtas, inimigos convenientes, gestos teatrais e presença permanente nos ecrãs.</p>
+
+<p>A política converte-se num concurso de personalidades. As instituições tornam-se cenários. A verdade passa a ser apresentada como apenas mais uma versão disponível no mercado.</p>
+
+<p>Os sinais são concretos. A Freedom House registou, em 2025, o vigésimo ano consecutivo de recuo da liberdade global: 54 países pioraram em direitos políticos e liberdades civis, enquanto apenas 35 melhoraram.<sup><a href="/#ref-7">[7]</a></sup></p>
+
+<p>O <em>Democracy Report 2026</em>, do V-Dem Institute da Universidade de Gotemburgo, conclui que quase um quarto dos países atravessava processos de autocratização em 2025. Seis dos dez novos casos identificados situavam-se na Europa e na América do Norte, demonstrando que o retrocesso já alcançou democracias ocidentais tradicionalmente consideradas estáveis.<sup><a href="/#ref-8">[8]</a></sup></p>
+
+<p class="fc-litany"><strong>O preço substituiu o valor.<br>A fama substituiu a grandeza.<br>A emoção substituiu a verdade.<br>O poder substituiu a autoridade.<br>O seguidor substituiu o cidadão.</strong></p>
+
+<h2>Os bárbaros não vêm necessariamente de fora</h2>
+<p>A imagem dos bárbaros às portas é poderosa, mas incompleta. Os bárbaros contemporâneos já não necessitam de atravessar muralhas. Muitas vezes foram produzidos no interior delas.</p>
+
+<p>Estão dentro das instituições quando o poder despreza a verdade e transforma as leis em instrumentos de conveniência.</p>
+<p>Estão dentro dos mercados quando o lucro deixa de reconhecer limites humanos e a especulação vale mais do que a produção.</p>
+<p>Estão dentro dos meios de comunicação quando a humilhação produz mais audiência do que o esclarecimento.</p>
+<p>Estão dentro das universidades quando o conhecimento é subordinado à burocracia, à contagem mecânica de publicações e à sobrevivência entre projectos precários.</p>
+<p>Estão entre os cidadãos quando a liberdade é reduzida ao direito de consumir e a responsabilidade desaparece atrás do anonimato.</p>
+
+<blockquote>As civilizações não começam a morrer quando perdem tecnologia ou riqueza. Começam a morrer quando deixam de distinguir aquilo que é elevado daquilo que é apenas visível.</blockquote>
+
+<h2>Não estamos condenados, mas estamos avisados</h2>
+<p>A decadência não é inevitável. A civilização ocidental ainda possui universidades, ciência, instituições, memória histórica, capacidade crítica e milhões de cidadãos que recusam a infantilização. Possui também a experiência acumulada das suas próprias catástrofes, embora os seres humanos revelem uma notável determinação em repetir erros com equipamentos mais modernos.</p>
+
+<p>A democracia não será salva por discursos cerimoniais sobre a democracia. Será salva quando voltar a oferecer dignidade material, educação exigente, justiça eficaz, informação responsável e um sentido de futuro partilhado.</p>
+
+<p>A ciência não recuperará autoridade através da arrogância, mas através da independência, do rigor e da capacidade de comunicar sem se ajoelhar perante a lógica do espectáculo.</p>
+
+<p>A economia não voltará a servir a sociedade enquanto o valor de tudo for medido exclusivamente pela rentabilidade imediata. E a cidadania não sobreviverá se cada pessoa for reduzida a consumidor, audiência, perfil, voto ou conjunto de dados.</p>
+
+<div class="fc-conclusion">
+<p><strong>O verdadeiro combate do nosso tempo não consiste apenas em impedir que os bárbaros atravessem as muralhas.</strong></p>
+<p>Consiste em impedir que continuemos a construí-los dentro delas: sem memória, sem pensamento crítico, sem responsabilidade e sem outro horizonte além do próximo estímulo.</p>
+<p>Uma civilização pode sobreviver à pobreza, à guerra e à adversidade. O que dificilmente sobrevive é à perda da convicção de que existe alguma coisa mais elevada do que o prazer imediato, a celebridade e o lucro.</p>
+<p>Quando essa convicção desaparece, as muralhas ainda permanecem de pé. Os monumentos continuam iluminados. Os mercados continuam abertos. Os ecrãs continuam a transmitir.</p>
+<p>Mas a civilização que deveriam proteger já começou a desaparecer.</p>
+</div>
+
+<section class="fc-references" aria-labelledby="fontes">
+<h2 id="fontes">Fontes e leituras internacionais</h2>
+<ol>
+<li id="ref-1"><a href="https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2026" target="_blank" rel="noopener noreferrer">Reuters Institute for the Study of Journalism, University of Oxford — <em>Digital News Report 2026</em></a>.</li>
+<li id="ref-2"><a href="https://www.who.int/europe/news/item/25-09-2024-teens--screens-and-mental-health" target="_blank" rel="noopener noreferrer">World Health Organization, Regional Office for Europe — <em>Teens, screens and mental health</em></a>.</li>
+<li id="ref-3"><a href="https://www.cftc.gov/LearnAndProtect/AdvisoriesAndArticles/economicpurpose.html" target="_blank" rel="noopener noreferrer">U.S. Commodity Futures Trading Commission — <em>Economic Purpose of Futures Markets and How They Work</em></a>.</li>
+<li id="ref-4"><a href="https://www.oecd.org/en/publications/finance-and-income-inequality-in-oecd-countries_5js04v5jm2hl-en.html" target="_blank" rel="noopener noreferrer">OECD — <em>Finance and income inequality in OECD countries</em></a>.</li>
+<li id="ref-5"><a href="https://www.oecd.org/en/publications/finance-and-economic-growth-in-oecd-and-g20-countries_5js04v8z0m38-en.html" target="_blank" rel="noopener noreferrer">OECD — <em>Finance and economic growth in OECD and G20 countries</em></a>.</li>
+<li id="ref-6"><a href="https://www.imf.org/en/publications/gfsr/issues/2025/04/22/global-financial-stability-report-april-2025" target="_blank" rel="noopener noreferrer">International Monetary Fund — <em>Global Financial Stability Report, April 2025</em></a>.</li>
+<li id="ref-7"><a href="https://freedomhouse.org/report/freedom-world/2026/growing-shadow-autocracy" target="_blank" rel="noopener noreferrer">Freedom House — <em>Freedom in the World 2026: The Growing Shadow of Autocracy</em></a>.</li>
+<li id="ref-8"><a href="https://www.v-dem.net/news/press-release-democratic-backsliding-reaches-western-democracies-with-us-decline-unprecedented/" target="_blank" rel="noopener noreferrer">V-Dem Institute, University of Gothenburg — <em>Democratic Backsliding Reaches Western Democracies</em>, Democracy Report 2026</a>.</li>
+</ol>
+</section>
+
+<p class="fc-note"><strong>Nota de enquadramento:</strong> A referência temporal desta crónica é o final do século XX, período em que a democracia liberal ocidental pareceu alcançar uma posição histórica dominante. O texto não pretende idealizar esse passado, mas confrontar as promessas então proclamadas com a trajectória política, económica e cultural das décadas seguintes.</p>
+<p class="fc-signature">Francisco Gonçalves · Fragmentos do Caos · 2026</p>
+</article>
+<a class="fc-essencia-humanidade-button"
+   href="https://fasgoncalves.github.io/hugo.fragmentoscaos/livros/a-essencia-da-humanidade/"
+   target="_blank"
+   rel="noopener noreferrer">
+  Ler o livro : A Essência da Humanidade
+</a>
+
+<style>
+.fc-essencia-humanidade-button {
+  display: inline-block;
+  padding: 15px 30px;
+  margin: 24px 0;
+  background: linear-gradient(135deg, #243b55, #6d8fa8, #f2d28a);
+  color: #fffaf0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  font-weight: bold;
+  letter-spacing: 0.35px;
+  text-decoration: none;
+  border-radius: 14px;
+  border: 1px solid #f2d28a;
+  box-shadow: 0 8px 22px rgba(36, 59, 85, 0.38);
+  transition: all 0.25s ease;
+}
+
+.fc-essencia-humanidade-button:hover {
+  background: linear-gradient(135deg, #f2d28a, #6d8fa8, #243b55);
+  color: #121212;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(242, 210, 138, 0.42);
+}
+
+.fc-essencia-humanidade-button:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 14px rgba(36, 59, 85, 0.32);
+}
+</style>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

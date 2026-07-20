@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Digitalização em Cartões Perfurados</title>
+<meta name="description" content="A Digitalização em Cartões Perfurados">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Digitalização em Cartões Perfurados</h1>
+      <p class="meta">Publicado em 2026-07-18 09:39:54</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/07/file_00000000ad8081f482614e07e57adac0_526f0a43.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- FC-Chronic-News | Fragmentos do Caos -->
+<style>
+.fc-chronic-news{--bg:#101214;--panel:#191c1f;--text:#e9e9e5;--muted:#adb2b6;--accent:#d39a32;--soft:#efc675;--line:#34393e;box-sizing:border-box;width:100%;max-width:980px;margin:0 auto;padding:clamp(14px,2.5vw,28px);background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:12px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(17px,1.9vw,19px);line-height:1.7}.fc-chronic-news *{box-sizing:border-box}.fc-chronic-news header{margin-bottom:1.2rem}.fc-chronic-news .fc-kicker{margin:0 0 .35rem;color:var(--soft);font:700 .78rem/1.2 Arial,sans-serif;letter-spacing:.11em;text-transform:uppercase}.fc-chronic-news h1{margin:.08rem 0 .35rem;color:var(--accent);font-size:clamp(2rem,5vw,3.25rem);line-height:1.08}.fc-chronic-news .fc-subtitle{margin:0;color:#f0dfbd;font-size:clamp(1.08rem,2.4vw,1.38rem);font-style:italic;line-height:1.4}.fc-chronic-news .fc-meta{display:flex;flex-wrap:wrap;gap:.35rem .9rem;margin:.85rem 0 0;color:var(--muted);font:600 .82rem/1.4 Arial,sans-serif}.fc-chronic-news .fc-lead{margin:1.2rem 0;padding:1rem 1.1rem;background:var(--panel);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;font-size:1.08em}.fc-chronic-news h2{margin:1.55rem 0 .55rem;color:var(--accent);font-size:clamp(1.35rem,3vw,1.82rem);line-height:1.25}.fc-chronic-news h3{margin:1.15rem 0 .3rem;color:var(--soft);font-size:1.12em}.fc-chronic-news p{margin:.72rem 0}.fc-chronic-news strong{color:#fff}.fc-chronic-news em{color:#f0dfbd}.fc-chronic-news a{color:var(--soft);text-underline-offset:3px}.fc-chronic-news blockquote{margin:1.3rem 0;padding:1rem 1.15rem;background:#202428;border-left:4px solid var(--accent);border-radius:0 8px 8px 0;color:#f4ead7;font-size:1.08em;font-style:italic}.fc-chronic-news .fc-sequence,.fc-chronic-news .fc-card{margin:1.1rem 0;padding:1rem 1.1rem;background:#15181b;border:1px solid #493d25;border-radius:9px}.fc-chronic-news .fc-sequence{text-align:center;font-size:1.05em}.fc-chronic-news .fc-card b{display:block;margin-bottom:.25rem;color:var(--soft);font-family:Arial,sans-serif}.fc-chronic-news .fc-conclusion{margin:1.4rem 0 0;padding:1.1rem 1.2rem;background:linear-gradient(135deg,#1f2225,#16181a);border:1px solid #4a3b21;border-radius:9px}.fc-chronic-news .fc-editorial{margin-top:1.8rem;padding:1.15rem 1.25rem;background:#171a1d;border:1px solid #594724;border-top:5px solid var(--accent);border-radius:9px}.fc-chronic-news .fc-editorial h2{margin-top:0}.fc-chronic-news .fc-references{margin-top:1.75rem;padding-top:1rem;border-top:1px solid var(--line)}.fc-chronic-news .fc-references ol{padding-left:1.35rem}.fc-chronic-news .fc-references li{margin:.6rem 0;color:#c9cccf;font-size:.88em;overflow-wrap:anywhere}.fc-chronic-news .fc-note{margin-top:1.35rem;padding:.9rem 1rem;color:#cfd2d4;background:#151719;border:1px solid var(--line);border-radius:8px;font-size:.9em}.fc-chronic-news .fc-signature{margin:1.45rem 0 0;color:var(--muted);font:600 .86rem/1.5 Arial,sans-serif;text-align:right}@media(max-width:720px){.fc-chronic-news{padding:14px;border-radius:8px}.fc-chronic-news h1{font-size:2.05rem}}
+</style>
+<article class="fc-chronic-news" lang="pt-PT">
+<header><p class="fc-kicker">Crónica tecnológica · Educação · Administração Pública</p><h1>A Digitalização em Cartões Perfurados</h1><p class="fc-subtitle">Como o Estado português levou os exames nacionais até 2026 com uma arquitectura mental saída dos anos 50</p><div class="fc-meta"><span>Por Francisco Gonçalves</span><span>Fragmentos do Caos</span><span>18 de Julho de 2026</span></div></header>
+
+<p class="fc-lead">A digitalização da classificação dos exames nacionais foi apresentada como uma modernização. Acabou por revelar uma máquina administrativa antiga, agora equipada com códigos QR, autenticação electrónica e capacidade para distribuir o erro por todo o país à velocidade da Internet.</p>
+
+<p>Há projectos informáticos que falham porque tentam resolver problemas científicos difíceis. Não foi este o caso.</p>
+<p>Reconhecer páginas, associar folhas a um documento, detectar imagens cortadas, validar sequências, distribuir tarefas e manter um registo auditável são problemas conhecidos há décadas. Mesmo assim, Portugal chegou ao ano da graça de 2026 e descobriu, em plena classificação dos exames nacionais, que uma folha adicional pode desaparecer, um código QR pode ficar ilegível e uma resposta pode ser entregue incompleta ao professor.</p>
+<p>Não estamos perante transformação digital. Estamos perante <strong>burocracia de meados do século XX executada por computadores do século XXI</strong>.</p>
+
+<h2>A promessa: rapidez, equidade e modernidade</h2>
+<p>Em Julho de 2024, o Governo anunciou um novo modelo de avaliação externa. A classificação electrónica seria generalizada a todos os níveis de ensino e chegaria ao secundário em 2025/2026, depois de um projecto-piloto. A promessa incluía maior equidade, resultados atempados e reforço do recurso ao digital.<sup><a href="/#ref-1">[1]</a></sup></p>
+<p>A ideia, em abstracto, era razoável. Os alunos continuariam a responder em papel; as provas seriam digitalizadas, anonimizadas e distribuídas electronicamente aos professores classificadores.</p>
+<div class="fc-sequence"><strong>Papel → digitalização → código QR → distribuição → classificação → resultado.</strong></div>
+<p>Num diapositivo ministerial, tudo isto parece perfeito. As setas, ao contrário da realidade, nunca perdem páginas nem telefonam para o apoio técnico.</p>
+
+<h2>O projecto-piloto que serviu para não aprender</h2>
+<p>No projecto-piloto realizado com o exame de Filosofia, em 2025, classificadores relataram dificuldades de acesso à plataforma, provas que desapareciam e digitalizações com respostas ilegíveis, cortadas ou trocadas. As falhas que explodiriam no ano seguinte estavam documentadas com antecedência.<sup><a href="/#ref-2">[2]</a></sup></p>
+<p>Um piloto serve para decidir se o sistema está maduro. Quando revela falhas de autenticação e integridade documental, corrige-se, repete-se e aumenta-se gradualmente a escala.</p>
+<p>A Administração portuguesa preferiu observar os problemas, declarar sucesso suficiente e generalizar. O piloto não serviu para decidir. Serviu para confirmar uma decisão política já tomada.</p>
+
+<h2>O grande salto para o abismo digital</h2>
+<p>Em Junho e Julho de 2026 acumularam-se atrasos na distribuição, dificuldades de acesso à plataforma e problemas na identificação das provas. O Ministério apontou falhas na leitura dos códigos QR, incluindo danos atribuídos a agrafos; professores e directores assinalaram problemas mais amplos no fluxo de classificação.<sup><a href="/#ref-3">[3]</a></sup></p>
+<p>O agrafo entrou assim para a história da transformação digital portuguesa. Um pequeno objecto metálico, inventado para manter folhas unidas, foi promovido a ameaça estratégica capaz de perturbar um sistema nacional.</p>
+<p>Professores relataram também folhas de continuação em falta. A plataforma entrou em manutenção para receber um botão destinado a comunicar precisamente essa ausência.<sup><a href="/#ref-4">[4]</a></sup></p>
+<blockquote>O sistema entregava primeiro uma resposta incompleta e criava depois um botão para o professor avisar que faltava o resto.</blockquote>
+<p>É como construir um elevador sem sensores de porta e instalar, dentro da cabine, um telefone com a inscrição: "Avise-nos se alguém ficar cortado ao meio."</p>
+
+<h2>O regresso triunfal ao processamento por lotes</h2>
+<p>Apesar da interface moderna, o processo reproduziu a lógica dos sistemas dos anos 50: recolher dados, processá-los por lotes, esperar pelo resultado e voltar ao princípio quando algo falhava.</p>
+<div class="fc-card"><b>O lote digital contemporâneo</b>Digitalizaram-se milhares de páginas, distribuíram-se fragmentos, os professores aguardaram por novos itens e, quando a confiança vacilou, tornou-se necessário voltar a comparar ficheiros digitais com originais em papel.</div>
+<p>Nos anos 50 havia desculpa: memória escassa, armazenamento dispendioso e comunicações rudimentares. Em 2026 existem bases de dados transaccionais, filas de mensagens, assinaturas digitais, validação automática, redundância e observabilidade em tempo real.</p>
+<p>Reproduzir a mesma lógica já não é atraso tecnológico. É <strong>atraso conceptual</strong>.</p>
+
+<h2>A arquitectura que não modelou a realidade</h2>
+<h3>Integridade documental</h3><p>Cada prova deveria possuir uma cadeia verificável desde a recepção física até à classificação final, incluindo número de folhas, sequência, continuações, qualidade de imagem e correspondência entre todos os elementos. Uma prova incompleta nunca deveria entrar no circuito normal.</p>
+<h3>Filas de excepção</h3><p>Códigos ilegíveis, páginas cortadas ou folhas sem correspondência deveriam ser desviados automaticamente para equipas especializadas, antes de chegarem ao professor.</p>
+<h3>Observabilidade</h3><p>Um centro operacional deveria saber, em tempo real, quantas provas estavam recebidas, digitalizadas, validadas, distribuídas, classificadas ou bloqueadas, e por que motivo.</p>
+<h3>Escala progressiva</h3><p>A generalização deveria ter sido feita por disciplinas e regiões, com metas técnicas verificáveis entre fases. Um piloto com falhas não se transforma magicamente num sistema nacional fiável por decisão administrativa.</p>
+<h3>Plano de recuperação</h3><p>O ministro admitiu que foi ponderado regressar à classificação em papel.<sup><a href="/#ref-5">[5]</a></sup> Um plano criado durante a crise não é contingência. É improvisação com um ficheiro chamado <em>solucao_final_definitiva_v3_corrigida</em>.</p>
+<h3>Capacidade humana</h3><p>Credenciais, formação, apoio técnico, distribuição equilibrada e tempo de revisão fazem parte do sistema. A tecnologia não elimina pessoas; apenas muda o sítio onde podem ficar bloqueadas.</p>
+
+<h2>Quando a centralização multiplica o desastre</h2>
+<p>Antes da plataforma nacional, um problema local afectaria um conjunto limitado de provas. Com a centralização digital, uma falha de arquitectura pode atingir simultaneamente milhares de alunos, professores e famílias.</p>
+<p>A tecnologia deveria distribuir segurança. Neste caso, centralizou a vulnerabilidade. Conseguimos substituir pequenos problemas locais por uma crise nacional sincronizada.</p>
+
+<h2>O calendário corrigido pelo calendário</h2>
+<p>Perante as dificuldades técnicas, o Governo prolongou a classificação até 14 de Julho, transferiu a afixação das pautas para 17 de Julho e adiou a segunda fase do secundário para 20 a 24 de Julho, mantendo o calendário de acesso ao ensino superior.<sup><a href="/#ref-6">[6]</a></sup></p>
+<p>O ministro pediu desculpa aos professores e foi anunciado o pagamento de trabalho extraordinário, reconhecendo o esforço adicional exigido.<sup><a href="/#ref-7">[7]</a></sup></p>
+<p>Em 17 de Julho, o ministro declarou que todos os exames do secundário estavam classificados. Mais tarde, foram admitidas centenas de provas com falhas e classificações assinaladas como "suspensas".<sup><a href="/#ref-8">[8]</a></sup></p>
+<p>Na manhã de 18 de Julho, nem todos os alunos tinham acesso aos resultados. Havia provas suspensas e o EduQA reconhecia itens em falta, prometendo instruções posteriores para consulta, reapreciação ou reclamação.<sup><a href="/#ref-9">[9]</a></sup></p>
+<blockquote>A nota deixou de estar atrasada. Passou a estar suspensa.</blockquote>
+
+<h2>O problema não foi apenas o código</h2>
+<p>É tentador procurar uma empresa, um programador ou uma linha defeituosa de software. Mas os sintomas revelam uma falha mais profunda: arquitectura, governação, controlo de qualidade, gestão de risco e decisão política.</p>
+<p>Um sistema crítico não é apenas a aplicação que aparece no ecrã. É o conjunto de pessoas, equipamentos, procedimentos, redes, bases de dados, validações, supervisão e decisões de contingência.</p>
+<p>Quando tudo falha ao mesmo tempo, o problema raramente está num único botão. Está na forma como o projecto foi pensado.</p>
+
+<h2>Digitalizar não é modernizar</h2>
+<p>A Administração Pública confunde frequentemente transformação digital com a substituição do papel por imagens, formulários electrónicos e palavras-passe.</p>
+<p>Se conservar as mesmas etapas inúteis, a mesma fragmentação de responsabilidades e a mesma cultura de improvisação, teremos apenas burocracia antiga a consumir electricidade num centro de dados.</p>
+<div class="fc-sequence"><strong>Do transporte físico das provas<br>para o transporte digital dos erros.<br><br>Da lentidão distribuída<br>para a falha centralizada.<br><br>Da pilha de papel visível<br>para uma fila electrónica opaca.</strong></div>
+<p>A modernização verdadeira torna o processo mais simples, seguro, transparente e verificável. Tudo o resto é uma mudança de suporte.</p>
+
+<h2>A carroça eléctrica</h2>
+<p>O Governo quis anunciar que os exames entravam na era digital. Acabou por instalar um motor eléctrico numa carroça administrativa e apresentar o resultado como um comboio de alta velocidade.</p>
+<p>A carroça poderá deslocar-se mais depressa, mas continua presa à regra de outro século: processar primeiro, verificar depois e improvisar quando falhar.</p>
+<div class="fc-conclusion"><p>A tecnologia disponível em 2026 não falhou por ser insuficiente.</p><p>Falhou a capacidade institucional de a compreender, testar, governar e introduzir com responsabilidade.</p><p>O país não ficou perante um sistema demasiado avançado. Ficou perante um sistema atrasado, agora iluminado por um monitor.</p></div>
+
+<section class="fc-editorial"><h2>Nota Editorial</h2>
+<p>A chamada digitalização dos exames nacionais não revelou apenas falhas numa plataforma informática. Expôs uma forma antiquada de pensar a tecnologia, como se estivéssemos ainda nos anos 50 do século passado, apenas com códigos QR no lugar dos cartões perfurados.</p>
+<p>O processo continuou baseado numa lógica de tratamento por lotes: recolher, digitalizar, distribuir, esperar e corrigir depois aquilo que não funcionou. Quando surgiram páginas cortadas, respostas mal associadas, códigos ilegíveis ou folhas em falta, tornou-se necessário regressar ao papel para validar o sistema digital que deveria ter eliminado essa incerteza.</p>
+<p>Isto não é transformação digital. É burocracia antiga executada por computadores modernos.</p>
+<p>As tecnologias necessárias existem há muitos anos: validação automática da integridade documental, detecção de páginas ausentes, rastreabilidade, controlo de versões, filas de excepção, redundância e observabilidade operacional. Não estamos perante um desafio científico extraordinário, mas perante uma falha de arquitectura, planeamento e compreensão do processo.</p>
+<p>O erro fundamental foi começar pelo anúncio político de que tudo seria digital, em vez de começar pela pergunta técnica essencial: como garantir que cada resposta, desde a folha física até à classificação final, permanece completa, legível, identificável e auditável?</p>
+<p>Nos anos 50 havia limitações reais. Em 2026, reproduzir a mesma lógica já não pode ser desculpado como atraso tecnológico. É atraso conceptual.</p>
+<p>A verdadeira modernização teria sido gradual, híbrida e verificável, mantendo um processo paralelo de segurança e validando cada etapa antes de ampliar a escala.</p>
+<blockquote>Digitalizar primeiro, verificar depois e improvisar quando falhar.</blockquote>
+<p>Foi como instalar um motor eléctrico numa carroça e anunciar a chegada do comboio de alta velocidade. A carroça poderá mover-se mais depressa, mas continua presa à mentalidade de outro século.</p></section>
+
+<section class="fc-references"><h2>Fontes e referências</h2><ol>
+<li id="ref-1"><a href="https://portugal.gov.pt/gc24/comunicacao/noticias/novo-modelo-de-avaliacao-externa-dos-alunos-a-partir-de-20242025" target="_blank" rel="noopener noreferrer">Governo da República Portuguesa — Novo modelo de avaliação externa dos alunos</a>, 18 de Julho de 2024.</li>
+<li id="ref-2"><a href="https://poligrafo.sapo.pt/fact-check/exames-nacionais-os-problemas-de-agora-ja-tinham-sido-relatados-ha-cerca-de-um-ano-no-projeto-piloto-com-o-exame-de-filosofia/" target="_blank" rel="noopener noreferrer">Polígrafo — Problemas já relatados no projecto-piloto de Filosofia</a>, Julho de 2026.</li>
+<li id="ref-3"><a href="https://rr.pt/artigo/explicador-renascenca/2026/07/02/qr-codes-estao-a-atrasar-correcao-dos-exames-nacionais/476762/" target="_blank" rel="noopener noreferrer">Rádio Renascença — QR Codes, atrasos e dificuldades da classificação digital</a>, 2 de Julho de 2026.</li>
+<li id="ref-4"><a href="https://rr.pt/noticia/pais/2026/07/06/exames-nacionais-plataforma-de-classificacao-esta-em-manutencao/477235/" target="_blank" rel="noopener noreferrer">Rádio Renascença — Plataforma em manutenção e folhas de continuação em falta</a>, 6 de Julho de 2026.</li>
+<li id="ref-5"><a href="https://rr.pt/noticia/amp/pais/2026/07/01/ministro-culpa-qr-code-e-admite-adiar-calendario-de-correcao-de-exames/476617/" target="_blank" rel="noopener noreferrer">Rádio Renascença — Ministro admite que foi ponderado regressar ao papel</a>, 1 de Julho de 2026.</li>
+<li id="ref-6"><a href="https://portugal.gov.pt/gc25/comunicacao/noticias/exames-nacionais-calendario-e-ajustado-para-garantir-rigor-na-classificacao" target="_blank" rel="noopener noreferrer">Governo da República Portuguesa — Alteração do calendário dos exames</a>, 3 de Julho de 2026.</li>
+<li id="ref-7"><a href="https://rr.pt/noticia/politica/2026/07/13/ministro-da-educacao-pede-desculpa-aos-professores-pelos-erros-na-correcao-dos-exames/478081/" target="_blank" rel="noopener noreferrer">Rádio Renascença — Pedido de desculpas do ministro aos professores</a>, 13 de Julho de 2026.</li>
+<li id="ref-8"><a href="https://eco.sapo.pt/2026/07/17/todos-os-exames-estao-classificados-e-pautas-serao-afixadas-hoje-garante-fernando-alexandre/" target="_blank" rel="noopener noreferrer">ECO/Lusa — Declaração de conclusão das classificações</a> e <a href="https://eco.sapo.pt/2026/07/17/exames-eduqa-ja-admite-que-havera-provas-sem-notas/" target="_blank" rel="noopener noreferrer">provas com falhas e notas suspensas</a>, 17 de Julho de 2026.</li>
+<li id="ref-9"><a href="https://www.rtp.pt/noticias/pais/exames-nacionais-notas-chegaram-na-sexta-a-noite-mas-nao-para-todos-os-alunos_n1754286" target="_blank" rel="noopener noreferrer">RTP — Resultados não disponíveis para todos e provas suspensas</a>, 18 de Julho de 2026; <a href="https://eduqa.pt/informacao-sobre-o-processo-de-classificacao-dos-exames-nacionais-e-provas-finais-do-ensino-basico/" target="_blank" rel="noopener noreferrer">EduQA — Informação sobre itens em falta e procedimentos posteriores</a>.</li>
+</ol></section>
+<p class="fc-note"><strong>Nota de enquadramento:</strong> Esta crónica combina factos publicamente documentados com análise técnica e opinião editorial. A comparação com os sistemas de processamento por lotes dos anos 50 é uma analogia crítica à arquitectura e governação do processo.</p>
+<p class="fc-signature">Francisco Gonçalves · Fragmentos do Caos · 2026</p>
+
+<a class="fc-essencia-humanidade-button"
+   href="https://fasgoncalves.github.io/hugo.fragmentoscaos/livros/portugal-colonia-digital/"
+   target="_blank"
+   rel="noopener noreferrer">
+  Ler o livro : Portugal Digital — A Nova Colónia do Silício
+</a>
+
+<style>
+.fc-essencia-humanidade-button {
+  display: inline-block;
+  padding: 15px 30px;
+  margin: 24px 0;
+  background: linear-gradient(135deg, #243b55, #6d8fa8, #f2d28a);
+  color: #fffaf0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  font-weight: bold;
+  letter-spacing: 0.35px;
+  text-decoration: none;
+  border-radius: 14px;
+  border: 1px solid #f2d28a;
+  box-shadow: 0 8px 22px rgba(36, 59, 85, 0.38);
+  transition: all 0.25s ease;
+}
+
+.fc-essencia-humanidade-button:hover {
+  background: linear-gradient(135deg, #f2d28a, #6d8fa8, #243b55);
+  color: #121212;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(242, 210, 138, 0.42);
+}
+
+.fc-essencia-humanidade-button:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 14px rgba(36, 59, 85, 0.32);
+}
+</style>
+
+
+</article><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
