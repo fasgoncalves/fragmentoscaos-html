@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O País dos Silêncios de Cemitério</title>
+<meta name="description" content="O País dos Silêncios de Cemitério">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O País dos Silêncios de Cemitério</h1>
+      <p class="meta">Publicado em 2026-07-21 09:36:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/07/file_000000006bc881f48a5d1d33f3529206_4877dafc.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- FC-Chronic-News | Fragmentos do Caos -->
+<style>
+.fc-chronic-news{
+  --fc-bg:#101214;
+  --fc-panel:#181b1f;
+  --fc-panel2:#20242a;
+  --fc-text:#ecece8;
+  --fc-muted:#adb2b7;
+  --fc-accent:#d39a32;
+  --fc-accent-soft:#efc675;
+  --fc-line:#343940;
+  --fc-danger:#c96a55;
+  box-sizing:border-box;
+  width:100%;
+  max-width:1020px;
+  margin:0 auto;
+  padding:clamp(15px,2.6vw,30px);
+  background:var(--fc-bg);
+  color:var(--fc-text);
+  border:1px solid var(--fc-line);
+  border-radius:12px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(17px,1.9vw,19px);
+  line-height:1.72;
+}
+.fc-chronic-news *, .fc-chronic-news *::before, .fc-chronic-news *::after{box-sizing:border-box}
+.fc-chronic-news header{margin:0 0 1.25rem}
+.fc-chronic-news .fc-kicker{margin:0 0 .4rem;color:var(--fc-accent-soft);font:700 .78rem/1.3 Arial,Helvetica,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.fc-chronic-news h1{margin:.08rem 0 .4rem;color:var(--fc-accent);font-size:clamp(2.15rem,5.3vw,3.65rem);line-height:1.04;letter-spacing:-.03em}
+.fc-chronic-news .fc-subtitle{margin:0;color:#f0dfbd;font-size:clamp(1.08rem,2.5vw,1.5rem);line-height:1.42;font-style:italic}
+.fc-chronic-news .fc-meta{display:flex;flex-wrap:wrap;gap:.35rem .95rem;margin:.9rem 0 0;color:var(--fc-muted);font:600 .82rem/1.45 Arial,Helvetica,sans-serif}
+.fc-chronic-news .fc-lead{margin:1.25rem 0;padding:1.05rem 1.15rem;background:var(--fc-panel);border-left:4px solid var(--fc-accent);border-radius:0 8px 8px 0;font-size:1.08em}
+.fc-chronic-news h2{margin:1.72rem 0 .6rem;color:var(--fc-accent);font-size:clamp(1.4rem,3vw,1.92rem);line-height:1.22}
+.fc-chronic-news h3{margin:1.25rem 0 .45rem;color:var(--fc-accent-soft);font-size:clamp(1.15rem,2.4vw,1.4rem);line-height:1.3}
+.fc-chronic-news p{margin:.76rem 0}
+.fc-chronic-news strong{color:#fff}
+.fc-chronic-news em{color:#f0dfbd}
+.fc-chronic-news a{color:var(--fc-accent-soft);text-decoration-thickness:1px;text-underline-offset:3px}
+.fc-chronic-news blockquote{margin:1.4rem 0;padding:1rem 1.2rem;background:var(--fc-panel2);border-left:4px solid var(--fc-accent);border-radius:0 8px 8px 0;color:#f4ead7;font-size:1.08em;font-style:italic}
+.fc-chronic-news ul,.fc-chronic-news ol{padding-left:1.35rem}
+.fc-chronic-news li{margin:.38rem 0}
+.fc-chronic-news .fc-alert{margin:1.05rem 0;padding:1rem 1.12rem;background:#211a19;border:1px solid #5c362e;border-left:4px solid var(--fc-danger);border-radius:0 8px 8px 0}
+.fc-chronic-news .fc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin:1rem 0}
+.fc-chronic-news .fc-grid>div{padding:.9rem 1rem;background:var(--fc-panel);border:1px solid var(--fc-line);border-radius:8px}
+.fc-chronic-news .fc-grid b{display:block;color:var(--fc-accent-soft);font:700 .88rem/1.35 Arial,Helvetica,sans-serif}
+.fc-chronic-news .fc-conclusion{margin:1.5rem 0 0;padding:1.15rem 1.25rem;background:linear-gradient(135deg,#1f2225,#16181a);border:1px solid #4a3b21;border-radius:9px}
+.fc-chronic-news .fc-references{margin-top:1.8rem;padding-top:1.1rem;border-top:1px solid var(--fc-line)}
+.fc-chronic-news .fc-references h2{margin-top:0}
+.fc-chronic-news .fc-references li{margin:.64rem 0;color:#c9cccf;font-size:.88em;overflow-wrap:anywhere}
+.fc-chronic-news .fc-note{margin-top:1.4rem;padding:1rem 1.05rem;color:#cfd2d4;background:#151719;border:1px solid var(--fc-line);border-radius:8px;font-size:.92em}
+.fc-chronic-news .fc-signature{margin:1.5rem 0 0;color:var(--fc-muted);font:600 .86rem/1.5 Arial,Helvetica,sans-serif;text-align:right}
+@media(max-width:720px){.fc-chronic-news{padding:14px;border-radius:8px}.fc-chronic-news h1{font-size:2.1rem}.fc-chronic-news .fc-grid{grid-template-columns:1fr}}
+</style>
+
+<article class="fc-chronic-news" lang="pt-PT">
+<header>
+<p class="fc-kicker">Democracia · Responsabilidade política · Segurança interna</p>
+<h1>O País dos Silêncios de Cemitério</h1>
+<p class="fc-subtitle">Quando o poder espera que o cidadão se canse antes de a verdade chegar</p>
+<div class="fc-meta"><span>Por Francisco Gonçalves</span><span>Fragmentos do Caos</span><span>20 de Julho de 2026</span></div>
+</header>
+
+<p class="fc-lead">Portugal não está em silêncio porque nada esteja a ser publicado. Está em silêncio porque, perante perguntas que atingem a confiança no ministro responsável pela segurança interna, as instituições parecem ter decidido falar apenas o mínimo indispensável, em momentos cuidadosamente escolhidos, esperando que a sucessão das notícias faça aquilo que as explicações não fizeram: cansar os portugueses.</p>
+
+<h2>O silêncio não é a ausência de som</h2>
+
+<p>Há silêncios que não se medem em decibéis.</p>
+<p>Medem-se em perguntas sem resposta.</p>
+<p>Em documentos que não aparecem.</p>
+<p>Em responsáveis que dizem estar atentos.</p>
+<p>Em governos que afirmam confiar antes de esclarecer.</p>
+<p>Em parlamentos que recebem a inquietação do país com a serenidade climatizada de uma sala de reuniões.</p>
+<p>Em notícias que se acumulam, cada uma mais grave do que a anterior, sem que a autoridade política acompanhe a velocidade dos factos.</p>
+
+<blockquote>O silêncio institucional não é falta de notícias. É falta de prestação de contas.</blockquote>
+
+<p>Nos últimos dias, o caso que envolve o ministro da Administração Interna, Luís Neves, deixou de poder ser tratado como uma simples polémica sobre obras particulares.</p>
+<p>O que começou com perguntas sobre a contratação privada de um empreiteiro que anteriormente realizara obras para a Polícia Judiciária cresceu até envolver contratos públicos, relações pessoais, propriedades privadas, bens apreendidos num processo de tráfico de droga, dúvidas sobre a cadeia de custódia e uma investigação do Ministério Público.</p>
+<p>Não existe, até ao momento, uma condenação criminal do ministro.</p>
+<p>Nem seria aceitável transformar suspeitas, notícias e perguntas em sentença.</p>
+<p>Mas também não é aceitável utilizar a presunção de inocência como um lençol branco atirado sobre a responsabilidade política.</p>
+
+<h2>Do monte alentejano ao atrelado apreendido</h2>
+
+<p>A investigação jornalística revelou que a empresa Construbarcelos, pertencente a João dos Santos Carvalho, realizou várias obras para a Polícia Judiciária durante o período em que Luís Neves era director nacional daquela polícia.</p>
+<p>A mesma empresa viria depois a executar trabalhos numa propriedade ligada ao actual ministro, em Odemira.</p>
+<p>Segundo a síntese publicada pelo ECO, a empresa recebeu cerca de 1,9 milhões de euros em contratos públicos entre 2020 e 2025, incluindo obras em instalações da PJ. Algumas adjudicações foram assinadas por Luís Neves, enquanto outras levantaram dúvidas quanto à publicação no Portal Base e aos procedimentos utilizados.<sup><a href="/#ref-1">[1]</a></sup></p>
+<p>O ministro afirmou que só conheceu pessoalmente o empresário numa fase avançada das obras da PJ e negou qualquer favorecimento.</p>
+<p>Essa explicação merece ser considerada.</p>
+<p>Mas não encerra o problema.</p>
+<p>A responsabilidade pública não depende apenas do momento em que uma amizade é declarada.</p>
+<p>Depende da transparência integral das decisões, dos contratos, dos pagamentos, das relações e dos mecanismos de prevenção de conflitos de interesses.</p>
+
+<p>Posteriormente, foi conhecido que um atrelado apreendido na Operação Pacoba, ligada ao desmantelamento de um grande laboratório de cocaína, se encontrava nas instalações da Construbarcelos, acoplado a um veículo da empresa.</p>
+<p>A Polícia Judiciária abriu um inquérito para apurar como um bem apreendido à ordem de um processo criminal transitou para a posse de um particular. A Procuradoria-Geral da República confirmou igualmente a existência de um inquérito relacionado com bens apreendidos naquela operação.<sup><a href="/#ref-2">[2]</a></sup></p>
+
+<div class="fc-alert">
+<strong>Este é o ponto em que o caso deixa de ser apenas incómodo e passa a ser institucionalmente grave.</strong><br>
+Um atrelado apreendido numa operação contra o tráfico de droga não é um objecto perdido num armazém. É um bem sujeito a regras de guarda, movimentação, documentação, autorização e controlo.
+</div>
+
+<p>É necessário saber quem autorizou a sua deslocação.</p>
+<p>Com que fundamento.</p>
+<p>Em que data.</p>
+<p>Para que finalidade.</p>
+<p>Que documentos foram produzidos.</p>
+<p>Quem verificou o destino final.</p>
+<p>E por que razão o bem acabou a ser utilizado por uma empresa privada ligada a um empresário que mantinha relações profissionais e pessoais com o então director da PJ.</p>
+<p>Estas perguntas não são uma acusação.</p>
+<p>São o conteúdo mínimo de uma democracia adulta.</p>
+
+<h2>Quando as coincidências começam a formar uma arquitectura</h2>
+
+<p>Uma obra privada, isoladamente, pode ser apenas uma obra privada.</p>
+<p>Uma relação de amizade, isoladamente, pode ser apenas uma amizade.</p>
+<p>Um contrato público, isoladamente, pode ser apenas um contrato público.</p>
+<p>Um atrelado mal localizado, isoladamente, pode ser uma falha administrativa.</p>
+<p>Mas quando estes elementos aparecem ligados pelas mesmas pessoas, pela mesma empresa e pelo mesmo período de exercício de funções públicas, a obrigação de esclarecimento aumenta.</p>
+<p>Não porque a repetição prove um crime.</p>
+<p>Porque a repetição destrói a possibilidade de tratar tudo como detalhe irrelevante.</p>
+
+<p>Foi ainda noticiado que a Construbarcelos se encontrava sem título habilitante para operar desde Março de 2026, após cancelamento por falta de pagamento da taxa de regulação, embora continuasse associada a trabalhos e mantivesse credenciação noutras áreas.<sup><a href="/#ref-3">[3]</a></sup></p>
+<p>Também foram divulgadas facturas relacionadas com as obras na propriedade de Odemira, permanecendo por esclarecer publicamente a correspondência entre os valores facturados, os pagamentos efectivamente realizados e a totalidade dos trabalhos executados.<sup><a href="/#ref-4">[4]</a></sup></p>
+<p>Cada novo elemento abre uma nova gaveta.</p>
+<p>E dentro de cada gaveta aparece outra pergunta.</p>
+<p>O país começou por querer saber quem fez as obras.</p>
+<p>Acabou a perguntar quem guardava os bens apreendidos de uma investigação de cocaína.</p>
+<p>Em qualquer democracia funcional, a distância entre estas duas perguntas deveria provocar uma resposta política imediata.</p>
+
+<h2>O silêncio do ministro</h2>
+
+<p>Luís Neves concedeu uma entrevista e afirmou que não existiu favorecimento, que as decisões tomadas na PJ procuraram proteger o interesse público e que, embora hoje pudesse agir de forma diferente em alguns aspectos, considerava que estava tudo regular.</p>
+<p>O problema é que o caso continuou a crescer depois dessa entrevista.</p>
+<p>As explicações dadas sobre as obras particulares não responderam integralmente às questões posteriormente reveladas sobre o atrelado, os bens apreendidos, as autorizações de movimentação e a cadeia de custódia.</p>
+<p>Quando os factos mudam, a obrigação de explicar regressa.</p>
+<p>Uma entrevista não é uma absolvição política vitalícia.</p>
+
+<blockquote>Dizer que está tudo limpo não substitui a apresentação da lavandaria.</blockquote>
+
+<p>O ministro da Administração Interna não ocupa uma pasta lateral.</p>
+<p>Dirige uma área que envolve segurança interna, forças policiais, protecção civil e confiança institucional.</p>
+<p>A sua autoridade depende de os cidadãos acreditarem que exige aos outros o mesmo rigor que aplica a si próprio.</p>
+<p>Um ministro pode sobreviver a uma acusação injusta.</p>
+<p>Tem muito mais dificuldade em sobreviver a perguntas legítimas às quais responde por fragmentos.</p>
+
+<h2>O silêncio do primeiro-ministro disfarçado de confiança</h2>
+
+<p>Luís Montenegro declarou no Parlamento que mantém «plenamente» a confiança política em Luís Neves e afirmou que o ministro não cometeu ilegalidades, não prejudicou o interesse público e não privilegiou interesses particulares.<sup><a href="/#ref-5">[5]</a></sup></p>
+<p>Esta resposta não foi silêncio literal.</p>
+<p>Foi algo politicamente mais grave.</p>
+<p>Foi uma conclusão antes do esclarecimento completo.</p>
+<p>O primeiro-ministro não se limitou a dizer que aguardaria os factos.</p>
+<p>Emitiu uma certificação política quando o processo informativo ainda estava em expansão e antes de todas as questões sobre o atrelado estarem esclarecidas.</p>
+<p>Governar não é proteger automaticamente cada membro do Governo.</p>
+<p>É proteger primeiro a confiança dos cidadãos nas instituições.</p>
+
+<p>A confiança de um primeiro-ministro não pode funcionar como substituto de documentos.</p>
+<p>Não pode validar facturas.</p>
+<p>Não pode reconstruir a cadeia de custódia.</p>
+<p>Não pode determinar quem autorizou a deslocação de um bem apreendido.</p>
+<p>Não pode dispensar uma audição parlamentar.</p>
+<p>E muito menos pode transformar o vínculo político entre chefe do Governo e ministro numa espécie de presunção de regularidade automática.</p>
+
+<p>O Conselho de Ministros de 17 de Julho não discutiu formalmente o caso, segundo declarou o ministro da Presidência. António Leitão Amaro recusou a ideia de silêncio governamental, recordando que o primeiro-ministro já tinha falado no Parlamento.<sup><a href="/#ref-6">[6]</a></sup></p>
+<p>Mas falar não é necessariamente responder.</p>
+<p>Uma frase de confiança não é uma investigação.</p>
+<p>É apenas uma frase de confiança.</p>
+<p>O Governo parece acreditar que, depois de a pronunciar, o assunto fica politicamente tratado.</p>
+<p>Fica apenas politicamente adiado.</p>
+
+<h2>O silêncio presidencial no momento adequado</h2>
+
+<p>Questionado sobre o caso, o Presidente da República, António José Seguro, afirmou que está atento e que fala no momento certo e no local adequado.<sup><a href="/#ref-7">[7]</a></sup></p>
+<p>A frase é institucionalmente impecável.</p>
+<p>Também é extraordinariamente confortável.</p>
+<p>O momento certo pode ser amanhã.</p>
+<p>O local adequado pode ser Belém.</p>
+<p>Ou pode ser uma zona temporal abstracta onde os problemas políticos são enviados para morrer de velhice.</p>
+
+<p>O Presidente da República não tem competência para demitir isoladamente um ministro.</p>
+<p>Mas tem poder político, influência institucional e acesso directo ao primeiro-ministro.</p>
+<p>Pode pedir informação.</p>
+<p>Pode convocar.</p>
+<p>Pode advertir.</p>
+<p>Pode lembrar publicamente que a confiança nas instituições exige respostas.</p>
+<p>Pode demonstrar que acompanha o funcionamento regular dos órgãos do Estado não apenas com atenção, mas com intervenção.</p>
+<p>Estar atento é o requisito mínimo de quem lê os jornais.</p>
+<p>De um Presidente espera-se uma utilidade institucional ligeiramente superior.</p>
+
+<h2>O silêncio parlamentar vestido de serenidade</h2>
+
+<p>Não é rigoroso afirmar que todos os partidos ficaram completamente calados.</p>
+<p>Houve pedidos de esclarecimento, exigências de explicações e apelos à demissão do ministro. O Chega considerou que Luís Neves deixou de ter condições para permanecer no Governo, enquanto outras forças políticas exigiram esclarecimentos e escrutínio.<sup><a href="/#ref-8">[8]</a></sup></p>
+<p>Mas uma democracia parlamentar não se esgota em declarações à entrada ou à saída de um estúdio.</p>
+<p>A Assembleia da República dispõe de instrumentos concretos:</p>
+
+<ul>
+<li>audições urgentes;</li>
+<li>requerimentos de documentos;</li>
+<li>perguntas ao Governo;</li>
+<li>comissões de inquérito;</li>
+<li>debates de urgência;</li>
+<li>moções;</li>
+<li>e fiscalização sistemática da Administração.</li>
+</ul>
+
+<p>A própria Constituição estabelece que o Governo é responsável perante o Presidente da República e a Assembleia da República, e que os ministros respondem politicamente perante o primeiro-ministro e o Parlamento. Cabe ainda à Assembleia vigiar o cumprimento da Constituição e das leis e apreciar os actos do Governo e da Administração.<sup><a href="/#ref-9">[9]</a></sup></p>
+<p>Perante isto, a pergunta não é apenas o que disseram os partidos.</p>
+<p>É o que fizeram.</p>
+<p>Que documentos exigiram?</p>
+<p>Que audições marcaram?</p>
+<p>Que prazos estabeleceram?</p>
+<p>Que responsáveis chamaram?</p>
+<p>Que mecanismos accionaram para impedir que o assunto morra entre uma conferência de imprensa e o início das férias parlamentares?</p>
+
+<blockquote>Um Parlamento não fiscaliza através de indignação intermitente. Fiscaliza convocando, perguntando, documentando e obrigando a responder.</blockquote>
+
+<p>Quando os partidos se limitam a esperar pelo desgaste do adversário, deixam de representar os cidadãos.</p>
+<p>Passam apenas a administrar oportunidades eleitorais.</p>
+
+<h2>Os jornalistas não estão calados. O sistema é que aprendeu a sobreviver às notícias</h2>
+
+<p>Seria injusto afirmar que os jornalistas permaneceram em silêncio.</p>
+<p>Foi o trabalho jornalístico que revelou as obras, os contratos, a relação com o empreiteiro, as facturas, o atrelado, os problemas de habilitação da empresa e as sucessivas contradições.</p>
+<p>Sem imprensa livre, este caso provavelmente nunca teria chegado ao conhecimento público.</p>
+<p>A própria dimensão internacional do assunto foi registada pela Euronews, que descreveu a investigação relacionada com o atrelado apreendido e o impacto político sobre o Governo português.<sup><a href="/#ref-10">[10]</a></sup></p>
+
+<p>O problema é outro.</p>
+<p>O poder político aprendeu a sobreviver ao ciclo noticioso.</p>
+<p>Espera dois ou três dias.</p>
+<p>Responde a uma parte.</p>
+<p>Entrega algumas facturas.</p>
+<p>Pronuncia uma frase solene.</p>
+<p>Recusa uma pergunta alegando que existe uma investigação.</p>
+<p>E aguarda pelo próximo incêndio, pela próxima polémica ou pelo próximo espectáculo desportivo.</p>
+<p>Não é necessário censurar os jornais.</p>
+<p>Basta esperar que os jornais mudem de assunto.</p>
+
+<p>A democracia contemporânea não enfrenta apenas o risco do silêncio imposto.</p>
+<p>Enfrenta o risco do ruído suficiente para tornar tudo esquecível.</p>
+<p>Publicam-se dezenas de notícias.</p>
+<p>Fazem-se comentários.</p>
+<p>Abrem-se painéis.</p>
+<p>Mas a pergunta original continua sem resposta.</p>
+<p>O cidadão recebe informação em abundância e esclarecimento em escassez.</p>
+
+<h2>O silêncio dos cemitérios</h2>
+
+<p>Portugal possui várias modalidades de silêncio institucional.</p>
+
+<div class="fc-grid">
+<div><b>O silêncio de cimento</b>É pesado, imóvel e espera que a pergunta se canse.</div>
+<div><b>O silêncio de seda</b>Usa palavras elegantes como prudência, serenidade e momento adequado.</div>
+<div><b>O silêncio jurídico</b>Invoca uma investigação para evitar qualquer responsabilidade política.</div>
+<div><b>O silêncio partidário</b>Calcula se a indignação rende votos antes de decidir a intensidade.</div>
+<div><b>O silêncio burocrático</b>Cria inquéritos sem prazos, relatórios sem publicação e respostas sem conclusão.</div>
+<div><b>O silêncio social</b>Nasce do cansaço de quem já viu demasiados casos terminarem em nada.</div>
+</div>
+
+<p>O silêncio dos cemitérios não significa que não existam vozes.</p>
+<p>Significa que nenhuma voz produz consequência.</p>
+<p>É possível falar muito dentro de um cemitério.</p>
+<p>Os mortos continuam sem responder.</p>
+<p>É essa a sensação que se instala quando Governo, Presidente, Parlamento e entidades públicas produzem palavras, mas nenhuma delas consegue fechar as perguntas essenciais.</p>
+
+<h2>Presunção de inocência não é irresponsabilidade política</h2>
+
+<p>Luís Neves beneficia da presunção de inocência.</p>
+<p>Não deve ser tratado como culpado sem prova e decisão judicial.</p>
+<p>Esta garantia é civilizacional e não depende da simpatia que se tenha pelo ministro.</p>
+<p>Mas a responsabilidade criminal e a responsabilidade política não são a mesma coisa.</p>
+<p>Um governante pode não ter cometido crime e, ainda assim:</p>
+
+<ul>
+<li>ter criado uma aparência séria de conflito de interesses;</li>
+<li>ter actuado com imprudência;</li>
+<li>ter falhado no dever de transparência;</li>
+<li>ter comprometido a confiança pública;</li>
+<li>ou ter perdido a autoridade necessária ao exercício do cargo.</li>
+</ul>
+
+<p>Os tribunais avaliam crimes.</p>
+<p>O Parlamento, o primeiro-ministro e a opinião pública avaliam responsabilidade política.</p>
+<p>Confundir os dois planos é uma técnica antiga.</p>
+<p>Permite ao governante dizer que não pode explicar porque existe uma investigação e, mais tarde, afirmar que nunca foi condenado.</p>
+<p>Entre uma coisa e outra, a responsabilidade política evapora-se.</p>
+
+<h2>Será isto uma democracia?</h2>
+
+<p>Sim, Portugal continua a ser uma democracia.</p>
+<p>Existem eleições livres.</p>
+<p>Existe imprensa independente.</p>
+<p>Existem partidos de oposição.</p>
+<p>Existem tribunais.</p>
+<p>Existem investigações.</p>
+<p>Existem cidadãos que podem criticar o Governo sem serem presos.</p>
+<p>Negar tudo isto seria intelectualmente desonesto.</p>
+
+<p>Mas a democracia não se resume à existência formal das instituições.</p>
+<p>Depende da forma como elas exercem as suas funções.</p>
+<p>Uma democracia enfraquece quando:</p>
+
+<ul>
+<li>o Governo substitui esclarecimento por confiança interna;</li>
+<li>o Presidente substitui influência por espera;</li>
+<li>o Parlamento substitui fiscalização por comentários;</li>
+<li>os partidos substituem princípios por cálculo;</li>
+<li>e os cidadãos substituem exigência por resignação.</li>
+</ul>
+
+<p>Não estamos perante uma ditadura.</p>
+<p>Estamos perante algo mais banal e, por isso, mais traiçoeiro:</p>
+
+<blockquote>uma democracia que continua formalmente viva, mas começa a habituar-se à ausência de consequências.</blockquote>
+
+<p>As democracias raramente morrem apenas através de um grande golpe.</p>
+<p>Também podem degradar-se lentamente.</p>
+<p>Uma explicação adiada.</p>
+<p>Um conflito de interesses relativizado.</p>
+<p>Um inquérito esquecido.</p>
+<p>Um Parlamento distraído.</p>
+<p>Um Presidente prudentemente ausente.</p>
+<p>Um cidadão um pouco mais cansado.</p>
+
+<h2>O mínimo democrático exigível</h2>
+
+<p>O país não precisa de condenações antecipadas.</p>
+<p>Precisa de respostas verificáveis.</p>
+<p>O mínimo exigível seria:</p>
+
+<ol>
+<li>uma declaração pública integral do ministro sobre todos os factos conhecidos, incluindo o atrelado e os bens apreendidos;</li>
+<li>uma audição parlamentar urgente, com perguntas e respostas registadas;</li>
+<li>a publicação dos contratos, facturas, comprovativos de pagamento e autorizações relevantes, salvaguardando apenas matéria legalmente protegida;</li>
+<li>a reconstrução documental da cadeia de custódia e movimentação do atrelado;</li>
+<li>o afastamento do ministro de qualquer intervenção ou influência sobre entidades envolvidas na averiguação;</li>
+<li>a definição de prazos públicos para conclusões preliminares;</li>
+<li>e a publicação posterior de um relatório que permita perceber o que aconteceu e que procedimentos serão corrigidos.</li>
+</ol>
+
+<p>Se tudo estiver regular, a transparência protegerá o ministro.</p>
+<p>Se não estiver, protegerá o Estado.</p>
+<p>O silêncio não protege nenhum dos dois.</p>
+<p>Apenas transfere o custo para a confiança dos cidadãos.</p>
+
+<h2>Nota editorial</h2>
+
+<p>Esta crónica não afirma a culpabilidade criminal de Luís Neves, de João dos Santos Carvalho ou de qualquer outra pessoa.</p>
+<p>Os inquéritos e investigações devem decorrer com independência, respeito pelas garantias processuais e presunção de inocência.</p>
+<p>Mas o respeito pelo Estado de direito não obriga os cidadãos a suspenderem o pensamento político.</p>
+<p>Nem impede que se exijam explicações aos governantes.</p>
+<p>Pelo contrário.</p>
+<p>Quanto mais sensível é a função exercida, maior deve ser a transparência.</p>
+<p>O ministro da Administração Interna tutela uma área central da segurança do país.</p>
+<p>O primeiro-ministro responde pela confiança política que nele deposita.</p>
+<p>O Presidente deve acompanhar o regular funcionamento das instituições.</p>
+<p>O Parlamento tem o dever constitucional de fiscalizar o Governo e a Administração.</p>
+<p>E a imprensa tem o dever de continuar a perguntar quando todos os outros começam a sugerir que já se perguntou demasiado.</p>
+
+<h2>Epílogo: o país à espera que o cidadão desista</h2>
+
+<p>Portugal possui uma extraordinária capacidade para transformar escândalos em nevoeiro.</p>
+<p>Primeiro surgem os factos.</p>
+<p>Depois as explicações parciais.</p>
+<p>Depois as declarações de confiança.</p>
+<p>Depois a prudência presidencial.</p>
+<p>Depois a serenidade parlamentar.</p>
+<p>Depois outro caso.</p>
+<p>E, finalmente, o esquecimento.</p>
+
+<div class="fc-conclusion">
+<p>O poder parece ter adoptado uma estratégia simples:</p>
+<p><strong>não responder até que a pergunta envelheça.</strong></p>
+<p><strong>não esclarecer até que a indignação encontre outro assunto.</strong></p>
+<p><strong>não assumir responsabilidade até que a ausência de consequências pareça normal.</strong></p>
+</div>
+
+<p>É assim que se constrói o país dos silêncios de cemitério.</p>
+<p>Não com censura.</p>
+<p>Com cansaço.</p>
+<p>Não com proibição.</p>
+<p>Com adiamento.</p>
+<p>Não com a destruição das instituições.</p>
+<p>Com instituições que continuam abertas, iluminadas e formalmente funcionais, mas onde ninguém parece obrigado a responder.</p>
+
+<blockquote>A democracia portuguesa continua viva. Mas, perante este caso, parece estar deitada em observação, enquanto os responsáveis aguardam que o cidadão se canse primeiro.</blockquote>
+
+<p>O país não precisa de serenidade.</p>
+<p>Precisa de verdade.</p>
+<p>Não precisa de confiança declarada.</p>
+<p>Precisa de confiança demonstrada.</p>
+<p>Não precisa de esperar pelo momento adequado.</p>
+<p>O momento adequado para explicar é quando os portugueses perguntam.</p>
+
+<p>O resto é silêncio.</p>
+<p>E há silêncios que já cheiram a cemitério.</p>
+
+<section class="fc-references" aria-labelledby="fontes">
+<h2 id="fontes">Fontes e referências</h2>
+<ol>
+<li id="ref-1"><a href="https://eco.sapo.pt/2026/07/16/das-obras-na-pj-ao-amigo-empreiteiro-tudo-o-que-sabe-da-polemica-que-envolve-luis-neves/" target="_blank" rel="noopener noreferrer">ECO — Das obras na PJ ao "amigo" empreiteiro: síntese do caso Luís Neves</a>, 16 de Julho de 2026.</li>
+<li id="ref-2"><a href="https://www.dn.pt/sociedade/caso-lus-neves-o-que-se-soube-o-que-se-sabe-e-o-que-falta-saber" target="_blank" rel="noopener noreferrer">Diário de Notícias — PGR confirma inquérito sobre bens apreendidos na Operação Pacoba</a>; e <a href="https://eco.sapo.pt/2026/07/16/empreiteiro-de-luis-neves-usa-atrelado-apreendido-pela-pj/" target="_blank" rel="noopener noreferrer">ECO — atrelado apreendido encontrado nas instalações da Construbarcelos</a>.</li>
+<li id="ref-3"><a href="https://www.dn.pt/pol%C3%ADtica/construtora-de-amigo-de-lus-neves-sem-alvar-para-operar-desde-maro-por-falta-de-pagamento-de-taxa" target="_blank" rel="noopener noreferrer">Diário de Notícias — construtora sem título habilitante desde Março de 2026</a>, 17 de Julho de 2026.</li>
+<li id="ref-4"><a href="https://www.dn.pt/sociedade/caso-lus-neves-o-que-se-soube-o-que-se-sabe-e-o-que-falta-saber" target="_blank" rel="noopener noreferrer">Diário de Notícias — facturas, pagamentos e questões ainda por esclarecer</a>, 17 de Julho de 2026.</li>
+<li id="ref-5"><a href="https://rr.pt/noticia/politica/2026/07/16/montenegro-mantem-confianca-no-ministro-luis-neves/478536/" target="_blank" rel="noopener noreferrer">Rádio Renascença / Lusa — Montenegro mantém "plenamente" a confiança em Luís Neves</a>, 16 de Julho de 2026.</li>
+<li id="ref-6"><a href="https://www.dn.pt/pol%C3%ADtica/conselho-de-ministros-no-discutiu-polmicas-que-envolvem-lus-neves-garante-leito-amaro" target="_blank" rel="noopener noreferrer">Diário de Notícias — Conselho de Ministros não discutiu formalmente o caso</a>, 17 de Julho de 2026.</li>
+<li id="ref-7"><a href="https://jornaleconomico.sapo.pt/noticias/presidente-questionado-sobre-luis-neves-diz-que-esta-atento-mas-que-fala-no-momento-e-no-local-adequados/" target="_blank" rel="noopener noreferrer">Jornal Económico / Lusa — Presidente afirma estar atento e falar no momento e local adequados</a>, 17 de Julho de 2026.</li>
+<li id="ref-8"><a href="https://www.rtp.pt/noticias/pais/ventura-diz-que-luis-neves-nao-tem-condicoes-para-continuar-no-governo_v1754114" target="_blank" rel="noopener noreferrer">RTP — reacção do Chega e pedido de justificação credível</a>; e <a href="https://rr.pt/noticia/politica/2026/07/16/montenegro-mantem-confianca-no-ministro-luis-neves/478536/" target="_blank" rel="noopener noreferrer">Renascença — debate parlamentar e exigências de esclarecimento</a>.</li>
+<li id="ref-9"><a href="https://www.parlamento.pt/Legislacao/Paginas/ConstituicaorepublicaPortuguesa.aspx" target="_blank" rel="noopener noreferrer">Assembleia da República — Constituição da República Portuguesa, artigos 162.º, 190.º e 191.º</a>; e <a href="https://www.parlamento.pt/Parlamento/Paginas/assembleia-como-orgao-soberania.aspx" target="_blank" rel="noopener noreferrer">Assembleia da República — funções de fiscalização do Governo e da Administração</a>.</li>
+<li id="ref-10"><a href="https://pt.euronews.com/my-europe/2026/07/17/o-ministro-e-o-empreiteiro-o-caso-que-esta-a-abalar-o-governo-portugues" target="_blank" rel="noopener noreferrer">Euronews — O ministro e o empreiteiro: o caso que está a abalar o Governo português</a>, 17 de Julho de 2026.</li>
+<li><a href="https://www.sabado.pt/portugal/amp/luis-neves-como-um-monte-alentejano-e-um-atrelado-mancharam-o-ministro-favorito-dos-portugues" target="_blank" rel="noopener noreferrer">Sábado — Luís Neves: como um monte alentejano e um atrelado mancharam o ministro</a>, 20 de Julho de 2026.</li>
+</ol>
+</section>
+
+<p class="fc-note"><strong>Nota de rigor:</strong> A crónica distingue responsabilidade política de responsabilidade criminal. Os factos sob investigação são apresentados como matéria noticiada e ainda em apuramento. A presunção de inocência mantém-se integralmente.</p>
+<p class="fc-signature">Francisco Gonçalves · Fragmentos do Caos · 2026</p>
+</article>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
