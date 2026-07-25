@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quando a rua fala e o poder escuta</title>
+<meta name="description" content="Quando a rua fala e o poder escuta">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Quando a rua fala e o poder escuta</h1>
+      <p class="meta">Publicado em 2026-07-24 12:00:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/07/file_000000000c748246ab9b3f964938969a_3a591339.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="Quando a rua fala e o poder escuta">
+      <meta itemprop="description" content="Uma crónica sobre os protestos que se seguiram à saída de Mykhailo Fedorov, a substituição de Oleksandr Syrskyi por Mykhailo Drapatyi e a diferença entre corrigir o poder e apenas explicar o erro.">
+      <meta itemprop="datePublished" content="2026-07-23">
+      <meta itemprop="dateModified" content="2026-07-23">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="INSERIR_URL_DA_IMAGEM_AQUI">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      Quando a rua fala e o poder escuta
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      A Ucrânia em guerra, a democracia sob pressão e o contraste desconfortável com Portugal
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        Em Julho de 2026, a demissão do popular ministro ucraniano da Defesa, Mykhailo Fedorov, abriu uma crise política e militar. Milhares de cidadãos saíram às ruas, criticaram a permanência do comandante-chefe Oleksandr Syrskyi e exigiram uma mudança de rumo. Volodymyr Zelensky não anulou literalmente a primeira decisão: escutou a contestação, reuniu com as chefias e, poucos dias depois, substituiu Syrskyi por Mykhailo Drapatyi. A diferença factual é importante. O significado democrático também.
+      </p>
+    </div>
+
+    <p>
+      Há países onde uma manifestação é tratada como uma doença contagiosa. Mandam-se polícias, levantam-se barreiras, descobrem-se agitadores profissionais e convoca-se um especialista televisivo para explicar que os cidadãos não compreenderam a extraordinária inteligência da decisão governamental.
+    </p>
+
+    <p>
+      O poder, essa criatura de pele muito fina e automóvel oficial muito grosso, raramente aprecia ser interrompido enquanto contempla a própria importância.
+    </p>
+
+    <p>
+      Na Ucrânia aconteceu algo diferente.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A decisão que incendiou a rua
+    </h2>
+
+    <p>
+      A crise começou com a saída de Mykhailo Fedorov do Ministério da Defesa. Jovem, reformista e identificado com a modernização tecnológica das Forças Armadas, Fedorov conquistara apoio entre sectores militares e civis pelo impulso dado aos drones, à digitalização, à contratação pública e a uma cultura de comando menos pesada.
+    </p>
+
+    <p>
+      A sua relação com o comandante-chefe Oleksandr Syrskyi deteriorara-se profundamente. Fedorov acusava a velha hierarquia de resistir às reformas, de conservar métodos centralizados e de proteger uma cultura militar ainda demasiado próxima da tradição soviética. Zelensky escolheu afastar o ministro.
+    </p>
+
+    <p>
+      A população reagiu.
+    </p>
+
+    <p>
+      Durante vários dias, milhares de pessoas reuniram-se em Kyiv e noutras cidades. Entre elas estavam jovens, veteranos, familiares de combatentes e cidadãos que conhecem a guerra não como uma animação num mapa, mas como a espera diária por uma mensagem que confirme que alguém continua vivo.
+    </p>
+
+    <p>
+      Os protestos apoiavam Fedorov e exigiam a saída de Syrskyi. Questionavam a condução da guerra, as perdas humanas, a lentidão das reformas e a distância entre o alto comando e aqueles que combatem.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Não protestavam contra uma guerra distante. Protestavam sobre a forma como o seu país enviava filhos, pais, mães e companheiros para uma guerra existencial.
+      </p>
+    </div>
+
+    <p>
+      Zelensky podia ter feito o que tantos governantes fariam com reflexo quase pavloviano: insistir, acusar os manifestantes de irresponsabilidade, invocar a segurança nacional e declarar que qualquer crítica enfraquecia o país perante o inimigo.
+    </p>
+
+    <p>
+      Não o fez.
+    </p>
+
+    <p>
+      Reuniu com comandantes, avaliou o conflito dentro da estrutura militar e, a 21 de Julho, afastou Oleksandr Syrskyi, nomeando Mykhailo Drapatyi para comandante-chefe das Forças Armadas.
+    </p>
+
+    <p>
+      Drapatyi pertence a uma geração mais jovem, possui experiência de combate e é associado a uma visão mais flexível da guerra, à descentralização operacional e à integração da inovação tecnológica. Não representa uma garantia de vitória, porque a guerra não é um catálogo de soluções instantâneas. Representa, porém, uma alteração real de rumo.
+    </p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">
+        CRONOLOGIA ESSENCIAL
+      </h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li><strong style="color:#d6a542;">Meados de Julho de 2026:</strong> Zelensky afasta Mykhailo Fedorov do Ministério da Defesa, num contexto de conflito com a chefia militar.</li>
+        <li><strong style="color:#d6a542;">16 a 20 de Julho:</strong> realizam-se protestos em Kyiv e noutras cidades, com pedidos de substituição de Syrskyi e apoio a Fedorov.</li>
+        <li><strong style="color:#d6a542;">21 de Julho:</strong> Zelensky exonera Oleksandr Syrskyi e nomeia Mykhailo Drapatyi comandante-chefe.</li>
+        <li><strong style="color:#d6a542;">Contexto democrático:</strong> em Julho de 2025, protestos semelhantes tinham levado o poder ucraniano a restaurar a independência de organismos anticorrupção que uma lei aprovada dias antes enfraquecera.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O mérito não está em nunca errar
+    </h2>
+
+    <p>
+      A elevação democrática não consiste em nunca tomar uma decisão errada. Essa perfeição só existe nas autobiografias de antigos governantes e nas biografias autorizadas de ditadores, dois géneros literários que tratam o passado como matéria plástica.
+    </p>
+
+    <p>
+      O mérito está em reconhecer que uma vitória eleitoral não concede infalibilidade. Um presidente pode dispor de informação que a rua desconhece. A rua, contudo, possui experiência, sofrimento e conhecimento que o palácio frequentemente deixou de ouvir.
+    </p>
+
+    <p>
+      Entre ambos deve existir uma ponte. Quando essa ponte funciona, a contestação não destrói a autoridade: melhora-a. Quando desaparece, a democracia reduz-se a um monólogo com boletins de voto ocasionais.
+    </p>
+
+    <p>
+      Zelensky criou a crise ao afastar Fedorov e não deve ser transformado num santo secular. Os seres humanos já construíram demasiados altares políticos para depois se surpreenderem quando o mármore lhes cai em cima.
+    </p>
+
+    <p>
+      Mas teve a lucidez de perceber que insistir por orgulho seria mais perigoso do que corrigir. E fê-lo no quinto ano da invasão russa em grande escala, mais de uma década depois do início da guerra em 2014, com cidades bombardeadas, soldados nas trincheiras e o Estado submetido à lei marcial.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Democracia sob sirenes
+    </h2>
+
+    <p>
+      Não é rigoroso afirmar que a democracia ucraniana funciona plenamente. A lei marcial suspendeu eleições nacionais e restringiu direitos. Existem problemas de corrupção, concentração mediática, pressão sobre jornalistas e desequilíbrios institucionais que não podem ser varridos para debaixo da bandeira só porque o país é vítima de uma agressão brutal.
+    </p>
+
+    <p>
+      A Ucrânia não precisa de propaganda simpática. Precisa de aliados capazes de a apoiar sem desligarem o espírito crítico.
+    </p>
+
+    <p>
+      Ainda assim, há algo extraordinário no facto de cidadãos poderem ocupar as ruas, em plena guerra, contestar o presidente, discutir a chefia militar e produzir uma resposta política concreta. A Freedom House assinala que, apesar das limitações da lei marcial, as manifestações continuaram a ocorrer e que a pressão popular de 2025 levou à reposição da independência dos organismos anticorrupção.
+    </p>
+
+    <p>
+      As bombas não conseguiram abolir a sociedade civil. As sirenes não eliminaram o direito de discordar. A unidade nacional não foi transformada numa ordem de silêncio absoluto.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        A democracia ucraniana não funciona plenamente. Continua, porém, a funcionar quando teria todas as desculpas históricas para estar adormecida.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Portugal: explicar o erro até ele parecer virtude
+    </h2>
+
+    <p>
+      E depois olhamos para Portugal, país em paz, membro da União Europeia, protegido por instituições estáveis e servido por governantes que dispõem de tempo, assessores, gabinetes jurídicos, especialistas em comunicação e uma surpreendente capacidade para não ouvir nada do que lhes é dito.
+    </p>
+
+    <p>
+      Entre nós, a rectificação política é frequentemente confundida com fraqueza. Demitir alguém parece equivaler a confessar um crime. Pedir desculpa é considerado um acto perigosíssimo, quase tão radical como responder directamente a uma pergunta.
+    </p>
+
+    <p>
+      A gramática do poder português é transversal às cores partidárias. Primeiro nega-se o problema. Depois acusa-se a oposição de aproveitamento. Em seguida critica-se a comunicação social pelo incómodo hábito de fazer perguntas. Cria-se uma auditoria, um grupo de trabalho ou uma comissão. Finalmente, anuncia-se que serão retiradas lições, expressão que em política costuma significar que ninguém será obrigado a aprendê-las.
+    </p>
+
+    <p>
+      O caso que levou à queda do primeiro Governo de Luís Montenegro, em Março de 2025, é uma ilustração desta dificuldade. As dúvidas públicas sobre potenciais conflitos de interesses relacionados com uma empresa familiar não foram resolvidas por um gesto simples e imediato de transparência política. Montenegro negou irregularidades e escolheu submeter o Governo a uma moção de confiança. A moção foi rejeitada, o Governo caiu e o país voltou a eleições.
+    </p>
+
+    <p>
+      As instituições funcionaram. O Parlamento responsabilizou o executivo e os eleitores voltaram a pronunciar-se. Não estamos perante uma democracia inexistente, nem faria sentido comparar Portugal a uma ditadura. O problema é outro: a nossa democracia tende a corrigir pela colisão institucional aquilo que os governantes poderiam corrigir mais cedo pela humildade.
+    </p>
+
+    <p>
+      A diferença não é entre um país democrático e outro antidemocrático. É entre duas culturas de responsabilidade.
+    </p>
+
+    <p>
+      Na Ucrânia, a contestação obrigou o presidente a mudar uma peça central da condução da guerra em poucos dias. Em Portugal, a resposta ao desconforto público é demasiadas vezes uma maratona de explicações, versões sucessivas, pareceres e conferências de imprensa onde se fala durante uma hora para evitar uma frase.
+    </p>
+
+    <p>
+      Os números ajudam a perceber o desgaste. Segundo a edição de 2026 do inquérito da OCDE sobre confiança nas instituições, 40 por cento dos portugueses declararam confiança elevada ou moderadamente elevada no Governo nacional em 2025, valor próximo da média da organização. Mas a confiança nos partidos políticos ficou nos 26 por cento. O sistema mantém-se de pé; a ligação afectiva e moral entre cidadãos e representantes continua muito mais frágil.
+    </p>
+
+    <p>
+      E não há campanha de comunicação que repare essa fractura. A confiança não nasce da repetição de uma mensagem. Nasce da correspondência entre a palavra, o facto e a consequência.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Escutar não é governar por sondagens
+    </h2>
+
+    <p>
+      Convém não cair no romantismo fácil. A escolha de um comandante militar não deve ser feita por aclamação popular, como se o Estado-Maior fosse um concurso televisivo com votação por mensagem.
+    </p>
+
+    <p>
+      Governar exige informação reservada, conhecimento técnico, responsabilidade e decisões que podem ser impopulares. Um chefe de Governo ou um presidente não deve obedecer automaticamente à rua. Deve escutá-la, confrontar as suas razões com os factos e assumir a decisão final.
+    </p>
+
+    <p>
+      A diferença é decisiva.
+    </p>
+
+    <p>
+      Escutar não significa abdicar do poder. Significa impedir que o poder abdique da realidade.
+    </p>
+
+    <p>
+      A confiança pública é, aliás, um recurso estratégico. Na guerra, influencia o recrutamento, a moral, o apoio às famílias, a legitimidade das perdas e a capacidade de resistência. Em paz, sustenta a aceitação das reformas, o cumprimento das regras e a crença de que participar ainda vale a pena.
+    </p>
+
+    <p>
+      Um governante que corrige não diminui a autoridade. Retira-lhe a rigidez para lhe devolver inteligência.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Epílogo: a força de permanecer livre
+    </h2>
+
+    <p>
+      A Rússia procura demonstrar que a força está acima da vontade popular. O Kremlin oferece silêncio, medo e obediência como se fossem estabilidade. A Ucrânia responde com soldados nas trincheiras, cidadãos nas praças e um presidente que continua sujeito à pressão da sociedade que governa.
+    </p>
+
+    <p>
+      Talvez esta seja uma das imagens mais poderosas da guerra: um país que se recusa a ajoelhar perante o invasor e uma sociedade que também se recusa a ajoelhar perante o próprio poder.
+    </p>
+
+    <p>
+      Portugal não vive sob bombas. Não tem cidades ocupadas, milhões de deslocados ou uma frente de combate a decidir a sobrevivência nacional. Temos, portanto, menos desculpas para a arrogância e mais condições para praticar a responsabilidade.
+    </p>
+
+    <p>
+      Falta-nos aprender que reconhecer um erro não destrói um Governo. O que destrói lentamente a democracia é fingir que o erro não existe até que os cidadãos deixem de acreditar em qualquer explicação.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        A democracia não é o silêncio obediente de um povo unido. É o direito de permanecer unido sem deixar de discordar, e a obrigação do poder de ouvir sem deixar de decidir.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">
+      Nota Editorial
+    </h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        Esta crónica é um texto de opinião baseado em acontecimentos noticiados entre 16 e 22 de Julho de 2026. Importa precisar a sequência: os protestos foram desencadeados pela demissão do ministro da Defesa Mykhailo Fedorov e dirigiram-se sobretudo contra a permanência do comandante-chefe Oleksandr Syrskyi. Zelensky não voltou a nomear Fedorov ministro; respondeu à crise substituindo Syrskyi por Mykhailo Drapatyi e oferecendo a Fedorov outra função de relevo.
+      </p>
+      <p style="text-align:left;">
+        O texto não apresenta Zelensky como governante infalível. Pelo contrário, considera que a decisão inicial contribuiu para criar a crise. O aspecto digno de reflexão é a rapidez com que a contestação cívica produziu uma alteração política concreta, apesar da lei marcial e da guerra.
+      </p>
+      <p style="text-align:left;">
+        A comparação com Portugal não pretende estabelecer equivalência constitucional, histórica ou militar. Portugal é uma democracia consolidada e as suas instituições provaram capacidade de fiscalização, incluindo através do Parlamento e de eleições livres. A crítica dirige-se à cultura política da resistência à rectificação, à tendência para substituir transparência por comunicação e à dificuldade, comum a sucessivos governos, em reconhecer que corrigir também é governar.
+      </p>
+      <p style="text-align:left; margin-bottom:0;">
+        As referências abaixo permitem distinguir os factos documentados da interpretação editorial. Porque uma crónica pode ser apaixonada, mas não deve pedir aos factos que marchem ao ritmo da paixão. Isso já é trabalho para a propaganda, e essa repartição pública tem funcionários em excesso.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Referências credíveis
+    </h2>
+
+    <ul style="padding-left:22px;">
+      <li>
+        <a href="https://apnews.com/article/6f7a6e338b9add87fd53ef99b136e8e1"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Associated Press — Dismissal of Ukraine's defense minister started a sudden transformation of the military
+        </a>
+      </li>
+      <li>
+        <a href="https://www.reuters.com/business/aerospace-defense/zelenskiy-shakes-up-national-security-post-protesters-rally-second-day-2026-07-17/"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Reuters — Ukrainians protest for second day, call to replace army chief
+        </a>
+      </li>
+      <li>
+        <a href="https://www.reuters.com/business/aerospace-defense/battlefield-bureaucracy-ukraines-new-military-chief-faces-tests-2026-07-22/"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Reuters — From battlefield to bureaucracy, Ukraine's new military chief faces tests
+        </a>
+      </li>
+      <li>
+        <a href="https://www.euronews.com/my-europe/2026/07/21/zelenskyy-replaces-oleksandr-syrskyi-with-mykhailo-drapatyi-as-ukraines-commander-in-chief"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Euronews — Zelenskyy replaces Oleksandr Syrskyi with Mykhailo Drapatyi as commander-in-chief
+        </a>
+      </li>
+      <li>
+        <a href="https://ecfr.eu/article/the-fallout-of-the-fallout-zelenskys-reshuffle-and-protests-in-ukraine/"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          European Council on Foreign Relations — The fallout of the fallout: Zelensky's reshuffle and protests in Ukraine
+        </a>
+      </li>
+      <li>
+        <a href="https://freedomhouse.org/country/ukraine/freedom-world/2026"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Freedom House — Ukraine: Freedom in the World 2026
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/oecd-survey-on-drivers-of-trust-in-public-institutions-2026-results_c88c8869-en/portugal_8696899f-en.html"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          OCDE — Survey on Drivers of Trust in Public Institutions 2026: Portugal
+        </a>
+      </li>
+      <li>
+        <a href="https://www.reuters.com/world/europe/portugals-government-faces-likely-defeat-fresh-collapse-confidence-vote-2025-03-11/"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Reuters — Portugal's government faces likely defeat in confidence vote
+        </a>
+      </li>
+      <li>
+        <a href="https://apnews.com/article/7d58c1ac7723cca96fc2b4f3ae542034"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Associated Press — What to know about the collapse of Portugal's government
+        </a>
+      </li>
+      <li>
+        <a href="https://commission.europa.eu/publications/2026-rule-law-report-communication-and-country-chapters_en"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Comissão Europeia — 2026 Rule of Law Report: communication and country chapters
+        </a>
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

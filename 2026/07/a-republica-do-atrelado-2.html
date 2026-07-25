@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A República do Atrelado</title>
+<meta name="description" content="A República do Atrelado">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A República do Atrelado</h1>
+      <p class="meta">Publicado em 2026-07-24 10:30:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/07/file_000000001d7881f489d59aa412e3e231_42778cf4.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="A República do Atrelado">
+      <meta itemprop="description" content="Uma crónica satírica sobre o atrelado apreendido na Operação Pacoba, a cadeia de custódia, a responsabilidade pública e o talento nacional para transformar o absurdo em normalidade.">
+      <meta itemprop="datePublished" content="2026-07-23">
+      <meta itemprop="dateModified" content="2026-07-23">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/07/file_000000001d7881f489d59aa412e3e231.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      A República do Atrelado
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      Crónica satírica sobre um país onde a prova tem rodas, a responsabilidade não tem matrícula e a vergonha foi abatida ao efectivo
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        Texto satírico inspirado em acontecimentos públicos ainda sob investigação. Não atribui responsabilidade criminal a qualquer pessoa concreta, preserva a presunção de inocência e distingue os factos conhecidos da caricatura. A realidade, generosa como sempre, forneceu o cenário; a sátira limita-se a acender a luz.
+      </p>
+    </div>
+
+    <p>
+      Portugal é um Estado de direito.
+    </p>
+
+    <p>
+      Está escrito na Constituição, repetido nos discursos oficiais e gravado, provavelmente, numa placa de mármore situada algures entre uma porta que não abre e um balcão onde falta a senha B47.
+    </p>
+
+    <p>
+      O Estado de direito português é uma construção sólida. Tem tribunais, polícias, magistrados, ministros, directores, inspectores, secretários, assessores, consultores e subdirectores-adjuntos para a articulação transversal da coordenação estratégica.
+    </p>
+
+    <p>
+      Possui também atrelados.
+    </p>
+
+    <p>
+      E foi precisamente um atrelado que veio demonstrar a notável mobilidade das nossas instituições.
+    </p>
+
+    <p>
+      Não se tratava de um atrelado qualquer. Era um atrelado apreendido. Um atrelado judicialmente significativo. Um atrelado com currículo criminal, estatuto processual e, aparentemente, mais liberdade de circulação do que muitos cidadãos que tentam renovar a carta de condução.
+    </p>
+
+    <p>
+      Enquanto os portugueses comuns precisam de documentos, seguros, inspecções, impostos, certificados e talvez uma declaração assinada pelo pároco, o Atrelado da República deslocava-se com a despreocupação de um secretário de Estado em viatura oficial.
+    </p>
+
+    <p>
+      Ninguém sabia publicamente, com suficiente clareza, como fora parar ali.
+    </p>
+
+    <p>
+      Mas foi.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A apreensão flexível
+    </h2>
+
+    <p>
+      Nos países menos imaginativos, quando a polícia apreende um objecto, o objecto fica apreendido.
+    </p>
+
+    <p>
+      É uma visão rígida, burocrática e profundamente antiquada.
+    </p>
+
+    <p>
+      Em Portugal, a apreensão parece poder ser um conceito dinâmico.
+    </p>
+
+    <p>
+      O bem é apreendido, mas não se deve sentir preso. Seria desumano. O atrelado precisa de ar livre, contacto com a economia real e, sempre que possível, de conhecer empresários.
+    </p>
+
+    <p>
+      Uma apreensão moderna não é uma prisão. É uma experiência de mobilidade assistida.
+    </p>
+
+    <p>
+      O Estado português, sempre atento às tendências internacionais, parece ter criado o programa <strong style="color:#d6a542;">Erasmus para Bens Apreendidos</strong>.
+    </p>
+
+    <p>
+      O atrelado saiu da sua zona de conforto institucional e foi conhecer novas realidades empresariais. Fez contactos, criou sinergias e alargou horizontes.
+    </p>
+
+    <p>
+      Talvez tenha participado numa acção de <em>team building</em>.
+    </p>
+
+    <p>
+      Talvez tenha feito uma formação sobre cadeias de custódia circulares.
+    </p>
+
+    <p>
+      Talvez tenha sido integrado numa parceria público-privada denominada:
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Uma prova, muitas oportunidades.
+      </p>
+    </div>
+
+    <p>
+      Quem somos nós para limitar o desenvolvimento pessoal de um reboque?
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A cadeia de custódia biodegradável
+    </h2>
+
+    <p>
+      A chamada cadeia de custódia é uma dessas invenções jurídicas destinadas a complicar a vida a pessoas práticas.
+    </p>
+
+    <p>
+      Exige registos.
+    </p>
+
+    <p>
+      Assinaturas.
+    </p>
+
+    <p>
+      Datas.
+    </p>
+
+    <p>
+      Identificação de quem recebeu, transportou, guardou e devolveu o objecto.
+    </p>
+
+    <p>
+      Uma maçada.
+    </p>
+
+    <p>
+      A cadeia de custódia portuguesa prefere, aparentemente, um modelo mais humano, baseado na confiança oral.
+    </p>
+
+    <p>
+      — Quem levou o atrelado?
+    </p>
+
+    <p>
+      — Uma pessoa.
+    </p>
+
+    <p>
+      — Quem autorizou?
+    </p>
+
+    <p>
+      — Alguém responsável.
+    </p>
+
+    <p>
+      — Para onde foi?
+    </p>
+
+    <p>
+      — Para um sítio seguro.
+    </p>
+
+    <p>
+      — Há documentos?
+    </p>
+
+    <p>
+      — Não compliquemos.
+    </p>
+
+    <p>
+      É um sistema inspirado nas antigas aldeias portuguesas, onde a chave da mercearia ficava debaixo do vaso e todos sabiam quem tinha levado o tractor.
+    </p>
+
+    <p>
+      Infelizmente, estamos a falar de um bem apreendido num processo criminal e não de um ancinho emprestado ao vizinho.
+    </p>
+
+    <p>
+      Mas o Estado não deve ser escravo de formalismos. Sobretudo quando os formalismos servem apenas para descobrir quem fez o quê.
+    </p>
+
+    <p>
+      Uma obsessão perigosa.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A química que mudou de estacionamento
+    </h2>
+
+    <p>
+      O atrelado foi apreendido em Dezembro de 2024 no âmbito da Operação Pacoba, uma investigação relacionada com tráfico de droga e com um grande laboratório de processamento de cocaína. Quando o veículo foi localizado em Barcelos, encontrava-se acoplado a um camião da Construbarcelos. A Polícia Judiciária informou que o recuperou e que os produtos encontrados ficaram novamente à sua guarda.
+    </p>
+
+    <p>
+      Nada disso tranquiliza particularmente o cidadão.
+    </p>
+
+    <p>
+      Pelo contrário, abre uma pequena avenida de perguntas, iluminada, ajardinada e com estacionamento para veículos apreendidos.
+    </p>
+
+    <p>
+      Por que razão saiu o atrelado do circuito em que deveria permanecer?
+    </p>
+
+    <p>
+      Quem teve acesso ao veículo e aos materiais?
+    </p>
+
+    <p>
+      Qual foi o fundamento, a autorização e o registo de cada deslocação?
+    </p>
+
+    <p>
+      O povo pergunta.
+    </p>
+
+    <p>
+      O Estado responde:
+    </p>
+
+    <p>
+      — Está tudo a ser apurado.
+    </p>
+
+    <p>
+      O povo pergunta:
+    </p>
+
+    <p>
+      — Quem levou o atrelado?
+    </p>
+
+    <p>
+      O Estado responde:
+    </p>
+
+    <p>
+      — Foi aberto um inquérito.
+    </p>
+
+    <p>
+      O povo pergunta:
+    </p>
+
+    <p>
+      — A integridade da prova foi comprometida?
+    </p>
+
+    <p>
+      O Estado responde:
+    </p>
+
+    <p>
+      — Não devemos alimentar especulações.
+    </p>
+
+    <p>
+      O povo pergunta:
+    </p>
+
+    <p>
+      — Então podem dar-nos factos?
+    </p>
+
+    <p>
+      O Estado responde:
+    </p>
+
+    <p>
+      — Está em segredo.
+    </p>
+
+    <p>
+      É uma conversa madura entre governantes e governados, semelhante à comunicação entre um ilusionista e a plateia depois de o coelho desaparecer juntamente com a cartola, a mesa e a factura do espectáculo.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O empresário providencial
+    </h2>
+
+    <p>
+      Em muitos episódios da vida pública portuguesa aparece um empresário amigo.
+    </p>
+
+    <p>
+      Não um empresário inimigo, note-se. Isso seria desagradável e pouco colaborativo.
+    </p>
+
+    <p>
+      O empresário amigo é uma instituição informal da República.
+    </p>
+
+    <p>
+      Conhece pessoas.
+    </p>
+
+    <p>
+      Resolve problemas.
+    </p>
+
+    <p>
+      Tem máquinas.
+    </p>
+
+    <p>
+      Tem terrenos.
+    </p>
+
+    <p>
+      Tem camiões.
+    </p>
+
+    <p>
+      Tem disponibilidade.
+    </p>
+
+    <p>
+      E, por uma infeliz coincidência estatística, acaba frequentemente envolvido em situações que obrigam ministros, directores ou altos responsáveis a explicar que a amizade não teve qualquer influência.
+    </p>
+
+    <p>
+      A amizade, em Portugal, é absolutamente irrelevante para tudo, excepto para o número impressionante de acontecimentos em que está presente.
+    </p>
+
+    <p>
+      O empresário amigo nunca pede favores.
+    </p>
+
+    <p>
+      Apenas ajuda.
+    </p>
+
+    <p>
+      O responsável público nunca favorece.
+    </p>
+
+    <p>
+      Apenas confia.
+    </p>
+
+    <p>
+      O bem público nunca é entregue.
+    </p>
+
+    <p>
+      Apenas fica temporariamente num local alternativo.
+    </p>
+
+    <p>
+      A palavra «alternativo» é essencial. Dá à irregularidade uma aparência ecológica.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A comissão que estudará o conceito de roda
+    </h2>
+
+    <p>
+      Quando um problema atinge dimensões suficientes para ameaçar alguém importante, o Estado português desencadeia o seu mecanismo defensivo mais poderoso:
+    </p>
+
+    <p>
+      a comissão.
+    </p>
+
+    <p>
+      Será constituído um grupo de trabalho para estudar as circunstâncias administrativas, operacionais, patrimoniais, logísticas e metafísicas que permitiram ao atrelado deslocar-se.
+    </p>
+
+    <p>
+      O grupo terá representantes de cinco entidades.
+    </p>
+
+    <p>
+      Reunirá quinzenalmente.
+    </p>
+
+    <p>
+      Produzirá um relatório preliminar em seis meses.
+    </p>
+
+    <p>
+      O relatório definitivo será concluído numa data suficientemente distante para que metade do país já tenha esquecido o assunto e a outra metade esteja concentrada num novo escândalo.
+    </p>
+
+    <p>
+      As conclusões serão inequívocas:
+    </p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">
+        CONCLUSÕES PREVISÍVEIS DA COMISSÃO
+      </h3>
+
+      <ol style="padding-left:25px; margin:0;">
+        <li>Houve falhas de comunicação.</li>
+        <li>Os procedimentos podem ser melhorados.</li>
+        <li>Não foi possível determinar responsabilidades individuais.</li>
+        <li>Recomenda-se a criação de um formulário.</li>
+      </ol>
+    </div>
+
+    <p>
+      O formulário será designado <strong style="color:#d6a542;">Modelo AC-27: Pedido de Circulação Temporária de Bem Apreendido em Contexto de Proximidade Institucional</strong>.
+    </p>
+
+    <p>
+      Terá oito páginas.
+    </p>
+
+    <p>
+      O cidadão comum terá de o preencher em triplicado.
+    </p>
+
+    <p>
+      Os amigos continuarão a telefonar.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O ministro informado pela televisão
+    </h2>
+
+    <p>
+      Existe em Portugal uma tradição política de grande elegância: os governantes tomam conhecimento dos acontecimentos pela comunicação social.
+    </p>
+
+    <p>
+      É admirável.
+    </p>
+
+    <p>
+      O ministro dirige uma área, tutela organismos, nomeia responsáveis, recebe relatórios e participa em reuniões.
+    </p>
+
+    <p>
+      Mas, quando surge um caso inconveniente, descobre tudo ao mesmo tempo que o senhor Joaquim, na pastelaria, enquanto bebe uma bica.
+    </p>
+
+    <p>
+      — Senhor ministro, sabia que um bem apreendido apareceu numa empresa ligada a um seu conhecido?
+    </p>
+
+    <p>
+      — Acabo de tomar conhecimento.
+    </p>
+
+    <p>
+      A televisão tornou-se assim o principal sistema de informação governamental.
+    </p>
+
+    <p>
+      Talvez seja altura de substituir os serviços de informações por um pacote de canais noticiosos.
+    </p>
+
+    <p>
+      Seria mais barato e, aparentemente, igualmente eficaz.
+    </p>
+
+    <p>
+      O ministro acompanha com preocupação.
+    </p>
+
+    <p>
+      Solicita esclarecimentos.
+    </p>
+
+    <p>
+      Aguarda serenamente.
+    </p>
+
+    <p>
+      Confia nas instituições.
+    </p>
+
+    <p>
+      Estas frases constituem o desfibrilhador oficial da responsabilidade política. Aplicam-se repetidamente até o assunto perder pulso.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O director que não sabia, mas confiava
+    </h2>
+
+    <p>
+      O alto dirigente português possui uma habilidade rara: consegue ser responsável por uma instituição sem ser responsável pelo que acontece dentro dela.
+    </p>
+
+    <p>
+      É uma espécie de física quântica administrativa.
+    </p>
+
+    <p>
+      O dirigente está presente e ausente.
+    </p>
+
+    <p>
+      Manda, mas desconhece.
+    </p>
+
+    <p>
+      Supervisiona, mas não controla.
+    </p>
+
+    <p>
+      Assina, mas não decide.
+    </p>
+
+    <p>
+      Confia nos serviços.
+    </p>
+
+    <p>
+      Os serviços confiam nos departamentos.
+    </p>
+
+    <p>
+      Os departamentos confiam nos funcionários.
+    </p>
+
+    <p>
+      Os funcionários confiam que alguém terá autorizado.
+    </p>
+
+    <p>
+      No fim, o único responsável identificável é o atrelado.
+    </p>
+
+    <p>
+      Porque, ao contrário dos humanos, tinha matrícula.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A Justiça apanhada pelo próprio reboque
+    </h2>
+
+    <p>
+      Advogados de arguidos da Operação Pacoba já admitiram que a movimentação do atrelado poderá ser invocada para questionar a cadeia de custódia e a integridade da prova. Cumprirão, assim, o seu dever profissional.
+    </p>
+
+    <p>
+      Naturalmente, surgirão vozes indignadas:
+    </p>
+
+    <p>
+      — Estão a aproveitar-se de um tecnicismo!
+    </p>
+
+    <p>
+      Um tecnicismo, neste caso, é a exigência inconveniente de que o Estado saiba onde esteve uma prova e quem lhe tocou.
+    </p>
+
+    <p>
+      Uma extravagância jurídica.
+    </p>
+
+    <p>
+      Talvez os tribunais devessem aceitar o novo princípio processual português:
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        A prova é válida porque nós garantimos que estava tudo bem.
+      </p>
+    </div>
+
+    <p>
+      Poderia ser acompanhado por um carimbo com a frase:
+    </p>
+
+    <p>
+      <strong style="color:#d6a542;">Confie, cidadão.</strong>
+    </p>
+
+    <p>
+      Se a acusação vier a ser fragilizada, haverá revolta contra os juízes.
+    </p>
+
+    <p>
+      Os comentadores dirão que a Justiça não funciona.
+    </p>
+
+    <p>
+      Os políticos prometerão leis mais duras.
+    </p>
+
+    <p>
+      Poucos recordarão que talvez tenha sido o próprio Estado a pegar num bem relevante, colocá-lo sobre rodas e enviá-lo numa excursão administrativa.
+    </p>
+
+    <p>
+      A Justiça portuguesa não tropeçou numa casca de banana.
+    </p>
+
+    <p>
+      Atrelou-a ao carro.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A igualdade perante o parque de estacionamento
+    </h2>
+
+    <p>
+      A Constituição garante que todos os cidadãos possuem a mesma dignidade social e são iguais perante a lei.
+    </p>
+
+    <p>
+      É uma formulação bonita.
+    </p>
+
+    <p>
+      Na prática, alguns cidadãos parecem ser mais iguais no acesso a contratos, informações, nomeações, terrenos e bens que tecnicamente não deveriam circular.
+    </p>
+
+    <p>
+      O cidadão comum encontra um atrelado apreendido e telefona à polícia.
+    </p>
+
+    <p>
+      O cidadão relacionado encontra um atrelado apreendido e talvez pergunte onde o pode estacionar.
+    </p>
+
+    <p>
+      Esta diferença é subtil, mas pedagogicamente rica.
+    </p>
+
+    <p>
+      Ensina-nos que a igualdade perante a lei existe sobretudo quando não conhecemos ninguém.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O Estado de direito em versão rebocável
+    </h2>
+
+    <p>
+      Durante séculos, filósofos e juristas procuraram definir o Estado de direito.
+    </p>
+
+    <p>
+      Montesquieu falou da separação de poderes.
+    </p>
+
+    <p>
+      Locke defendeu limites à autoridade.
+    </p>
+
+    <p>
+      Kant relacionou o direito com a liberdade racional.
+    </p>
+
+    <p>
+      Portugal acrescentou uma contribuição original:
+    </p>
+
+    <p>
+      <strong style="color:#d6a542;">o Estado de direito rebocável.</strong>
+    </p>
+
+    <p>
+      É uma estrutura institucional montada sobre rodas, capaz de se deslocar conforme as conveniências.
+    </p>
+
+    <p>
+      Quando surgem perguntas, muda de parque.
+    </p>
+
+    <p>
+      Quando aparece responsabilidade, desengata.
+    </p>
+
+    <p>
+      Quando se exige ética, liga os quatro piscas.
+    </p>
+
+    <p>
+      E quando a confiança pública ameaça colapsar, coloca um triângulo de sinalização a cinquenta metros e declara que a situação está controlada.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Grande inauguração do Museu Nacional do Atrelado
+    </h2>
+
+    <p>
+      Proponho que o atrelado seja preservado.
+    </p>
+
+    <p>
+      Não como prova, porque essa parte parece excessivamente complicada.
+    </p>
+
+    <p>
+      Como monumento nacional.
+    </p>
+
+    <p>
+      Deverá ser instalado diante da Assembleia da República, sobre uma base de mármore, com a seguinte inscrição:
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Ao Atrelado Desconhecido</strong><br>
+        Circulou sem explicação,<br>
+        transportou a dúvida,<br>
+        rebocou a confiança<br>
+        e estacionou a responsabilidade.
+      </p>
+    </div>
+
+    <p>
+      As escolas poderão visitá-lo.
+    </p>
+
+    <p>
+      Os professores explicarão às crianças o funcionamento das instituições:
+    </p>
+
+    <p>
+      — Meninos, este atrelado representa o Estado.
+    </p>
+
+    <p>
+      — Porque tem rodas, professora?
+    </p>
+
+    <p>
+      — Não. Porque ninguém sabe explicar satisfatoriamente como foi lá parar.
+    </p>
+
+    <p>
+      Haverá uma loja de recordações.
+    </p>
+
+    <p>
+      Miniaturas do atrelado.
+    </p>
+
+    <p>
+      Canecas com a frase «Tudo dentro da normalidade».
+    </p>
+
+    <p>
+      T-shirts: «Eu fui apreendido e tudo o que recebi foi este inquérito».
+    </p>
+
+    <p>
+      E um jogo infantil chamado <strong style="color:#d6a542;">Descobre o Responsável</strong>, que ninguém conseguirá ganhar porque falta uma peça na caixa.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Epílogo: a República sobre rodas
+    </h2>
+
+    <p>
+      O caso do atrelado é hilariante até deixarmos de rir.
+    </p>
+
+    <p>
+      Porque, por baixo da comédia, existe uma realidade inquietante.
+    </p>
+
+    <p>
+      Um bem apreendido num processo criminal foi deslocado para fora do local onde se encontrava sob guarda.
+    </p>
+
+    <p>
+      Uma relação de proximidade voltou a aparecer junto de uma decisão pública.
+    </p>
+
+    <p>
+      As instituições demoraram a explicar.
+    </p>
+
+    <p>
+      As responsabilidades dispersaram-se.
+    </p>
+
+    <p>
+      E o cidadão foi convidado a esperar, confiar e não especular.
+    </p>
+
+    <p>
+      A sátira nasce precisamente nesse intervalo entre a solenidade oficial e o absurdo visível.
+    </p>
+
+    <p>
+      O Estado apresenta-se como guardião da lei, mas parece incapaz de guardar um atrelado sem desencadear uma crise institucional.
+    </p>
+
+    <p>
+      Exige ao cidadão documentos para tudo, mas demora a explicar os documentos essenciais.
+    </p>
+
+    <p>
+      Promete transparência, mas oferece comunicados.
+    </p>
+
+    <p>
+      Promete responsabilidade, mas entrega averiguações.
+    </p>
+
+    <p>
+      Promete Justiça, mas pode acabar a discutir se a prova continua intacta depois de ter ido passear.
+    </p>
+
+    <p>
+      No fim, talvez o atrelado seja o elemento mais inocente de toda esta história.
+    </p>
+
+    <p>
+      Não decidiu sair.
+    </p>
+
+    <p>
+      Não telefonou a ninguém.
+    </p>
+
+    <p>
+      Não pediu favores.
+    </p>
+
+    <p>
+      Não invocou amizades.
+    </p>
+
+    <p>
+      Limitou-se a ser puxado.
+    </p>
+
+    <p>
+      Tal como a democracia portuguesa, aliás.
+    </p>
+
+    <p>
+      A diferença é que o atrelado ainda pode ser recuperado.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        A confiança pública, depois de rebocada vezes suficientes, acaba por já não voltar.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">
+      Nota Editorial
+    </h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        A sátira não substitui a investigação, nem transforma suspeitas em condenações. Serve para expor o absurdo institucional e exigir respostas sem aceitar que a opacidade seja tratada como prudência.
+      </p>
+      <p style="text-align:left;">
+        O Ministério Público mantém um inquérito sobre os bens apreendidos na Operação Pacoba, a cargo do DIAP de Lisboa. A Polícia Judiciária comunicou indícios susceptíveis de enquadramento criminal e recuperou o atrelado e os produtos encontrados. Caberá às autoridades judiciárias apurar os factos e individualizar responsabilidades.
+      </p>
+      <p style="text-align:left; margin-bottom:0;">
+        Até lá, permanece uma evidência política: quando o Estado não consegue explicar com rapidez, rigor e transparência a circulação de um bem apreendido, não é apenas a cadeia de custódia que fica sob suspeita. É a própria cadeia de confiança entre a República e os cidadãos.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Referências credíveis
+    </h2>
+
+    <ul style="padding-left:22px;">
+      <li>
+        <a href="https://www.rtp.pt/noticias/pais/atrelado-apreendido-pela-pj-em-operacao-de-trafico-de-droga-aparece-agarrado-a-camiao-da-construbarcelos_n1753991"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          RTP — Atrelado apreendido pela PJ aparece acoplado a camião da Construbarcelos
+        </a>
+      </li>
+      <li>
+        <a href="https://www.rtp.pt/noticias/pais/mp-e-pj-abrem-inquerito-sobre-reboque-ligado-ao-trafico-de-droga-encontrado-na-construbarcelos_n1754094"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          RTP / Lusa — Ministério Público e PJ abrem inquéritos sobre o reboque apreendido
+        </a>
+      </li>
+      <li>
+        <a href="https://www.rtp.pt/noticias/politica/caso-do-atrelado-confiscado-pela-pj-encontrado-perto-de-barcelos-com-contornos-de-crime-de-abuso-de-poder_n1754868"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          RTP / Antena 1 — PJ comunica indícios susceptíveis de enquadramento como abuso de poder e descaminho
+        </a>
+      </li>
+      <li>
+        <a href="https://www.rtp.pt/noticias/pais/mp-afasta-pj-de-investigacao-a-atrelado-encontrado-em-empresa-que-fez-obras-a-ministro_n1755172"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          RTP — Inquérito do Ministério Público fica a cargo do DIAP de Lisboa
+        </a>
+      </li>
+      <li>
+        <a href="https://eco.sapo.pt/2026/07/16/empreiteiro-de-luis-neves-usa-atrelado-apreendido-pela-pj/"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          ECO — Contexto da apreensão na Operação Pacoba e localização do atrelado
+        </a>
+      </li>
+      <li>
+        <a href="https://rr.pt/noticia/politica/2026/07/21/luis-neves-pj-suspeita-de-descaminho-e-abuso-de-poder-no-caso-do-atrelado/479083/"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Rádio Renascença — Recuperação do atrelado e dos produtos encontrados
+        </a>
+      </li>
+      <li>
+        <a href="https://diariodarepublica.pt/dr/legislacao-consolidada/lei/2004-34570075"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Diário da República — Código de Processo Penal, artigo 178.º: objectos, guarda e registo das apreensões
+        </a>
+      </li>
+      <li>
+        <a href="https://www.parlamento.pt/Legislacao/Paginas/ConstituicaoRepublicaPortuguesa.aspx"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Assembleia da República — Constituição da República Portuguesa
+        </a>
+      </li>
+      <li>
+        <a href="https://commission.europa.eu/publications/2026-rule-law-report-communication-and-country-chapters_en"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Comissão Europeia — Relatório de 2026 sobre o Estado de direito e capítulo relativo a Portugal
+        </a>
+      </li>
+      <li>
+        <a href="https://www.coe.int/en/web/venice-commission/rule-of-law-checklist"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Comissão de Veneza — Rule of Law Checklist
+        </a>
+      </li>
+    </ul>
+<h2 style="color:#d6a542; text-align:left; margin-top:50px;">
+  Nota Pessoal perante a improbabilidade estatística
+</h2>
+
+<div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+
+  <p style="text-align:left;">
+    Há uma ironia cruel em tudo isto: cinquenta e dois anos depois de Portugal ter derrubado um regime fascista, ditatorial, pidesco e abominável, nunca imaginei que viria a assistir a acontecimentos que parecem retirados de uma obra de ficção política.
+  </p>
+
+  <p style="text-align:left;">
+    Depois de se ter vencido uma ditadura construída sobre o medo, a censura, a repressão e a polícia política, o país conseguiu desenvolver uma democracia cansada, burocrática e, demasiadas vezes, moralmente desarmada.
+  </p>
+
+  <p style="text-align:left;">
+    Não é a mesma coisa. As diferenças são profundas e não devem ser apagadas. Temos eleições, liberdade de expressão, tribunais independentes, partidos políticos e o direito de criticar quem governa. Mas também não basta realizar eleições para garantir que a República permanece saudável.
+  </p>
+
+  <p style="text-align:left;">
+    Uma democracia pode conservar os seus edifícios, os seus símbolos, os seus cargos e as suas cerimónias, enquanto perde lentamente a decência por dentro.
+  </p>
+
+  <p style="text-align:left;">
+    Pode continuar a respirar institucionalmente enquanto a ética se desfaz, a responsabilidade desaparece e a confiança dos cidadãos é rebocada para um destino que ninguém consegue explicar.
+  </p>
+
+  <div style="border-left:4px solid #d6a542; background:#0f0f0f; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+    <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+      A improbabilidade estatística destes acontecimentos é tão extraordinária que, no futuro, estas crónicas poderão ser lidas como literatura de ficção científica. O problema é que foram escritas como reportagem do presente.
+    </p>
+  </div>
+
+  <p style="text-align:left;">
+    Estas páginas ficam, por isso, como testemunho de uma época em que o real se tornou tão absurdo que a sátira passou a precisar de referências, documentos e notas de rodapé para demonstrar que não inventou os acontecimentos.
+  </p>
+
+  <p style="text-align:left;">
+    Não escrevo movido pela hostilidade às instituições democráticas. Escrevo precisamente porque as respeito e porque me recuso a assistir, em silêncio, à sua degradação.
+  </p>
+
+  <p style="text-align:left;">
+    Criticar o poder não é atacar a democracia. É defendê-la daqueles que, por incompetência, conveniência, ausência de ética ou simples desprezo pelos cidadãos, a vão esvaziando por dentro.
+  </p>
+
+  <p style="text-align:left;">
+    Talvez o futuro olhe para este tempo com espanto e pergunte como foi possível que tantos acontecimentos improváveis se tivessem tornado normais.
+  </p>
+
+  <p style="text-align:left;">
+    A resposta será dolorosamente simples: tornaram-se normais porque demasiadas pessoas se habituaram a eles.
+  </p>
+
+  <p style="text-align:left; margin-bottom:0;">
+    <strong style="color:#d6a542;">
+      Estas crónicas são a minha recusa pessoal em aceitar o indigno como normal, o absurdo como inevitável e a decadência moral do Estado como destino da democracia portuguesa.
+    </strong>
+  </p>
+
+</div>
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

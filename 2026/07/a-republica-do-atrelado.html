@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A República do Atrelado</title>
+<meta name="description" content="A República do Atrelado">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A República do Atrelado</h1>
+      <p class="meta">Publicado em 2026-07-23 16:20:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/07/file_00000000262c81f4ae206a2a1d5ce5e4_65405c46.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="A República do Atrelado">
+      <meta itemprop="description" content="Uma crónica crítica sobre o caso do atrelado apreendido, a proximidade entre titulares de cargos públicos e a erosão da confiança na democracia portuguesa em 2026.">
+      <meta itemprop="datePublished" content="2026-07-22">
+      <meta itemprop="dateModified" content="2026-07-22">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="INSERIR_URL_DA_IMAGEM_AQUI">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <p style="text-align:center; color:#ffcc66; font-size:0.85em; font-weight:bold; letter-spacing:0.12em; text-transform:uppercase; margin:10px 0 16px 0;">
+      Crónica política
+    </p>
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.35em; line-height:1.3; margin:0 0 18px 0;">
+      A República do Atrelado
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.12em; font-style:italic; margin:0 0 18px 0;">
+      Crónica de uma democracia estacionada no parque dos amigos
+    </p>
+
+    <p style="text-align:center; color:#aeb8c4; font-size:0.95em; margin:0 0 38px 0;">
+      Francisco Gonçalves · Fragmentos do Caos · 22 de Julho de 2026
+    </p>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:22px 26px; margin:28px 0 38px 0; color:#f2f2f2;">
+      <p style="margin:0; color:#f2f2f2; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        Uma fotografia não prova corrupção. Um almoço não demonstra conspiração. Mas uma cadeia de custódia
+        opaca, versões contraditórias, relações pessoais cruzadas e esclarecimentos adiados constituem matéria
+        política bastante séria para que a democracia exija respostas, em vez de mais uma serenidade ministerial
+        administrada em conferência de imprensa.
+      </p>
+    </div>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Portugal entrou em 2026 pela porta solene da democracia e, poucos meses depois, foi encontrado estacionado num terreno particular, agarrado ao camião de um conhecido.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Não é uma metáfora especialmente subtil. É apenas o país a poupar-nos trabalho literário.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Um atrelado apreendido numa operação contra o tráfico de droga saiu do circuito normal de guarda dos bens confiscados e reapareceu, centenas de quilómetros depois, nas instalações da Construbarcelos, empresa pertencente a um empresário próximo de Luís Neves, antigo director nacional da Polícia Judiciária e actual ministro da Administração Interna. <sup><a href="/#ref-1" style="color:#ffcc66;">[1]</a></sup></p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Em 22 de Julho de 2026, a Procuradoria-Geral da República confirmou que o inquérito relativo aos bens apreendidos na Operação Pacoba se encontrava a cargo do DIAP de Lisboa e que não seria, por ora, delegado na Polícia Judiciária nem noutro órgão de polícia criminal. <sup><a href="/#ref-2" style="color:#ffcc66;">[2]</a></sup></p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Uma prudência elementar, considerando que a polícia teria de investigar decisões tomadas quando era dirigida pelo actual ministro.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">E assim nasceu a República do Atrelado.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Uma forma avançada de Estado em que os bens apreendidos deixam de estar imóveis, como seria maçadoramente previsível, e começam a circular entre instituições públicas e propriedades privadas com a desenvoltura de quem leva uma mesa emprestada para uma festa de família.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin:42px 0 18px 0; line-height:1.35;">Um favor logístico com produtos químicos</h2>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">O caso seria já suficientemente grave se envolvesse apenas um veículo. Mas o atrelado fazia parte de uma operação de combate ao narcotráfico e estava associado ao armazenamento de bidões de acetona e de outras substâncias utilizadas no processamento de cocaína. Segundo a informação divulgada pela RTP, os produtos terão sido retirados devido ao risco de explosão e acabaram igualmente nas instalações da empresa privada. <sup><a href="/#ref-3" style="color:#ffcc66;">[3]</a></sup></p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Portugal conseguiu, portanto, transformar um problema de segurança criminal num favor logístico.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Faltava dinheiro para destruir ou guardar adequadamente os produtos? Encontrou-se um amigo.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Faltava uma solução institucional? Apareceu uma empresa privada.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Faltava transparência? Essa continua em parte incerta, provavelmente armazenada noutro atrelado.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">A Polícia Judiciária comunicou ao Ministério Público indícios susceptíveis de apontar para a eventual prática de crimes, embora o inquérito esteja em curso e nenhuma responsabilidade criminal se encontre provada. <sup><a href="/#ref-4" style="color:#ffcc66;">[4]</a></sup></p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Esta distinção é essencial. Num Estado de direito, investigar não é condenar. Mas governar também não é exigir aos cidadãos que suspendam indefinidamente a inteligência enquanto as instituições aperfeiçoam versões contraditórias.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Luís Neves afirmou estar a reunir documentação para prestar esclarecimentos públicos. Entretanto, a cronologia divulgada pela direcção da Polícia Judiciária e as notícias sobre a movimentação dos bens levantaram dúvidas sobre quem sabia, quem autorizou e que registos foram produzidos. <sup><a href="/#ref-5" style="color:#ffcc66;">[5]</a></sup></p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Entre uma versão e outra existe um espaço vazio onde deveria estar a confiança pública.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">E a confiança pública, ao contrário dos atrelados, não pode ser recuperada com uma grua.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin:42px 0 18px 0; line-height:1.35;">O clube dos homens institucionalmente próximos</h2>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Enquanto o atrelado viajava pelo país, outras proximidades circulavam à mesa.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Em 1 de Abril de 2026, o almoço de aniversário de Fernando Seara reuniu, entre dezenas de convidados, o ministro Luís Neves, o procurador-geral da República, Amadeu Guerra, e Fernando Pereira. A presença conjunta está documentada, mas não prova qualquer conspiração, condicionamento ou prática ilícita. <sup><a href="/#ref-6" style="color:#ffcc66;">[6]</a></sup></p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Pessoas públicas também almoçam, celebram aniversários e, presume-se, discutem ocasionalmente assuntos que não envolvem processos judiciais.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Mas a democracia não vive apenas da inexistência de crime.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Vive igualmente da aparência de independência, da distância entre poderes e da prudência daqueles que ocupam cargos especialmente sensíveis.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Um ministro que tutela forças de segurança e um procurador-geral da República podem encontrar-se socialmente. A lei não obriga os titulares dos órgãos do Estado a viverem em mosteiros separados, comunicando apenas através de pombos constitucionais.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Contudo, quando o país atravessa sucessivas controvérsias envolvendo dirigentes políticos, investigações criminais e suspeitas de favorecimento, essa proximidade deixa de ser apenas socialmente elegante. Torna-se institucionalmente incómoda.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Não porque uma refeição demonstre corrupção, mas porque o poder democrático deve compreender o valor político da distância.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Em Portugal, porém, a distância institucional parece muitas vezes uma indelicadeza. Toda a gente conhece alguém, trabalhou com alguém, almoçou com alguém ou tem um amigo que conhece a pessoa adequada.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">O país não funciona através de uma rede de influências, explicam-nos. Funciona através de uma sucessão estatisticamente extraordinária de coincidências pessoais.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Somos uma pequena nação com uma densidade populacional moderada e uma densidade de conhecidos por metro quadrado absolutamente prodigiosa.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin:42px 0 18px 0; line-height:1.35;">O arquivamento que não encerrou as perguntas</h2>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">A averiguação preventiva à Spinumviva, empresa ligada à família do primeiro-ministro Luís Montenegro, foi arquivada pelo DCIAP em 17 de Dezembro de 2025. Segundo a informação oficial, depois da recolha de documentação, declarações e elementos junto dos visados e dos clientes da empresa, o Ministério Público concluiu não existir notícia da prática de ilícito criminal. <sup><a href="/#ref-7" style="color:#ffcc66;">[7]</a></sup></p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Este arquivamento deve ser respeitado pelo que juridicamente significa: não foram encontrados elementos que justificassem a continuação daquela averiguação preventiva.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Mas respeitar uma decisão do Ministério Público não exige que o cidadão abdique da avaliação política.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">O direito penal pergunta se existe crime sustentado por factos e provas. A democracia pergunta também se os comportamentos são transparentes, prudentes, eticamente aceitáveis e compatíveis com a dignidade do cargo.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Nem tudo o que não é crime é politicamente decente.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Nem tudo o que é arquivado fica moralmente esclarecido.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">E nem tudo o que é legal merece aplauso, embora esta última ideia pareça constituir uma descoberta revolucionária para várias administrações portuguesas.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">É indispensável notar que o almoço de Abril de 2026 ocorreu depois do arquivamento da averiguação à Spinumviva. Logo, não pode ser apresentado como causa dessa decisão. Fazer essa ligação directa seria substituir a crítica política por uma acusação sem prova.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">O problema mais profundo não está numa suposta ordem transmitida durante uma sobremesa. Está na cultura de proximidade entre elites políticas, económicas, administrativas e judiciais, uma cultura em que os mesmos nomes reaparecem em governos, empresas, clubes, escritórios, conselhos de administração, jantares e celebrações.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Não precisamos de imaginar uma sala secreta onde alguém controla Portugal.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Portugal é demasiado desorganizado para uma conspiração tão eficiente.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Basta-nos uma sala pública onde todos se conhecem.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin:42px 0 18px 0; line-height:1.35;">A democracia das averiguações</h2>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Perante cada escândalo, o poder português reage segundo um protocolo cuidadosamente aperfeiçoado.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Primeiro, manifesta surpresa.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Depois, declara plena confiança.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Em seguida, anuncia uma averiguação.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Mais tarde, garante que colaborará com todas as entidades.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Finalmente, espera que outro escândalo ocupe as primeiras páginas.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">A responsabilidade política foi assim substituída pela responsabilidade processual. Um governante já não precisa de explicar convincentemente os seus actos. Basta anunciar que aguarda serenamente pelas conclusões das autoridades.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">A serenidade é abundante porque as consequências são raras.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">O cidadão, pelo contrário, deve apresentar recibos, declarações, comprovativos, certidões e senhas electrónicas até para provar que existe. O poder pode perder o rasto institucional de um atrelado apreendido, encontrar produtos químicos numa empresa privada e responder que tudo será oportunamente esclarecido.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">O Estado exige ao cidadão rastreabilidade absoluta.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">O cidadão recebe do Estado uma narrativa em actualização.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin:42px 0 18px 0; line-height:1.35;">Não é preciso provar a conspiração</h2>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Há quem pretenda reduzir todo este debate à pergunta sobre a existência ou não de uma conspiração maçónica. É uma fuga conveniente.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Se não for demonstrada a conspiração, conclui-se que não existe problema.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Mas o problema democrático não depende de aventais, rituais, grãos-mestres ou salas iluminadas por velas.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Depende de algo muito mais simples: conflitos de interesses, falta de distância institucional, circulação opaca de bens públicos, amizades com relevância administrativa e ausência de explicações políticas proporcionais à gravidade dos factos.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Uma democracia saudável não se limita a perguntar: foi cometido algum crime?</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:32px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; color:#f2f2f2; text-align:left;">Pergunta também: o procedimento foi transparente? A decisão foi documentada? Existiam alternativas institucionais? Houve tratamento privilegiado? Quem autorizou? Quem fiscalizou? Quem beneficiou? E quem assume a responsabilidade política?</p>
+    </div>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">São perguntas sem qualquer mistério esotérico.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Precisam apenas de datas, guias, inventários, facturas, assinaturas e respostas coerentes.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Talvez por isso sejam tão assustadoras.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin:42px 0 18px 0; line-height:1.35;">O Estado não pode pertencer ao círculo de amigos</h2>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Cada um destes episódios poderá ter uma explicação legítima.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Mas quando os episódios se acumulam, a exigência de explicação deixa de ser maledicência e torna-se dever democrático.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Não se pode pedir confiança ilimitada a uma população a quem se oferece informação limitada.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Não se pode responder a todas as suspeitas com a frase «as instituições estão a funcionar», sobretudo quando é precisamente o funcionamento dessas instituições que está em causa.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">As instituições não funcionam apenas porque abrem inquéritos. Funcionam quando previnem conflitos, preservam provas, documentam decisões, garantem independência e responsabilizam quem falha.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">A democracia portuguesa de 2026 parece, por vezes, um velho sistema informático mantido durante décadas com remendos sucessivos. Ainda arranca, ainda mostra o ecrã inicial e ainda imprime certificados de normalidade. Mas, por baixo da interface, acumulam-se dependências obscuras, permissões excessivas e processos que ninguém ousa reiniciar.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">O atrelado talvez venha a ser explicado.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Os bidões talvez tenham uma guia.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">As obras talvez estejam todas facturadas.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Os almoços talvez sejam apenas almoços.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Os arquivamentos talvez sejam juridicamente inatacáveis.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Mas a democracia não se pode alimentar eternamente de «talvez».</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">Porque um Estado de direito não é um clube privado, uma agenda de contactos ou uma associação informal de pessoas influentes.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">O Estado pertence aos cidadãos.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">E, quando um bem apreendido aparece no terreno de um amigo, não basta dizer que não desapareceu.</p>
+
+    <p style="margin:0 0 1.25em 0; color:#e8eef4; text-align:left;">É preciso explicar por que razão deixou de estar onde a República o tinha colocado.</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:32px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; color:#f2f2f2; text-align:left;">Antes que seja a própria República a desaparecer do inventário.</p>
+    </div>
+
+
+    <h2 style="color:#d6a542; text-align:left; margin:42px 0 18px 0; line-height:1.35;">Nota Editorial</h2>
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:22px 26px; margin:28px 0 38px 0; color:#f2f2f2;">
+      <p style="margin:0 0 1em 0; color:#f2f2f2; text-align:left;">
+        Esta é uma crónica de opinião baseada em informação pública disponível até 22 de Julho de 2026.
+        Distingue deliberadamente responsabilidade política de responsabilidade criminal.
+      </p>
+      <p style="margin:0; color:#f2f2f2; text-align:left;">
+        A abertura de um inquérito, a identificação de indícios ou a divulgação de suspeitas não equivalem
+        a condenação. Todas as pessoas mencionadas beneficiam da presunção de inocência. A crítica dirige-se
+        à transparência dos procedimentos, à distância institucional, aos conflitos de interesses e à obrigação
+        democrática de prestar esclarecimentos completos e verificáveis.
+      </p>
+    </div>
+
+
+    <h2 style="color:#d6a542; text-align:left; margin:42px 0 18px 0; line-height:1.35;">Referências documentais e jornalísticas</h2>
+
+    <ol style="padding-left:24px; margin:0 0 35px 0;">
+      <li id="ref-1" style="margin-bottom:14px; color:#e8eef4;"><strong style="color:#d6a542;">RTP / Antena 1</strong> — <a href="https://www.rtp.pt/noticias/pais/atrelado-apreendido-pela-pj-em-operacao-de-trafico-de-droga-aparece-agarrado-a-camiao-da-construbarcelos_n1753991" target="_blank" rel="noopener noreferrer" style="color:#ffcc66; text-decoration:underline;">Atrelado apreendido pela PJ aparece agarrado a camião da Construbarcelos</a> (Julho de 2026).</li>
+      <li id="ref-2" style="margin-bottom:14px; color:#e8eef4;"><strong style="color:#d6a542;">Renascença / Lusa</strong> — <a href="https://rr.pt/noticia/pais/2026/07/22/mp-afasta-pj-de-investigacao-a-atrelado-encontrado-em-empresa-que-fez-obras-a-ministro/479212/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66; text-decoration:underline;">MP afasta PJ de investigação a atrelado encontrado em empresa que fez obras a ministro</a> (22 de Julho de 2026).</li>
+      <li id="ref-3" style="margin-bottom:14px; color:#e8eef4;"><strong style="color:#d6a542;">RTP</strong> — <a href="https://www.rtp.pt/noticias/pais/atrelado-desaparecido-quimicos-para-droga-apreendidos-em-empresa-de-amigo-de-luis-neves_n1754312" target="_blank" rel="noopener noreferrer" style="color:#ffcc66; text-decoration:underline;">Atrelado desaparecido: químicos para droga apreendidos em empresa de amigo de Luís Neves</a> (Julho de 2026).</li>
+      <li id="ref-4" style="margin-bottom:14px; color:#e8eef4;"><strong style="color:#d6a542;">RTP / Antena 1</strong> — <a href="https://www.rtp.pt/noticias/politica/caso-do-atrelado-confiscado-pela-pj-encontrado-perto-de-barcelos-com-contornos-de-crime-de-abuso-de-poder_n1754868" target="_blank" rel="noopener noreferrer" style="color:#ffcc66; text-decoration:underline;">Polémica MAI: PJ encontrou indícios de crime de abuso de poder</a> (21 de Julho de 2026).</li>
+      <li id="ref-5" style="margin-bottom:14px; color:#e8eef4;"><strong style="color:#d6a542;">ECO</strong> — <a href="https://eco.sapo.pt/2026/07/22/luis-neves-gate-do-atrelado-de-droga-em-casa-do-amigo-a-investigacao-da-pj/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66; text-decoration:underline;">Luís Neves Gate: do atrelado de droga em casa do amigo à investigação da PJ</a> (22 de Julho de 2026).</li>
+      <li id="ref-6" style="margin-bottom:14px; color:#e8eef4;"><strong style="color:#d6a542;">Correio da Manhã</strong> — <a href="https://www.cmjornal.pt/vidas/detalhe/fernando-seara-celebra-aniversario-com-muitos-amigos-e-surpresa-especial" target="_blank" rel="noopener noreferrer" style="color:#ffcc66; text-decoration:underline;">Fernando Seara celebra aniversário com muitos amigos e surpresa especial</a> (17 de Abril de 2026).</li>
+      <li id="ref-7" style="margin-bottom:14px; color:#e8eef4;"><strong style="color:#d6a542;">DCIAP / Ministério Público</strong> — <a href="https://dciap.ministeriopublico.pt/destaque/averiguacao-preventiva-spinumviva-arquivamento" target="_blank" rel="noopener noreferrer" style="color:#ffcc66; text-decoration:underline;">Averiguação Preventiva – Spinumviva. Arquivamento</a> (17 de Dezembro de 2025).</li>
+    </ol>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left; margin:0;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos, 2026<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
