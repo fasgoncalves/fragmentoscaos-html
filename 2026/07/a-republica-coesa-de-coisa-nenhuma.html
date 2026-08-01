@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A República Coesa de Coisa Nenhuma</title>
+<meta name="description" content="A República Coesa de Coisa Nenhuma">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A República Coesa de Coisa Nenhuma</h1>
+      <p class="meta">Publicado em 2026-07-30 11:50:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/07/file_00000000402081f490dc9eeb73d8980b_e90b50a0.jpg" alt=""></figure>
+      <div class="post-content">
+        <article class="fc-chronic-news fc-republica-coesa" itemscope itemtype="https://schema.org/NewsArticle" style="box-sizing:border-box;width:100%;max-width:980px;margin:0 auto;background:#0b0b0b;color:#e8eef4;border-left:1px solid #2b2b2b;border-right:1px solid #2b2b2b;box-shadow:0 0 28px rgba(0,0,0,.7);">
+<meta itemprop="headline" content="A República Coesa de Coisa Nenhuma" />
+<meta itemprop="description" content="Crónica crítica e satírica sobre as explicações de Luís Neves, o caso do atrelado apreendido, as obras em Odemira e a responsabilidade política em Portugal." />
+<meta itemprop="datePublished" content="2026-07-29T19:50:00+01:00" />
+<meta itemprop="dateModified" content="2026-07-29T19:50:00+01:00" />
+<meta itemprop="mainEntityOfPage" content="https://fragmentoscaos.eu/2026/07/a-republica-coesa-de-coisa-nenhuma/" />
+<meta itemprop="inLanguage" content="pt-PT" />
+
+<header style="margin:0;padding:14px 34px 26px 34px;border-bottom:1px solid #3b3322;background:linear-gradient(180deg,#090909 0%,#0b0b0b 100%);">
+  <div style="margin:0 0 8px;color:#9da3aa;font-family:Arial,Helvetica,sans-serif;font-size:.76rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;">Fragmentos do Caos · Crónica política</div>
+  <h1 itemprop="name" style="margin:0 0 12px 0;color:#d6a542;font-size:clamp(2.1rem,6vw,4.2rem);line-height:1.03;letter-spacing:-.035em;font-weight:800;">A República Coesa de Coisa Nenhuma</h1>
+  <p style="margin:0 0 16px;color:#d8c49a;font-size:1.16rem;line-height:1.5;">Atrelados errantes, obras de confiança e a nova terapia motivacional do poder</p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px 18px;color:#9fa6ad;font-family:Arial,Helvetica,sans-serif;font-size:.84rem;">
+    <span itemprop="author" itemscope itemtype="https://schema.org/Person">Por <strong itemprop="name" style="color:#d8dde2;">Francisco Gonçalves</strong></span>
+    <span>com colaboração editorial de Augustus Veritas</span>
+    <time itemprop="datePublished" datetime="2026-07-29T19:50:00+01:00">29 de Julho de 2026</time>
+  </div>
+</header>
+
+<div style="padding:30px 34px 18px 34px;margin:0;" itemprop="articleBody">
+  <div style="margin:0 0 30px;padding:18px 20px;border:1px solid #4d422b;border-radius:8px;background:#11100d;color:#d9dee4;font-size:.96rem;line-height:1.65;"><strong style="color:#e1b85c;">Enquadramento factual:</strong> esta é uma crónica de opinião e sátira política. Parte de declarações públicas prestadas por Luís Neves em 29 de Julho de 2026 e de notícias sobre as obras numa propriedade em Odemira e sobre a deslocação de um atrelado apreendido pela Polícia Judiciária. Não afirma a prática de qualquer crime; interroga a responsabilidade política, a transparência e a qualidade dos procedimentos públicos.</div>
+
+  <p style="margin:0 0 24px;padding:20px 22px;border-left:5px solid #d6a542;background:#14120d;color:#f3ead8;font-size:1.23rem;line-height:1.65;">Há frases políticas que esclarecem uma época. Outras esclarecem apenas o desespero de quem as pronuncia. Quando um ministro, rodeado por obras mal explicadas, relações inconvenientes, atrelados errantes e documentos de paradeiro incerto, declara estar <strong>"coeso, empoderado e motivado"</strong>, o País deve prestar atenção. Não necessariamente ao caso. À gramática.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Portugal entrou definitivamente na fase terapêutica da governação. Já não temos ministros responsáveis, temos ministros emocionalmente alinhados. Já não respondem perante os cidadãos, fazem afirmações positivas diante das câmaras. Já não apresentam provas, apresentam estados de espírito.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">O governante não sabe onde está o documento, mas sabe onde está interiormente.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;"><strong>Está coeso.</strong></p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Não consegue explicar de forma documentalmente completa por que razão um bem apreendido pelo Estado foi parar às instalações de um empresário privado, mas sente-se empoderado.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">As obras na propriedade particular levantam perguntas sobre licenças, contratos, preços e relações pessoais, mas o ministro encontra-se motivado.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Ficamos todos mais descansados.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Durante séculos, os Estados foram construídos sobre leis, procedimentos, responsabilidade e registos escritos. Era um sistema pesado, burocrático e profundamente antiquado. Felizmente, a modernidade administrativa portuguesa descobriu uma alternativa: a auto-estima.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Se o ministro acredita em si próprio, o processo está encerrado.</p>
+
+  <h2 style="margin:42px 0 13px;color:#d6a542;font-size:1.55rem;line-height:1.25;font-weight:700;">O país onde a intenção absolve o procedimento</h2>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Segundo a narrativa apresentada, a movimentação do célebre atrelado terá sido um <strong>"puro acto de boa gestão"</strong>. A expressão é magnífica. Tem a pureza de um detergente institucional e a precisão jurídica de uma conversa de café.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Boa gestão, ficamos a saber, consiste em retirar um bem apreendido do circuito normal, entregá-lo à guarda de um privado e confiar que tudo correrá bem. Poupa-se dinheiro, reduz-se a burocracia e, com sorte, ninguém pergunta nada durante alguns anos.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">É a economia circular aplicada à cadeia de custódia.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">O objecto sai do Estado, circula pelo País, estaciona num terreno privado e reaparece mais tarde, rejuvenescido pela experiência. Talvez tenha feito turismo rural. Talvez procurasse o seu verdadeiro propósito. Os atrelados também precisam de se encontrar.</p>
+
+  <blockquote style="margin:34px 0;padding:24px 26px;border-top:1px solid #6b5427;border-bottom:1px solid #6b5427;color:#f0c86a;font-size:1.45rem;font-style:italic;line-height:1.5;text-align:center;">O atrelado é apenas uma metáfora nacional: sai do procedimento público, vagueia por circuitos privados e reaparece quando alguém começa a fazer perguntas.</blockquote>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">O problema, naturalmente, é que os bens apreendidos não são propriedade emocional de quem dirige uma polícia. Não podem ser movimentados segundo critérios de conveniência, amizade, poupança improvisada ou inspiração logística. Há regras porque o Estado não pode funcionar como a arrecadação de uma associação recreativa.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Quando alguém pergunta pela autorização formal, pelo inventário, pela cadeia de custódia ou pela decisão escrita, a resposta parece ser uma espécie de nevoeiro administrativo: todos sabiam, alguém sugeriu, parecia sensato, não houve má intenção.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">A República Portuguesa tornou-se assim uma organização fundada na tradição oral.</p>
+
+  <h2 style="margin:42px 0 13px;color:#d6a542;font-size:1.55rem;line-height:1.25;font-weight:700;">Obras de confiança numa democracia de confiança</h2>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Depois temos as obras.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Também aqui tudo parece ter sido conduzido segundo um dos mais sólidos princípios da administração nacional: a confiança entre homens.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Não houve necessidade de excessos como contratos detalhados, orçamentos rigorosos ou documentação capaz de afastar dúvidas. Essas coisas criam distanciamento entre as pessoas. E num país pequeno, onde toda a gente conhece alguém que conhece alguém, exigir papéis pode ser interpretado como falta de educação.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">O ministro garante que tudo foi feito a preços de mercado.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">A frase <strong>"preço de mercado"</strong> tem, na política portuguesa, propriedades quase religiosas. É pronunciada como uma absolvição. Não é necessário explicar qual mercado, que preços, comparados com quê, relativos a que trabalhos ou calculados por quem.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Foi preço de mercado.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Ámen.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">O curioso é que o mercado português deve ser uma criatura extraordinariamente flexível. Serve para justificar casas, terrenos, consultorias, avenças, adjudicações, obras e negócios entre pessoas que, por coincidência, já se encontravam ligadas por relações profissionais.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">O preço é sempre de mercado. A relação é sempre normal. O procedimento é sempre legal. A coincidência é sempre infeliz. E quem pergunta está sempre a atingir a honra de alguém.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">A honra política portuguesa é um material muito sensível. Resiste a escândalos, mas não suporta perguntas.</p>
+
+  <h2 style="margin:42px 0 13px;color:#d6a542;font-size:1.55rem;line-height:1.25;font-weight:700;">Coesão sem conteúdo</h2>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">A declaração de coesão merece, contudo, uma reflexão mais profunda.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Coeso com quem?</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Com o Governo? Com a sua versão dos factos? Com o empreiteiro? Com o atrelado? Com o seu orientador de comunicação?</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">A coesão costuma existir entre várias partes que permanecem unidas. Mas aqui não se percebe bem quais são as partes. Os factos estão dispersos, os procedimentos aparecem fragmentados, as explicações mudam de forma e os documentos parecem exercer o direito constitucional à ausência.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Talvez seja uma coesão metafísica.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">O ministro está unido a si próprio.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Não é pouco, considerando o estado geral das instituições.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Estamos perante a <strong>República Coesa de Coisa Nenhuma</strong>. Um regime onde todos os responsáveis garantem estar sólidos, firmes, tranquilos e disponíveis, enquanto os acontecimentos se desmancham à sua volta como mobiliário comprado por ajuste directo.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">O Governo está coeso.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">A oposição está indignada.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">As autoridades estão a investigar.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Os documentos estão a ser reunidos.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">As conclusões serão retiradas no momento próprio.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">E o cidadão está a pagar.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Este é o verdadeiro cimento da República.</p>
+
+  <h2 style="margin:42px 0 13px;color:#d6a542;font-size:1.55rem;line-height:1.25;font-weight:700;">A nova linguagem do poder</h2>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">A palavra "empoderado" é ainda mais reveladora.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Um ministro não deveria precisar de se declarar empoderado. O cargo já lhe entrega poderes consideráveis, tutela instituições armadas, gere estruturas de segurança e toma decisões com impacto directo sobre milhões de pessoas.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Quando um governante precisa de anunciar que se sente empoderado, alguma coisa correu mal. É como um comandante de navio declarar, durante o naufrágio, que está muito conectado com a sua liderança interior.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">A política portuguesa adoptou a linguagem das empresas de recursos humanos porque as palavras tradicionais ficaram perigosas.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;"><strong>"Responsabilidade"</strong> pode implicar consequências.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;"><strong>"Demissão"</strong> pode implicar saída.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;"><strong>"Erro"</strong> pode implicar reparação.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;"><strong>"Fiscalização"</strong> pode implicar documentos.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">É muito mais seguro falar de resiliência, motivação, coesão e empoderamento. São palavras que ocupam espaço sem comprometer ninguém. Criam uma espuma verbal onde os factos se afundam lentamente.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">O ministro não está politicamente fragilizado. Está num processo de crescimento.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Não está cercado por contradições. Está a gerir uma narrativa desafiante.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Não está agarrado ao cargo. Está motivado para continuar a servir.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">O País não está a ser enganado. Está a viver uma experiência democrática complexa.</p>
+
+  <h2 style="margin:42px 0 13px;color:#d6a542;font-size:1.55rem;line-height:1.25;font-weight:700;">A pedagogia do absurdo</h2>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Há, contudo, algo de instrutivo em tudo isto.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">O caso ensina aos portugueses que as regras públicas são aparentemente muito rigorosas para o cidadão comum e surpreendentemente elásticas para quem ocupa cargos elevados.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Um cidadão que construa sem licença pode receber uma ordem de embargo.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Um governante declara que desconhecia as exigências e promete regularizar.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Um cidadão que mova um bem apreendido pode enfrentar problemas sérios.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Um responsável público chama-lhe boa gestão.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Um pequeno empresário deve guardar facturas, contratos, comunicações e comprovativos durante anos.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Um ministro invoca relações de confiança e preços de mercado.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Não se trata apenas de legalidade. Trata-se da desigualdade moral perante a lei.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">A República exige ao cidadão uma perfeição documental que os seus dirigentes parecem considerar opcional. Para baixo, regulamentos. Para cima, explicações.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">É esta assimetria que destrói a confiança pública, muito mais do que qualquer atrelado, propriedade ou obra isolada. Os cidadãos não precisam de acreditar que todos os governantes são criminosos. Basta perceberem que vivem num sistema onde os poderosos beneficiam sempre de uma interpretação mais generosa dos acontecimentos.</p>
+
+  <h2 style="margin:42px 0 13px;color:#d6a542;font-size:1.55rem;line-height:1.25;font-weight:700;">Ninguém se demite porque ninguém fez nada</h2>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Luís Neves afasta a demissão.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">É natural.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Em Portugal, a demissão política tornou-se uma punição excessiva, reservada para casos verdadeiramente extremos, como perder o apoio interno do partido ou deixar de ser útil ao primeiro-ministro.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Erros de julgamento, falhas de transparência, relações imprudentes, decisões sem adequado suporte documental ou perda de autoridade institucional raramente chegam.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Há sempre uma investigação em curso.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Há sempre esclarecimentos adicionais.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Há sempre uma comissão.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Há sempre uma audição futura.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Há sempre mais contexto.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">O tempo passa, o escândalo envelhece, aparece outra polémica e a República prossegue, coesa na sua amnésia.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">A técnica é eficaz. Não se responde completamente a nada. Responde-se parcialmente a tudo. Repete-se que não houve benefício, que não existiu intenção ilícita e que a honra pessoal permanece intacta.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Como se a política fosse julgada apenas pela intenção íntima dos protagonistas.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Um ministro pode até acreditar sinceramente que agiu bem. Isso não significa que tenha agido correctamente. A República não se governa pela consciência privada de cada titular. Governa-se por normas públicas, procedimentos verificáveis e responsabilidade objectiva.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Ou deveria.</p>
+
+  <h2 style="margin:42px 0 13px;color:#d6a542;font-size:1.55rem;line-height:1.25;font-weight:700;">A grande solidez do vazio</h2>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">No fim, o mais extraordinário é a capacidade de transformar fragilidade em força retórica.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Perante perguntas, declara-se coesão.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Perante suspeitas, proclama-se motivação.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Perante falhas, anuncia-se empoderamento.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">É a arquitectura política do vazio: quanto menos substância, mais firmeza na voz.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">A República Portuguesa continua assim a erguer monumentos à coisa nenhuma. Temos planos sem execução, reformas sem resultados, inquéritos sem conclusões, responsabilidades sem responsáveis e explicações sem resposta.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Tudo muito coeso.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">O cidadão observa o espectáculo e percebe que o atrelado é apenas uma metáfora nacional. Um objecto público que desaparece dos procedimentos, vagueia por circuitos privados e reaparece quando alguém faz perguntas.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Também o Estado português parece viver permanentemente atrelado a interesses, cumplicidades, improvisações e relações de confiança. Move-se muito, explica pouco e nunca se sabe exactamente quem conduz.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Mas está motivado.</p>
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Profundamente motivado.</p>
+
+  <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">E enquanto houver contribuintes disponíveis para pagar a viagem, a República continuará empoderada, coesa e firmemente unida à coisa nenhuma.</p>
+
+  <aside aria-label="Nota editorial" style="margin:42px 0 24px;padding:24px 24px 8px;border:1px solid #7a602c;border-radius:10px;background:#12100b;box-shadow:inset 0 0 0 1px #211c12;">
+    <h2 style="margin:0 0 16px;color:#d6a542;font-size:1.5rem;line-height:1.2;">Nota Editorial</h2>
+    <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Coitada da República Portuguesa.</p>
+    <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Nasceu com ideais grandiosos e acabou entregue, demasiadas vezes, a uma sucessão de administradores de condomínio com vocabulário de <em>coaching</em>.</p>
+    <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Vai sobrevivendo como pode: remendada, maltratada, invocada em discursos solenes e esquecida no instante seguinte. Não lhe faltam bandeiras, cerimónias e palavras graves. Falta-lhe apenas aquela pequena inconveniência chamada <strong>responsabilidade</strong>.</p>
+    <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Ainda assim, não é a República que está condenada. Condenados ficariam os cidadãos se deixassem de perguntar, de escrever e de desmontar esta espuma verbal.</p>
+    <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Enquanto houver quem não aceite a coisa nenhuma embrulhada em solenidade, ainda resta pulso democrático.</p>
+    <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">A República está adoentada.</p>
+    <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">Mas ainda respira.</p>
+    <p style="margin:0 0 20px;color:#e8eef4;font-size:1.075rem;">E, para azar dos medíocres, também conserva memória.</p>
+  </aside>
+
+  <section aria-label="Referências documentais" style="margin:38px 0 10px;padding:24px;border-top:1px solid #3e3523;background:#090909;color:#cfd5db;font-size:.94rem;line-height:1.65;">
+    <h2 style="margin:0 0 15px;color:#d6a542;font-size:1.38rem;">Referências documentais</h2>
+    <ol style="margin:0;padding-left:22px;">
+      <li style="margin:0 0 11px;"><a style="color:#e1b85c;text-decoration:underline;text-underline-offset:3px;" href="https://www.rtp.pt/noticias/pais/luis-neves-defende-se-estou-empoderado-muito-motivado-e-sinto-me-muito-apoiado_n1756563" target="_blank" rel="noopener noreferrer">RTP Notícias — "Luís Neves defende-se. 'Estou empoderado, muito motivado e sinto-me muito apoiado'"</a>, 29 de Julho de 2026.</li>
+      <li style="margin:0 0 11px;"><a style="color:#e1b85c;text-decoration:underline;text-underline-offset:3px;" href="https://pt.euronews.com/my-europe/2026/07/29/ministro-da-administracao-interna-defende-se-de-polemicas-e-reafirma-confianca-no-cargo" target="_blank" rel="noopener noreferrer">Euronews — Ministro da Administração Interna defende-se das polémicas e reafirma confiança no cargo</a>, 29 de Julho de 2026.</li>
+      <li style="margin:0 0 11px;"><a style="color:#e1b85c;text-decoration:underline;text-underline-offset:3px;" href="https://www.rtp.pt/noticias/pais/camara-de-odemira-esta-a-averiguar-legalidade-das-obras-em-imovel-do-mai_n1753365" target="_blank" rel="noopener noreferrer">RTP Notícias — Câmara de Odemira averigua a legalidade das obras no imóvel do ministro</a>, 14 de Julho de 2026.</li>
+      <li style="margin:0 0 11px;"><a style="color:#e1b85c;text-decoration:underline;text-underline-offset:3px;" href="https://www.rtp.pt/noticias/pais/mai-entregou-lista-de-faturas-relacionadas-com-obras-polemicas-ao-jornal-observador_n1753574" target="_blank" rel="noopener noreferrer">RTP Notícias — Lista de 108 facturas relacionadas com as obras em Odemira</a>, 15 de Julho de 2026.</li>
+      <li style="margin:0 0 11px;"><a style="color:#e1b85c;text-decoration:underline;text-underline-offset:3px;" href="https://rr.pt/artigo/explicador-renascenca/2026/07/14/luis-neves-contratou-empreiteiro-de-obras-na-pj-para-remodelacao-de-uma-propriedade-em-odemira/478185/" target="_blank" rel="noopener noreferrer">Renascença — Explicador sobre os contratos da Construbarcelos com a Polícia Judiciária e as obras privadas</a>, 14 de Julho de 2026.</li>
+      <li style="margin:0 0 11px;"><a style="color:#e1b85c;text-decoration:underline;text-underline-offset:3px;" href="https://www.dn.pt/pol%C3%ADtica/lus-neves-quebra-silncio-sobre-polmica-com-empreiteiro-hoje-faria-diferente-mas-est-tudo-limpinho" target="_blank" rel="noopener noreferrer">Diário de Notícias — Obras baseadas numa relação de confiança e sem contrato escrito</a>, 12 de Julho de 2026.</li>
+    </ol>
+    <p style="margin:16px 0 0;color:#9ca3aa;font-size:.88rem;">As referências sustentam o enquadramento factual. As interpretações, metáforas e juízos políticos pertencem à crónica.</p>
+  </section>
+
+  <footer style="margin:38px 0 12px;padding-top:22px;border-top:1px solid #383838;color:#c6cbd0;font-size:.98rem;">
+    <div style="color:#e1b85c;font-size:1.08rem;font-weight:700;">Francisco Gonçalves</div>
+    <div style="margin-top:4px;">Fragmentos do Caos · Sobreda de Caparica · 29 de Julho de 2026</div>
+  </footer>
+</div>
+</article>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mandar os políticos para as obras</title>
+<meta name="description" content="Mandar os políticos para as obras">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Mandar os políticos para as obras</h1>
+      <p class="meta">Publicado em 2026-07-30 20:30:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/07/politicos_no_canteiro_de_obras_d9a4277c.jpg" alt=""></figure>
+      <div class="post-content">
+        <article class="fc-chronic-news fc-politicos-obras" itemscope itemtype="https://schema.org/NewsArticle"
+         style="max-width:1080px;margin:0 auto;background:#0b0b0b;color:#e8eef4;font-family:Georgia,'Times New Roman',serif;line-height:1.9;padding:clamp(18px,4vw,48px);box-sizing:border-box;border:1px solid #2d2d2d;border-radius:18px;box-shadow:0 18px 45px rgba(0,0,0,.32);">
+
+  <meta itemprop="headline" content="Mandar os políticos para as obras">
+  <meta itemprop="description" content="A propósito da provocação de José Pulido Valente, uma crónica satírica sobre políticos, obras públicas, responsabilidade, trabalho real e a curiosa resistência do cimento à propaganda.">
+  <meta itemprop="datePublished" content="2026-07-28">
+  <meta itemprop="dateModified" content="2026-07-28">
+  <meta itemprop="inLanguage" content="pt-PT">
+  <meta itemprop="articleSection" content="Crónica política e social">
+  <span itemprop="author" itemscope itemtype="https://schema.org/Person" style="display:none;">
+    <meta itemprop="name" content="Francisco Gonçalves">
+  </span>
+  <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization" style="display:none;">
+    <meta itemprop="name" content="Fragmentos do Caos">
+  </span>
+
+  <header style="text-align:center;padding:12px 0 34px;border-bottom:1px solid #3a3122;">
+    <div style="display:inline-block;margin-bottom:18px;padding:7px 15px;border:1px solid #8a6428;border-radius:999px;color:#d9a64c;font-family:Arial,sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;">
+      FC · Chronic · News
+    </div>
+
+    <h1 itemprop="name" style="margin:0;color:#d99b32;font-size:clamp(2.1rem,6vw,4.25rem);line-height:1.08;letter-spacing:-.035em;">
+      Mandar os políticos para as obras
+    </h1>
+
+    <p style="max-width:760px;margin:18px auto 0;color:#f1d7a4;font-size:clamp(1.1rem,2.5vw,1.55rem);font-style:italic;">
+      Um estágio obrigatório na realidade
+    </p>
+
+    <p style="margin:20px 0 0;color:#aeb6bf;font-family:Arial,sans-serif;font-size:.92rem;">
+      Crónica satírica de <strong style="color:#e8eef4;">Francisco Gonçalves</strong>
+      &nbsp;·&nbsp; 28 de Julho de 2026
+    </p>
+  </header>
+
+  <section style="margin:34px 0;padding:24px;border-left:5px solid #d99b32;background:#16130f;border-radius:0 14px 14px 0;">
+    <p style="margin:0;color:#f5e6c6;font-size:clamp(1.12rem,2.2vw,1.4rem);font-weight:700;">
+      José Pulido Valente lançou uma frase que, por acidente, parece conter mais reforma do Estado
+      do que muitos programas eleitorais: "É preciso mandar todos os políticos trabalhar para as obras".
+    </p>
+  </section>
+
+  <section aria-label="Caixa de factos"
+           style="margin:34px 0;padding:26px;background:#111820;border:1px solid #304152;border-radius:15px;">
+    <h2 style="margin:0 0 15px;color:#d99b32;font-family:Arial,sans-serif;font-size:1.1rem;letter-spacing:.08em;text-transform:uppercase;">
+      Caixa de factos, para a sátira não trabalhar sem fiscalização
+    </h2>
+    <ul style="margin:0;padding-left:22px;color:#dce5ed;">
+      <li style="margin:10px 0;">
+        O Tribunal de Contas voltou a identificar deficiências persistentes nas obras públicas,
+        incluindo planeamento insuficiente, responsabilidades pouco claras e falhas no controlo
+        de custos ao longo do ciclo de vida dos projectos.
+      </li>
+      <li style="margin:10px 0;">
+        A OCDE assinalou em 2026 que os encargos regulatórios na construção aumentam custos e
+        incerteza, atrasam projectos e afectam sobretudo as empresas mais pequenas.
+      </li>
+      <li style="margin:10px 0;">
+        Segundo o Eurostat, a construção concentrou 24% dos acidentes de trabalho mortais na União
+        Europeia em 2023. Portanto, "ir para as obras" não deve ser tratado como uma piada sobre
+        trabalho menor, mas como contacto com trabalho real, exigente e perigoso.
+      </li>
+    </ul>
+  </section>
+
+  <div itemprop="articleBody" style="font-size:clamp(1.04rem,1.8vw,1.2rem);">
+
+    <h2 style="margin:46px 0 16px;color:#d99b32;font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.25;">
+      A frase que acertou na parede
+    </h2>
+
+    <p>
+      À primeira vista, a frase de José Pulido Valente parece apenas uma provocação espirituosa.
+      Mas, observada com atenção, encerra uma proposta pedagógica mais profunda do que muitos
+      programas eleitorais com duzentas páginas, quatro fotografias do candidato e nenhuma
+      indicação sobre quem pagará a factura.
+    </p>
+
+    <p>
+      Pulido Valente fala de obras como quem conhece a diferença entre o desenho e a matéria,
+      entre a intenção e aquilo que permanece de pé. Não se refere à obra enquanto cenário de
+      inauguração, com capacetes brancos imaculados, fita colorida e ministros cuidadosamente
+      afastados do pó. Refere-se ao lugar onde existem medidas, prazos, custos, erros, corpos
+      cansados e paredes que, ao contrário das promessas eleitorais, têm de ficar direitas.
+    </p>
+
+    <p>
+      Talvez seja precisamente isso que falte a muitos políticos portugueses: uma temporada
+      obrigatória em contacto com a matéria.
+    </p>
+
+    <p>
+      Não para os castigar, convém esclarecer. Os trabalhadores da construção civil não merecem
+      ser transformados em carcereiros de deputados, ministros e secretários de Estado. Já têm
+      problemas suficientes com falta de mão-de-obra, materiais caros, alterações aos projectos
+      e prazos escritos por pessoas que nunca seguraram uma colher de pedreiro. Colocar-lhes ainda
+      um governante nas mãos poderia ser considerado risco profissional não previsto no seguro.
+    </p>
+
+    <p>
+      A ideia seria pedagógica. Quase revolucionária, portanto.
+    </p>
+
+    <h2 style="margin:46px 0 16px;color:#d99b32;font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.25;">
+      A política vista do andaime
+    </h2>
+
+    <p>
+      Imagine-se um ministro a chegar às sete da manhã a uma obra.
+    </p>
+
+    <p>
+      Nada de motorista à porta. Nada de assessor a entregar-lhe um resumo executivo. Nada de
+      conferência de imprensa marcada para as onze, convenientemente antes de surgir alguma
+      pergunta desagradável.
+    </p>
+
+    <p>
+      Receberia capacete, botas, luvas e uma instrução simples:
+    </p>
+
+    <blockquote style="margin:28px 0;padding:22px 26px;border-left:5px solid #d99b32;background:#171717;color:#f3dfb8;font-size:1.22em;font-style:italic;">
+      Aquela parede tem de ficar pronta hoje.
+    </blockquote>
+
+    <p>
+      Nesse momento começaria uma extraordinária experiência de contacto com a realidade.
+    </p>
+
+    <p>
+      O ministro poderia explicar que foi criada uma comissão para avaliar a parede. O encarregado
+      responderia que a argamassa está a secar.
+    </p>
+
+    <p>
+      Poderia anunciar um grupo de trabalho multidisciplinar para estudar os impactos da
+      verticalidade. O pedreiro lembraria que a parede continua torta.
+    </p>
+
+    <p>
+      Poderia garantir que o Governo está profundamente empenhado na conclusão da parede.
+      Mas, ao fim do dia, alguém teria a indelicadeza democrática de medir o trabalho realizado.
+    </p>
+
+    <p style="font-size:1.18em;color:#f5d89d;font-weight:700;">
+      Na política portuguesa mede-se sobretudo a intenção. Numa obra mede-se o resultado.
+      É uma diferença civilizacional.
+    </p>
+
+    <h2 style="margin:46px 0 16px;color:#d99b32;font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.25;">
+      Onde os erros não desaparecem num comunicado
+    </h2>
+
+    <p>
+      Uma obra possui uma qualidade que deve parecer brutal aos profissionais da política:
+      os erros tornam-se visíveis.
+    </p>
+
+    <p>
+      Quando uma parede é construída no lugar errado, não basta afirmar que houve uma falha
+      de comunicação. Quando um tubo fica mal ligado, não é possível culpar o anterior
+      proprietário da chave inglesa. Quando o orçamento derrapa, alguém tem de explicar porquê,
+      corrigir o problema e encontrar dinheiro verdadeiro, aquele curioso recurso que o Estado
+      recolhe aos cidadãos antes de o transformar em "verba pública".
+    </p>
+
+    <p>
+      Na política, pelo contrário, o erro pode ser enterrado debaixo de palavras.
+    </p>
+
+    <p>
+      Uma decisão desastrosa transforma-se num "desafio inesperado". Um atraso passa a
+      "recalendarização". Uma promessa incumprida converte-se numa "prioridade para a próxima
+      fase". Uma trapalhada administrativa é apresentada como "necessidade de aperfeiçoar
+      procedimentos".
+    </p>
+
+    <p>
+      E um fracasso completo, quando bem acompanhado por gráficos coloridos, pode mesmo ser
+      anunciado como o início de um novo ciclo.
+    </p>
+
+    <p>
+      Numa obra, porém, o cimento possui uma desagradável resistência à propaganda.
+    </p>
+
+    <h2 style="margin:46px 0 16px;color:#d99b32;font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.25;">
+      O relatório que confirma a piada
+    </h2>
+
+    <p>
+      A sátira torna-se quase documental quando se consulta o relatório de auditoria publicado
+      pelo Tribunal de Contas em 2023. O organismo recorda que as obras públicas constituem uma
+      área de risco para a sustentabilidade das finanças públicas e assinala a persistência de
+      problemas antigos: planeamento deficiente, ausência de uma identificação clara dos
+      responsáveis, insuficiência de análises custo-benefício e fragilidades no controlo de custos.
+    </p>
+
+    <p>
+      Em auditorias anteriores, citadas no mesmo relatório, tinham sido encontrados desvios
+      financeiros entre 25% e 295% acima dos valores contratualizados e atrasos entre 1,4 e
+      4,6 anos. A obra pública portuguesa, percebe-se, não precisa de humorista. Dispõe de
+      documentação oficial.
+    </p>
+
+    <p>
+      Seria tentador perguntar quem foi responsabilizado. Mas isso já seria confundir a
+      administração pública com uma obra, onde o nome de quem executa cada tarefa costuma
+      ser conhecido. No Estado, a responsabilidade tem frequentemente a delicadeza do nevoeiro:
+      está em todo o lado, mas não se consegue agarrar.
+    </p>
+
+    <h2 style="margin:46px 0 16px;color:#d99b32;font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.25;">
+      A burocracia a discutir a licença da parede
+    </h2>
+
+    <p>
+      A OCDE observou, no seu estudo económico sobre Portugal de 2026, que os encargos
+      regulatórios no sector da construção aumentam os custos e a incerteza, atrasam os projectos
+      e pesam particularmente sobre as pequenas empresas. As licenças demoram, os procedimentos
+      variam entre municípios e a realidade aguarda pacientemente que todos os carimbos estejam
+      alinhados.
+    </p>
+
+    <p>
+      Portugal já dispõe, desde 2017, de mecanismos de avaliação do impacto regulatório e tem
+      procurado medir os custos administrativos das normas. É um progresso: começámos finalmente
+      a calcular o peso da papelada que produzimos. Falta agora experimentar reduzi-la, uma etapa
+      tecnicamente mais ousada.
+    </p>
+
+    <p>
+      Na obra imaginária de formação política, o governante poderia preencher dezassete
+      formulários antes de colocar o primeiro tijolo. Ao fim de três meses, receberia um pedido
+      de esclarecimentos sobre a cor do formulário número oito. Talvez então compreendesse por
+      que razão os cidadãos envelhecem à espera de uma licença e as empresas aprendem a tratar
+      a burocracia como um fenómeno meteorológico inevitável.
+    </p>
+
+    <h2 style="margin:46px 0 16px;color:#d99b32;font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.25;">
+      O país das inaugurações
+    </h2>
+
+    <p>
+      Portugal não tem falta de políticos que gostem de obras. Tem falta de políticos que
+      compreendam como elas se fazem.
+    </p>
+
+    <p>
+      Gostam particularmente da fase final: a placa, a fita, as câmaras de televisão, os
+      discursos e o momento solene em que alguém corta simbolicamente aquilo que os trabalhadores
+      passaram meses ou anos a construir.
+    </p>
+
+    <p>
+      Raramente aparecem quando é preciso carregar materiais, corrigir defeitos ou explicar aos
+      moradores por que razão a intervenção prometida para seis meses já entrou no terceiro
+      aniversário.
+    </p>
+
+    <p>
+      A inauguração tornou-se uma das principais artes performativas da democracia portuguesa.
+      O governante visita uma obra paga pelos contribuintes, agradece ao Governo por a ter
+      realizado e recebe aplausos por devolver à população uma pequena parte do dinheiro que
+      previamente lhe retirou.
+    </p>
+
+    <p style="font-size:1.18em;color:#f5d89d;font-weight:700;">
+      É uma espécie de ilusionismo fiscal com capacetes brancos.
+    </p>
+
+    <p>
+      Talvez o estágio proposto por Pulido Valente devesse começar precisamente antes das
+      fotografias. Cada político só teria autorização para participar numa inauguração depois
+      de cumprir algumas horas de trabalho efectivo no projecto.
+    </p>
+
+    <p>
+      Não seria necessário exigir grandes conhecimentos técnicos. Bastaria transportar material,
+      limpar entulho ou permanecer oito horas ao sol, contemplando o resultado físico das decisões
+      tomadas num gabinete climatizado.
+    </p>
+
+    <p>
+      A cerimónia ganharia outra solenidade. E talvez menos discursos, o que constituiria uma
+      obra pública de valor incalculável.
+    </p>
+
+    <h2 style="margin:46px 0 16px;color:#d99b32;font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.25;">
+      O trabalho real não é metáfora
+    </h2>
+
+    <p>
+      A construção civil não deve ser usada como sinónimo de castigo. É trabalho especializado,
+      fisicamente exigente e perigoso. Em 2023, quase um quarto dos acidentes de trabalho mortais
+      registados na União Europeia ocorreu na construção. Nesse mesmo ano, Portugal apresentou
+      uma das taxas padronizadas mais elevadas de acidentes não mortais comunicados.
+    </p>
+
+    <p>
+      Estes números impedem que a frase seja lida como desprezo por quem trabalha nas obras.
+      Pelo contrário: a força da proposta está em obrigar quem governa a conhecer o esforço,
+      o risco e as consequências concretas suportadas por quem executa aquilo que outros
+      anunciam.
+    </p>
+
+    <p>
+      Depois de carregar sacos, subir andaimes ou trabalhar sob o sol de Julho, um deputado
+      poderia adquirir uma compreensão inesperadamente sofisticada sobre a diferença entre
+      esperança média de vida e capacidade física para continuar a trabalhar.
+    </p>
+
+    <p>
+      Há conceitos que entram melhor pelos músculos do que pelos gabinetes de estudos.
+    </p>
+
+    <h2 style="margin:46px 0 16px;color:#d99b32;font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.25;">
+      Aprender que o tempo dos outros também conta
+    </h2>
+
+    <p>
+      Trabalhar numa obra poderia ensinar outra lição importante: os atrasos têm consequências.
+    </p>
+
+    <p>
+      Quando um processo administrativo demora dois anos, o funcionário ou o governante
+      responsável pode continuar tranquilamente a sua vida. Mas o cidadão fica sem casa,
+      sem licença, sem investimento, sem rendimento ou sem resposta.
+    </p>
+
+    <p>
+      Para o Estado, são processos pendentes. Para quem espera, são fragmentos de vida suspensos
+      numa secretária.
+    </p>
+
+    <p>
+      Numa obra, um atraso impede o electricista de começar, o canalizador de terminar, o
+      proprietário de entrar e os trabalhadores de receber. Cada decisão interfere com a vida
+      concreta de outras pessoas.
+    </p>
+
+    <p>
+      Talvez fosse útil colocar os políticos perante essa cadeia de consequências. Não através
+      de mais relatórios de impacto, evidentemente. A humanidade já produziu relatórios
+      suficientes para soterrar várias civilizações. Seria necessário vê-la, senti-la e
+      responder por ela.
+    </p>
+
+    <h2 style="margin:46px 0 16px;color:#d99b32;font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.25;">
+      Um programa nacional de imersão na realidade
+    </h2>
+
+    <p>
+      Mandar os políticos para as obras não deveria ser entendido como humilhação. Seria uma
+      formação avançada em responsabilidade pública.
+    </p>
+
+    <p>
+      Aprenderiam que os projectos devem ser pensados antes de começar. Que alterar
+      constantemente as especificações custa dinheiro. Que a qualidade depende de conhecimento,
+      experiência e fiscalização. Que os recursos são limitados. Que não basta anunciar.
+      E que alguém terá de executar aquilo que eles decidiram.
+    </p>
+
+    <p>
+      Sobretudo, aprenderiam que aquilo que se constrói mal pode permanecer durante décadas,
+      exactamente como acontece com as leis, os serviços públicos e as instituições.
+    </p>
+
+    <p>
+      Um mau edifício cria infiltrações. Uma má política cria pobreza, desigualdade,
+      desconfiança e atraso. Em ambos os casos, quem paga a reparação raramente é quem cometeu
+      o erro.
+    </p>
+
+    <p>
+      Alguns políticos poderiam ser distribuídos por hospitais, escolas, tribunais, repartições
+      públicas, pequenas empresas e transportes colectivos. Seria um Programa Nacional de
+      Imersão na Realidade, matéria aparentemente ausente de muitos cursos de formação partidária.
+    </p>
+
+    <p>
+      Durante alguns meses, deixariam de representar o povo para experimentar viver como ele.
+    </p>
+
+    <p>
+      No final, poderiam regressar ao Parlamento. Mas só depois de uma avaliação feita por quem
+      trabalhou com eles:
+    </p>
+
+    <div style="margin:28px 0;padding:24px;background:#141414;border:1px solid #363636;border-radius:14px;">
+      <p style="margin:0;color:#f0d49d;font-family:Arial,sans-serif;font-weight:700;line-height:2;">
+        Pontualidade.<br>
+        Capacidade de ouvir.<br>
+        Cumprimento de prazos.<br>
+        Respeito pelo orçamento.<br>
+        Qualidade do trabalho.<br>
+        Responsabilidade pelos erros.
+      </p>
+    </div>
+
+    <p>
+      Receio que muitos não passassem do período experimental.
+    </p>
+
+    <p>
+      Mas o país, pelo menos, ficaria com algumas paredes levantadas. E isso já seria uma melhoria
+      considerável em relação a décadas de construção política feita sobretudo com palavras,
+      promessas e cimento eleitoral de secagem rápida.
+    </p>
+
+    <blockquote style="margin:40px 0;padding:28px;border:1px solid #7b5925;background:#17120c;border-radius:14px;text-align:center;color:#f7dca6;font-size:clamp(1.2rem,2.5vw,1.55rem);font-style:italic;">
+      Na obra, a parede ou fica de pé ou cai. Na política, pode cair e ainda ser inaugurada.
+    </blockquote>
+  </div>
+
+  <section aria-label="Referências"
+           style="margin-top:52px;padding-top:30px;border-top:1px solid #3a3122;">
+    <h2 style="margin:0 0 18px;color:#d99b32;font-family:Arial,sans-serif;font-size:1.35rem;">
+      Referências e leitura complementar
+    </h2>
+    <ol style="margin:0;padding-left:24px;color:#cbd4dc;font-size:.98rem;">
+      <li style="margin:12px 0;">
+        PÚBLICO, "José Pulido Valente: 'É preciso mandar todos os políticos trabalhar para as obras'",
+        28 de Julho de 2026.
+        <a href="https://www.publico.pt/2026/07/28/culturaipsilon/entrevista/jose-pulido-valente-preciso-mandar-politicos-trabalhar-obras-2182960" target="_blank" rel="noopener noreferrer"
+           style="color:#efbc62;text-decoration:underline;">Consultar</a>.
+      </li>
+      <li style="margin:12px 0;">
+        Tribunal de Contas, <em>Empreendimento de Obras Públicas — Relatório de Auditoria n.º 6/2023,
+        2.ª Secção</em>.
+        <a href="https://www.tcontas.pt/pt-pt/ProdutosTC/Relatorios/RelatoriosAuditoria/Documents/2023/rel006-2023-2s.pdf" target="_blank" rel="noopener noreferrer"
+           style="color:#efbc62;text-decoration:underline;">Consultar o relatório</a>.
+      </li>
+      <li style="margin:12px 0;">
+        OCDE, <em>OECD Economic Surveys: Portugal 2026</em>, secção sobre os obstáculos regulatórios
+        à construção.
+        <a href="https://www.oecd.org/en/publications/oecd-economic-surveys-portugal-2026_025b3445-en.html" target="_blank" rel="noopener noreferrer"
+           style="color:#efbc62;text-decoration:underline;">Consultar</a>.
+      </li>
+      <li style="margin:12px 0;">
+        OCDE, <em>Better Regulation Practices across the European Union 2025 — Portugal</em>.
+        <a href="https://www.oecd.org/en/publications/better-regulation-practices-across-the-european-union-2025_6f007516-en/full-report/portugal_197b25aa.html" target="_blank" rel="noopener noreferrer"
+           style="color:#efbc62;text-decoration:underline;">Consultar</a>.
+      </li>
+      <li style="margin:12px 0;">
+        Eurostat, <em>Accidents at Work Statistics</em>, dados de 2023, actualização estatística
+        de Setembro de 2025.
+        <a href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Accidents_at_work_statistics" target="_blank" rel="noopener noreferrer"
+           style="color:#efbc62;text-decoration:underline;">Consultar</a>.
+      </li>
+    </ol>
+  </section>
+
+  <aside style="margin-top:42px;padding:24px;background:#151515;border:1px solid #333;border-radius:14px;">
+    <h2 style="margin:0 0 12px;color:#d99b32;font-family:Arial,sans-serif;font-size:1.15rem;text-transform:uppercase;letter-spacing:.07em;">
+      Nota editorial
+    </h2>
+    <p style="margin:0;color:#cbd2d9;font-size:.98rem;">
+      Esta crónica parte de uma declaração pública de José Pulido Valente e desenvolve-a como
+      sátira política. A proposta de colocar governantes "nas obras" não pretende diminuir o
+      trabalho da construção civil. Procura, precisamente, reconhecer a sua exigência e confrontar
+      o poder político com aquilo que tantas vezes evita: prazos reais, recursos limitados,
+      responsabilidade individual e resultados que podem ser medidos.
+    </p>
+  </aside>
+
+  <footer style="margin-top:38px;padding-top:28px;border-top:1px solid #303030;text-align:center;">
+    <p style="margin:0;color:#f1d49b;font-size:1.08rem;font-weight:700;">Francisco Gonçalves</p>
+    <p style="margin:5px 0 20px;color:#919aa3;font-family:Arial,sans-serif;font-size:.9rem;">
+      Fragmentos do Caos · 2026
+    </p>
+    <div style="color:#a9b1b8;font-family:Arial,sans-serif;font-size:.9rem;">
+      
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+<br>
+      <!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+    </div>
+  </footer>
+</article>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

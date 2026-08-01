@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Os vendedores de nevoeiro</title>
+<meta name="description" content="Os vendedores de nevoeiro">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Os vendedores de nevoeiro</h1>
+      <p class="meta">Publicado em 2026-07-31 09:44:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/07/file_000000005b5c81f4b4549a6d5f7f1e4b_4f3cb819.jpg" alt=""></figure>
+      <div class="post-content">
+        <style>
+  html, body { margin: 0 !important; padding: 0 !important; background: #0b0b0b !important; }
+  .fc-chronic-news.fc-vendedores-nevoeiro {
+    box-sizing: border-box; width: 100%; max-width: 920px; margin: 0 auto;
+    padding: 0 34px 34px; background: #0b0b0b; color: #e8e8e8;
+    font-family: Georgia, "Times New Roman", serif; font-size: clamp(17px, 2vw, 19px);
+    line-height: 1.95; text-align: left; border: 1px solid #292929; border-top: 0;
+    border-radius: 0 0 8px 8px;
+  }
+  .fc-chronic-news * { box-sizing: border-box; }
+  .fc-chronic-news header { margin: 0; padding: 0 0 22px; text-align: center; }
+  .fc-chronic-news .fc-kicker { margin: 0; padding-top: 0; color: #bdbdbd; font: 700 12px/1.4 Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+  .fc-chronic-news h1 { margin: 0; padding: 0; color: #d6a13d; font-size: clamp(34px, 6vw, 48px); line-height: 1.12; }
+  .fc-chronic-news .fc-subtitle { max-width: 760px; margin: 14px auto 0; color: #f0d49b; font-size: clamp(18px, 3vw, 23px); line-height: 1.45; font-style: italic; }
+  .fc-chronic-news .fc-byline { margin: 14px 0 0; color: #b9b9b9; font: 14px/1.5 Arial, sans-serif; }
+  .fc-chronic-news .fc-lead { margin: 0 0 30px; padding: 20px 22px; background: #151515; border-left: 4px solid #d6a13d; color: #f1f1f1; font-size: 1.08em; }
+  .fc-chronic-news h2 { margin: 38px 0 12px; color: #d6a13d; font-size: clamp(25px, 4vw, 31px); line-height: 1.25; }
+  .fc-chronic-news p { margin: 0 0 20px; }
+  .fc-chronic-news blockquote { margin: 28px 0; padding: 18px 22px; background: #141414; border-left: 4px solid #d6a13d; color: #f4ddb0; font-size: 1.12em; font-style: italic; }
+  .fc-chronic-news .fc-dialogue { margin: 22px 0; text-align: center; font-size: 1.16em; color: #f4ddb0; }
+  .fc-chronic-news .fc-note, .fc-chronic-news .fc-references { margin-top: 42px; padding: 22px; background: #111111; border-left: 4px solid #d6a13d; }
+  .fc-chronic-news .fc-note h2, .fc-chronic-news .fc-references h2 { margin-top: 0; }
+  .fc-chronic-news .fc-references ol { margin: 0; padding-left: 22px; }
+  .fc-chronic-news .fc-references li { margin-bottom: 14px; }
+  .fc-chronic-news a { color: #f0bd59; text-decoration: underline; text-underline-offset: 3px; }
+  .fc-chronic-news a:hover { color: #ffe0a0; }
+  .fc-chronic-news footer { margin-top: 42px; padding-top: 24px; border-top: 1px solid #333; color: #c8c8c8; }
+  .fc-chronic-news .fc-signature { margin-bottom: 20px; }
+  .fc-chronic-news .fc-shortcodes { margin: 28px 0 0; color: #d7d7d7; font-family: Arial, sans-serif; font-size: 14px; }
+  @media (max-width: 600px) {
+    .fc-chronic-news.fc-vendedores-nevoeiro { padding: 0 18px 26px; border-left: 0; border-right: 0; border-radius: 0; }
+    .fc-chronic-news .fc-lead, .fc-chronic-news .fc-note, .fc-chronic-news .fc-references { padding: 17px; }
+  }
+</style>
+<article class="fc-chronic-news fc-vendedores-nevoeiro" itemscope itemtype="https://schema.org/NewsArticle">
+  <meta itemprop="mainEntityOfPage" content="https://fragmentoscaos.eu/os-vendedores-de-nevoeiro-consultoras-multinacionais/">
+  <meta itemprop="datePublished" content="2026-07-31T09:44:00+01:00">
+  <meta itemprop="dateModified" content="2026-07-31T09:44:00+01:00">
+  <meta itemprop="description" content="Uma crónica sobre o poder das grandes consultoras multinacionais, a venda de prestígio como substituto da responsabilidade e um caso vivido no BANIF.">
+  <span itemprop="author" itemscope itemtype="https://schema.org/Person" style="display:none"><meta itemprop="name" content="Francisco Gonçalves"></span>
+  <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization" style="display:none"><meta itemprop="name" content="Fragmentos do Caos"></span>
+
+  <header>
+    <p class="fc-kicker">Crónica de Francisco Gonçalves para Fragmentos do Caos, 2026</p>
+    <h1 itemprop="headline">Os vendedores de nevoeiro</h1>
+    <p class="fc-subtitle">Quando a consultoria substitui a competência e a marca serve para lavar responsabilidades</p>
+    <p class="fc-byline">Francisco Gonçalves · 31 de Julho de 2026</p>
+  </header>
+
+  <div class="fc-lead" itemprop="description">
+    Há empresas que vendem produtos. Outras vendem serviços. E há as grandes consultoras multinacionais, essas magníficas catedrais do capitalismo contemporâneo, que descobriram um negócio ainda mais rentável: vender aos dirigentes a sensação de que estão a tomar decisões inteligentes.
+  </div>
+
+  <div itemprop="articleBody">
+    <p>Não é necessário resolver verdadeiramente o problema. Basta produzir um relatório suficientemente volumoso, povoado de gráficos coloridos, expressões inglesas e diagramas com setas que se cruzam como estradas numa rotunda desenhada por alguém que nunca conduziu.</p>
+
+    <p>Chamam-lhe consultoria estratégica.</p>
+
+    <p>Em linguagem corrente, significa muitas vezes contratar dezenas de pessoas para explicar, durante meses, aquilo que um técnico competente perceberia numa semana.</p>
+
+    <p>As grandes consultoras adquiriram um poder que ultrapassa largamente a sua competência técnica. Tornaram-se certificadoras oficiosas das decisões políticas e empresariais. Quando uma administração pública ou privada contrata uma pequena empresa e o projecto corre mal, alguém tem de explicar a escolha. Quando contrata uma Deloitte, uma PwC, uma Accenture, uma KPMG ou outra multinacional do mesmo panteão, a escolha parece justificar-se a si própria.</p>
+
+    <p>A marca funciona como absolvição antecipada.</p>
+
+    <p>Se tudo correr bem, a administração foi visionária.</p>
+
+    <p>Se tudo correr mal, ninguém poderia ter previsto, porque, afinal, tinham contratado "uma entidade internacional de reconhecido prestígio".</p>
+
+    <p>O prestígio, nestes casos, não serve necessariamente para garantir a qualidade da solução. Serve para diluir a responsabilidade pelo fracasso.</p>
+
+    <p>É uma espécie de seguro contra a competência individual: ninguém sabe exactamente quem decidiu, quem desenhou, quem testou ou quem garantiu. Havia uma equipa. Havia reuniões. Havia actas. Havia apresentações. Havia, sobretudo, facturas.</p>
+
+    <p>Só faltava, por vezes, uma solução.</p>
+
+    <h2>A multinacional já lá estava</h2>
+
+    <p>Quando entrei no BANIF, encontrei uma infra-estrutura informática que parecia ter sido construída durante uma retirada militar.</p>
+
+    <p>Existiam cerca de trezentos computadores Windows ligados a uma rede sem verdadeira gestão centralizada, sem redundâncias adequadas, sem disciplina operacional e sem uma arquitectura coerente. O ambiente era de confusão permanente. Cada máquina parecia ter conquistado a sua independência administrativa, enquanto os sistemas comunicavam entre si mediante uma combinação de improvisação, esperança e intervenção divina.</p>
+
+    <p>Não era apenas uma infra-estrutura mal organizada. Era um risco operacional instalado no coração de um banco.</p>
+
+    <p>Antes da minha chegada, a administração já tinha feito aquilo que tantas administrações fazem quando não compreendem um problema tecnológico: contratara uma multinacional.</p>
+
+    <p>A escolhida fora a GE Capital.</p>
+
+    <p>Durante perto de um ano, os consultores analisaram o ambiente, realizaram reuniões, recolheram informação e produziram estudos. O banco pagou cerca de sessenta mil euros, uma quantia considerável para a época, recebendo em troca um relatório que aconselhava, entre outras recomendações, a introdução de clusters Microsoft Windows e bases de dados Oracle.</p>
+
+    <p>O relatório tinha seguramente a aparência de um trabalho sofisticado. Teria capítulos, anexos, esquemas e palavras suficientemente importantes para tranquilizar qualquer administrador.</p>
+
+    <p>Faltava-lhe apenas uma qualidade incómoda: adequação à realidade.</p>
+
+    <p>Depois de observar a infra-estrutura e ler o relatório, dei ao director do banco uma opinião que dificilmente teria sido aprovada por um departamento de comunicação:</p>
+
+    <p class="fc-dialogue"><strong>— Deitem isso para o lixo.</strong></p>
+
+    <p>Não havia qualquer prazer especial na frase. Havia apenas a conclusão inevitável de quem conhecia os sistemas, percebia a natureza do problema e não tinha interesse em proteger o prestígio de uma consultora.</p>
+
+    <p>O relatório recomendava tecnologias. Não apresentava uma arquitectura suficientemente coerente para transformar aquela confusão num sistema robusto, gerível e resiliente.</p>
+
+    <p>É uma diferença essencial, embora frequentemente ignorada.</p>
+
+    <p>Qualquer catálogo comercial pode recomendar produtos. Uma verdadeira solução exige compreender os processos, os riscos, as dependências, as limitações existentes e o modo como as pessoas trabalham. Exige também assumir escolhas e aceitar responder por elas.</p>
+
+    <p>A consultora podia aconselhar clusters e bases de dados. Eu teria de garantir que o banco continuava a funcionar.</p>
+
+    <h2>Três meses contra um ano</h2>
+
+    <p>Em cerca de três meses, elaborei uma solução tecnológica completa e produzi os relatórios que sustentavam as opções propostas.</p>
+
+    <p>Não comecei por perguntar quais eram as tecnologias mais prestigiadas. Comecei por estudar o problema.</p>
+
+    <p>Era necessário criar uma infra-estrutura coerente, introduzir mecanismos reais de redundância, centralizar a gestão, reduzir os pontos únicos de falha, garantir a continuidade dos serviços e transformar centenas de equipamentos dispersos num ambiente controlável.</p>
+
+    <p>A tecnologia não podia ser escolhida para impressionar uma administração. Tinha de funcionar quando surgisse uma avaria, uma falha de comunicações, um erro humano ou uma interrupção inesperada.</p>
+
+    <p>Passados cerca de seis meses, a solução foi implementada com sucesso.</p>
+
+    <blockquote>Funcionou.</blockquote>
+
+    <p>Tinha as redundâncias necessárias, a robustez requerida e uma arquitectura capaz de responder às necessidades reais do banco.</p>
+
+    <p>Não foi necessário um exército de consultores. Não foram necessários doze meses de reuniões. Não foi necessário envolver uma procissão de especialistas em transformação, inovação, governação, alinhamento estratégico e demais vocabulário utilizado para converter o óbvio em matéria facturável.</p>
+
+    <p>Foi necessário conhecimento técnico, experiência, autonomia e responsabilidade.</p>
+
+    <p>Precisamente as qualidades que os grandes processos de contratação conseguem muitas vezes colocar em segundo plano.</p>
+
+    <h2>A indústria da recomendação sem consequência</h2>
+
+    <p>A grande consultoria prospera porque separou a recomendação da responsabilidade.</p>
+
+    <p>Quem recomenda raramente implementa tudo.</p>
+
+    <p>Quem implementa pode não operar.</p>
+
+    <p>Quem opera não participou nas decisões.</p>
+
+    <p>Quando o sistema falha, cada interveniente aponta para o documento produzido pelo anterior. Forma-se uma cadeia de responsabilidades tão longa que acaba por desaparecer no horizonte.</p>
+
+    <p>O consultor pode sempre afirmar que a recomendação não foi integralmente aplicada.</p>
+
+    <p>A empresa pode dizer que seguiu as orientações recebidas.</p>
+
+    <p>A administração declara que confiou em especialistas externos.</p>
+
+    <p>E o contribuinte, o cliente ou o accionista paga a repetição do trabalho, agora sob o nome de "plano de recuperação".</p>
+
+    <p>É uma economia circular, embora não exactamente aquela que os ambientalistas tinham em mente.</p>
+
+    <p>O fracasso produz um novo contrato. O novo contrato produz um novo diagnóstico. O diagnóstico identifica falhas de execução. As falhas justificam uma nova fase de acompanhamento. O acompanhamento exige indicadores. Os indicadores precisam de uma plataforma. A plataforma necessita de integração. E assim se constrói um majestoso ecossistema de facturação em redor de um problema que continua por resolver.</p>
+
+    <h2>O culto da dimensão</h2>
+
+    <p>Existe também a convicção infantil de que uma empresa maior possui necessariamente melhores técnicos.</p>
+
+    <p>Não possui.</p>
+
+    <p>Uma multinacional pode ter excelentes profissionais. Também pode colocar num projecto alguns consultores experientes, vários quadros intermédios e uma multidão de jovens recém-licenciados, todos apresentados ao cliente como uma "equipa multidisciplinar de elevada especialização".</p>
+
+    <p>O cliente paga a reputação global da marca, mas o trabalho diário pode ser realizado por pessoas com pouca experiência prática, seguindo metodologias padronizadas e reutilizando documentos adaptados de projectos anteriores.</p>
+
+    <p>Trocam-se os logótipos, alteram-se algumas expressões, reorganizam-se os gráficos e nasce uma nova estratégia.</p>
+
+    <p>A dimensão permite à consultora mobilizar pessoas rapidamente. Mas quantidade de pessoas não é sinónimo de profundidade de pensamento. Por vezes, apenas significa que será necessário reservar uma sala maior para as reuniões.</p>
+
+    <p>Um técnico verdadeiramente experiente pode compreender em dias aquilo que uma equipa numerosa demora meses a colocar num documento. Não porque trabalhe mais depressa, mas porque sabe distinguir o essencial do ruído.</p>
+
+    <p>A experiência não consiste em conhecer todas as tecnologias disponíveis. Consiste em saber quais não devem ser usadas.</p>
+
+    <h2>A consultora como biombo</h2>
+
+    <p>No sector público, o poder destas empresas é ainda mais preocupante.</p>
+
+    <p>A consultora transforma-se num biombo entre a decisão política e a realidade. O governante já não escolhe directamente. Solicita um estudo. O estudo recomenda. O organismo contrata. A comissão acompanha. A empresa executa. E, quando alguém pergunta quem decidiu, surge um labirinto de pareceres, competências delegadas e responsabilidades partilhadas.</p>
+
+    <p>O poder político compra assim algo mais valioso do que conhecimento: compra distância em relação às consequências.</p>
+
+    <p>É por isso que os grandes contratos não devem ser avaliados apenas pelo nome da empresa ou pelo número de especialistas apresentados. Devem ser examinados pelos resultados concretos:</p>
+
+    <blockquote>
+      Que problema foi resolvido?<br>
+      Que sistema ficou a funcionar?<br>
+      Que conhecimento permaneceu na organização?<br>
+      Quem responde se falhar?<br>
+      Quanto custaria uma solução desenvolvida por equipas nacionais competentes?<br>
+      Que critérios foram usados para afastar alternativas?<br><br>
+      E, sobretudo, por que razão os relatórios permanecem tantas vezes confidenciais depois de terem sido pagos com dinheiro público?
+    </blockquote>
+
+    <p>Um relatório verdadeiramente extraordinário não devia precisar de ser escondido. Talvez o segredo sirva menos para proteger informação sensível do que para evitar que alguém descubra quanto custaram certas banalidades.</p>
+
+    <h2>A coragem de dizer que o relatório não presta</h2>
+
+    <p>Há outra diferença entre um técnico independente e uma grande consultora: o técnico competente pode dizer que uma decisão está errada.</p>
+
+    <p>A consultora depende da continuação da relação comercial.</p>
+
+    <p>Um profissional integrado numa organização terá de viver com os resultados das suas escolhas. Estará presente quando o sistema falhar e será chamado quando surgir a emergência. A consultora, pelo contrário, poderá já estar noutro projecto, a produzir uma estratégia de transformação para outro cliente igualmente impressionado com o logótipo.</p>
+
+    <p>No BANIF, eu podia dizer que o relatório da GE Capital devia ir para o lixo porque a minha obrigação não era proteger a consultora. Era proteger o banco.</p>
+
+    <p>Essa independência intelectual é rara e preciosa.</p>
+
+    <p>Não se compra em pacotes de horas.</p>
+
+    <p>Não aparece em apresentações.</p>
+
+    <p>Não pode ser simulada por uma metodologia com um nome em inglês.</p>
+
+    <p>Nasce da experiência, da integridade e da disposição para assumir responsabilidades.</p>
+
+    <h2>O império dos vendedores de nevoeiro</h2>
+
+    <p>As grandes consultoras não dominam o mercado por possuírem todas as respostas. Dominam-no porque aprenderam a transformar a insegurança dos dirigentes num modelo de negócio.</p>
+
+    <p>Quanto menos um decisor compreende um problema, maior é a tentação de contratar uma marca gigantesca. A dimensão da consultora parece compensar a fragilidade da decisão.</p>
+
+    <p>É uma forma sofisticada de superstição empresarial.</p>
+
+    <p>Antigamente, os reis consultavam astrólogos antes de iniciar uma guerra. Hoje, os administradores contratam consultoras para iniciar uma transformação digital. Mudaram os instrumentos, mas o mecanismo psicológico permanece surpreendentemente intacto.</p>
+
+    <p>O dirigente procura alguém que lhe diga que o futuro está controlado.</p>
+
+    <p>A consultora entrega-lhe um documento que demonstra, com gráficos, que o futuro será alcançado em quatro fases.</p>
+
+    <p>A primeira chama-se diagnóstico.</p>
+
+    <p>A segunda, alinhamento.</p>
+
+    <p>A terceira, implementação.</p>
+
+    <p>A quarta, geralmente, é uma nova adjudicação.</p>
+
+    <p>Entretanto, algures na organização, um técnico experiente observa o problema, compreende o que precisa de ser feito e tenta explicar que a solução pode ser mais simples, mais barata e mais eficaz.</p>
+
+    <p>Mas o técnico não traz uma marca internacional estampada na testa.</p>
+
+    <p>Traz apenas conhecimento.</p>
+
+    <p>E, no nosso estranho mundo corporativo e político, o conhecimento sem logótipo continua a ser uma mercadoria suspeita.</p>
+
+    <p>Talvez seja essa a maior ilusão vendida pelas multinacionais da consultoria: a ideia de que a competência precisa de ser grande, cara e estrangeira para ser levada a sério.</p>
+
+    <p>O episódio do BANIF demonstrou exactamente o contrário.</p>
+
+    <p>Um ano de estudos e sessenta mil euros produziram um relatório inadequado.</p>
+
+    <p>Três meses de análise competente produziram uma solução.</p>
+
+    <p>Seis meses depois, essa solução estava implementada e funcionava com sucesso.</p>
+
+    <p>De um lado, havia a autoridade da marca.</p>
+
+    <p>Do outro, havia a realidade.</p>
+
+    <p>E a realidade, essa consultora brutalmente honesta, acabou por dar o parecer definitivo.</p>
+  </div>
+
+  <aside class="fc-note" aria-labelledby="nota-editorial">
+    <h2 id="nota-editorial">Nota editorial</h2>
+    <p>Esta crónica é um texto de opinião e parte de um testemunho profissional directo do autor sobre a sua entrada no BANIF, a situação tecnológica que encontrou e a avaliação que então fez de um relatório atribuído à GE Capital. Os valores e prazos relativos a esse episódio são apresentados como memória pessoal do autor e não como resultado de uma auditoria documental independente.</p>
+    <p>A referência a empresas de consultoria não constitui uma acusação de ilegalidade nem pretende negar que estas organizações empreguem profissionais competentes ou possam prestar serviços úteis. A crítica dirige-se ao modelo de contratação que transforma a reputação da marca em substituto da avaliação técnica, dilui responsabilidades, enfraquece capacidades internas e mede o trabalho por relatórios entregues em vez de soluções efectivamente implementadas.</p>
+  </aside>
+
+  <section class="fc-references" aria-labelledby="referencias">
+    <h2 id="referencias">Referências internacionais</h2>
+    <ol>
+      <li>Mariana Mazzucato e Rosie Collington, <em>The Big Con: How the Consulting Industry Weakens our Businesses, Infantilizes our Governments and Warps our Economies</em>, apresentação e síntese no University College London, 2023. <a href="https://www.ucl.ac.uk/bartlett/events/2023/jun/book-talk-big-con" target="_blank" rel="noopener noreferrer">UCL Bartlett</a>.</li>
+      <li>House of Commons Committee of Public Accounts, <em>Government's use of external consultants</em>, 11 de Março de 2026. O relatório salienta fragilidades na medição, transparência e controlo da despesa pública britânica em consultoria. <a href="https://publications.parliament.uk/pa/cm5901/cmselect/cmpubacc/1521/report.html" target="_blank" rel="noopener noreferrer">UK Parliament</a>.</li>
+      <li>OCDE, <em>Digital Government Outlook 2026</em>, capítulo "Governing digital investment and capabilities to deliver at scale". A publicação sublinha que a transformação digital depende de capacidades humanas e institucionais internas, não apenas da aquisição de tecnologia. <a href="https://www.oecd.org/en/publications/digital-government-outlook_0496b2bc-en/full-report/governing-digital-investment-and-capabilities-to-deliver-at-scale_d775f3d4.html" target="_blank" rel="noopener noreferrer">OECD</a>.</li>
+      <li>Harvard Business Review, Bent Flyvbjerg e Alexander Budzier, <em>Why Your IT Project May Be Riskier Than You Think</em>, Setembro de 2011. O artigo analisa riscos extremos em grandes projectos tecnológicos e inclui um caso de implementação conduzida por consultores externos. <a href="https://hbr.org/2011/09/why-your-it-project-may-be-riskier-than-you-think" target="_blank" rel="noopener noreferrer">Harvard Business Review</a>.</li>
+      <li><em>The Guardian</em>, "Scandalous £3.4bn UK state spending on private consultants last year", 31 de Agosto de 2024. A reportagem aborda o crescimento da despesa pública britânica com consultores e a dependência de grandes firmas. <a href="https://www.theguardian.com/politics/article/2024/aug/31/uk-government-private-consultants-spending" target="_blank" rel="noopener noreferrer">The Guardian</a>.</li>
+      <li><em>Financial Times</em>, "Australian Senate calls for more oversight of consultants after PwC scandal", 12 de Junho de 2024. A investigação parlamentar australiana defendeu maior fiscalização de um sector descrito como operando numa zona regulatória cinzenta. <a href="https://www.ft.com/content/3ef7333c-a16f-4b61-81c7-96b3873fd767" target="_blank" rel="noopener noreferrer">Financial Times</a>.</li>
+      <li>Reuters, "McKinsey Africa to pay $122 million in South Africa bribery scheme, US Justice Department says", 5 de Dezembro de 2024. O caso ilustra por que razão contratos públicos, conflitos de interesses e mecanismos de responsabilização exigem escrutínio efectivo. <a href="https://www.reuters.com/world/africa/mckinsey-africa-pay-122-million-south-africa-bribery-scheme-us-justice-dept-says-2024-12-05/" target="_blank" rel="noopener noreferrer">Reuters</a>.</li>
+    </ol>
+  </section>
+
+  <footer>
+    <p class="fc-signature"><strong>Francisco Gonçalves</strong><br><em>Fragmentos do Caos</em>, 2026</p>
+    <p class="fc-shortcodes">
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+<br><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div></p>
+  </footer>
+</article>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
