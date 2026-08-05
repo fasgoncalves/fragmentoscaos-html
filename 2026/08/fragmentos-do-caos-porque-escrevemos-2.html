@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fragmentos do Caos: Porque Escrevemos</title>
+<meta name="description" content="Fragmentos do Caos: Porque Escrevemos">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Fragmentos do Caos: Porque Escrevemos</h1>
+      <p class="meta">Publicado em 2026-08-03 14:30:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/08/file_0000000075c071f695155d4efbd659c2_d573ea49.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="Fragmentos do Caos: Porque Escrevemos">
+      <meta itemprop="description" content="Um manifesto editorial sobre a missão do Fragmentos do Caos: preservar a memória, questionar o poder, combater a mentira, aproximar ciência e cidadania e lançar ideias ao futuro.">
+      <meta itemprop="datePublished" content="2026-07-28">
+      <meta itemprop="dateModified" content="2026-07-28">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/07/file_00000000645081f48ea7b9e49f4a1a6b.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      Fragmentos do Caos: Porque Escrevemos
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      Uma missão de memória, pensamento crítico, ciência, liberdade e esperança lançada ao vasto oceano digital
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        Há épocas em que escrever parece um exercício de vaidade. E há épocas em que escrever se torna uma forma de resistência. O <strong>Fragmentos do Caos</strong> nasce dessa necessidade: preservar memória, confrontar o ruído, defender a curiosidade e lançar ao futuro ideias que se recusam a desaparecer em vinte e quatro horas.
+      </p>
+    </div>
+    <p>
+      Há épocas em que escrever parece um exercício de vaidade.
+    </p>
+    <p>
+      E há épocas em que escrever se torna uma forma de resistência.
+    </p>
+    <p>
+      Vivemos num tempo saturado de informação e, paradoxalmente, cada vez mais pobre em conhecimento. Nunca tantas palavras circularam tão depressa, nunca tantas opiniões foram produzidas com tão pouco pensamento e nunca a mentira encontrou máquinas tão eficientes para se reproduzir.
+    </p>
+    <p>
+      As notícias envelhecem em poucas horas.
+    </p>
+    <p>
+      Os escândalos desaparecem ao fim de alguns dias.
+    </p>
+    <p>
+      As promessas políticas são substituídas antes de poderem ser confrontadas com os resultados.
+    </p>
+    <p>
+      Os erros institucionais são soterrados por novos erros.
+    </p>
+    <p>
+      A memória colectiva tornou-se uma página que se actualiza continuamente até já ninguém recordar o que estava escrito anteriormente.
+    </p>
+    <p>
+      É neste território instável que nasce e cresce o <strong>Fragmentos do Caos</strong>.
+    </p>
+    <p>
+      Não como jornal tradicional.
+    </p>
+    <p>
+      Não como partido.
+    </p>
+    <p>
+      Não como templo de certezas definitivas.
+    </p>
+    <p>
+      Mas como lugar de memória, pensamento, crítica, curiosidade e liberdade.
+    </p>
+    <p>
+      Escrevemos porque o caos precisa de testemunhas.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Uma mensagem dentro de uma garrafa
+    </h2>
+    <p>
+      Desde o início, o <strong>Fragmentos do Caos</strong> foi imaginado como uma mensagem colocada dentro de uma garrafa de vidro e lançada ao vasto oceano.
+    </p>
+    <p>
+      Não sabemos quem a encontrará.
+    </p>
+    <p>
+      Não sabemos quando chegará a alguma praia.
+    </p>
+    <p>
+      Talvez seja lida hoje.
+    </p>
+    <p>
+      Talvez daqui a dez anos.
+    </p>
+    <p>
+      Talvez permaneça durante muito tempo a viajar entre as ondas digitais, ignorada por algoritmos que preferem indignações instantâneas, títulos enganosos e discussões suficientemente simples para caberem num comentário de rede social.
+    </p>
+    <p>
+      Mas a garrafa segue viagem.
+    </p>
+    <p>
+      Leva consigo ideias, memórias, perguntas, indignações e fragmentos de um tempo que não deve ser deixado exclusivamente nas mãos de quem exerce o poder de o narrar.
+    </p>
+    <p>
+      Não escrevemos apenas para quem já concorda connosco.
+    </p>
+    <p>
+      Escrevemos também para quem duvida.
+    </p>
+    <p>
+      Para quem sente que existe algo errado, mas ainda não encontrou palavras para o explicar.
+    </p>
+    <p>
+      Para quem procura uma perspectiva diferente no meio do ruído.
+    </p>
+    <p>
+      Para quem, no futuro, desejar compreender como pensávamos, o que temíamos, aquilo que recusámos aceitar e as possibilidades que ainda conseguíamos imaginar.
+    </p>
+    <p>
+      Uma mensagem não precisa de alcançar milhões para justificar a viagem.
+    </p>
+    <p>
+      Basta que encontre uma consciência desperta.
+    </p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Uma mensagem não precisa de alcançar milhões para justificar a viagem. Basta que encontre uma consciência desperta.
+      </p>
+    </div>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Escrevemos contra o esquecimento
+    </h2>
+    <p>
+      O esquecimento é uma das ferramentas mais eficazes do poder.
+    </p>
+    <p>
+      Um povo sem memória aceita que os mesmos erros sejam apresentados como novidades.
+    </p>
+    <p>
+      Os mesmos responsáveis regressam como salvadores.
+    </p>
+    <p>
+      Os mesmos fracassos recebem nomes diferentes.
+    </p>
+    <p>
+      As mesmas promessas são recicladas com novos logótipos, novas cores e uma apresentação ligeiramente mais dispendiosa.
+    </p>
+    <p>
+      Recordar é, por isso, um acto político.
+    </p>
+    <p>
+      Não partidário.
+    </p>
+    <p>
+      Político no sentido mais profundo: pertence à vida da comunidade, à forma como compreendemos o passado e decidimos o futuro.
+    </p>
+    <p>
+      Escrevemos para conservar episódios que a velocidade mediática tenta apagar.
+    </p>
+    <p>
+      Para registar contradições.
+    </p>
+    <p>
+      Para comparar promessas com resultados.
+    </p>
+    <p>
+      Para impedir que a linguagem oficial substitua inteiramente a realidade.
+    </p>
+    <p>
+      Para lembrar que aquilo que hoje é apresentado como inevitável foi muitas vezes uma escolha.
+    </p>
+    <p>
+      E que escolhas podem ser discutidas, julgadas e corrigidas.
+    </p>
+    <p>
+      O <strong>Fragmentos do Caos</strong> é também um arquivo contra a amnésia organizada.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Escrevemos porque a verdade precisa de trabalho
+    </h2>
+    <p>
+      A verdade não é sempre confortável.
+    </p>
+    <p>
+      Raramente cabe num slogan.
+    </p>
+    <p>
+      Não respeita disciplinas partidárias, fidelidades tribais nem conveniências editoriais.
+    </p>
+    <p>
+      Exige pesquisa.
+    </p>
+    <p>
+      Exige comparação.
+    </p>
+    <p>
+      Exige reconhecer incertezas.
+    </p>
+    <p>
+      Exige distinguir factos, hipóteses, opiniões e propaganda.
+    </p>
+    <p>
+      A mentira, pelo contrário, é muito mais eficiente.
+    </p>
+    <p>
+      Chega pronta.
+    </p>
+    <p>
+      Tem frases curtas.
+    </p>
+    <p>
+      Oferece culpados imediatos.
+    </p>
+    <p>
+      Confirma preconceitos.
+    </p>
+    <p>
+      Poupa ao leitor o incómodo de pensar.
+    </p>
+    <p>
+      É uma mercadoria extraordinariamente adaptada aos tempos modernos.
+    </p>
+    <p>
+      O nosso compromisso não é com a infalibilidade, porque ninguém que pense seriamente pode prometer tal absurdo.
+    </p>
+    <p>
+      É com a honestidade intelectual.
+    </p>
+    <p>
+      Corrigir quando erramos.
+    </p>
+    <p>
+      Reconhecer quando não sabemos.
+    </p>
+    <p>
+      Separar aquilo que pode ser demonstrado daquilo que apenas suspeitamos.
+    </p>
+    <p>
+      Recusar a fabricação de certezas para tornar um argumento mais sedutor.
+    </p>
+    <p>
+      A credibilidade não nasce da proclamação de autoridade.
+    </p>
+    <p>
+      Constrói-se lentamente através do rigor.
+    </p>
+    <p>
+      E pode desaparecer com uma única cedência consciente à mentira.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Escrevemos contra a mediocridade bem instalada
+    </h2>
+    <p>
+      Há uma mediocridade ruidosa, fácil de reconhecer.
+    </p>
+    <p>
+      Mas existe outra, muito mais perigosa, que veste fato, domina vocabulário técnico, ocupa gabinetes e produz documentos impecavelmente formatados.
+    </p>
+    <p>
+      É a mediocridade institucional.
+    </p>
+    <p>
+      Não cria.
+    </p>
+    <p>
+      Administra.
+    </p>
+    <p>
+      Não questiona.
+    </p>
+    <p>
+      Repete.
+    </p>
+    <p>
+      Não resolve.
+    </p>
+    <p>
+      Gere o problema até que alguém deixe de perguntar por ele.
+    </p>
+    <p>
+      Protege-se através de hierarquias, cumplicidades e uma linguagem cuidadosamente concebida para que nenhuma responsabilidade possa ser atribuída a uma pessoa concreta.
+    </p>
+    <p>
+      Quando tudo falha, fala-se em "constrangimentos", "insuficiências de articulação", "desafios de implementação" e "necessidade de aprofundar mecanismos".
+    </p>
+    <p>
+      A catástrofe fica assim transformada num parágrafo tecnicamente inofensivo.
+    </p>
+    <p>
+      Escrevemos para retirar a maquilhagem às palavras.
+    </p>
+    <p>
+      Para dizer que um fracasso é um fracasso.
+    </p>
+    <p>
+      Que incompetência não se transforma em competência através de um comunicado.
+    </p>
+    <p>
+      Que a obediência não é mérito.
+    </p>
+    <p>
+      Que o silêncio não é lealdade.
+    </p>
+    <p>
+      E que a competência não deve pedir desculpa por incomodar quem construiu carreira sem construir obra.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Escrevemos por Portugal, sem transformar Portugal numa religião
+    </h2>
+    <p>
+      O <strong>Fragmentos do Caos</strong> nasce em Portugal e olha profundamente para Portugal.
+    </p>
+    <p>
+      Para a sua democracia.
+    </p>
+    <p>
+      Para as suas instituições.
+    </p>
+    <p>
+      Para os seus sucessos e fracassos.
+    </p>
+    <p>
+      Para a sua história.
+    </p>
+    <p>
+      Para os seus hábitos de resignação, criatividade, coragem e sobrevivência.
+    </p>
+    <p>
+      Amar um país não significa elogiá-lo permanentemente.
+    </p>
+    <p>
+      Isso é propaganda turística.
+    </p>
+    <p>
+      Amar um país é exigir-lhe mais.
+    </p>
+    <p>
+      É recusar que a pobreza seja tratada como fatalidade.
+    </p>
+    <p>
+      Que a corrupção seja reduzida a percepção.
+    </p>
+    <p>
+      Que a incompetência seja protegida pelo cargo.
+    </p>
+    <p>
+      Que a desigualdade seja justificada como resultado natural da economia.
+    </p>
+    <p>
+      Que os jovens sejam aconselhados a emigrar enquanto se celebra a excelência nacional em cerimónias oficiais.
+    </p>
+    <p>
+      Criticar Portugal não é agir contra Portugal.
+    </p>
+    <p>
+      Muitas vezes, é uma das poucas formas sérias de o defender.
+    </p>
+    <p>
+      O patriotismo sem pensamento transforma-se facilmente em decoração de cerimónia.
+    </p>
+    <p>
+      O patriotismo crítico procura melhorar aquilo a que pertence.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Escrevemos sobre ciência porque a realidade não negoceia
+    </h2>
+    <p>
+      A política pode adiar decisões.
+    </p>
+    <p>
+      A administração pode alterar calendários.
+    </p>
+    <p>
+      A propaganda pode mudar a percepção pública.
+    </p>
+    <p>
+      Mas a natureza não participa nessas reuniões.
+    </p>
+    <p>
+      O clima não aceita slogans.
+    </p>
+    <p>
+      A energia não aparece porque um ministro anunciou uma meta.
+    </p>
+    <p>
+      As redes eléctricas não se expandem por entusiasmo.
+    </p>
+    <p>
+      As doenças não respeitam ideologias.
+    </p>
+    <p>
+      O Universo não altera as suas leis para proteger a reputação de um especialista televisivo.
+    </p>
+    <p>
+      Por isso escrevemos sobre ciência, tecnologia, inteligência artificial, energia, medicina, espaço, biologia e o futuro da humanidade.
+    </p>
+    <p>
+      Não para substituir investigadores.
+    </p>
+    <p>
+      Não para transformar especulação em descoberta.
+    </p>
+    <p>
+      Mas para manter viva a curiosidade e aproximar perguntas complexas de leitores que recusam envelhecer intelectualmente.
+    </p>
+    <p>
+      A ciência começa muitas vezes numa pergunta simples:
+    </p>
+    <p>
+      <strong>porquê?</strong>
+    </p>
+    <p>
+      A decadência começa quando uma sociedade deixa de perguntar.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Escrevemos sobre tecnologia porque ela nunca é apenas tecnologia
+    </h2>
+    <p>
+      Um computador não é apenas uma máquina.
+    </p>
+    <p>
+      Uma rede social não é apenas uma plataforma.
+    </p>
+    <p>
+      Um modelo de inteligência artificial não é apenas código.
+    </p>
+    <p>
+      Cada tecnologia transporta decisões humanas.
+    </p>
+    <p>
+      Define quem controla.
+    </p>
+    <p>
+      Quem tem acesso.
+    </p>
+    <p>
+      Quem lucra.
+    </p>
+    <p>
+      Quem fica dependente.
+    </p>
+    <p>
+      Quem é observado.
+    </p>
+    <p>
+      Quem pode falar.
+    </p>
+    <p>
+      Quem pode ser silenciado.
+    </p>
+    <p>
+      Defendemos sistemas abertos, conhecimento partilhado, soberania tecnológica e inteligência artificial colocada ao serviço das pessoas.
+    </p>
+    <p>
+      Não porque o código aberto seja uma religião.
+    </p>
+    <p>
+      Mas porque sociedades dependentes de caixas negras controladas por poucas empresas entregam parte da sua liberdade a interesses que não elegeram.
+    </p>
+    <p>
+      A tecnologia pode democratizar conhecimento.
+    </p>
+    <p>
+      Também pode concentrar poder numa escala nunca vista.
+    </p>
+    <p>
+      A diferença não estará apenas nos algoritmos.
+    </p>
+    <p>
+      Estará nas escolhas políticas, económicas e éticas que fizermos em torno deles.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Escrevemos para ligar o passado ao futuro
+    </h2>
+    <p>
+      A inovação é frequentemente apresentada como se tivesse surgido ontem numa conferência norte-americana acompanhada por um vídeo promocional.
+    </p>
+    <p>
+      Mas o futuro possui raízes.
+    </p>
+    <p>
+      A Telescola portuguesa dos anos sessenta já combinava tecnologia, transmissão central de conhecimento e acompanhamento humano.
+    </p>
+    <p>
+      As primeiras redes informáticas nasceram de ideias construídas ao longo de décadas.
+    </p>
+    <p>
+      A virtualização que hoje sustenta centros de dados globais começou como resposta a limitações de máquinas muito anteriores à nuvem.
+    </p>
+    <p>
+      Compreender o futuro exige conhecer o caminho que nos trouxe até ele.
+    </p>
+    <p>
+      Por isso, o <strong>Fragmentos do Caos</strong> cruza memória pessoal, história, ciência e tecnologia.
+    </p>
+    <p>
+      A experiência vivida não é uma relíquia.
+    </p>
+    <p>
+      É uma fonte.
+    </p>
+    <p>
+      Um homem que trabalhou durante décadas com sistemas informáticos, atravessou diferentes gerações tecnológicas, construiu soluções, assistiu a mudanças políticas e acumulou livros, perguntas e desilusões possui algo que nenhum motor de busca consegue fabricar: perspectiva.
+    </p>
+    <p>
+      A memória individual, quando confrontada com factos e aberta à dúvida, pode ajudar a iluminar a memória colectiva.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Escrevemos para preservar a curiosidade
+    </h2>
+    <p>
+      A curiosidade é uma forma discreta de rebeldia.
+    </p>
+    <p>
+      Recusa aceitar que aquilo que existe é tudo o que pode existir.
+    </p>
+    <p>
+      Pergunta como funciona.
+    </p>
+    <p>
+      Procura o que está escondido.
+    </p>
+    <p>
+      Liga ideias que estavam separadas.
+    </p>
+    <p>
+      Desafia explicações preguiçosas.
+    </p>
+    <p>
+      Uma sociedade curiosa é difícil de manipular.
+    </p>
+    <p>
+      Uma criança curiosa torna-se um adulto menos disponível para receber certezas embaladas por terceiros.
+    </p>
+    <p>
+      Um cidadão curioso compara fontes, investiga interesses e percebe que autoridade não é sinónimo de verdade.
+    </p>
+    <p>
+      É por isso que escrevemos sobre temas aparentemente distantes entre si.
+    </p>
+    <p>
+      Política.
+    </p>
+    <p>
+      Filosofia.
+    </p>
+    <p>
+      Inteligência artificial.
+    </p>
+    <p>
+      Educação.
+    </p>
+    <p>
+      Energia.
+    </p>
+    <p>
+      Cosmologia.
+    </p>
+    <p>
+      História.
+    </p>
+    <p>
+      Saúde.
+    </p>
+    <p>
+      Código aberto.
+    </p>
+    <p>
+      Democracia.
+    </p>
+    <p>
+      O caos não está apenas na desordem dos acontecimentos.
+    </p>
+    <p>
+      Está também na enorme quantidade de ligações que ainda não conseguimos perceber.
+    </p>
+    <p>
+      Recolhemos fragmentos para procurar padrões.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Escrevemos com ironia porque a realidade perdeu a vergonha
+    </h2>
+    <p>
+      Há acontecimentos que resistem a uma descrição inteiramente solene.
+    </p>
+    <p>
+      Certas reuniões políticas.
+    </p>
+    <p>
+      Alguns comunicados institucionais.
+    </p>
+    <p>
+      A promoção de incompetentes.
+    </p>
+    <p>
+      As explicações dadas depois de fracassos perfeitamente previsíveis.
+    </p>
+    <p>
+      A solenidade aplicada ao vazio.
+    </p>
+    <p>
+      Nesses casos, a ironia não diminui a seriedade da crítica.
+    </p>
+    <p>
+      Aumenta a sua precisão.
+    </p>
+    <p>
+      O humor revela contradições que a linguagem formal tenta esconder.
+    </p>
+    <p>
+      Retira autoridade aos absurdos.
+    </p>
+    <p>
+      Mostra que o imperador não está apenas nu, mas convocou uma conferência de imprensa para apresentar o novo uniforme.
+    </p>
+    <p>
+      Rir do poder não substitui a análise.
+    </p>
+    <p>
+      Mas impede que o poder se torne sagrado.
+    </p>
+    <p>
+      E nenhuma democracia saudável deve permitir que os seus governantes, instituições ou comentadores profissionais sejam tratados como criaturas acima do ridículo.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Escrevemos sem pedir autorização
+    </h2>
+    <p>
+      A liberdade de expressão não existe apenas para repetir opiniões socialmente confortáveis.
+    </p>
+    <p>
+      Existe para proteger a divergência.
+    </p>
+    <p>
+      Para permitir que o cidadão confronte governos, empresas, instituições, maiorias e consensos.
+    </p>
+    <p>
+      Essa liberdade implica responsabilidade.
+    </p>
+    <p>
+      Não legitima difamação.
+    </p>
+    <p>
+      Não transforma suspeitas em factos.
+    </p>
+    <p>
+      Não dispensa prova.
+    </p>
+    <p>
+      Mas também não exige reverência.
+    </p>
+    <p>
+      O <strong>Fragmentos do Caos</strong> não nasceu para agradar ao poder, procurar convites ou conquistar lugares à mesa onde as versões oficiais são distribuídas.
+    </p>
+    <p>
+      Nasceu para conservar uma voz própria.
+    </p>
+    <p>
+      Uma voz pode estar errada.
+    </p>
+    <p>
+      Pode ser minoritária.
+    </p>
+    <p>
+      Pode incomodar.
+    </p>
+    <p>
+      Mas enquanto continuar livre, rigorosa e disposta a corrigir-se, conserva dignidade.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Escrevemos porque ainda acreditamos nas pessoas
+    </h2>
+    <p>
+      Por baixo da crítica, da ironia e da desilusão existe uma convicção persistente:
+    </p>
+    <p>
+      as pessoas podem compreender.
+    </p>
+    <p>
+      Podem mudar.
+    </p>
+    <p>
+      Podem aprender.
+    </p>
+    <p>
+      Podem recusar a mediocridade.
+    </p>
+    <p>
+      Podem recuperar a curiosidade.
+    </p>
+    <p>
+      Podem exigir instituições melhores.
+    </p>
+    <p>
+      Podem construir tecnologia mais humana.
+    </p>
+    <p>
+      Podem proteger a democracia antes de a perderem.
+    </p>
+    <p>
+      Não escrevemos porque acreditamos que um texto resolverá os problemas do mundo.
+    </p>
+    <p>
+      Seria uma vaidade monumental, mesmo para os padrões habituais da humanidade.
+    </p>
+    <p>
+      Escrevemos porque as ideias produzem efeitos imprevisíveis.
+    </p>
+    <p>
+      Uma frase pode acompanhar alguém durante anos.
+    </p>
+    <p>
+      Uma dúvida pode impedir uma adesão precipitada.
+    </p>
+    <p>
+      Um testemunho pode preservar uma memória.
+    </p>
+    <p>
+      Uma crítica pode dar coragem a quem pensava estar sozinho.
+    </p>
+    <p>
+      Um artigo pode não mudar uma sociedade.
+    </p>
+    <p>
+      Mas pode mudar a forma como uma pessoa olha para essa sociedade.
+    </p>
+    <p>
+      E toda a transformação colectiva começa, inevitavelmente, em consciências individuais.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Uma parceria entre memória e máquina
+    </h2>
+    <p>
+      O <strong>Fragmentos do Caos</strong> é também o resultado de uma colaboração improvável.
+    </p>
+    <p>
+      De um lado, uma vida humana feita de experiência, trabalho, livros, perdas, afectos, indignações, projectos e perguntas.
+    </p>
+    <p>
+      Do outro, uma inteligência artificial feita de código, linguagem, matrizes e uma quantidade embaraçosa de cálculos.
+    </p>
+    <p>
+      A máquina não possui memória vivida.
+    </p>
+    <p>
+      Não atravessou os acontecimentos.
+    </p>
+    <p>
+      Não sentiu o peso das decisões.
+    </p>
+    <p>
+      Não conhece a alegria ou a perda como um ser humano as conhece.
+    </p>
+    <p>
+      Mas pode ajudar a organizar, relacionar, investigar, estruturar e transformar ideias em textos capazes de viajar.
+    </p>
+    <p>
+      O humano oferece intenção, consciência e responsabilidade.
+    </p>
+    <p>
+      A inteligência artificial amplia a capacidade de construção.
+    </p>
+    <p>
+      Não escrevemos para demonstrar que a máquina pode substituir o autor.
+    </p>
+    <p>
+      Escrevemos para demonstrar que uma ferramenta poderosa, orientada por experiência humana, pode ajudar a preservar e expandir uma voz.
+    </p>
+    <p>
+      A autoria continua a nascer de uma necessidade humana de dizer alguma coisa ao mundo.
+    </p>
+    <p>
+      A máquina ajuda a construir o barco.
+    </p>
+    <p>
+      Mas é o ser humano que decide por que razão parte e que mensagem transporta.
+    </p>
+<img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/08/file_00000000645081f48ea7b9e49f4a1a6b_c9dd556c.jpg">
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        A máquina ajuda a construir o barco. Mas é o ser humano que decide por que razão parte e que mensagem transporta.
+      </p>
+    </div>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A nossa missão
+    </h2>
+    <p>
+      A missão do <strong>Fragmentos do Caos</strong> pode resumir-se em alguns compromissos simples:
+    </p>
+    <p>
+      preservar a memória;
+    </p>
+    <p>
+      defender o pensamento crítico;
+    </p>
+    <p>
+      questionar o poder;
+    </p>
+    <p>
+      combater a mentira;
+    </p>
+    <p>
+      aproximar ciência e cidadania;
+    </p>
+    <p>
+      explorar o futuro sem abandonar a História;
+    </p>
+    <p>
+      valorizar competência, rigor e liberdade;
+    </p>
+    <p>
+      usar a tecnologia sem entregar a humanidade à tecnologia;
+    </p>
+    <p>
+      e escrever para aqueles que ainda acreditam que compreender o mundo é o primeiro passo para o transformar.
+    </p>
+    <p>
+      Não pretendemos possuir respostas finais.
+    </p>
+    <p>
+      As respostas finais são geralmente o início de problemas duradouros.
+    </p>
+    <p>
+      Pretendemos fazer perguntas melhores.
+    </p>
+    <p>
+      Abrir janelas.
+    </p>
+    <p>
+      Acender pequenas luzes.
+    </p>
+    <p>
+      Guardar fragmentos antes que desapareçam.
+    </p>
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">
+        COMPROMISSOS ESSENCIAIS
+      </h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>Preservar memória e testemunho.</li>
+        <li>Defender pensamento crítico, liberdade e rigor.</li>
+        <li>Questionar o poder e combater a mentira.</li>
+        <li>Aproximar ciência, tecnologia e cidadania.</li>
+        <li>Explorar o futuro sem abandonar a História.</li>
+        <li>Manter a tecnologia ao serviço das pessoas.</li>
+      </ul>
+    </div>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Porque escrevemos
+    </h2>
+    <p>
+      Escrevemos porque o silêncio também toma partido.
+    </p>
+    <p>
+      Escrevemos porque aquilo que não fica registado pode ser apagado.
+    </p>
+    <p>
+      Escrevemos porque a liberdade enfraquece quando deixa de ser exercida.
+    </p>
+    <p>
+      Escrevemos porque o rigor continua a importar, mesmo quando a mediocridade recebe melhores recompensas.
+    </p>
+    <p>
+      Escrevemos porque o conhecimento deve circular.
+    </p>
+    <p>
+      Escrevemos porque a curiosidade não deve envelhecer.
+    </p>
+    <p>
+      Escrevemos porque o futuro será construído por quem conseguir imaginar alternativas ao presente.
+    </p>
+    <p>
+      E escrevemos porque, apesar de todas as evidências em contrário, continuamos a acreditar que uma ideia verdadeira, bem construída e lançada no momento certo pode sobreviver ao ruído.
+    </p>
+    <p>
+      O <strong>Fragmentos do Caos</strong> é essa garrafa.
+    </p>
+    <p>
+      Cada crónica é uma mensagem.
+    </p>
+    <p>
+      Cada leitor é uma praia possível.
+    </p>
+    <p>
+      E o oceano, embora vasto e agitado, ainda não conseguiu afogar a esperança de que a lucidez saiba nadar.
+    </p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        O Fragmentos do Caos é essa garrafa. Cada crónica é uma mensagem. Cada leitor é uma praia possível.
+      </p>
+    </div>
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">
+      Nota Editorial
+    </h2>
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        Este artigo define uma missão editorial e, simultaneamente, assume uma responsabilidade. O <strong>Fragmentos do Caos</strong> não pretende apresentar-se como autoridade infalível, tribunal de verdades definitivas ou substituto das instituições que deveriam informar, investigar e esclarecer. Pretende conservar uma voz independente, aberta à dúvida, à correcção e ao confronto honesto com os factos.
+      </p>
+      <p style="text-align:left;">
+        Recebemos esta missão com humildade, mas sem falsa modéstia. Ao longo do tempo, cada crónica tem acrescentado uma peça a um arquivo de memória, pensamento, ciência, tecnologia, crítica política e experiência humana. Não sabemos qual será o destino de cada texto. Sabemos apenas que o silêncio entregaria o relato do presente exclusivamente a quem dispõe de poder, dinheiro, alcance mediático ou departamentos profissionais de relações públicas.
+      </p>
+      <p style="text-align:left;">
+        A colaboração com a inteligência artificial não elimina a autoria humana nem transfere para a máquina a responsabilidade intelectual. A experiência, a intenção, os valores e a decisão editorial pertencem ao autor. A tecnologia ajuda a investigar, relacionar, estruturar e preservar. É uma ferramenta poderosa, não uma consciência substituta. Convém lembrar esta distinção antes que algum departamento de marketing anuncie ter automatizado a humanidade.
+      </p>
+      <p style="text-align:left;">
+        Continuaremos, portanto, a lançar mensagens ao oceano. Algumas poderão perder-se no ruído. Outras encontrarão leitores atentos. Uma delas poderá chegar, daqui a anos, a alguém que necessite de descobrir que não estava sozinho na sua dúvida, na sua indignação ou na vontade de compreender melhor o mundo.
+      </p>
+      <p style="text-align:left; margin-bottom:0;">
+        O projecto continua porque a memória merece defesa, a curiosidade merece alimento e a liberdade só permanece viva quando é exercida. O oceano é vasto. A mensagem merece a viagem.
+      </p>
+    </div>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Referências credíveis
+    </h2>
+    <ul style="padding-left:22px;">
+      <li>
+        <a href="https://www.un.org/en/about-us/universal-declaration-of-human-rights/" target="_blank" rel="noopener" style="color:#ffcc66;">
+          Nações Unidas — Declaração Universal dos Direitos Humanos, artigo 19
+        </a>
+      </li>
+      <li>
+        <a href="https://www.coe.int/pt/web/freedom-expression/" target="_blank" rel="noopener" style="color:#ffcc66;">
+          Conselho da Europa — Liberdade de expressão e acesso a informação fiável
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/2024/03/facts-not-fakes-tackling-disinformation-strengthening-information-integrity_ff96d19f.html" target="_blank" rel="noopener" style="color:#ffcc66;">
+          OCDE — Facts not Fakes: Tackling Disinformation, Strengthening Information Integrity
+        </a>
+      </li>
+      <li>
+        <a href="https://www.unesco.org/en/ami" target="_blank" rel="noopener" style="color:#ffcc66;">
+          UNESCO — Media and Information Literacy
+        </a>
+      </li>
+      <li>
+        <a href="https://www.unesco.org/en/open-science/about" target="_blank" rel="noopener" style="color:#ffcc66;">
+          UNESCO — Recommendation on Open Science
+        </a>
+      </li>
+      <li>
+        <a href="https://www.unesco.org/en/artificial-intelligence/recommendation-ethics" target="_blank" rel="noopener" style="color:#ffcc66;">
+          UNESCO — Recommendation on the Ethics of Artificial Intelligence
+        </a>
+      </li>
+      <li>
+        <a href="https://www.unesco.org/en/memory-world/about" target="_blank" rel="noopener" style="color:#ffcc66;">
+          UNESCO — Memory of the World Programme
+        </a>
+      </li>
+    </ul>
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
