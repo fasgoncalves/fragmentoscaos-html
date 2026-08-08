@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SoftElabs Network Pulse — Monitorização Inteligente de Tráfego de Rede</title>
+<meta name="description" content="SoftElabs Network Pulse — Monitorização Inteligente de Tráfego de Rede">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">SoftElabs Network Pulse — Monitorização Inteligente de Tráfego de Rede</h1>
+      <p class="meta">Publicado em 2026-08-07 08:58:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/08/file_000000009ac482468f7baffad274dbc1_83aa1e1b.jpg" alt=""></figure>
+      <div class="post-content">
+        <style>
+    :root {
+      --fc-bg: #05080d;
+      --fc-panel: #0d141d;
+      --fc-panel-2: #111c28;
+      --fc-text: #edf5ff;
+      --fc-muted: #a9b9ca;
+      --fc-blue: #38a8ff;
+      --fc-cyan: #45e0d0;
+      --fc-line: rgba(92, 180, 255, .22);
+      --fc-glow: rgba(56, 168, 255, .22);
+      --fc-warn: #ffc65a;
+      --fc-radius: 22px;
+      --fc-shadow: 0 18px 55px rgba(0, 0, 0, .34);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 15% 5%, rgba(56,168,255,.16), transparent 28%),
+        radial-gradient(circle at 85% 20%, rgba(69,224,208,.09), transparent 24%),
+        var(--fc-bg);
+      color: var(--fc-text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.72;
+    }
+
+    .fc-chronic-news {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 0 0 70px;
+    }
+
+    .fc-hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 660px;
+      display: grid;
+      align-items: center;
+      padding: 70px clamp(22px, 5vw, 72px);
+      border: 1px solid var(--fc-line);
+      border-top: 0;
+      border-radius: 0 0 34px 34px;
+      background:
+        linear-gradient(135deg, rgba(7,15,25,.96), rgba(6,12,20,.82)),
+        repeating-linear-gradient(
+          90deg,
+          transparent 0,
+          transparent 49px,
+          rgba(56,168,255,.045) 50px
+        );
+      box-shadow: var(--fc-shadow);
+    }
+
+    .fc-hero::before,
+    .fc-hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(12px);
+      pointer-events: none;
+    }
+
+    .fc-hero::before {
+      width: 340px;
+      height: 340px;
+      right: -90px;
+      top: -80px;
+      background: rgba(56,168,255,.15);
+    }
+
+    .fc-hero::after {
+      width: 240px;
+      height: 240px;
+      left: -80px;
+      bottom: -110px;
+      background: rgba(69,224,208,.10);
+    }
+
+    .fc-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 26px;
+      color: var(--fc-cyan);
+      font-size: .86rem;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .fc-brand-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--fc-cyan);
+      box-shadow: 0 0 24px var(--fc-cyan);
+    }
+
+    .fc-kicker {
+      max-width: 820px;
+      margin: 0 0 18px;
+      color: var(--fc-blue);
+      font-size: clamp(.88rem, 1.5vw, 1.05rem);
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .fc-hero h1 {
+      max-width: 970px;
+      margin: 0;
+      font-size: clamp(2.55rem, 7vw, 6rem);
+      line-height: .98;
+      letter-spacing: -.055em;
+    }
+
+    .fc-hero h1 span {
+      display: block;
+      margin-top: 12px;
+      color: transparent;
+      background: linear-gradient(90deg, var(--fc-blue), var(--fc-cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .fc-lead {
+      max-width: 860px;
+      margin: 32px 0 0;
+      color: #cfdeed;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+    }
+
+    .fc-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 34px;
+    }
+
+    .fc-badge {
+      padding: 9px 14px;
+      border: 1px solid rgba(69,224,208,.28);
+      border-radius: 999px;
+      background: rgba(69,224,208,.07);
+      color: #d9fffa;
+      font-size: .9rem;
+      font-weight: 700;
+    }
+
+    .fc-section {
+      margin-top: 28px;
+      padding: clamp(28px, 5vw, 60px);
+      border: 1px solid var(--fc-line);
+      border-radius: var(--fc-radius);
+      background: linear-gradient(145deg, rgba(13,20,29,.96), rgba(9,15,23,.93));
+      box-shadow: var(--fc-shadow);
+    }
+
+    .fc-section h2 {
+      margin: 0 0 18px;
+      font-size: clamp(1.75rem, 3vw, 2.8rem);
+      line-height: 1.12;
+      letter-spacing: -.035em;
+    }
+
+    .fc-section h3 {
+      margin: 0 0 10px;
+      font-size: 1.15rem;
+    }
+
+    .fc-section p {
+      margin: 0 0 18px;
+      color: var(--fc-muted);
+    }
+
+    .fc-section p:last-child {
+      margin-bottom: 0;
+    }
+
+    .fc-eyebrow {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--fc-cyan);
+      font-size: .79rem;
+      font-weight: 900;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .fc-intro-grid,
+    .fc-feature-grid,
+    .fc-roadmap,
+    .fc-use-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .fc-intro-grid {
+      grid-template-columns: 1.25fr .75fr;
+      align-items: stretch;
+    }
+
+    .fc-feature-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 24px;
+    }
+
+    .fc-use-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 22px;
+    }
+
+    .fc-roadmap {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 26px;
+    }
+
+    .fc-card {
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+      border: 1px solid rgba(92,180,255,.18);
+      border-radius: 18px;
+      background: linear-gradient(160deg, rgba(17,28,40,.95), rgba(8,15,23,.95));
+    }
+
+    .fc-card::after {
+      content: "";
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      right: -38px;
+      bottom: -38px;
+      border-radius: 50%;
+      background: rgba(56,168,255,.09);
+    }
+
+    .fc-card strong {
+      color: var(--fc-text);
+    }
+
+    .fc-number {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      margin-bottom: 16px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, var(--fc-blue), var(--fc-cyan));
+      color: #031018;
+      font-weight: 950;
+    }
+
+    .fc-status {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 28px;
+      border: 1px solid rgba(69,224,208,.24);
+      border-radius: 20px;
+      background:
+        linear-gradient(145deg, rgba(69,224,208,.09), rgba(56,168,255,.06)),
+        var(--fc-panel);
+    }
+
+    .fc-status-label {
+      margin-bottom: 10px;
+      color: var(--fc-cyan);
+      font-size: .76rem;
+      font-weight: 900;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .fc-status-value {
+      margin-bottom: 14px;
+      font-size: clamp(2rem, 5vw, 4.3rem);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: -.05em;
+    }
+
+    .fc-flow {
+      display: grid;
+      grid-template-columns: repeat(6, auto);
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 28px;
+      padding: 22px;
+      border: 1px solid var(--fc-line);
+      border-radius: 18px;
+      background: #08111a;
+    }
+
+    .fc-flow-item {
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: var(--fc-panel-2);
+      color: #e6f3ff;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .fc-arrow {
+      color: var(--fc-cyan);
+      font-size: 1.35rem;
+      font-weight: 900;
+    }
+
+    .fc-roadmap .fc-card {
+      border-top: 3px solid var(--fc-blue);
+    }
+
+    .fc-roadmap ul,
+    .fc-checklist {
+      margin: 14px 0 0;
+      padding-left: 20px;
+      color: var(--fc-muted);
+    }
+
+    .fc-roadmap li,
+    .fc-checklist li {
+      margin: 9px 0;
+    }
+
+    .fc-note {
+      margin-top: 28px;
+      padding: 22px 24px;
+      border-left: 4px solid var(--fc-warn);
+      border-radius: 0 14px 14px 0;
+      background: rgba(255,198,90,.075);
+      color: #eadbbd;
+    }
+
+    .fc-quote {
+      margin: 28px 0 0;
+      padding: 28px;
+      border: 1px solid rgba(69,224,208,.20);
+      border-radius: 18px;
+      background: rgba(69,224,208,.055);
+      color: #e8fffc;
+      font-size: clamp(1.15rem, 2.3vw, 1.65rem);
+      font-weight: 750;
+      line-height: 1.45;
+    }
+
+    .fc-cta {
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(56,168,255,.19), transparent 45%),
+        linear-gradient(145deg, #0d1722, #07101a);
+    }
+
+    .fc-cta p {
+      max-width: 790px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .fc-signature {
+      margin-top: 26px;
+      color: var(--fc-text);
+      font-weight: 850;
+    }
+
+    .fc-footer {
+      padding: 28px 12px 0;
+      color: #7890a7;
+      font-size: .88rem;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .fc-intro-grid,
+      .fc-feature-grid,
+      .fc-roadmap,
+      .fc-use-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .fc-flow {
+        grid-template-columns: 1fr;
+      }
+
+      .fc-arrow {
+        transform: rotate(90deg);
+        text-align: center;
+      }
+
+      .fc-hero {
+        min-height: auto;
+        padding-top: 58px;
+        padding-bottom: 58px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .fc-chronic-news {
+        width: min(100% - 16px, 1180px);
+      }
+
+      .fc-hero,
+      .fc-section {
+        padding-left: 22px;
+        padding-right: 22px;
+      }
+
+      .fc-hero h1 {
+        font-size: clamp(2.35rem, 15vw, 4.2rem);
+      }
+    }
+  </style>
+
+<article class="fc-chronic-news">
+<header class="fc-hero">
+<div>
+<div class="fc-brand">
+<span aria-hidden="true" class="fc-brand-dot"></span>
+          SoftElabs • Network Intelligence
+        </div>
+<p class="fc-kicker">Observabilidade, alerta e evolução inteligente</p>
+<h1>
+          SoftElabs Network Pulse
+          <span>A rede torna-se visível.</span>
+</h1>
+<p class="fc-lead">
+          Uma plataforma leve de monitorização de tráfego em tempo real, criada para transformar
+          atividade invisível em informação operacional clara, alertas úteis e conhecimento histórico.
+          Porque uma infraestrutura não deve limitar-se a funcionar: deve ser compreendida.
+        </p>
+<div aria-label="Tecnologias e capacidades principais" class="fc-badges">
+<span class="fc-badge">Python</span>
+<span class="fc-badge">Scapy</span>
+<span class="fc-badge">NiceGUI</span>
+<span class="fc-badge">Captura em tempo real</span>
+<span class="fc-badge">Alertas ntfy</span>
+<span class="fc-badge">Exportação CSV</span>
+</div>
+</div>
+</header>
+<section class="fc-section">
+<div class="fc-intro-grid">
+<div>
+<span class="fc-eyebrow">O projeto</span>
+<h2>Monitorizar a pulsação da infraestrutura</h2>
+<p>
+            O <strong>SoftElabs Network Pulse</strong> nasceu como um projeto de monitorização direta
+            de interfaces de rede, combinando captura de pacotes, agregação de tráfego, representação
+            gráfica e alertas operacionais num único painel Web.
+          </p>
+<p>
+            A solução observa atualmente as interfaces configuradas, contabiliza o volume de dados
+            capturado, atualiza gráficos em tempo real e mantém uma janela histórica que permite
+            acompanhar oscilações, picos e tendências de utilização.
+          </p>
+<p>
+            Em vez de guardar indiscriminadamente o conteúdo dos pacotes, o sistema utiliza a captura
+            para produzir métricas de tráfego. Esta abordagem reduz o consumo de memória e mantém o foco
+            na observabilidade operacional.
+          </p>
+</div>
+<aside class="fc-status">
+<div class="fc-status-label">Estado atual</div>
+<div class="fc-status-value">Operacional</div>
+<p>
+            Captura, visualização, cálculo de médias, alertas, registo histórico, controlo de modo
+            promíscuo e exportação de dados já se encontram integrados.
+          </p>
+</aside>
+</div>
+</section>
+<section class="fc-section">
+<span class="fc-eyebrow">Capacidades existentes</span>
+<h2>Uma base funcional, modular e orientada para operação</h2>
+<div class="fc-feature-grid">
+<div class="fc-card">
+<div class="fc-number">01</div>
+<h3>Captura assíncrona</h3>
+<p>
+            O motor Scapy utiliza captura assíncrona para observar o tráfego sem bloquear o painel,
+            permitindo acompanhar múltiplas interfaces de forma contínua.
+          </p>
+</div>
+<div class="fc-card">
+<div class="fc-number">02</div>
+<h3>Painel em tempo real</h3>
+<p>
+            O NiceGUI apresenta gráficos por interface, com atualização periódica e uma leitura visual
+            imediata da atividade da rede.
+          </p>
+</div>
+<div class="fc-card">
+<div class="fc-number">03</div>
+<h3>Janela de sessenta segundos</h3>
+<p>
+            As amostras recentes são mantidas para cálculo da média e deteção de situações em que o
+            volume de tráfego ultrapassa o limiar definido.
+          </p>
+</div>
+<div class="fc-card">
+<div class="fc-number">04</div>
+<h3>Alertas ntfy</h3>
+<p>
+            Quando a média excede o limite configurado, o sistema envia uma notificação remota com
+            identificação da interface, hora e valor registado.
+          </p>
+</div>
+<div class="fc-card">
+<div class="fc-number">05</div>
+<h3>Registo e histórico</h3>
+<p>
+            Os alertas são registados localmente e apresentados no painel, enquanto o histórico de
+            tráfego da última hora pode ser exportado em CSV.
+          </p>
+</div>
+<div class="fc-card">
+<div class="fc-number">06</div>
+<h3>Modo promíscuo controlado</h3>
+<p>
+            A interface Web permite verificar e alternar o modo promíscuo das interfaces monitorizadas,
+            simplificando tarefas de diagnóstico e análise.
+          </p>
+</div>
+</div>
+</section>
+<section class="fc-section">
+<span class="fc-eyebrow">Arquitetura operacional</span>
+<h2>Dos pacotes à decisão, sem ruído desnecessário</h2>
+<p>
+        A arquitetura separa a captura da atualização visual. Cada pacote observado contribui apenas
+        com o respetivo tamanho para uma fila de processamento. O painel agrega os valores, atualiza
+        as séries temporais e avalia os limiares de alerta.
+      </p>
+<div aria-label="Fluxo funcional do sistema" class="fc-flow">
+<div class="fc-flow-item">Interfaces</div>
+<div class="fc-arrow">→</div>
+<div class="fc-flow-item">Scapy</div>
+<div class="fc-arrow">→</div>
+<div class="fc-flow-item">Filas</div>
+<div class="fc-arrow">→</div>
+<div class="fc-flow-item">Agregação</div>
+<div class="fc-arrow">→</div>
+<div class="fc-flow-item">NiceGUI</div>
+<div class="fc-arrow">→</div>
+<div class="fc-flow-item">Alertas e histórico</div>
+</div>
+<div class="fc-quote">
+        O objetivo não é apenas mostrar tráfego. É criar uma linha contínua entre observação,
+        contexto e ação.
+      </div>
+</section>
+<section class="fc-section">
+<span class="fc-eyebrow">Valor operacional</span>
+<h2>Mais visibilidade, menos diagnóstico às cegas</h2>
+<div class="fc-use-grid">
+<div class="fc-card">
+<h3>Infraestruturas virtualizadas</h3>
+<p>
+            A monitorização de bridges permite acompanhar tráfego associado a servidores, máquinas
+            virtuais, contentores e segmentos internos.
+          </p>
+</div>
+<div class="fc-card">
+<h3>Redes empresariais e laboratoriais</h3>
+<p>
+            O painel facilita a identificação de picos inesperados, alterações de comportamento e
+            períodos de utilização anormal.
+          </p>
+</div>
+<div class="fc-card">
+<h3>Diagnóstico técnico</h3>
+<p>
+            O histórico exportável ajuda a relacionar ocorrências de desempenho com momentos concretos
+            de aumento de tráfego.
+          </p>
+</div>
+<div class="fc-card">
+<h3>Operação autónoma</h3>
+<p>
+            Os alertas remotos reduzem a necessidade de vigilância permanente do painel e aproximam o
+            sistema de uma verdadeira plataforma de observabilidade.
+          </p>
+</div>
+</div>
+</section>
+<section class="fc-section">
+<span class="fc-eyebrow">Roteiro de evolução</span>
+<h2>Da medição de volume à inteligência de rede</h2>
+<p>
+        O núcleo atual constitui uma base sólida para um desenvolvimento progressivo. As funcionalidades
+        seguintes representam o roteiro previsto e não devem ser confundidas com capacidades já
+        implementadas.
+      </p>
+<div class="fc-roadmap">
+<div class="fc-card">
+<div class="fc-number">I</div>
+<h3>Observabilidade avançada</h3>
+<ul>
+<li>Separação entre tráfego de entrada e de saída.</li>
+<li>Métricas em bits e bytes com unidades configuráveis.</li>
+<li>Gráficos por minuto, hora, dia e período personalizado.</li>
+<li>Persistência em SQLite ou PostgreSQL.</li>
+<li>Painéis comparativos entre interfaces e segmentos.</li>
+<li>Relatórios automáticos de utilização.</li>
+</ul>
+</div>
+<div class="fc-card">
+<div class="fc-number">II</div>
+<h3>Análise de fluxos</h3>
+<ul>
+<li>Principais endereços de origem e destino.</li>
+<li>Distribuição por protocolos e portas.</li>
+<li>Identificação de conversações mais intensas.</li>
+<li>Deteção de novos dispositivos na rede.</li>
+<li>Classificação por sub-rede, serviço ou aplicação.</li>
+<li>Pesquisa histórica de eventos e fluxos.</li>
+</ul>
+</div>
+<div class="fc-card">
+<div class="fc-number">III</div>
+<h3>Segurança inteligente</h3>
+<ul>
+<li>Deteção de picos face ao comportamento habitual.</li>
+<li>Identificação de varrimentos de portas.</li>
+<li>Alertas por tráfego anómalo ou destinos incomuns.</li>
+<li>Correlação com reputação de endereços IP.</li>
+<li>Integração com o Voltaire Shield.</li>
+<li>Modelos estatísticos para anomalias e tendência.</li>
+</ul>
+</div>
+</div>
+<div class="fc-note">
+<strong>Nota de produto:</strong> as funções descritas nesta secção pertencem ao plano de
+        desenvolvimento. A versão atual centra-se na captura de métricas de volume, visualização,
+        médias, alertas, registo e exportação.
+      </div>
+</section>
+<section class="fc-section">
+<span class="fc-eyebrow">Princípios SoftElabs</span>
+<h2>Engenharia compreensível, controlável e evolutiva</h2>
+<ul class="fc-checklist">
+<li><strong>Transparência:</strong> métricas visíveis e regras de alerta configuráveis.</li>
+<li><strong>Modularidade:</strong> captura, processamento, visualização e notificação podem evoluir separadamente.</li>
+<li><strong>Eficiência:</strong> análise orientada para métricas, sem armazenamento indiscriminado de pacotes.</li>
+<li><strong>Autonomia:</strong> funcionamento local e integração com serviços próprios.</li>
+<li><strong>Extensibilidade:</strong> preparado para persistência, correlação, segurança e aprendizagem estatística.</li>
+</ul>
+<p>
+        Num mercado repleto de plataformas pesadas, subscrições obscuras e painéis que exigem outro
+        painel para serem compreendidos, a SoftElabs segue uma direção diferente: construir sistemas
+        objetivos, auditáveis e próximos da infraestrutura real.
+      </p>
+</section>
+<section class="fc-section fc-cta">
+<span class="fc-eyebrow">SoftElabs</span>
+<h2>Compreender a rede antes de ela se tornar um problema</h2>
+<p>
+        O SoftElabs Network Pulse representa uma abordagem prática à observabilidade de rede:
+        começar pelo essencial, medir com rigor e evoluir para inteligência operacional sem perder
+        controlo sobre os dados ou sobre a arquitetura.
+      </p>
+<p>
+        A rede deixa de ser apenas um conjunto invisível de ligações. Passa a ter ritmo, memória,
+        contexto e capacidade de aviso.
+      </p>
+<div class="fc-signature">
+        Francisco Gonçalves<br/>
+        SoftElabs • Engenharia, Sistemas e Inteligência Aplicada
+      </div>
+</section>
+<footer class="fc-footer">
+      © SoftElabs — Todos os direitos reservados. Documento comercial e técnico de apresentação do projeto.
+    </footer>
+</article>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
