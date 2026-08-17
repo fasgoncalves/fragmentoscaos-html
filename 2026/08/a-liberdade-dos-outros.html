@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A liberdade dos outros</title>
+<meta name="description" content="A liberdade dos outros">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A liberdade dos outros</h1>
+      <p class="meta">Publicado em 2026-08-16 12:00:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/08/file_00000000975481f4ae8685eb3708aeab_ef1ed939.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="A liberdade dos outros">
+      <meta itemprop="description" content="Uma crónica inspirada numa reflexão de Agostinho da Silva sobre a contradição entre reclamar liberdade para nós próprios e resistir à liberdade dos outros.">
+      <meta itemprop="datePublished" content="2026-07-27">
+      <meta itemprop="dateModified" content="2026-07-27">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_00000000975481f4ae8685eb3708aeab.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      A liberdade dos outros
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      O difícil exercício de não mandar na vida alheia
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        Esta crónica parte da reflexão de Agostinho da Silva segundo a qual o nosso desejo de liberdade nem sempre é sincero: reclamamo-la prontamente para nós próprios, mas resistimos a concedê-la aos outros quando as suas escolhas escapam ao nosso controlo, às nossas expectativas ou à nossa necessidade de os classificar.
+      </p>
+    </div>
+
+    <p>
+      Há palavras que todos gostam de pronunciar, sobretudo quando parecem nobres, universais e suficientemente vagas para não exigirem grande sacrifício.
+    </p>
+
+    <p>
+      Liberdade é uma delas.
+    </p>
+
+    <p>
+      Toda a gente se declara a favor da liberdade.
+    </p>
+
+    <p>
+      Os governos dizem defendê-la.
+    </p>
+
+    <p>
+      As empresas dizem promovê-la.
+    </p>
+
+    <p>
+      As famílias dizem desejá-la para os filhos.
+    </p>
+
+    <p>
+      As escolas dizem educar para ela.
+    </p>
+
+    <p>
+      Os cidadãos dizem não poder viver sem ela.
+    </p>
+
+    <p>
+      E, no entanto, basta que outra pessoa use a própria liberdade de uma forma que não aprovamos para a nossa convicção começar imediatamente a perder firmeza.
+    </p>
+
+    <p>
+      Defendemos a liberdade em abstracto.
+    </p>
+
+    <p>
+      O problema começa quando ela ganha rosto, vontade própria e hábitos que não pediram a nossa autorização.
+    </p>
+
+    <p>
+      Agostinho da Silva percebeu essa contradição com uma clareza quase ofensiva: estamos sempre prontos a reclamar liberdade para nós, mas revelamos muito menos entusiasmo quando chega o momento de a conceder aos outros.
+    </p>
+
+    <p>
+      Queremos escolher.
+    </p>
+
+    <p>
+      Mas queremos também escolher aquilo que os outros devem escolher.
+    </p>
+
+    <p>
+      Queremos ser compreendidos.
+    </p>
+
+    <p>
+      Mas classificamos rapidamente quem vive de maneira diferente.
+    </p>
+
+    <p>
+      Queremos escapar às imposições.
+    </p>
+
+    <p>
+      Mas não hesitamos em impor expectativas, regras, medos e sonhos a quem está mais próximo de nós.
+    </p>
+
+    <p>
+      A liberdade, quando é só nossa, parece um direito.
+    </p>
+
+    <p>
+      Quando é dos outros, começa frequentemente a parecer um problema.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O pequeno ditador que habita em nós
+    </h2>
+
+    <p>
+      A tirania nem sempre usa uniforme.
+    </p>
+
+    <p>
+      Nem sempre ocupa palácios.
+    </p>
+
+    <p>
+      Nem sempre tem polícia política, discursos inflamados ou estátuas em praças públicas.
+    </p>
+
+    <p>
+      Há tiranias domésticas, profissionais, afectivas e sociais.
+    </p>
+
+    <p>
+      Existem no pai que obriga o filho a seguir a carreira que ele próprio teria desejado.
+    </p>
+
+    <p>
+      Na mãe que transforma o amor em vigilância.
+    </p>
+
+    <p>
+      No professor que confunde disciplina com obediência intelectual.
+    </p>
+
+    <p>
+      No chefe que pede criatividade, mas castiga qualquer decisão que não tenha partido dele.
+    </p>
+
+    <p>
+      No amigo que aceita todas as nossas escolhas desde que coincidam com as suas.
+    </p>
+
+    <p>
+      No cidadão que exige tolerância para si e severidade para quem vive de outra maneira.
+    </p>
+
+    <p>
+      O ditador quotidiano raramente se reconhece como tal.
+    </p>
+
+    <p>
+      Considera-se responsável.
+    </p>
+
+    <p>
+      Cuidadoso.
+    </p>
+
+    <p>
+      Racional.
+    </p>
+
+    <p>
+      Experiente.
+    </p>
+
+    <p>
+      Diz que sabe o que é melhor.
+    </p>
+
+    <p>
+      Diz que está apenas a proteger.
+    </p>
+
+    <p>
+      Diz que a vida é difícil e que alguém precisa de tomar decisões sensatas.
+    </p>
+
+    <p>
+      A opressão tem extraordinária facilidade em apresentar-se como cuidado.
+    </p>
+
+    <p>
+      A invasão da liberdade alheia vem muitas vezes embrulhada em preocupação.
+    </p>
+
+    <p>
+      «É para teu bem.»
+    </p>
+
+    <p>
+      Talvez nenhuma frase tenha autorizado tanta interferência como esta.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        A opressão raramente se apresenta como opressão. Prefere chegar vestida de cuidado, experiência e boas intenções.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A liberdade que queremos para nós
+    </h2>
+
+    <p>
+      Quando somos nós a escolher, qualquer limitação parece intolerável.
+    </p>
+
+    <p>
+      Queremos mudar de trabalho.
+    </p>
+
+    <p>
+      Queremos amar quem entendemos.
+    </p>
+
+    <p>
+      Queremos falar sem censura.
+    </p>
+
+    <p>
+      Queremos gerir o nosso dinheiro.
+    </p>
+
+    <p>
+      Queremos recusar conselhos.
+    </p>
+
+    <p>
+      Queremos cometer os nossos próprios erros.
+    </p>
+
+    <p>
+      Queremos que os outros reconheçam a complexidade das nossas circunstâncias, os nossos traumas, os nossos desejos e as nossas razões.
+    </p>
+
+    <p>
+      Pedimos contexto.
+    </p>
+
+    <p>
+      Pedimos compreensão.
+    </p>
+
+    <p>
+      Pedimos tempo.
+    </p>
+
+    <p>
+      Mas, quando julgamos os outros, tornamo-nos subitamente especialistas em soluções simples.
+    </p>
+
+    <p>
+      O filho deveria ter estudado outra coisa.
+    </p>
+
+    <p>
+      O vizinho deveria educar melhor os filhos.
+    </p>
+
+    <p>
+      A mulher deveria ter saído mais cedo daquela relação.
+    </p>
+
+    <p>
+      O homem deveria ter escolhido um emprego mais seguro.
+    </p>
+
+    <p>
+      O jovem deveria trabalhar mais.
+    </p>
+
+    <p>
+      O velho deveria aceitar melhor a idade.
+    </p>
+
+    <p>
+      O pobre deveria organizar melhor a vida.
+    </p>
+
+    <p>
+      O rico deveria sentir culpa.
+    </p>
+
+    <p>
+      Toda a humanidade parece precisar urgentemente dos nossos conselhos, fenómeno curioso em pessoas que mal conseguem organizar a própria gaveta das meias.
+    </p>
+
+    <p>
+      A liberdade pessoal é complexa.
+    </p>
+
+    <p>
+      A liberdade dos outros parece-nos frequentemente má decisão.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O medo da diferença
+    </h2>
+
+    <p>
+      A dificuldade em aceitar a liberdade alheia nasce muitas vezes do medo.
+    </p>
+
+    <p>
+      A pessoa que vive de maneira diferente ameaça a nossa certeza.
+    </p>
+
+    <p>
+      Se alguém recusa o caminho que todos seguem, demonstra que esse caminho não era inevitável.
+    </p>
+
+    <p>
+      Se alguém abandona uma carreira segura para seguir uma vocação, obriga-nos a recordar os sonhos que sacrificámos.
+    </p>
+
+    <p>
+      Se alguém não procura o mesmo estatuto, o mesmo consumo ou o mesmo reconhecimento, põe em causa os valores pelos quais organizámos a vida.
+    </p>
+
+    <p>
+      A diferença incomoda porque funciona como espelho.
+    </p>
+
+    <p>
+      Não mostra apenas quem o outro é.
+    </p>
+
+    <p>
+      Mostra aquilo que nós não tivemos coragem de ser.
+    </p>
+
+    <p>
+      Por isso, a sociedade prefere diferenças controladas.
+    </p>
+
+    <p>
+      Gosta da originalidade desde que seja comercializável.
+    </p>
+
+    <p>
+      Aprecia a rebeldia desde que venha bem penteada.
+    </p>
+
+    <p>
+      Celebra a autenticidade desde que não perturbe o horário, o orçamento ou a ordem familiar.
+    </p>
+
+    <p>
+      Diz aos jovens que devem ser eles próprios e, logo depois, entrega-lhes uma lista detalhada do tipo de pessoa que será socialmente aceite.
+    </p>
+
+    <p>
+      A liberdade é tolerada enquanto permanece decorativa.
+    </p>
+
+    <p>
+      Quando começa a produzir consequências, aparecem logo os guardiões do bom senso.
+    </p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">
+        ELEMENTOS CENTRAIS
+      </h3>
+
+      <ul style="padding-left:22px; margin:0;">
+        <li>Os direitos humanos universais reconhecem a liberdade, a igualdade e a dignidade como direitos inerentes a todas as pessoas, não como privilégios concedidos a quem vive de forma socialmente confortável.</li>
+        <li>A liberdade de pensamento, consciência, expressão, associação e vida privada protege também escolhas, opiniões e modos de vida que podem desagradar à maioria.</li>
+        <li>O respeito pela autonomia não significa ausência de limites: a liberdade encontra fronteiras nos direitos, na segurança e na dignidade dos outros.</li>
+        <li>A investigação psicológica associa o apoio à autonomia a maior motivação autónoma, bem-estar e funcionamento positivo em contextos familiares, educativos e profissionais.</li>
+        <li>O controlo excessivo e a interferência psicológica podem prejudicar o desenvolvimento da autonomia, a saúde emocional e a capacidade de decisão.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A família e o império do amor
+    </h2>
+
+    <p>
+      É dentro da família que a liberdade se torna mais delicada.
+    </p>
+
+    <p>
+      O amor cria proximidade, mas também pode criar posse.
+    </p>
+
+    <p>
+      Os pais desejam proteger os filhos do sofrimento e acabam, por vezes, a protegê-los da própria vida.
+    </p>
+
+    <p>
+      Planeiam estudos.
+    </p>
+
+    <p>
+      Carreiras.
+    </p>
+
+    <p>
+      Relações.
+    </p>
+
+    <p>
+      Comportamentos.
+    </p>
+
+    <p>
+      Metas.
+    </p>
+
+    <p>
+      Até formas de felicidade.
+    </p>
+
+    <p>
+      Não querem que os filhos errem.
+    </p>
+
+    <p>
+      Mas uma pessoa que não pode errar também não pode escolher verdadeiramente.
+    </p>
+
+    <p>
+      Educar para a liberdade não é abandonar.
+    </p>
+
+    <p>
+      É acompanhar sem possuir.
+    </p>
+
+    <p>
+      É aconselhar sem decretar.
+    </p>
+
+    <p>
+      É dizer aquilo que pensamos sem transformar a nossa opinião numa sentença.
+    </p>
+
+    <p>
+      É aceitar que o filho possa escolher um caminho menos seguro, menos prestigiante ou simplesmente diferente daquele que tínhamos imaginado.
+    </p>
+
+    <p>
+      Talvez o acto mais difícil de amor seja este: reconhecer que a pessoa amada não nos pertence.
+    </p>
+
+    <p>
+      Pode ouvir-nos.
+    </p>
+
+    <p>
+      Pode respeitar-nos.
+    </p>
+
+    <p>
+      Pode até agradecer-nos.
+    </p>
+
+    <p>
+      Mas a vida dela continua a ser dela.
+    </p>
+
+    <p>
+      Há pais que dizem querer filhos independentes e depois vivem cada manifestação de independência como uma espécie de traição emocional.
+    </p>
+
+    <p>
+      Querem adultos livres, mas com autorização prévia.
+    </p>
+
+    <p>
+      Uma combinação engenhosa, embora ligeiramente incompatível com o conceito de liberdade.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A escola que ensina a obedecer
+    </h2>
+
+    <p>
+      A escola fala de autonomia, mas foi durante muito tempo organizada para premiar a conformidade.
+    </p>
+
+    <p>
+      O aluno ideal é pontual, atento, silencioso, rápido a compreender e suficientemente criativo para ser elogiado, mas não tanto que obrigue a alterar o plano da aula.
+    </p>
+
+    <p>
+      As perguntas são bem-vindas desde que não atrasem o programa.
+    </p>
+
+    <p>
+      O pensamento crítico é celebrado em documentos, mas pode tornar-se inconveniente quando critica a própria instituição.
+    </p>
+
+    <p>
+      Ensina-se cidadania, mas pratica-se frequentemente uma relação vertical onde quem sabe fala e quem aprende escuta.
+    </p>
+
+    <p>
+      Uma escola verdadeiramente livre não é uma escola sem regras.
+    </p>
+
+    <p>
+      É uma escola onde as regras possuem sentido, podem ser explicadas e não servem para esmagar a singularidade.
+    </p>
+
+    <p>
+      É uma escola onde o aluno aprende a pensar, não apenas a responder.
+    </p>
+
+    <p>
+      Onde pode discordar sem humilhar e ser contrariado sem ser diminuído.
+    </p>
+
+    <p>
+      Onde a liberdade não significa fazer tudo, mas compreender por que razão escolhemos, quais as consequências da escolha e que limites protegem também a liberdade dos outros.
+    </p>
+
+    <p>
+      Porque liberdade sem responsabilidade degenera em capricho.
+    </p>
+
+    <p>
+      Mas responsabilidade sem liberdade degenera em submissão.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      As empresas que querem iniciativa obediente
+    </h2>
+
+    <p>
+      As empresas modernas adoram palavras como autonomia, inovação, criatividade e liderança.
+    </p>
+
+    <p>
+      Colocam-nas em paredes, relatórios e apresentações com pessoas sorridentes a apontar para gráficos ascendentes.
+    </p>
+
+    <p>
+      Depois, um trabalhador toma uma decisão inesperada e toda a organização entra em estado de emergência.
+    </p>
+
+    <p>
+      A empresa quer iniciativa, mas com validação.
+    </p>
+
+    <p>
+      Quer pensamento crítico, mas não excessivamente crítico.
+    </p>
+
+    <p>
+      Quer colaboração, desde que a hierarquia permaneça intacta.
+    </p>
+
+    <p>
+      Quer inovação, desde que não ameace processos antigos nem exponha incompetências instaladas.
+    </p>
+
+    <p>
+      Quer profissionais livres, mas facilmente avaliáveis, previsíveis e enquadráveis.
+    </p>
+
+    <p>
+      O resultado é uma cultura onde muitos aprendem a simular autonomia.
+    </p>
+
+    <p>
+      Apresentam ideias suficientemente novas para parecerem interessantes, mas suficientemente familiares para não assustarem ninguém.
+    </p>
+
+    <p>
+      A liberdade profissional torna-se um teatro organizado.
+    </p>
+
+    <p>
+      Todos fingem pensar de forma independente.
+    </p>
+
+    <p>
+      Ninguém altera verdadeiramente a peça.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A sociedade das etiquetas
+    </h2>
+
+    <p>
+      Agostinho da Silva percebeu também a pressão para sermos simples, ajustados e facilmente classificáveis.
+    </p>
+
+    <p>
+      A sociedade sente-se mais tranquila quando consegue etiquetar.
+    </p>
+
+    <p>
+      Conservador.
+    </p>
+
+    <p>
+      Progressista.
+    </p>
+
+    <p>
+      Bem-sucedido.
+    </p>
+
+    <p>
+      Falhado.
+    </p>
+
+    <p>
+      Ambicioso.
+    </p>
+
+    <p>
+      Preguiçoso.
+    </p>
+
+    <p>
+      Normal.
+    </p>
+
+    <p>
+      Problemático.
+    </p>
+
+    <p>
+      A etiqueta evita o incómodo de conhecer.
+    </p>
+
+    <p>
+      Em poucos segundos, reduzimos uma pessoa inteira a uma categoria e passamos a tratar a categoria como se fosse a pessoa.
+    </p>
+
+    <p>
+      As redes sociais aceleraram esta tendência até ao grotesco.
+    </p>
+
+    <p>
+      Cada opinião torna-se prova definitiva de carácter.
+    </p>
+
+    <p>
+      Cada erro transforma-se em identidade.
+    </p>
+
+    <p>
+      Cada hesitação é interpretada como culpa.
+    </p>
+
+    <p>
+      Cada mudança de posição é chamada incoerência, como se aprender fosse uma forma de deslealdade.
+    </p>
+
+    <p>
+      Queremos pessoas simples porque as pessoas complexas exigem tempo.
+    </p>
+
+    <p>
+      Queremos grupos porque os indivíduos perturbam as certezas.
+    </p>
+
+    <p>
+      Queremos que os outros se definam claramente, embora nós próprios reclamemos o direito de mudar, contradizer-nos e evoluir.
+    </p>
+
+    <p>
+      A liberdade dos outros inclui também o direito de não caberem nas nossas caixas.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O outro como propriedade moral
+    </h2>
+
+    <p>
+      Há um tipo subtil de tirania que nasce da ideia de que sabemos moralmente o que o outro deve fazer.
+    </p>
+
+    <p>
+      Nem sempre é uma imposição legal.
+    </p>
+
+    <p>
+      É uma vigilância afectiva e social.
+    </p>
+
+    <p>
+      A pessoa sente que deve justificar permanentemente as escolhas.
+    </p>
+
+    <p>
+      Por que não casou?
+    </p>
+
+    <p>
+      Por que não teve filhos?
+    </p>
+
+    <p>
+      Por que mudou de país?
+    </p>
+
+    <p>
+      Por que abandonou um emprego?
+    </p>
+
+    <p>
+      Por que não perdoou?
+    </p>
+
+    <p>
+      Por que perdoou?
+    </p>
+
+    <p>
+      Por que não luta mais?
+    </p>
+
+    <p>
+      Por que não descansa?
+    </p>
+
+    <p>
+      Cada vida parece precisar de passar por uma comissão informal de avaliação composta por familiares, colegas e desconhecidos da Internet.
+    </p>
+
+    <p>
+      A liberdade transforma-se numa espécie de formulário.
+    </p>
+
+    <p>
+      Pode ser aprovada, desde que venha acompanhada de razões aceitáveis.
+    </p>
+
+    <p>
+      Mas uma pessoa livre não tem de viver de acordo com a narrativa que nos parece mais coerente.
+    </p>
+
+    <p>
+      Pode escolher mal.
+    </p>
+
+    <p>
+      Pode mudar de ideias.
+    </p>
+
+    <p>
+      Pode perder oportunidades.
+    </p>
+
+    <p>
+      Pode seguir um caminho que nunca escolheríamos.
+    </p>
+
+    <p>
+      Desde que não destrua a liberdade e os direitos dos outros, a vida alheia não precisa da nossa certificação.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A liberdade de errar
+    </h2>
+
+    <p>
+      Uma das formas mais sinceras de respeitar a liberdade dos outros é reconhecer-lhes o direito ao erro.
+    </p>
+
+    <p>
+      Não ao crime.
+    </p>
+
+    <p>
+      Não à violência.
+    </p>
+
+    <p>
+      Não à destruição da vida alheia.
+    </p>
+
+    <p>
+      Mas ao erro humano.
+    </p>
+
+    <p>
+      Escolher a profissão errada.
+    </p>
+
+    <p>
+      Confiar na pessoa errada.
+    </p>
+
+    <p>
+      Mudar tarde.
+    </p>
+
+    <p>
+      Desistir cedo.
+    </p>
+
+    <p>
+      Começar de novo.
+    </p>
+
+    <p>
+      A liberdade que só permite decisões correctas não é liberdade.
+    </p>
+
+    <p>
+      É obediência a um supervisor omnisciente que, por grande azar, costuma ser alguém tão falível como todos os restantes.
+    </p>
+
+    <p>
+      Naturalmente, é difícil assistir ao erro de quem amamos.
+    </p>
+
+    <p>
+      O impulso é intervir.
+    </p>
+
+    <p>
+      Controlar.
+    </p>
+
+    <p>
+      Impedir.
+    </p>
+
+    <p>
+      Mas existe uma diferença entre avisar e dominar.
+    </p>
+
+    <p>
+      Entre oferecer ajuda e retirar escolha.
+    </p>
+
+    <p>
+      Entre estar presente e tomar posse.
+    </p>
+
+    <p>
+      Por vezes, a pessoa precisa de cair para descobrir que consegue levantar-se.
+    </p>
+
+    <p>
+      A protecção absoluta produz fragilidade.
+    </p>
+
+    <p>
+      A confiança acompanhada produz crescimento.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A liberdade e os seus limites
+    </h2>
+
+    <p>
+      Defender a liberdade dos outros não significa aceitar tudo.
+    </p>
+
+    <p>
+      A liberdade termina quando começa a destruição da liberdade alheia.
+    </p>
+
+    <p>
+      Ninguém possui o direito de agredir, explorar, humilhar, perseguir ou impor silêncio a outro em nome da própria autonomia.
+    </p>
+
+    <p>
+      A liberdade não é uma licença para o poder.
+    </p>
+
+    <p>
+      É precisamente uma defesa contra ele.
+    </p>
+
+    <p>
+      Por isso, uma sociedade livre precisa de leis, instituições e limites.
+    </p>
+
+    <p>
+      Mas esses limites devem proteger pessoas, não impor conformidade.
+    </p>
+
+    <p>
+      Devem impedir dano, não castigar diferença.
+    </p>
+
+    <p>
+      Devem conter abusos, não domesticar identidades.
+    </p>
+
+    <p>
+      A pergunta essencial é simples:
+    </p>
+
+    <p>
+      Esta escolha prejudica direitos concretos de outras pessoas ou apenas fere as nossas preferências?
+    </p>
+
+    <p>
+      A confusão entre estas duas coisas é uma das raízes do autoritarismo moral.
+    </p>
+
+    <p>
+      Há quem queira proibir aquilo que não compreende.
+    </p>
+
+    <p>
+      Controlar aquilo que teme.
+    </p>
+
+    <p>
+      Silenciar aquilo que contesta a sua visão do mundo.
+    </p>
+
+    <p>
+      E depois chama ordem à própria ansiedade.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A democracia começa em casa
+    </h2>
+
+    <p>
+      A democracia não começa no Parlamento.
+    </p>
+
+    <p>
+      Começa na forma como tratamos quem depende de nós.
+    </p>
+
+    <p>
+      Na maneira como ouvimos os filhos.
+    </p>
+
+    <p>
+      Na liberdade que concedemos aos companheiros.
+    </p>
+
+    <p>
+      Na autonomia que permitimos aos trabalhadores.
+    </p>
+
+    <p>
+      Na capacidade de aceitar uma opinião contrária sem transformar o outro em inimigo.
+    </p>
+
+    <p>
+      Votar de quatro em quatro anos é importante.
+    </p>
+
+    <p>
+      Mas uma pessoa pode votar democraticamente e comportar-se como tirano durante todos os dias que existem entre eleições.
+    </p>
+
+    <p>
+      Pode defender direitos públicos e negar liberdade em privado.
+    </p>
+
+    <p>
+      Pode discursar sobre tolerância e viver da intimidação.
+    </p>
+
+    <p>
+      Pode exigir transparência do Estado e controlar cada movimento da família.
+    </p>
+
+    <p>
+      A democracia é também um hábito emocional.
+    </p>
+
+    <p>
+      Exige suportar o facto de que os outros não existem para confirmar a nossa visão.
+    </p>
+
+    <p>
+      Exige perder votações.
+    </p>
+
+    <p>
+      Aceitar recusas.
+    </p>
+
+    <p>
+      Conviver com diferenças.
+    </p>
+
+    <p>
+      Reconhecer que a autoridade possui limites.
+    </p>
+
+    <p>
+      E compreender que amar alguém não nos concede soberania sobre essa pessoa.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O difícil gesto de abrir a mão
+    </h2>
+
+    <p>
+      A liberdade dos outros exige um gesto que muitos evitam: abrir a mão.
+    </p>
+
+    <p>
+      Deixar partir.
+    </p>
+
+    <p>
+      Deixar escolher.
+    </p>
+
+    <p>
+      Deixar discordar.
+    </p>
+
+    <p>
+      Deixar mudar.
+    </p>
+
+    <p>
+      Deixar falhar.
+    </p>
+
+    <p>
+      Deixar viver.
+    </p>
+
+    <p>
+      A mão fechada parece proteger, mas também aprisiona.
+    </p>
+
+    <p>
+      A mão aberta corre o risco de perder, mas permite encontro.
+    </p>
+
+    <p>
+      Talvez por isso a liberdade seja tão difícil.
+    </p>
+
+    <p>
+      Obriga-nos a aceitar que não controlamos todas as consequências.
+    </p>
+
+    <p>
+      Que os filhos podem afastar-se.
+    </p>
+
+    <p>
+      Que os amigos podem escolher outros caminhos.
+    </p>
+
+    <p>
+      Que os colegas podem recusar conselhos.
+    </p>
+
+    <p>
+      Que as pessoas podem não precisar de nós da forma que desejaríamos.
+    </p>
+
+    <p>
+      A liberdade dos outros confronta-nos com a nossa própria insegurança.
+    </p>
+
+    <p>
+      E é precisamente aí que se mede a sinceridade dos nossos princípios.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A liberdade que concedemos
+    </h2>
+
+    <p>
+      É fácil reclamar liberdade contra quem está acima.
+    </p>
+
+    <p>
+      Mais difícil é concedê-la a quem está abaixo ou ao lado.
+    </p>
+
+    <p>
+      O cidadão exige liberdade ao Estado.
+    </p>
+
+    <p>
+      O patrão deve concedê-la ao trabalhador.
+    </p>
+
+    <p>
+      O professor ao aluno.
+    </p>
+
+    <p>
+      Os pais aos filhos.
+    </p>
+
+    <p>
+      A maioria à minoria.
+    </p>
+
+    <p>
+      O forte ao fraco.
+    </p>
+
+    <p>
+      Quem possui poder revela a sua relação verdadeira com a liberdade quando decide o que fazer com a liberdade dos outros.
+    </p>
+
+    <p>
+      Porque o tirano não é apenas aquele que deseja controlar-nos.
+    </p>
+
+    <p>
+      É também aquilo em que nos transformamos quando a autonomia alheia começa a incomodar-nos.
+    </p>
+
+    <p>
+      Agostinho da Silva lembra-nos que a opressão exterior pode ser reflexo das pequenas autocracias que cultivamos dentro de nós.
+    </p>
+
+    <p>
+      Talvez combatamos nos governantes aquilo que toleramos nas nossas relações.
+    </p>
+
+    <p>
+      Talvez exijamos do mundo uma liberdade que ainda não aprendemos a praticar.
+    </p>
+
+    <p>
+      E talvez a revolução mais profunda não comece com a conquista do nosso espaço, mas com a renúncia ao desejo de ocupar o espaço alheio.
+    </p>
+
+    <p>
+      A verdadeira liberdade não se mede apenas pelo número de portas que conseguimos abrir para nós.
+    </p>
+
+    <p>
+      Mede-se também pelas portas que nos recusamos a fechar aos outros.
+    </p>
+
+    <p>
+      <strong>Porque só é livre quem não precisa de transformar ninguém em prisioneiro.</strong>
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">
+      Nota Editorial
+    </h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+
+      <p style="text-align:left;">
+        Esta crónica foi inspirada pelo pequeno ensaio de Agostinho da Silva intitulado «O nosso desejo de liberdade não é sincero», apresentado pelo autor do blogue. Não pretende resumir todo o pensamento filosófico de Agostinho da Silva nem atribuir-lhe cada uma das formulações desenvolvidas no texto. A sua reflexão funciona como pano de fundo para uma meditação contemporânea sobre autonomia, poder, família, educação, trabalho e convivência democrática.
+      </p>
+
+      <p style="text-align:left;">
+        O respeito pela liberdade dos outros não significa indiferença, abandono, relativismo absoluto ou aceitação de comportamentos que violem direitos. A liberdade pessoal encontra limites na dignidade, na segurança e na liberdade alheias. A distinção essencial está entre impedir dano concreto e tentar impor conformidade apenas porque uma escolha nos desagrada, perturba ou escapa ao nosso controlo.
+      </p>
+
+      <p style="text-align:left; margin-bottom:0;">
+        A investigação internacional sobre autonomia não oferece uma fórmula moral automática para todas as relações. Contudo, estudos em contextos familiares, educativos e profissionais associam o apoio à autonomia a motivação mais autónoma, bem-estar, participação e funcionamento positivo, enquanto formas intrusivas ou excessivamente controladoras de relação podem produzir sofrimento, dependência e menor capacidade de decisão. Liberdade e responsabilidade não são adversárias: uma sociedade democrática precisa de ambas.
+      </p>
+
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Referências credíveis
+    </h2>
+
+    <ul style="padding-left:22px;">
+      <li>
+        <a href="https://europe.ohchr.org/universal-declaration-human-rights"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Alto Comissariado das Nações Unidas para os Direitos Humanos — Universal Declaration of Human Rights
+        </a>
+      </li>
+      <li>
+        <a href="https://2covenants.ohchr.org/About-ICCPR.html"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Nações Unidas — International Covenant on Civil and Political Rights
+        </a>
+      </li>
+      <li>
+        <a href="https://www.coe.int/en/web/impact-convention-human-rights/convention-for-the-protection-of-human-rights-and-fundamental-freedoms"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Conselho da Europa — Convention for the Protection of Human Rights and Fundamental Freedoms
+        </a>
+      </li>
+      <li>
+        <a href="https://www.coe.int/en/web/human-rights-convention/private-life"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Conselho da Europa — Right to respect for private and family life
+        </a>
+      </li>
+      <li>
+        <a href="https://www.coe.int/en/web/human-rights-convention/expression"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Conselho da Europa — Freedom of expression
+        </a>
+      </li>
+      <li>
+        <a href="https://www.unesco.org/en/articles/protecting-academic-freedom-relevant-ever"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          UNESCO — Protecting academic freedom is as relevant as ever
+        </a>
+      </li>
+      <li>
+        <a href="https://link.springer.com/article/10.1007/s11031-018-9698-y"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Motivation and Emotion / Springer Nature — Leader autonomy support in the workplace: A meta-analytic review
+        </a>
+      </li>
+      <li>
+        <a href="https://journals.sagepub.com/doi/10.1177/23409444211054508"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Business Research Quarterly / SAGE — Autonomy-supportive and controlling leadership as antecedents of work design and employee well-being
+        </a>
+      </li>
+      <li>
+        <a href="https://link.springer.com/article/10.1007/s10648-024-09967-x"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Educational Psychology Review / Springer Nature — Experiences of autonomy and well-being among children and young people
+        </a>
+      </li>
+      <li>
+        <a href="https://www.sciencedirect.com/science/article/abs/pii/S0361476X23000899"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Educational Research Review — A meta-analytic review of autonomy support and positive learning outcomes
+        </a>
+      </li>
+      <li>
+        <a href="https://link.springer.com/article/10.1007/s10826-026-03281-6"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Journal of Child and Family Studies / Springer Nature — Parental autonomy support and child psychological adjustment across cultures
+        </a>
+      </li>
+      <li>
+        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12979328/"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Psychological Bulletin / PubMed Central — Intrusive parenting and adolescent internalising and externalising symptoms
+        </a>
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+<a class="fc-essencia-humanidade-button"
+   href="https://fasgoncalves.github.io/hugo.fragmentoscaos/livros/a-democracia-infantil/"
+   target="_blank"
+   rel="noopener noreferrer">
+  Ler o livro : A Democracia Infantil 
+</a>
+
+<style>
+.fc-essencia-humanidade-button {
+  display: inline-block;
+  padding: 15px 30px;
+  margin: 24px 0;
+  background: linear-gradient(135deg, #243b55, #6d8fa8, #f2d28a);
+  color: #fffaf0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  font-weight: bold;
+  letter-spacing: 0.35px;
+  text-decoration: none;
+  border-radius: 14px;
+  border: 1px solid #f2d28a;
+  box-shadow: 0 8px 22px rgba(36, 59, 85, 0.38);
+  transition: all 0.25s ease;
+}
+
+.fc-essencia-humanidade-button:hover {
+  background: linear-gradient(135deg, #f2d28a, #6d8fa8, #243b55);
+  color: #121212;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(242, 210, 138, 0.42);
+}
+
+.fc-essencia-humanidade-button:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 14px rgba(36, 59, 85, 0.32);
+}
+</style>
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
