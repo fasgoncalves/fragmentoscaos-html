@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Preço da Opacidade</title>
+<meta name="description" content="O Preço da Opacidade">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Preço da Opacidade</h1>
+      <p class="meta">Publicado em 2026-08-17 11:32:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/08/file_00000000de2481f4bf1cad70de92d09e_f66b7673.jpg" alt=""></figure>
+      <div class="post-content">
+        
+<style>
+.fc-chronic-news {
+  --fc-panel: #151b23;
+  --fc-panel-soft: #111720;
+  --fc-text: #e6edf3;
+  --fc-muted: #a8b3bf;
+  --fc-gold: #d59a2a;
+  --fc-gold-soft: #f0bd57;
+  --fc-line: rgba(213,154,42,.34);
+  --fc-link: #f0bd57;
+  box-sizing: border-box;
+  width: min(calc(100% - 20px), 920px);
+  margin: 24px auto 44px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 22px;
+  background: #0d1117;
+  color: var(--fc-text);
+  box-shadow: 0 26px 80px rgba(0,0,0,.38);
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1.78;
+}
+.fc-chronic-news * { box-sizing: border-box; }
+.fc-chronic-news a { color: var(--fc-link); text-underline-offset: .2em; overflow-wrap: anywhere; }
+.fc-chronic-news a:hover { color: #ffd47d; }
+.fc-chronic-news .fc-hero {
+  padding: clamp(34px, 7vw, 76px) clamp(22px, 7vw, 72px) 42px;
+  border-bottom: 1px solid var(--fc-line);
+  background: linear-gradient(145deg, rgba(213,154,42,.11), transparent 52%);
+}
+.fc-chronic-news .fc-kicker {
+  color: var(--fc-gold-soft);
+  font: 700 .76rem/1.4 system-ui, sans-serif;
+  letter-spacing: .16em;
+}
+.fc-chronic-news h1, .fc-chronic-news h2 { font-family: Georgia, 'Times New Roman', serif; }
+.fc-chronic-news h1 {
+  max-width: 850px; margin: 16px 0 18px; color: var(--fc-gold);
+  font-size: clamp(2.3rem, 7vw, 5.05rem); line-height: 1.01; letter-spacing: -.045em;
+}
+.fc-chronic-news .fc-deck {
+  max-width: 780px; margin: 0; color: #d8dee6;
+  font-size: clamp(1.08rem, 2.4vw, 1.35rem); line-height: 1.55;
+}
+.fc-chronic-news .fc-meta {
+  display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 25px;
+  color: var(--fc-muted); font: 500 .88rem/1.5 system-ui, sans-serif;
+}
+.fc-chronic-news .fc-opening-note,
+.fc-chronic-news .fc-editorial-note,
+.fc-chronic-news .fc-references {
+  margin: 34px clamp(18px, 6vw, 64px); padding: clamp(20px, 4vw, 34px);
+  background: var(--fc-panel); border: 1px solid rgba(255,255,255,.08);
+  border-left: 4px solid var(--fc-gold); border-radius: 14px;
+}
+.fc-chronic-news .fc-opening-note .fc-label {
+  display: block; color: var(--fc-gold-soft); font: 800 .72rem/1 system-ui, sans-serif; letter-spacing: .15em;
+}
+.fc-chronic-news .fc-opening-note p { margin: 12px 0 0; font-size: 1.12rem; }
+.fc-chronic-news .fc-content { padding: 5px clamp(22px, 7vw, 76px) 18px; }
+.fc-chronic-news .fc-content h2 {
+  margin: 2.05em 0 .75em; padding-left: .55em; border-left: 4px solid var(--fc-gold);
+  color: var(--fc-gold); font-size: clamp(1.55rem, 4vw, 2.25rem); line-height: 1.18;
+}
+.fc-chronic-news .fc-content p { margin: 0 0 1.25em; font-size: clamp(1.04rem, 2.2vw, 1.18rem); }
+.fc-chronic-news .fc-content > p:first-child::first-letter {
+  float: left; margin: .08em .12em 0 0; color: var(--fc-gold); font-size: 4.6em; font-weight: 700; line-height: .78;
+}
+.fc-chronic-news .fc-emphasis {
+  margin: 2rem 0 !important; padding: 1.15rem 1.3rem; border: 1px solid var(--fc-line);
+  border-radius: 12px; background: rgba(213,154,42,.08); color: #fff0c2; font-size: 1.23rem !important; font-style: italic;
+}
+.fc-chronic-news blockquote {
+  margin: 1.7rem 0; padding: 1.15rem 1.35rem; background: var(--fc-panel-soft);
+  border: 1px solid rgba(255,255,255,.07); border-left: 5px solid var(--fc-gold); border-radius: 10px;
+  color: #f4ead1; font-size: 1.14rem; font-style: italic;
+}
+.fc-chronic-news blockquote p { margin: 0; }
+.fc-chronic-news .fc-pullquote {
+  margin: 44px 0; padding: 36px clamp(22px, 8vw, 88px); border-top: 1px solid var(--fc-line);
+  border-bottom: 1px solid var(--fc-line); background: rgba(213,154,42,.07); text-align: center;
+}
+.fc-chronic-news .fc-pullquote p { margin: 0; color: var(--fc-gold-soft); font-size: clamp(1.45rem, 4vw, 2.35rem); font-style: italic; line-height: 1.35; }
+.fc-chronic-news .fc-editorial-note h2, .fc-chronic-news .fc-references h2 {
+  margin: 0 0 18px; color: var(--fc-gold); font-size: clamp(1.45rem, 3.5vw, 2rem);
+}
+.fc-chronic-news .fc-editorial-note p { margin: 0 0 1em; }
+.fc-chronic-news .fc-signature { margin-top: 30px !important; padding-top: 20px; border-top: 1px solid var(--fc-line); color: var(--fc-gold-soft); }
+.fc-chronic-news .fc-signature span { color: var(--fc-muted); font: .9rem system-ui, sans-serif; }
+.fc-chronic-news .fc-reference-intro { color: var(--fc-muted); }
+.fc-chronic-news .fc-references ol { margin: 22px 0 0; padding-left: 1.4rem; }
+.fc-chronic-news .fc-references li { margin: 0 0 1.15rem; padding-left: .35rem; }
+.fc-chronic-news .fc-references li > a { font-size: 1.04rem; }
+.fc-chronic-news .fc-references li > span { display: block; margin-top: 2px; color: var(--fc-muted); font: 700 .82rem/1.5 system-ui, sans-serif; }
+.fc-chronic-news .fc-references li p { margin: 4px 0 0; color: #c8d0d9; font-size: .94rem; }
+.fc-chronic-news .fc-article-footer {
+  padding: 28px clamp(22px, 6vw, 64px) 38px; border-top: 1px solid rgba(255,255,255,.08);
+  color: var(--fc-muted); text-align: center; font: .88rem/1.6 system-ui, sans-serif;
+}
+.fc-chronic-news .fc-article-footer p { margin: 4px 0; }
+.fc-chronic-news .fc-canonical { overflow-wrap: anywhere; }
+@media (max-width: 640px) {
+  .fc-chronic-news { width: min(calc(100% - 10px), 920px); margin-top: 10px; border-radius: 14px; }
+  .fc-chronic-news .fc-hero { padding-left: 22px; padding-right: 22px; }
+  .fc-chronic-news .fc-opening-note, .fc-chronic-news .fc-editorial-note, .fc-chronic-news .fc-references { margin-left: 14px; margin-right: 14px; }
+  .fc-chronic-news .fc-content { padding-left: 22px; padding-right: 22px; }
+  .fc-chronic-news .fc-meta { display: grid; gap: 3px; }
+  .fc-chronic-news h1 { font-size: clamp(2.15rem, 12vw, 3.35rem); }
+  .fc-chronic-news .fc-content h2 { margin-top: 1.65em; }
+}
+@media print {
+  .fc-chronic-news { max-width: none; margin: 0; border: 0; box-shadow: none; background: #fff; color: #111; }
+  .fc-chronic-news p, .fc-chronic-news li, .fc-chronic-news .fc-deck { color: #111; }
+  .fc-chronic-news h1, .fc-chronic-news h2, .fc-chronic-news strong, .fc-chronic-news a { color: #111 !important; }
+  .fc-chronic-news .fc-opening-note, .fc-chronic-news blockquote, .fc-chronic-news .fc-editorial-note, .fc-chronic-news .fc-references { background: #fff; color: #111; }
+}
+</style>
+
+
+<article class="fc-chronic-news" itemscope itemtype="https://schema.org/NewsArticle">
+  <meta itemprop="mainEntityOfPage" content="https://fragmentoscaos.eu/2026/08/14/o-preco-da-opacidade-fragatas-negocios-publicos/">
+  <meta itemprop="datePublished" content="2026-08-14T11:32:00+01:00">
+  <meta itemprop="dateModified" content="2026-08-14T11:32:00+01:00">
+  <meta itemprop="inLanguage" content="pt-PT">
+
+  <header class="fc-hero">
+    <div class="fc-kicker">CRÓNICA · DEFESA · ESTADO · TRANSPARÊNCIA</div>
+    <h1 itemprop="headline">O Preço da Opacidade</h1>
+    <p class="fc-deck" itemprop="description">Quando milhares de milhões de euros atravessam contratos públicos envoltos em confidencialidade, o problema já não é apenas quanto se paga. É saber por que se paga, o que se compra e quem responde pela decisão.</p>
+    <div class="fc-meta">
+      <span>Por <strong itemprop="author">Francisco Gonçalves</strong></span>
+      <span>14 de Agosto de 2026</span>
+      <span>Leitura: 8 min</span>
+    </div>
+  </header>
+
+  <aside class="fc-opening-note" aria-label="Ideia central">
+    <span class="fc-label">IDEIA CENTRAL</span>
+    <p>Segredos militares podem proteger capacidades operacionais. O preço, a estrutura de custos e a responsabilidade política de um negócio de milhares de milhões não deveriam adquirir tecnologia stealth.</p>
+  </aside>
+
+  <section class="fc-content" itemprop="articleBody">
+    <p>Há negócios públicos que podem ser caros. Há negócios públicos que podem ser discutíveis. E há negócios públicos que, mesmo antes de alguém conseguir provar qualquer irregularidade, conseguem produzir aquele aroma muito português a sala fechada, contrato confidencial e contribuinte à porta.</p>
+
+    <p>A compra de três fragatas por Portugal pertence, pelo menos por enquanto, a esta última categoria.</p>
+
+    <p>O problema não está em Portugal comprar fragatas. Um Estado precisa de Defesa, soberania marítima custa dinheiro e equipamentos militares modernos não se compram numa promoção de fim de estação. O problema começa quando se pede ao cidadão que aceite milhares de milhões de euros de despesa pública enquanto lhe são fornecidos apenas fragmentos da explicação.</p>
+
+    <h2>Quando o preço se transforma numa narrativa</h2>
+
+    <p>Três fragatas deverão custar cerca de 3 mil milhões de euros. Depois aparecem centenas de milhões para manutenção. Depois os mísseis. Depois as adaptações da Base Naval. Depois provavelmente surgirão os inevitáveis custos de integração, modernização, formação, apoio logístico e outras palavras suficientemente técnicas para fazer desaparecer centenas de milhões sem produzir grande ruído.</p>
+
+    <p>É assim que um preço deixa de ser um preço e passa a ser uma narrativa.</p>
+
+    <p>E quando alguém pergunta quanto custa realmente tudo isto, surge uma palavra maravilhosa: <strong>confidencialidade</strong>.</p>
+
+    <p>A confidencialidade tornou-se uma espécie de capa invisível do Estado. Serve para proteger informação militar sensível, naturalmente. Mas aparentemente também consegue proteger preços, condições comerciais e justificações económicas que deveriam estar sujeitas ao escrutínio de quem paga a conta.</p>
+
+    <p>Convém distinguir as coisas.</p>
+
+    <p>A localização exata de sensores, as capacidades de guerra eletrónica, o alcance real de determinados sistemas ou características operacionais podem e devem permanecer reservadas.</p>
+
+    <p>Mas explicar por que motivo Portugal paga centenas de milhões de euros mais por cada navio do que outro país por plataformas comparáveis não parece constituir uma ameaça à segurança nacional.</p>
+
+    <p>Parece constituir uma ameaça à tranquilidade política.</p>
+
+    <h2>O segredo com botão de ligar e desligar</h2>
+
+    <p>O mais curioso é que a própria narrativa da confidencialidade sofreu uma pequena avaria quando o primeiro-ministro revelou publicamente o preço global que aparentemente não podia ser revelado.</p>
+
+    <p>O segredo militar, afinal, tinha botão de ligar e desligar.</p>
+
+    <p>Talvez dependa do microfone.</p>
+
+    <p>Mas a questão mais importante não é sequer saber se Portugal paga mais 20%, 25% ou 30% do que outro comprador.</p>
+
+    <p>Contratos militares raramente são diretamente comparáveis. Configurações diferentes, armamento diferente, sistemas eletrónicos diferentes, formação, logística, transferência tecnológica e inflação podem alterar substancialmente os preços.</p>
+
+    <p class="fc-emphasis">Precisamente por isso precisamos de transparência.</p>
+
+    <p>Se Portugal paga mais porque compra mais, explique-se o que compra.</p>
+
+    <p>Se paga mais porque exige uma configuração diferente, identifiquem-se as diferenças sem revelar informação operacional sensível.</p>
+
+    <p>Se paga mais porque inclui formação, manutenção ou transferência tecnológica, quantifiquem-se essas componentes.</p>
+
+    <p>E se paga simplesmente mais porque negociou pior, então também seria saudável sabermos.</p>
+
+    <p>É para isso que serve o escrutínio público.</p>
+
+    <h2>O contribuinte entre o anúncio e o relatório inconclusivo</h2>
+
+    <p>A democracia não consiste apenas em votar de quatro em quatro anos. Consiste também em obrigar aqueles que administram o dinheiro coletivo a explicar o que fizeram com ele.</p>
+
+    <p>Portugal possui, infelizmente, uma longa tradição de negócios públicos extraordinariamente complexos que começam sempre apresentados como decisões estratégicas inevitáveis e terminam anos depois em relatórios, auditorias, comissões parlamentares e frases como "não foi possível apurar responsabilidades".</p>
+
+    <p>Entre o primeiro comunicado triunfal e o último relatório inconclusivo costuma existir uma coisa chamada contribuinte.</p>
+
+    <p>É ele que paga ambas.</p>
+
+    <p>Não significa que exista corrupção neste negócio.</p>
+
+    <p>Essa palavra exige provas, e uma sociedade séria não transforma suspeitas em sentenças apenas porque o negócio parece estranho.</p>
+
+    <p>Mas também seria ingénuo fingir que opacidade não cria as condições perfeitas para maus negócios.</p>
+
+    <p>A corrupção não precisa sempre de um envelope castanho passado debaixo de uma mesa.</p>
+
+    <p>Pode existir através de redes de influência, escolhas orientadas, consultorias convenientes, especificações desenhadas à medida, negociações pouco competitivas ou simples incompetência protegida por burocracia.</p>
+
+    <h2>A corrupção sem corrupto</h2>
+
+    <p>E há ainda uma categoria provavelmente muito mais frequente: gastar mal dinheiro público sem que ninguém tenha violado formalmente nenhuma lei.</p>
+
+    <p>É a corrupção sem corrupto.</p>
+
+    <p>Todos cumpriram procedimentos.</p>
+
+    <p>Todos assinaram os documentos certos.</p>
+
+    <p>Todos receberam os pareceres adequados.</p>
+
+    <p>E no final o Estado pagou muito mais do que precisava.</p>
+
+    <p>Ninguém roubou nada.</p>
+
+    <p>O dinheiro apenas evaporou administrativamente.</p>
+
+    <p>Num país que pede contenção salarial, aumenta impostos indiretos, discute décimas nas pensões e contabiliza ao cêntimo determinadas prestações sociais, milhares de milhões de euros deveriam ser acompanhados por um nível de explicação proporcional.</p>
+
+    <p>Não precisamos de conhecer segredos militares.</p>
+
+    <p>Precisamos de conhecer contas.</p>
+
+    <blockquote><p>Quanto custa cada navio? Quanto custa o armamento? Quanto custa a manutenção? Quanto custam as infraestruturas? Quanto custa a formação? Quanto custa o ciclo de vida previsto?</p></blockquote>
+
+    <p>Que alternativas foram consideradas?</p>
+
+    <p>Que propostas concorrentes existiram?</p>
+
+    <p>Que ganhos industriais ou tecnológicos ficam em Portugal?</p>
+
+    <p>E, sobretudo: <strong>por que razão esta foi a melhor solução para o país?</strong></p>
+
+    <p>São perguntas bastante simples.</p>
+
+    <p>Talvez seja precisamente por isso que incomodam tanto.</p>
+
+    <h2>A complexidade como biombo</h2>
+
+    <p>Porque a opacidade administrativa prospera sobretudo quando consegue convencer os cidadãos de que determinados assuntos são demasiado complexos para serem compreendidos.</p>
+
+    <p>Defesa.</p>
+
+    <p>Energia.</p>
+
+    <p>Banca.</p>
+
+    <p>Infraestruturas.</p>
+
+    <p>Parcerias público-privadas.</p>
+
+    <p>Tudo parece possuir uma complexidade quase metafísica quando chega a hora de explicar preços.</p>
+
+    <p>Curiosamente, nunca existe semelhante dificuldade quando chega a fatura.</p>
+
+    <p>Essa vem perfeitamente discriminada ao contribuinte.</p>
+
+    <p>Portugal não precisa de menos investimento estratégico.</p>
+
+    <p>Precisa de mais responsabilidade estratégica.</p>
+
+    <p>Pode comprar fragatas.</p>
+
+    <p>Pode comprar aviões.</p>
+
+    <p>Pode construir infraestruturas.</p>
+
+    <p>Pode investir milhares de milhões na Defesa.</p>
+
+    <p>Mas cada milhão gasto deve sobreviver a uma pergunta muito simples:</p>
+
+    <blockquote><p><strong>Porquê este valor?</strong></p></blockquote>
+
+    <p>Quando o Estado não consegue responder claramente, nasce inevitavelmente a suspeita.</p>
+
+    <p>E a suspeita não nasce porque os cidadãos sejam particularmente desconfiados.</p>
+
+    <p>Nasce porque demasiadas vezes lhes ensinaram a desconfiar.</p>
+
+    <p>Talvez o verdadeiro problema não sejam sequer estas três fragatas.</p>
+
+    <p>Talvez seja uma cultura política onde ainda se considera perfeitamente normal administrar milhares de milhões de euros e tratar quem os paga como um incómodo administrativo.</p>
+
+    <p>O dinheiro é público.</p>
+
+    <p>O contrato pode ter cláusulas reservadas.</p>
+
+    <p class="fc-emphasis"><strong>Mas a responsabilidade nunca deveria ser confidencial.</strong></p>
+
+    <p class="fc-signature"><strong>Francisco Gonçalves</strong><br><span>Fragmentos do Caos</span></p>
+  </section>
+
+  <aside class="fc-pullquote" aria-label="Citação em destaque">
+    <p>"Segredos militares podem ser confidenciais. A responsabilidade pelo dinheiro público não."</p>
+  </aside>
+
+  <section class="fc-editorial-note" aria-labelledby="nota-editorial">
+    <h2 id="nota-editorial">Nota editorial</h2>
+    <p>Esta crónica é um texto de opinião e crítica cívica. Não afirma nem sugere como facto que tenha ocorrido corrupção, favorecimento ilícito ou qualquer crime na aquisição das fragatas. A utilização de expressões como "corrupção sem corrupto" é retórica e refere-se ao risco político e administrativo de decisões formalmente legais produzirem resultados economicamente deficientes ou insuficientemente escrutinados.</p>
+    <p>A comparação simples entre o preço por unidade das fragatas portuguesas e das FREMM EVO italianas tem limites. A Itália contratou em julho de 2024 duas FREMM EVO por aproximadamente 1,5 mil milhões de euros, enquanto fontes portuguesas publicadas em agosto de 2026 apontam para 3,0 a 3,1 mil milhões de euros pelas três unidades portuguesas. Configuração, inflação, formação, sensores, armamento, apoio logístico e maturidade operacional podem justificar parte do diferencial.</p>
+    <p>Há, contudo, uma questão de transparência que merece esclarecimento: o comunicado oficial português de 20 de julho de 2026 descreveu o acordo Estado-a-Estado como abrangendo a aquisição das três fragatas, a sua sustentação, transferência de tecnologia e condições necessárias à exploração operacional ao longo de um ciclo de vida não inferior a 30 anos. Informação jornalística publicada em 14 de agosto refere, além dos 3,0–3,1 mil milhões, cerca de 800 milhões de euros em manutenção e custos adicionais com mísseis e adaptações na Base Naval de Lisboa. As duas descrições podem referir-se a diferentes perímetros contratuais, fases ou rubricas; precisamente por isso, a decomposição pública do custo total é relevante.</p>
+    <p>O instrumento europeu SAFE também não corresponde a uma subvenção gratuita: é um mecanismo de empréstimos europeus de longo prazo para investimento em defesa, a reembolsar pelos Estados beneficiários. A exigência de escrutínio sobre a qualidade económica das aquisições permanece, portanto, inteiramente pertinente.</p>
+  </section>
+
+  <section class="fc-references" aria-labelledby="referencias">
+    <h2 id="referencias">Referências e fontes</h2>
+    <p class="fc-reference-intro">Fontes oficiais, empresariais e jornalísticas utilizadas para contextualizar os valores, o âmbito do acordo e o mecanismo europeu SAFE.</p>
+    <ol>
+      <li>
+        <a href="https://portugal.gov.pt/gc25/comunicacao/comunicados/defesa-assina-acordo-com-a-italia-para-a-aquisicao-de-tres-fragatas-de-nova-geracao-no-ambito-do-safe" target="_blank" rel="noopener noreferrer"><strong>Defesa assina acordo com a Itália para a aquisição de três fragatas de nova geração no âmbito do SAFE</strong></a>
+        <span>Governo da República Portuguesa · 20 julho 2026</span>
+        <p>Comunicado oficial sobre o acordo Estado-a-Estado, entregas previstas para 2029–2030, sustentação, transferência de tecnologia e exploração operacional ao longo de pelo menos 30 anos.</p>
+      </li>
+      <li>
+        <a href="https://www.fincantieri.com/en/newsroom/press-releases/2024/orizzonte-sistemi-navali-signs-1-5-billion-contract-for-two-fremm-evo-frigates-for-the-italian-navy" target="_blank" rel="noopener noreferrer"><strong>Orizzonte Sistemi Navali signs €1.5 billion contract for two FREMM EVO frigates</strong></a>
+        <span>Fincantieri · 31 julho 2024</span>
+        <p>Fonte primária para o contrato italiano de aproximadamente 1,5 mil milhões de euros relativo a duas FREMM EVO.</p>
+      </li>
+      <li>
+        <a href="https://www.reuters.com/world/portugal-buy-three-frigates-built-by-italys-fincantieri-2026-07-20/" target="_blank" rel="noopener noreferrer"><strong>Portugal to buy three frigates built by Italy's Fincantieri</strong></a>
+        <span>Reuters · 20 julho 2026</span>
+        <p>Notícia internacional sobre o acordo português, avaliado em cerca de 3 mil milhões de euros, incluindo elementos de sustentação operacional e transferência de tecnologia.</p>
+      </li>
+      <li>
+        <a href="https://www.jornaldenegocios.pt/economia/defesa/detalhe/portugal-paga-25-mais-pelas-fragatas-do-que-italia" target="_blank" rel="noopener noreferrer"><strong>Portugal paga 25% mais pelas fragatas do que Itália</strong></a>
+        <span>Jornal de Negócios · 14 agosto 2026</span>
+        <p>Relato dos valores revelados pelo primeiro-ministro, das justificações do Ministério da Defesa e dos custos adicionais indicados para manutenção, mísseis e obras.</p>
+      </li>
+      <li>
+        <a href="https://www.consilium.europa.eu/en/policies/safe/" target="_blank" rel="noopener noreferrer"><strong>What is Security Action for Europe (SAFE)?</strong></a>
+        <span>Conselho da União Europeia · consulta em agosto 2026</span>
+        <p>Descrição oficial do SAFE como instrumento europeu de empréstimos até 150 mil milhões de euros para reforçar o investimento em defesa através de aquisições comuns.</p>
+      </li>
+    </ol>
+  </section>
+
+  <footer class="fc-article-footer">
+    <p><strong>Fragmentos do Caos</strong> · Pensamento crítico, tecnologia, sociedade e cidadania.</p>
+    <p class="fc-canonical">URL canónica: <a href="https://fasgoncalves.github.io/fragmentoscaos-html/2026/08/o-preco-da-opacidade-fragatas-negocios-publicos.html">https://fasgoncalves.github.io/fragmentoscaos-html/2026/08/o-preco-da-opacidade-fragatas-negocios-publicos.html</a></p>
+  </footer>
+</article>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
