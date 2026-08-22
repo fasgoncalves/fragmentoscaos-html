@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A República do Atrelado, do Scanner e da Maca</title>
+<meta name="description" content="A República do Atrelado, do Scanner e da Maca">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A República do Atrelado, do Scanner e da Maca</h1>
+      <p class="meta">Publicado em 2026-08-20 22:37:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/08/file_00000000de1c81f4b8283b01ca72165a_989a04c0.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="A República do Atrelado, do Scanner e da Maca">
+      <meta itemprop="description" content="Crónica satírica sobre a governação portuguesa, a responsabilidade política sem consequências e a distância entre o país real e o país comunicado.">
+      <meta itemprop="datePublished" content="2026-07-30">
+      <meta itemprop="dateModified" content="2026-07-30">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="INSERIR_URL_DA_IMAGEM_AQUI">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      A República do Atrelado, do Scanner e da Maca
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      Crónica delirante da democracia indígena portuguesa, onde todos assumem responsabilidades e ninguém parece responsável por coisa alguma
+    </p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+  <p style="margin:0; text-align:left;">
+    <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+    Esta é uma crónica satírica sobre a governação portuguesa e sobre o fenómeno político pelo qual todos assumem responsabilidades, desde que ninguém tenha de sofrer as consequências. Os factos públicos são distinguidos da caricatura, porque o absurdo nacional já trabalha horas extraordinárias sem necessitar de falsificação.
+  </p>
+</div>
+
+<p>Portugal não é propriamente governado.</p>
+
+<p>Portugal é <strong>administrado por episódios</strong>.</p>
+
+<p>Cada semana começa com uma inauguração, continua com uma trapalhada, atinge o ponto máximo numa conferência de imprensa e termina com um governante a declarar que se sente reforçado, legitimado, empoderado e possuidor de todas as condições para continuar a exercer o cargo.</p>
+
+<p>Antigamente, um ministro caía.</p>
+
+<p>Hoje, explica-se.</p>
+
+<p>A explicação não esclarece necessariamente coisa alguma, mas ocupa uma hora de televisão, utiliza quinze vezes a expressão "importa contextualizar" e termina com o governante mais convicto da sua competência do que estava antes de surgir o problema.</p>
+
+<p>É a versão portuguesa da responsabilidade política: quanto mais grave é a ocorrência, mais firme fica o responsável.</p>
+
+<p>No actual elenco, Luís Montenegro dirige o Governo, Fernando Alexandre ocupa a Educação, Ana Paula Martins permanece na Saúde e Luís Neves assumiu a Administração Interna em fevereiro de 2026. São oficialmente ministros de um Estado europeu moderno. Na prática satírica, parecem personagens de uma companhia teatral experimental chamada <strong>Democracia Indígena e Filhos, Lda.</strong></p>
+
+<p>O espectáculo está permanentemente em cena.</p>
+
+<p>Os bilhetes são pagos através dos impostos.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O primeiro-ministro da serenidade expansiva</h2>
+
+<p>Luís Montenegro governa com uma técnica política sofisticada: apresenta cada problema como prova da sua capacidade de resistir ao problema.</p>
+
+<p>Se aparece uma crise, é porque o Governo está a reformar.</p>
+
+<p>Se surge uma falha, é porque a mudança é ambiciosa.</p>
+
+<p>Se há protestos, é porque as corporações resistem.</p>
+
+<p>Se a realidade contradiz a comunicação oficial, é porque a realidade ainda não compreendeu integralmente o programa eleitoral.</p>
+
+<p>No debate do Estado da Nação, o primeiro-ministro afirmou que Portugal estava a mudar e que o Executivo cumpria o compromisso de trabalhar sempre mais. É possível. O país também trabalha sempre mais para chegar ao mesmo sítio, o que constitui uma forma muito portuguesa de produtividade circular.</p>
+
+<p>Montenegro tem o raro talento de parecer simultaneamente surpreendido e preparado.</p>
+
+<p>Surpreendido com a dimensão dos problemas.</p>
+
+<p>Preparado para explicar que já os conhecia.</p>
+
+<p>A sua relação com a empresa familiar Spinumviva provocou uma crise política, dúvidas públicas sobre conflitos de interesses e eleições antecipadas. O primeiro-ministro sempre negou qualquer conflito ilícito. A averiguação preventiva do Ministério Público foi arquivada por não ter sido encontrada notícia da prática de ilícito criminal, embora tenham continuado discussões jurídicas e declarativas em torno do registo de interesses.</p>
+
+<p>Convém afirmar tudo isto porque a sátira não deve transformar suspeitas em condenações. Esse trabalho, quando acontece, pertence aos tribunais, organismos que em Portugal costumam chegar depois da autobiografia dos envolvidos já estar na segunda edição.</p>
+
+<p>Mas, no plano político, o caso produziu uma inovação relevante.</p>
+
+<p>Em Portugal, uma empresa deixa aparentemente de ser um assunto privado quando surge uma polémica, transforma-se num problema institucional quando derruba um Governo e regressa depois à esfera familiar quando começam as perguntas mais desagradáveis.</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+  <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Nasce privada, cresce pública, amadurece jurídica e reforma-se em comunicado.</p>
+</div>
+
+<p>Montenegro, contudo, permanece sereno.</p>
+
+<p>A serenidade é uma qualidade preciosa na governação. Sobretudo quando os cidadãos já estão demasiado exaustos para gritar.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O Ministério da Educação e a grande correcção metafísica</h2>
+
+<p>Na Educação, Fernando Alexandre decidiu transportar os exames nacionais para o futuro.</p>
+
+<p>O futuro chegou digitalizado, recortado, trocado, incompleto e, em alguns casos, aparentemente pertencente a outro aluno.</p>
+
+<p>Foram reportados pelo menos 680 casos de erros na digitalização das provas. Houve alunos confrontados com respostas ou classificações incorrectas e professores a lidar com um processo que prometia modernidade, mas entregou uma espécie de jogo nacional de correspondência documental. O ministro assumiu ser o último responsável, afastou a ideia de negligência grosseira e considerou existir "alarmismo exagerado" em torno do processo.</p>
+
+<p>Esta é uma categoria política fascinante: <strong>o último responsável</strong>.</p>
+
+<p>O último responsável não é necessariamente aquele que sofre consequências.</p>
+
+<p>É apenas o último na cadeia hierárquica a pronunciar a palavra responsabilidade.</p>
+
+<p>Depois disso, a responsabilidade desaparece, satisfeita por ter sido formalmente reconhecida.</p>
+
+<p>O Ministério terá digitalizado os exames, mas digitalizou também o velho método governativo português:</p>
+
+<ol style="padding-left:22px;">
+  <li>anunciar uma revolução;</li>
+  <li>ignorar os alertas;</li>
+  <li>executar à pressa;</li>
+  <li>culpar a complexidade;</li>
+  <li>garantir que ninguém será prejudicado;</li>
+  <li>criar uma comissão;</li>
+  <li>chamar resistência à crítica;</li>
+  <li>declarar o processo globalmente positivo.</li>
+</ol>
+
+<p>O aluno, entretanto, procura a própria resposta no exame do colega.</p>
+
+<p>Mas não deve alarmar-se.</p>
+
+<p>O alarmismo, descobrimos, é muito mais prejudicial à educação do que os erros.</p>
+
+<p>Em breve, o Ministério poderá lançar o novo currículo nacional de relatividade administrativa:</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+  <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Uma prova pode estar certa, errada ou pertencer simultaneamente a dois alunos, até ser observada pelo Instituto de Avaliação Educativa.</p>
+</div>
+
+<p>Portugal não falhou a digitalização dos exames.</p>
+
+<p>Realizou a primeira experiência quântica de avaliação escolar.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A ministra da Saúde e os imponderáveis previsíveis</h2>
+
+<p>Na Saúde, o país entrou numa dimensão ainda mais avançada.</p>
+
+<p>Ana Paula Martins explicou que nenhum verão pode ser considerado tranquilo e que o Serviço Nacional de Saúde necessitaria de aproximadamente o dobro dos profissionais para assegurar a resposta desejada nas urgências. A ministra reconheceu constrangimentos previsíveis, particularmente em certas urgências, enquanto o sistema enfrentava também contestação a regras de pagamento de actos médicos suplementares, com tratamentos e intervenções desmarcados.</p>
+
+<p>O verão português é, para a Saúde, aquilo que a chuva é para as inundações e o calor para os incêndios: um acontecimento súbito que surge todos os anos em datas praticamente impossíveis de antecipar.</p>
+
+<p>O Ministério prepara-se durante meses para os imponderáveis.</p>
+
+<p>Depois chegam julho e agosto, dois meses clandestinos que ninguém tinha previsto no calendário gregoriano, e o sistema descobre que os médicos também adoecem, tiram férias, envelhecem, emigram e não conseguem permanecer simultaneamente em três urgências.</p>
+
+<p>A governação da Saúde passou a obedecer à escola filosófica do otimismo estatístico.</p>
+
+<p>Uma urgência encerrada não está encerrada.</p>
+
+<p>Está centralizada noutro sítio.</p>
+
+<p>Uma espera de muitas horas não é atraso.</p>
+
+<p>É permanência clínica não programada.</p>
+
+<p>Uma grávida obrigada a percorrer dezenas de quilómetros não está desassistida.</p>
+
+<p>Está integrada num modelo territorial dinâmico.</p>
+
+<p>Um tratamento cancelado não desapareceu.</p>
+
+<p>Foi reprogramado para uma data com maior maturidade administrativa.</p>
+
+<p>A ministra recusa que exista caos.</p>
+
+<p>E talvez tenha razão.</p>
+
+<p>O caos é espontâneo.</p>
+
+<p>Aquilo exige planeamento.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O ministro da Administração Interna e o atrelado filosófico</h2>
+
+<p>Então surgiu Luís Neves.</p>
+
+<p>Portugal precisava de um ministro da Administração Interna, mas recebeu uma narrativa completa com monte, obras, empresa amiga, contratos públicos, produtos químicos, um atrelado apreendido num processo relacionado com tráfico de droga e uma piscina à espera de regularização.</p>
+
+<p>Nem Eça de Queiroz teria ousado tanto. O editor teria pedido contenção.</p>
+
+<p>Segundo a informação pública, quando Luís Neves era director nacional da Polícia Judiciária, um atrelado apreendido foi deslocado para instalações de uma empresa em Barcelos. Essa empresa veio depois a realizar obras numa propriedade do actual ministro em Odemira e tinha celebrado contratos públicos com a PJ. O ministro afirmou que a deslocação do atrelado constituiu um acto de boa gestão, que poupou dinheiro ao Estado, negou qualquer desvio de bens e declarou estar legitimado para continuar. Disse ainda que procuraria regularizar o que fosse necessário relativamente às obras na propriedade.</p>
+
+<p>Existem averiguações e escrutínio em curso, não uma condenação.</p>
+
+<p>O atrelado tornou-se rapidamente uma metáfora nacional.</p>
+
+<p>Foi apreendido, deslocado, estacionado, reencontrado e explicado.</p>
+
+<p>Falta apenas ser nomeado para um instituto público.</p>
+
+<p>A conferência de imprensa do ministro introduziu na ciência política portuguesa o conceito de <strong>empoderamento por polémica</strong>.</p>
+
+<p>Noutros países, um governante cercado por perguntas sente-se fragilizado.</p>
+
+<p>Em Portugal, sente-se empoderado.</p>
+
+<p>É uma espécie de fotossíntese institucional: o ministro absorve escândalo, converte-o em legitimidade e liberta dióxido de comunicado.</p>
+
+<p>A expressão "acto de boa gestão" merece lugar nos manuais.</p>
+
+<p>A partir de agora, qualquer objeto público que apareça nas instalações de um conhecido poderá estar apenas a beneficiar de uma estratégia alternativa de armazenamento.</p>
+
+<p>Não desapareceu. Foi descentralizado.</p>
+
+<p>Não foi entregue a um amigo. Foi aproximado da sociedade civil.</p>
+
+<p>Não faltou documentação. Evitou-se burocracia excessiva.</p>
+
+<p>Não existe conflito de interesses. Existe coincidência de recursos.</p>
+
+<p>O atrelado, esse, talvez seja o membro mais transparente do Governo. Pelo menos todos sabem onde esteve, com quem esteve e para que lado foi rebocado.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O Conselho de Ministros como centro de triagem</h2>
+
+<p>Imaginemos uma reunião do Conselho de Ministros.</p>
+
+<p>Montenegro entra com uma pasta marcada <strong>Confiança Política</strong>.</p>
+
+<p>Fernando Alexandre apresenta um exame digitalizado que pertence ao ministro das Finanças.</p>
+
+<p>Ana Paula Martins informa que a reunião será centralizada noutro ministério por falta de recursos humanos.</p>
+
+<p>Luís Neves chega num atrelado, explicando que o estacionamento representa uma poupança para o erário público.</p>
+
+<p>O ministro da Presidência distribui um comunicado onde se lê:</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+  <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">O Governo acompanha a situação com atenção, reafirma total confiança nos governantes envolvidos e considera prematura qualquer conclusão antes do apuramento integral dos factos.</p>
+</div>
+
+<p>Este comunicado já vem pré-impresso.</p>
+
+<p>Há caixas dele em São Bento.</p>
+
+<p>Serve para empresas familiares, exames, hospitais, nomeações, piscinas, incêndios, contratos, atrelados, sistemas informáticos e pequenas invasões estrangeiras ocorridas fora do horário de expediente.</p>
+
+<p>A reunião termina com a aprovação de um grupo de trabalho destinado a avaliar a criação de uma comissão que estudará a necessidade de estabelecer uma estrutura de missão.</p>
+
+<p>O país fica imediatamente mais governado.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A democracia indígena</h2>
+
+<p>A democracia indígena portuguesa não é uma ditadura.</p>
+
+<p>Longe disso.</p>
+
+<p>Há eleições, Parlamento, oposição, imprensa, tribunais, protestos e liberdade para insultar o Governo nas redes sociais, desde que o algoritmo considere o conteúdo suficientemente comercial.</p>
+
+<p>O problema é mais subtil.</p>
+
+<p>A nossa democracia desenvolveu uma cultura de <strong>irresponsabilidade perfeitamente constitucional</strong>.</p>
+
+<p>Todos prestam declarações. Poucos prestam contas.</p>
+
+<p>Todos assumem responsabilidade política. Quase ninguém retira consequências políticas dessa responsabilidade.</p>
+
+<p>Todos prometem transparência. Depois entregam documentos cobertos por segredo, protecção de dados, interesse comercial, reserva administrativa e tinta de choco.</p>
+
+<p>Quando um caso surge, o governante pede tempo.</p>
+
+<p>Quando o tempo passa, pede que se aguarde pela Justiça.</p>
+
+<p>Quando a Justiça arquiva a dimensão criminal, declara-se totalmente ilibado no plano político.</p>
+
+<p>Quando a Justiça investiga, afirma-se que não se deve confundir investigação com culpa.</p>
+
+<p>Ambas as frases são juridicamente corretas.</p>
+
+<p>Juntas, formam uma fortaleza política praticamente intransponível.</p>
+
+<p>O cidadão, por sua vez, tem deveres imediatos.</p>
+
+<p>Deve pagar dentro do prazo. Entregar declarações corretas. Regularizar a casa. Não estacionar onde não pode. Não transportar bens apreendidos para instalações de amigos. Não trocar os exames dos filhos dos outros. E, sempre que possível, evitar adoecer durante o verão.</p>
+
+<p>O Estado exige ao cidadão uma precisão suíça e oferece-lhe em troca uma improvisação mediterrânica com apresentação em PowerPoint.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A indústria nacional da explicação</h2>
+
+<p>Portugal não possui petróleo em quantidade relevante.</p>
+
+<p>Não fabrica semicondutores de ponta.</p>
+
+<p>Não domina a indústria aeroespacial.</p>
+
+<p>Mas é uma potência mundial na produção de explicações.</p>
+
+<p>Exportamos justificações para todos os sectores.</p>
+
+<p>Temos explicações técnicas, jurídicas, políticas, familiares, emocionais, conjunturais e meteorológicas.</p>
+
+<p>Quando alguma coisa corre mal, aparece imediatamente um especialista governamental a explicar que:</p>
+
+<ul style="padding-left:22px;">
+  <li>a situação vem de trás;</li>
+  <li>o problema é estrutural;</li>
+  <li>a mudança exige tempo;</li>
+  <li>os serviços fizeram o possível;</li>
+  <li>será aberto um inquérito;</li>
+  <li>os cidadãos não devem tirar conclusões precipitadas;</li>
+  <li>o ministro mantém toda a confiança do primeiro-ministro.</li>
+</ul>
+
+<p>A confiança política portuguesa é um material extraordinário.</p>
+
+<p>Resiste a calor, pressão, exames trocados, urgências fechadas, empresas familiares, atrelados desaparecidos e piscinas por regularizar.</p>
+
+<p>Talvez devesse ser utilizada na construção civil.</p>
+
+<p>Resolveria algumas obras.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O país real e o país comunicado</h2>
+
+<p>Há dois Portugais.</p>
+
+<p>No primeiro, o cidadão espera numa urgência, procura professor para o filho, tenta compreender a classificação de um exame, vê arder o território, paga impostos e pergunta quem responde pelos sucessivos fracassos.</p>
+
+<p>No segundo, o Governo executa reformas, cumpre objectivos, moderniza serviços, melhora indicadores e enfrenta resistências corporativas.</p>
+
+<p>O primeiro Portugal vive.</p>
+
+<p>O segundo dá conferências de imprensa.</p>
+
+<p>Raramente se encontram.</p>
+
+<p>Quando se encontram, costuma haver um cordão de segurança, um púlpito e perguntas limitadas a duas por órgão de comunicação social.</p>
+
+<p>A grande habilidade da governação contemporânea consiste em substituir a realidade por uma narrativa suficientemente repetida.</p>
+
+<p>O hospital não funciona? Está em transformação.</p>
+
+<p>A escola falha? Está em transição digital.</p>
+
+<p>O ministro está envolvido numa polémica? Está sob ataque reputacional.</p>
+
+<p>A empresa familiar provoca dúvidas? A matéria é complexa e jurídica.</p>
+
+<p>O interior arde? As condições meteorológicas foram excepcionais pela oitava vez nesta década.</p>
+
+<p>A governação tornou-se uma fábrica de gerúndios.</p>
+
+<p>Estamos a acompanhar. Estamos a avaliar. Estamos a implementar. Estamos a reforçar. Estamos a preparar.</p>
+
+<p>O país, entretanto, está a esperar.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O grande segredo da estabilidade</h2>
+
+<p>Talvez o segredo desta democracia indígena seja simples: já ninguém espera verdadeiramente que os ministros resolvam os problemas.</p>
+
+<p>Espera-se apenas que sobrevivam à semana.</p>
+
+<p>Um governante competente não é aquele que evita a trapalhada.</p>
+
+<p>É aquele que chega ao domingo ainda no cargo.</p>
+
+<p>Na segunda-feira, a imprensa encontrará outro assunto. Na terça, surgirá uma nova polémica. Na quarta, será anunciada uma reforma. Na quinta, haverá debate parlamentar. Na sexta, Montenegro reafirmará confiança.</p>
+
+<p>O fim de semana será dedicado à elaboração de um esclarecimento.</p>
+
+<p>E assim se governa uma nação antiga, prudente e domesticada, que já viu impérios cair, bancos desaparecer, processos prescrever, linhas ferroviárias encerrar e ministros atravessarem escândalos com a mesma expressão de quem aguarda que lhe sirvam o café.</p>
+
+<p>Portugal não está à deriva.</p>
+
+<p>Está estacionado provisoriamente nas instalações de um amigo, por razões de boa gestão.</p>
+
+<p>Os exames não estão errados. Estão digitalmente reinterpretados.</p>
+
+<p>As urgências não estão fechadas. Estão territorialmente concentradas.</p>
+
+<p>Os negócios não são paralelos. Seguem apenas por uma faixa reservada.</p>
+
+<p>E o Governo não está em crise. Está empoderado.</p>
+
+<p>No final, sobra o cidadão, aquela figura folclórica que vota, paga e observa.</p>
+
+<p>Olha para o atrelado. Olha para a maca. Olha para o scanner. Olha para o primeiro-ministro.</p>
+
+<p>E compreende finalmente o verdadeiro significado da democracia indígena portuguesa:</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+  <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;"><strong>O povo escolhe quem governa, mas o poder escolhe quando deve responder.</strong></p>
+</div>
+
+<div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+  <h3 style="color:#d6a542; margin-top:0; text-align:left;">O QUE DEVE SER RETIDO</h3>
+  <ul style="padding-left:22px; margin:0;">
+    <li>A responsabilidade política não se esgota na responsabilidade criminal.</li>
+    <li>A modernização administrativa não substitui a competência, a transparência ou a prestação de contas.</li>
+    <li>A sátira exagera para revelar padrões reais de comunicação e sobrevivência governativa.</li>
+    <li>As referências a averiguações ou suspeitas não constituem afirmações de culpa.</li>
+  </ul>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+
+<div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+<p>Esta crónica é uma obra satírica baseada em acontecimentos, declarações e controvérsias objeto de divulgação pública. A sátira exagera comportamentos e situações para efeitos de crítica política.</p>
+<p>A referência a investigações, averiguações ou suspeitas não equivale a uma afirmação de culpa. A averiguação preventiva do Ministério Público relativa à Spinumviva foi arquivada por não ter sido encontrada notícia da prática de ilícito criminal. As matérias relativas ao ministro da Administração Interna permanecem sujeitas ao respetivo escrutínio e apuramento institucional.</p>
+<p style="margin-bottom:0; text-align:left;">O objectivo editorial é analisar a responsabilidade política, a transparência e a distância entre a comunicação oficial e a experiência quotidiana dos cidadãos, preservando a distinção entre crítica satírica, factos públicos e responsabilidade criminal.</p>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+
+<ul style="padding-left:22px;">
+  <li><a href="https://dciap.ministeriopublico.pt/destaque/averiguacao-preventiva-spinumviva-arquivamento" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Ministério Público — Averiguação preventiva relativa à Spinumviva: arquivamento</a></li>
+  <li><a href="https://www.reuters.com/world/europe/portugal-cabinet-study-conflict-interest-allegations-against-pm-2025-02-28/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Reuters — Governo português e alegações de conflito de interesses envolvendo o primeiro-ministro</a></li>
+  <li><a href="https://elpais.com/internacional/2025-03-01/el-primer-ministro-de-portugal-se-sometera-a-una-mocion-de-confianza-por-los-negocios-de-su-empresa-familiar.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">El País — Crise política em Portugal e negócios da empresa familiar</a></li>
+  <li><a href="https://www.rtp.pt/noticias/pais/atrelado-desaparecido-quimicos-para-droga-apreendidos-em-empresa-de-amigo-de-luis-neves_n1754312" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">RTP — Atrelado apreendido e esclarecimentos envolvendo Luís Neves</a></li>
+  <li><a href="https://eco.sapo.pt/2026/07/22/exames-fernando-alexandre-admite-680-casos-de-erros-na-digitalizacao/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">ECO — Erros na digitalização dos exames nacionais</a></li>
+  <li><a href="https://eco.sapo.pt/2026/07/08/ministra-admite-constrangimentos-nas-urgencias-durante-o-verao-apesar-do-planeamento/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">ECO — Constrangimentos nas urgências durante o verão</a></li>
+  <li><a href="https://portugal.gov.pt/pt/gc25/comunicacao/noticias/luis-montenegro-o-governo-esta-a-cumprir-o-compromisso-de-trabalhar-sempre-mais" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Governo de Portugal — Intervenção do primeiro-ministro no debate do Estado da Nação</a></li>
+</ul>
+
+<div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+  <p style="color:#cfcfcf; text-align:left;">
+    <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+    Fragmentos do Caos<br>
+    FC-Chronic-News
+  </p>
+</div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Do País do Anúncio ao País da Execução</title>
+<meta name="description" content="Do País do Anúncio ao País da Execução">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Do País do Anúncio ao País da Execução</h1>
+      <p class="meta">Publicado em 2026-08-21 10:19:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/08/file_00000000996c81f4a6dd75e741221bc5_1f7f5ed2.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="Do País do Anúncio ao País da Execução">
+      <meta itemprop="description" content="Uma proposta de reconstrução nacional assente em cidadania activa, capacidade produtiva, inovação persistente, escolhas estratégicas e avaliação rigorosa de resultados.">
+      <meta itemprop="datePublished" content="2026-07-30">
+      <meta itemprop="dateModified" content="2026-07-30">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="INSERIR_URL_DA_IMAGEM_AQUI">
+      <meta itemprop="mainEntityOfPage" content="https://fragmentoscaos.eu/do-pais-do-anuncio-ao-pais-da-execucao/">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      Do País do Anúncio ao País da Execução
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      Portugal não precisa de mais uma estratégia para a prateleira. Precisa de escolher, produzir, medir e persistir.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        Esta crónica não propõe um salvador, uma sigla milagrosa ou mais um programa de incentivos baptizado por uma agência de comunicação. Propõe algo muito menos cómodo: um compromisso nacional prolongado com cidadania activa, instituições sérias, capacidade produtiva, inovação aplicada e resultados públicos verificáveis.
+      </p>
+    </div>
+
+    <p>
+      Portugal não sairá da estagnação apenas mudando ministros, distribuindo fundos europeus ou inaugurando incubadoras onde se apresentam aplicações acompanhadas por palavras inglesas e fotografias cuidadosamente iluminadas. O país precisa de substituir uma cultura de administração da escassez por uma cultura de criação de capacidade.
+    </p>
+
+    <p>
+      O problema não é apenas económico. É político, institucional e cultural. Uma rede de influências habituou-se a administrar a pobreza de muitos sem perturbar demasiado o conforto de poucos. Os partidos alternam, as administrações permanecem, os discursos modernizam-se e a mediocridade aprende novas expressões para continuar exactamente no mesmo lugar.
+    </p>
+
+    <p>
+      A Comissão Europeia assinala que os serviços representam cerca de 80% da economia portuguesa, acima da média da União, enquanto as exportações de alta tecnologia continuam perto de 5% do total, contra aproximadamente 17% na União Europeia. Licenciamentos longos, atrasos nos tribunais administrativos e dificuldade das empresas em crescer continuam a limitar investimento, produtividade e convergência.<sup><a href="/#ref1" style="color:#ffcc66; text-decoration:none;">[1]</a></sup>
+    </p>
+
+    <p>
+      A OCDE é igualmente pouco dada a fantasias patrióticas: a produtividade do trabalho permanece cerca de 17% abaixo da média da organização, perto de 40% do emprego empresarial concentra-se em microempresas e o esforço público em investigação não produz ainda resultados de inovação proporcionais. A recomendação é conhecida há décadas: simplificar processos, melhorar competências, permitir que as empresas cresçam e reduzir os riscos de conflito de interesses.<sup><a href="/#ref2" style="color:#ffcc66; text-decoration:none;">[2]</a></sup>
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Portugal não sofre de falta de planos. Sofre da incapacidade persistente de transformar conhecimento em indústria, investimento em produtividade e anúncios em resultados.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Do Estado distribuidor ao Estado capaz
+    </h2>
+
+    <p>
+      O Estado português está excessivamente preparado para autorizar, fiscalizar formalidades, distribuir fundos, publicar regulamentos e anunciar programas. Está muito menos preparado para definir missões tecnológicas, contratar competência, acompanhar a execução, corrigir desvios e encerrar projectos que falham.
+    </p>
+
+    <p>
+      Portugal precisa de um Estado de missão. Não de um Estado empresário que escolha amigos, nem de um Estado burocrático que impeça todos de trabalhar. Um Estado de missão estabelece prioridades duradouras, cria infra-estruturas comuns, financia investigação orientada, utiliza a contratação pública para formar mercados iniciais e exige resultados mensuráveis.
+    </p>
+
+    <p>
+      O financiamento público deve comprar fábricas, protótipos industriais, propriedade intelectual utilizável, capacidade energética, automação, exportações e empregos qualificados. Não deve financiar indefinidamente organizações cuja maior inovação consiste em aprender a preencher a candidatura seguinte.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Escolher é obrigatório
+    </h2>
+
+    <p>
+      Um país pequeno não pode fabricar tudo. Mas também não pode resignar-se a servir refeições, vender património e esperar pelo próximo pacote europeu. Portugal deve escolher um conjunto restrito de missões industriais, mantidas durante quinze ou vinte anos, protegidas da histeria eleitoral e sujeitas a avaliação pública.
+    </p>
+
+    <p>
+      A Organização Mundial da Propriedade Intelectual colocou Portugal em 31.º lugar entre 139 economias no Índice Global de Inovação de 2025. O país obtém uma posição relativamente forte em capital humano e investigação, mas fica mais abaixo nos resultados de conhecimento e tecnologia. A distância entre saber e produzir permanece, portanto, uma das nossas especialidades menos celebradas.<sup><a href="/#ref3" style="color:#ffcc66; text-decoration:none;">[3]</a></sup>
+    </p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">
+        CINCO MISSÕES PARA UM PAÍS PRODUTIVO
+      </h3>
+
+      <ul style="padding-left:22px; margin:0;">
+        <li>Sistemas energéticos, armazenamento, redes inteligentes e participação informada nas novas tecnologias nucleares europeias.</li>
+        <li>Economia industrial do mar: aquicultura, biotecnologia, robótica submarina, portos, energia offshore e construção naval especializada.</li>
+        <li>Automação, robótica, visão computacional, inteligência artificial e software industrial.</li>
+        <li>Tecnologias de saúde, dispositivos médicos, diagnóstico, bioprodução e soluções para o envelhecimento.</li>
+        <li>Tecnologias atlânticas de segurança, espaço, comunicações, sensores, drones e observação da Terra.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Sistemas energéticos e armazenamento
+    </h2>
+
+    <p>
+      Portugal dispõe de condições excelentes para produzir electricidade renovável. Mas produzir electrões baratos não basta se os equipamentos, o armazenamento, a electrónica de potência, os inversores, os sistemas de controlo e grande parte da propriedade intelectual forem importados.
+    </p>
+
+    <p>
+      A estratégia deve concentrar-se nos segmentos em que engenharia, integração e software acrescentam valor: gestão de redes, armazenamento estacionário, sistemas de baterias, reciclagem, electrónica de potência, manutenção preditiva e coordenação entre produção, indústria e mobilidade.
+    </p>
+
+    <p>
+      Quanto ao nuclear, Portugal deveria abandonar a recusa quase religiosa de discutir a tecnologia. Em Março de 2026, a Comissão Europeia adoptou uma estratégia para acelerar reactores modulares pequenos e avançados, prevendo os primeiros projectos europeus no início da década de 2030 e exigindo padrões elevados de segurança, protecção radiológica e gestão de resíduos.<sup><a href="/#ref4" style="color:#ffcc66; text-decoration:none;">[4]</a></sup>
+    </p>
+
+    <p>
+      Isto não obriga Portugal a construir uma central amanhã. Obriga-o a formar engenheiros, acompanhar projectos, participar em cadeias industriais e produzir uma avaliação técnica independente. Um país não ganha soberania energética recusando conhecimento.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Uma economia industrial do mar
+    </h2>
+
+    <p>
+      A vocação atlântica portuguesa é repetida em todas as cerimónias, normalmente a uma distância segura de qualquer linha de produção. O mar deve deixar de ser apenas paisagem, turismo, discurso histórico e fotografia de drone.
+    </p>
+
+    <p>
+      A economia azul europeia empregou directamente cerca de 4,82 milhões de pessoas e gerou quase 890 mil milhões de euros de volume de negócios em 2022. Sectores emergentes como energia oceânica, biotecnologia azul, observação do oceano e tecnologias marítimas criam novas oportunidades, enquanto transporte marítimo, reparação naval, portos e aquicultura continuam a oferecer escala industrial.<sup><a href="/#ref5" style="color:#ffcc66; text-decoration:none;">[5]</a></sup>
+    </p>
+
+    <p>
+      Portugal deveria articular aquicultura sustentável, valorização do pescado, robótica submarina, sensores oceânicos, comunicações, construção e reparação naval, energia offshore, portos inteligentes e biotecnologia marinha. A exploração de recursos minerais só pode avançar com conhecimento científico, regras ambientais exigentes e capacidade tecnológica nacional. Saquear o fundo do mar com equipamentos estrangeiros não seria estratégia atlântica. Seria apenas provincianismo extractivo.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Software que sai do ecrã e entra na fábrica
+    </h2>
+
+    <p>
+      Portugal formou bons engenheiros e programadores, mas demasiadas vezes exporta-os ou utiliza-os em serviços de baixo valor acrescentado. O software português deve entrar nas fábricas, portos, redes energéticas, hospitais, explorações agrícolas, veículos, cadeias logísticas e sistemas de segurança.
+    </p>
+
+    <p>
+      A oportunidade está no software industrial especializado: visão computacional, manutenção preditiva, gémeos digitais, controlo de qualidade, robótica, optimização energética, cibersegurança operacional e inteligência artificial aplicada a processos físicos.
+    </p>
+
+    <p>
+      O relatório da Década Digital de 2026 reconhece a robustez da conectividade e dos serviços públicos digitais portugueses, mas confirma que as empresas continuam atrás dos seus pares europeus na adopção de computação em nuvem e inteligência artificial. O roteiro nacional contém 157 medidas e cerca de 2,1 mil milhões de euros, mas 62% dessas medidas terminam até ao final de 2026. O problema volta a ser o mesmo: transformar financiamento temporário em capacidade permanente.<sup><a href="/#ref6" style="color:#ffcc66; text-decoration:none;">[6]</a></sup>
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Saúde, bioprodução e envelhecimento
+    </h2>
+
+    <p>
+      A pandemia mostrou a vulnerabilidade europeia em equipamentos, consumíveis e cadeias farmacêuticas. Portugal deve construir capacidade seleccionada em dispositivos médicos, diagnóstico, sensores clínicos, equipamentos de protecção, software de saúde, robótica assistencial e tecnologias orientadas para o envelhecimento.
+    </p>
+
+    <p>
+      O Serviço Nacional de Saúde pode funcionar como primeiro cliente e campo de validação, desde que a contratação pública seja tecnicamente competente e não mais um labirinto onde vence quem domina o formulário em vez de quem apresenta a melhor solução.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Segurança, espaço e tecnologias atlânticas
+    </h2>
+
+    <p>
+      A posição geográfica portuguesa permite combinar mar, espaço, comunicações, drones, cibersegurança e observação da Terra. Portugal não precisa de construir tudo. Pode especializar-se em sistemas autónomos, sensores, radares, comunicações seguras, pequenos satélites, análise de imagens, vigilância oceânica, integração de sistemas e manutenção avançada.
+    </p>
+
+    <p>
+      Estas tecnologias têm aplicações civis e de defesa, mercados europeus em expansão e ligação directa à nossa geografia. A soberania moderna não se mede apenas por fronteiras. Mede-se pela capacidade de observar, comunicar, produzir, proteger e reparar.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Universidade, empresa e Estado na mesma oficina
+    </h2>
+
+    <p>
+      A colaboração não pode continuar reduzida a consórcios formados para candidaturas, que produzem um protótipo, um relatório e uma fotografia de grupo antes de se dissolverem. Cada missão nacional deve reunir centros tecnológicos, universidades, politécnicos, empresas âncora, pequenas e médias empresas fornecedoras e entidades públicas com metas plurianuais.
+    </p>
+
+    <p>
+      A OCDE observa que a fraca dimensão empresarial e o reduzido investimento dificultam a inovação e o crescimento. A política pública deve ajudar empresas capazes a passar de pequenas para médias e de médias para internacionais, em vez de celebrar eternamente a criação de mais uma microempresa condenada a permanecer pequena.<sup><a href="/#ref2" style="color:#ffcc66; text-decoration:none;">[2]</a></sup>
+    </p>
+
+    <p>
+      A colaboração tem de começar no desenho do produto e terminar na produção em série. Pelo meio devem existir laboratórios de ensaio, certificação, formação técnica, propriedade intelectual, compras públicas e acesso coordenado aos mercados europeus.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Medir resultados, não cortar fitas
+    </h2>
+
+    <p>
+      Portugal modernizou a fita da inauguração, mas preservou a mentalidade. Já não se inauguram apenas pontes e fontanários. Inauguram-se estratégias, agendas, aceleradoras, observatórios, laboratórios colaborativos, plataformas e ecossistemas.
+    </p>
+
+    <p>
+      A cerimónia evoluiu. A obsessão pelo anúncio permaneceu.
+    </p>
+
+    <p>
+      Cada missão industrial deve publicar indicadores simples: produtividade, valor acrescentado nacional, exportações tecnológicas, patentes comercializadas, empresas que cresceram, emprego qualificado, investimento privado mobilizado, importações críticas substituídas e tempo de licenciamento.
+    </p>
+
+    <p>
+      Quando um programa falhar, deve ser encerrado ou reformulado. Em Portugal, tende a mudar de nome e a receber um novo logótipo, essa forma gráfica de impedir um funeral administrativo.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A cidadania activa é a primeira infra-estrutura
+    </h2>
+
+    <p>
+      Nenhuma política industrial sobreviverá sem cidadãos exigentes. A mediocridade política não nasce apenas dentro dos partidos. Cresce também com resignação, dependência, clubismo, tolerância para com os nossos, memória curta, aceitação de favores e desprezo pela competência.
+    </p>
+
+    <p>
+      Uma cidadania activa não significa viver permanentemente em protesto. Significa participar, fiscalizar, exigir dados, defender instituições, apoiar competência e punir eleitoralmente a opacidade. Significa recusar o argumento miserável de que todos fazem o mesmo.
+    </p>
+
+    <p>
+      Portugal precisa de políticos sérios. Mas precisa igualmente de cidadãos que deixem de recompensar políticos apenas porque pertencem à tribo certa.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Um novo compromisso nacional
+    </h2>
+
+    <p>
+      O corte com a mediocridade não será feito por um salvador, um partido milagroso ou uma nova colecção de frases patrióticas. Terá de resultar de um compromisso duradouro entre cidadãos, ciência, empresas e Estado.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Produzir mais conhecimento, transformar mais conhecimento em indústria, transformar mais indústria em prosperidade e distribuir essa prosperidade através de trabalho qualificado, serviços públicos eficazes e instituições decentes.
+      </p>
+    </div>
+
+    <p>
+      Portugal não está condenado pela sua dimensão. Países pequenos podem tornar-se tecnologicamente poderosos quando escolhem, persistem, cooperam e medem. O país está condicionado pela dispersão, pelo imediatismo e por uma elite que frequentemente confunde gerir fundos com desenvolver uma economia.
+    </p>
+
+    <p>
+      Chega de administrar a pobreza com solenidade. Chega de chamar estratégia a uma lista de desejos. Chega de confundir empreendedorismo com concursos de apresentações.
+    </p>
+
+    <p>
+      A prosperidade não se inaugura. Constrói-se, mede-se, corrige-se e volta a construir-se.
+    </p>
+
+    <p>
+      Talvez seja essa a revolução mais difícil para Portugal: substituir finalmente o país do anúncio pelo país da execução.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">
+      Nota Editorial
+    </h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        Esta crónica não pretende desenhar uma economia por decreto nem substituir o mercado por uma comissão ministerial com doze subcomissões e um observatório. Defende escolhas estratégicas limitadas, investimento paciente, concorrência, avaliação independente e capacidade pública para criar condições que o investimento privado, sozinho, não consegue assegurar.
+      </p>
+
+      <p style="text-align:left;">
+        A inovação não é uma cerimónia, uma palavra inglesa ou uma fotografia diante de um ecrã. É conhecimento transformado em produto, processo, empresa, produtividade e autonomia. Só merece apoio público quando deixa capacidade real depois de terminar o financiamento.
+      </p>
+
+      <p style="text-align:left; margin-bottom:0;">
+        Portugal precisa de menos reverência pelo cargo e mais respeito pela competência; menos inaugurações e mais produção; menos redes de influência e mais redes de conhecimento. Um país não se liberta da mediocridade proclamando excelência. Liberta-se praticando-a durante tempo suficiente para que deixe de parecer uma excepção.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Referências credíveis
+    </h2>
+
+    <ul style="padding-left:22px;">
+      <li id="ref1">
+        <a href="https://economy-finance.ec.europa.eu/economic-surveillance-eu-member-states/country-pages-including-country-reports/country-report-portugal_en"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Comissão Europeia — Country Report: Portugal, 2026
+        </a>
+      </li>
+      <li id="ref2">
+        <a href="https://www.oecd.org/en/publications/oecd-economic-surveys-portugal-2026_025b3445-en.html"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          OCDE — OECD Economic Surveys: Portugal 2026
+        </a>
+      </li>
+      <li id="ref3">
+        <a href="https://www.wipo.int/gii-ranking/en/portugal"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Organização Mundial da Propriedade Intelectual — Global Innovation Index 2025: Portugal
+        </a>
+      </li>
+      <li id="ref4">
+        <a href="https://energy.ec.europa.eu/topics/nuclear-energy/small-modular-reactors_en"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Comissão Europeia — Estratégia europeia para reactores modulares pequenos, 2026
+        </a>
+      </li>
+      <li id="ref5">
+        <a href="https://blue-economy-observatory.ec.europa.eu/news/eu-blue-economy-report-2025-2025-05-22_en"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Comissão Europeia e Joint Research Centre — EU Blue Economy Report 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://blue-economy-observatory.ec.europa.eu/publications/next-wave-blue-growth-0_en"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Joint Research Centre — The Next Wave of Blue Growth, 2026
+        </a>
+      </li>
+      <li id="ref6">
+        <a href="https://digital-strategy.ec.europa.eu/en/factpages/portugals-2026-digital-decade-country-report"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Comissão Europeia — Portugal's 2026 Digital Decade Country Report
+        </a>
+      </li>
+      <li>
+        <a href="https://www.wipo.int/web-publications/global-innovation-index-2025/index.html"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Organização Mundial da Propriedade Intelectual — Global Innovation Index 2025
+        </a>
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

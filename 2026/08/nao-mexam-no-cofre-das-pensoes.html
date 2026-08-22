@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Não Mexam no Cofre das Pensões</title>
+<meta name="description" content="Não Mexam no Cofre das Pensões">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Não Mexam no Cofre das Pensões</h1>
+      <p class="meta">Publicado em 2026-08-21 15:37:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/08/file_00000000d9e4824696114e369a9e41ba_b13b27fd.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="Não Mexam no Cofre das Pensões">
+      <meta itemprop="description" content="Uma crónica crítica sobre Segurança Social, FEFSS e CGA: transparência, responsabilidade orçamental e o risco de transformar reservas das pensões futuras numa solução conveniente para compromissos históricos do Estado.">
+      <meta itemprop="datePublished" content="2026-08-21">
+      <meta itemprop="dateModified" content="2026-08-21">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_00000000d9e4824696114e369a9e41ba.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      Não Mexam no Cofre das Pensões
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      A promiscuidade financeira entre a Segurança Social e a CGA e a velha tentação do Estado de resolver um problema abrindo a gaveta do lado
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+  <p style="margin:0; text-align:left;">
+    <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+    O debate de Agosto de 2026 sobre a sustentabilidade das pensões tornou visível uma questão que não é apenas contabilística:
+    até onde pode o Estado aproximar, consolidar ou eventualmente cruzar responsabilidades da Segurança Social, do FEFSS e da CGA
+    sem destruir transparência, confiança e disciplina orçamental?
+  </p>
+</div><p>Há uma velha regra da política portuguesa que raramente falha.</p><p>Quando o Estado encontra dinheiro acumulado num fundo, começa imediatamente a descobrir excelentes razões para lhe dar outra utilização.</p><p>O dinheiro pode ter sido reservado para uma finalidade específica.</p><p>Pode representar décadas de prudência.</p><p>Pode existir precisamente para enfrentar dificuldades futuras.</p><p>Pouco importa.</p><p>Há um problema hoje.</p><p>Existe um cofre ali.</p><p>A ligação mental estabelece-se rapidamente.</p><p>E começam os estudos.</p><p>As comissões.</p><p>As interpretações.</p><p>As consolidações contabilísticas.</p><p>As harmonizações.</p><p>As inevitáveis palavras técnicas que tornam respeitável aquilo que, explicado numa mesa de cozinha, seria bastante mais simples:</p><p><strong>falta dinheiro numa gaveta e há dinheiro noutra.</strong></p><p>A polémica agora aberta em torno da Segurança Social, da Caixa Geral de Aposentações e do Fundo de Estabilização Financeira da Segurança Social merece, por isso, muito mais atenção do que uma discussão contabilística entre especialistas.</p><p>Estamos a falar de confiança.</p><p>Estamos a falar de pensões.</p><p>E estamos a falar do princípio elementar de que dinheiro reservado para uma responsabilidade não deve ser transformado discretamente em solução para outra.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">O cofre tem 42 mil milhões</h2><p>No final de 2025, o Fundo de Estabilização Financeira da Segurança Social, o FEFSS, possuía cerca de <strong>42 mil milhões de euros</strong>.</p><p>O próprio Governo anunciou em Janeiro de 2026 que o fundo tinha sido reforçado e apresentou esse valor como uma garantia para as <strong>pensões das gerações futuras</strong>.</p><p>O Governo explicou ainda que o crescimento do fundo em 2025 resultou de dotações e rendimentos financeiros e que o montante já permitia cobrir mais de dois anos de pensões.</p><p>Convém guardar esta expressão.</p><p><strong>Pensões das gerações futuras.</strong></p><p>Porque os fundos públicos têm uma característica curiosa.</p><p>Enquanto são apresentados aos cidadãos, possuem finalidades muito claras.</p><p>Quando começam a fazer falta noutro lado, as fronteiras tornam-se subitamente filosóficas.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">O FEFSS não é uma conta corrente do Estado</h2><p>O FEFSS existe para estabilizar financeiramente a Segurança Social.</p><p>A documentação oficial trata-o como reserva de estabilização financeira do sistema e a sua história legal está ligada à cobertura futura de despesas com pensões.</p><p>Não é uma conta corrente.</p><p>Não é um fundo para despesas imprevistas do Estado.</p><p>Não é um orçamento paralelo.</p><p>E muito menos deveria transformar-se numa espécie de caixa comum onde se vai buscar dinheiro sempre que outro regime apresenta dificuldades.</p><p>Que parte deste princípio é especialmente difícil?</p><p>Aparentemente, aquela onde aparecem 42 mil milhões de euros.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">A CGA é outra história</h2><p>A Caixa Geral de Aposentações representa compromissos históricos do Estado com trabalhadores da Administração Pública.</p><p>Até 31 de Dezembro de 2005, os funcionários abrangidos eram inscritos nesse regime.</p><p>Desde <strong>1 de Janeiro de 2006</strong>, os novos trabalhadores da Administração Pública passaram obrigatoriamente para o regime geral da Segurança Social.</p><p>Os anteriores permaneceram na CGA enquanto mantiveram as condições legais de permanência no regime.</p><p>A consequência matemática desta decisão era conhecida desde o primeiro dia.</p><p>Menos trabalhadores activos a descontar para a CGA.</p><p>Mais aposentados relativamente aos contribuintes.</p><p>Receitas próprias progressivamente insuficientes.</p><p>Necessidade crescente de financiamento pelo Estado.</p><p>Não é propriamente uma surpresa descoberta num sarcófago egípcio em Agosto de 2026.</p><p>Foi uma decisão política consciente.</p><p>E decisões políticas têm consequências financeiras.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">A CGA já é sustentada pelo Orçamento do Estado</h2><p>Os números são suficientemente claros.</p><p>Em 2025, a CGA recebeu cerca de <strong>4,4 mil milhões de euros em quotas e contribuições</strong>.</p><p>Mas recebeu cerca de <strong>7,6 mil milhões de euros do Orçamento do Estado</strong>, dos quais aproximadamente <strong>6,96 mil milhões</strong> corresponderam à comparticipação financeira destinada ao equilíbrio da própria CGA.</p><p>Portanto existe aqui uma realidade que convém não esconder atrás de terminologia sofisticada:</p><p><strong>a CGA não se financia actualmente apenas com as suas contribuições.</strong></p><p>O Orçamento do Estado suporta uma parte gigantesca das responsabilidades.</p><p>E é assim que deve ser se essas responsabilidades correspondem a compromissos históricos assumidos pelo Estado.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quem prometeu deve pagar</h2><p>O princípio é extraordinariamente simples.</p><p>O Estado assumiu determinados compromissos com os seus trabalhadores.</p><p>Esses compromissos devem ser respeitados.</p><p>Não está em causa atacar aposentados da função pública.</p><p>Não está em causa retirar direitos adquiridos.</p><p>Nem sequer está em causa discutir agora se os regimes antigos eram mais ou menos generosos.</p><p>Há pessoas que trabalharam décadas segundo determinadas regras.</p><p>O Estado tem de cumprir.</p><p>Ponto.</p><p>Mas cumprir compromissos não significa escolher arbitrariamente quem paga a factura.</p><p>Se uma responsabilidade pertence ao Estado, deve aparecer claramente nas contas públicas.</p><p><strong>Orçamento do Estado.</strong></p><p>Receita fiscal.</p><p>Despesa pública.</p><p>Transparência.</p><p>Sem truques.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">A arte portuguesa da consolidação conveniente</h2><p>Surge então o relatório apresentado pelo grupo de trabalho criado para analisar a sustentabilidade do sistema de pensões.</p><p>O coordenador, Jorge Bravo, sustenta que observar isoladamente a Segurança Social e a CGA produz uma imagem enganadora.</p><p>Segundo o grupo, se os sistemas forem analisados em conjunto, surge um défice próximo de <strong>2 mil milhões de euros</strong> em 2025.</p><p>Há um argumento intelectual legítimo aqui.</p><p>Desde 2006, os novos funcionários públicos passaram a contribuir para o regime geral da Segurança Social enquanto as pensões dos anteriores subscritores permanecem na CGA.</p><p>Portanto, para estudar a totalidade das responsabilidades públicas com pensões, faz sentido produzir também uma visão consolidada.</p><p>Até aqui, nada a objectar.</p><p>O problema começa quando <strong>consolidar informação se transforma em misturar responsabilidades financeiras</strong>.</p><p>São coisas diferentes.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">Podemos olhar para os dois sem meter as mãos nos dois cofres</h2><p>É perfeitamente possível publicar:</p><p>o saldo da Segurança Social,</p><p>o saldo da CGA,</p><p>a transferência anual do Orçamento para a CGA,</p><p>o património do FEFSS,</p><p>e uma visão consolidada das responsabilidades futuras do Estado.</p><p>Tudo ao mesmo tempo.</p><p>Isso chama-se transparência.</p><p>Não é necessário apagar fronteiras financeiras para obter uma visão integrada.</p><p>Pelo contrário.</p><p>Quanto mais complexo é o sistema, mais precisamos de saber exactamente:</p><p><strong>quem recebe, quem contribui, quem paga e porquê.</strong></p><p>Se juntarmos tudo numa única panela contabilística, ganhamos uma vantagem fantástica:</p><p>ninguém percebe exactamente de onde veio o dinheiro.</p><p>O Estado aprecia bastante este género de inovação.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">A palavra perigosa chama-se fungibilidade</h2><p>Dinheiro é fungível.</p><p>Um euro é um euro.</p><p>É precisamente por isso que as regras de afectação são importantes.</p><p>Porque, sem elas, qualquer reserva pública pode financiar qualquer coisa.</p><p>Se aceitarmos a lógica de que todos os sistemas públicos de pensões são, no fundo, uma única responsabilidade colectiva e portanto todas as reservas podem ser usadas indistintamente, então o FEFSS deixa de ser aquilo que os cidadãos pensavam que era.</p><p>Transforma-se numa reserva geral para responsabilidades previdenciais do Estado.</p><p>É uma mudança enorme.</p><p>E se alguém pretende fazê-la, deve dizê-lo explicitamente.</p><p>Não através de uma nota metodológica numa página perdida de um relatório técnico.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">O dinheiro não nasceu por geração espontânea</h2><p>Também convém corrigir uma simplificação.</p><p>Os 42 mil milhões do FEFSS não são exclusivamente contribuições dos trabalhadores do sector privado.</p><p>O fundo recebeu saldos do sistema previdencial, rendimentos financeiros e importantes dotações do próprio Orçamento do Estado.</p><p>Só em 2025, segundo o Governo, recebeu cerca de <strong>4,5 mil milhões de euros em dotações</strong> e obteve aproximadamente <strong>1,5 mil milhões em rendimento da carteira</strong>.</p><p>Além disso, desde 2006 os novos trabalhadores da Administração Pública também contribuem para o regime geral da Segurança Social.</p><p>Portanto a divisão simplista:</p><p><strong>privados de um lado, funcionários públicos do outro</strong></p><p>já não descreve correctamente o sistema.</p><p>Mas isso não enfraquece o argumento principal.</p><p>Fortalece-o.</p><p>Porque demonstra precisamente por que razão precisamos de <strong>contas transparentes e regras claras de afectação</strong>.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">O fundo existe para o futuro precisamente porque o futuro será difícil</h2><p>Há algo particularmente irresponsável na ideia de olhar para uma reserva previdencial robusta e pensar:</p><p>"Tem dinheiro a mais."</p><p>Não.</p><p>Um fundo de estabilização não tem dinheiro "a mais" porque hoje há excedentes.</p><p>Tem dinheiro acumulado porque amanhã poderá haver défices.</p><p>Portugal está a envelhecer.</p><p>A relação entre trabalhadores e pensionistas vai mudar.</p><p>As carreiras contributivas mudarão.</p><p>A economia mudará.</p><p>A imigração pode mudar.</p><p>O emprego pode cair.</p><p>Podemos atravessar crises.</p><p>É precisamente para isto que se constitui uma reserva.</p><p>Utilizar hoje essa reserva para resolver outro problema porque actualmente parece confortável é o equivalente previdencial a desmontar o telhado numa semana de sol porque está a sobrar madeira.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">A irresponsabilidade começa quando o futuro não vota</h2><p>Existe uma razão política para esta tentação ser tão persistente.</p><p>Os pensionistas de hoje votam.</p><p>Os trabalhadores de hoje votam.</p><p>Os problemas orçamentais de hoje aparecem nas televisões.</p><p>Os défices de hoje incomodam ministros.</p><p>As necessidades de 2045 não votam.</p><p>As dificuldades de 2055 não fazem manifestações.</p><p>Os contribuintes de 2060 talvez ainda estejam no ensino básico.</p><p>É muito fácil sacrificar prudência futura para comprar conforto presente.</p><p>Os governos mudam.</p><p>As legislaturas terminam.</p><p>A conta fica.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">E depois chamamos sustentabilidade ao acto de gastar a reserva</h2><p>Há palavras políticas extraordinárias.</p><p>"Sustentabilidade" é uma delas.</p><p>Pode significar poupar hoje para pagar amanhã.</p><p>Mas aparentemente também pode acabar por significar usar hoje aquilo que poupámos para amanhã.</p><p>Tudo depende do PowerPoint.</p><p>Quando um cidadão constitui uma poupança para a reforma e depois a utiliza para pagar despesas correntes, ninguém chama à operação "reforma estrutural da sustentabilidade familiar".</p><p>Chamamos-lhe aquilo que é:</p><p><strong>gastou a poupança.</strong></p><p>No Estado, felizmente, existem consultoras.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">O relatório tem um ponto importante que não deve ser ignorado</h2><p>Seria intelectualmente desonesto fingir que não existe um problema.</p><p>Existe.</p><p>A CGA é um regime fechado.</p><p>A sua base contributiva continuará a desaparecer.</p><p>O próprio grupo de trabalho estima que entre <strong>2045 e 2050</strong> a CGA ficará sem receitas próprias e dependerá do Estado para financiar as pensões remanescentes.</p><p>Isto tem de ser planeado.</p><p>Tem de ser quantificado.</p><p>Tem de entrar nas projecções orçamentais de longo prazo.</p><p>Tem de existir uma estratégia.</p><p>Mas identificar correctamente um problema não legitima qualquer solução para ele.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">O Estado não pode fazer de conta que descobriu agora a CGA</h2><p>Esta é talvez a parte mais irritante.</p><p>A CGA deixou de aceitar novos subscritores em 2006.</p><p>Vinte anos.</p><p>Houve governos de diferentes cores políticas.</p><p>Orçamentos.</p><p>Reformas.</p><p>Programas de estabilidade.</p><p>Conselhos de ministros.</p><p>Debates parlamentares.</p><p>Relatórios de sustentabilidade.</p><p>Ninguém pode alegar surpresa.</p><p>O Estado sabia perfeitamente que estava a fechar a entrada de contribuintes num sistema que continuaria a pagar pensões durante décadas.</p><p>Se essa decisão criou uma necessidade orçamental futura, então essa necessidade pertence ao Estado.</p><p>Não ao fundo de estabilização que estiver mais recheado quando a factura chegar.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">A falta de integridade financeira começa aqui</h2><p>Integridade financeira não significa apenas não roubar.</p><p>É muito mais exigente.</p><p>Significa respeitar a finalidade das verbas.</p><p>Mostrar contas separadas.</p><p>Não manipular classificações para fabricar narrativas convenientes.</p><p>Não utilizar reservas destinadas a uma geração para esconder custos de outra.</p><p>Não transformar decisões políticas antigas em "problemas do sistema" quando chega o momento de pagar.</p><p>E sobretudo:</p><p><strong>não alterar as regras depois de o dinheiro estar acumulado.</strong></p><p>Porque qualquer Estado pode resolver artificialmente um défice se tiver liberdade suficiente para redefinir aquilo que pertence a quê.</p><p>Isso não é sustentabilidade.</p><p>É contabilidade criativa com brasão nacional.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">Não há crime demonstrado. Há uma questão de confiança.</h2><p>Convém dizer isto claramente.</p><p>Até hoje, <strong>21 de Agosto de 2026</strong>, não há uma decisão conhecida do Governo a determinar que o FEFSS seja utilizado para pagar o défice da CGA.</p><p>O que existe é um relatório, uma recomendação para clarificar o funcionamento do fundo e um debate político sobre o risco de utilização das reservas da Segurança Social.</p><p>O próprio coordenador do grupo afirma que actualmente não está suficientemente claro quando e para que pensões o FEFSS pode ser utilizado.</p><p>Portanto não estamos perante um crime consumado.</p><p>Estamos perante uma encruzilhada política.</p><p>E é precisamente <strong>antes</strong> de a decisão acontecer que os cidadãos devem discutir o princípio.</p><p>Depois do dinheiro sair, a discussão torna-se arqueologia.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">A oposição descobriu o princípio da separação</h2><p>Partidos da oposição criticaram a leitura conjunta dos regimes e exigiram esclarecimentos ao Governo.</p><p>Muito bem.</p><p>O princípio merece defesa independentemente do partido que esteja no Governo.</p><p>E aqui está uma coisa rara que talvez devêssemos experimentar em Portugal:</p><p><strong>aplicar o mesmo princípio quando muda o Governo.</strong></p><p>Se amanhã governar o PS, a regra deve permanecer.</p><p>Se governar o PSD, também.</p><p>Se governar qualquer outro partido, igualmente.</p><p>O dinheiro das pensões não muda de natureza conforme a bancada parlamentar onde nos sentamos.</p><p>Parece revolucionário.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">Os fundos públicos não pertencem ao Governo</h2><p>Esta distinção deveria ser ensinada logo no primeiro dia a qualquer ministro.</p><p>Um Governo administra dinheiro público.</p><p><strong>Não é dono dele.</strong></p><p>Um fundo público com finalidade definida não é património político disponível para resolver prioridades conjunturais.</p><p>O Governo é temporário.</p><p>O fundo representa compromissos que atravessam governos.</p><p>É exactamente por isso que existem regras.</p><p>Se cada executivo pudesse redefinir livremente o destino de qualquer reserva, então não teríamos fundos.</p><p>Teríamos apenas contas bancárias com nomes diferentes.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">O contribuinte não é uma vaca fiscal infinita</h2><p>Há ainda uma dimensão de justiça que não pode ser ignorada.</p><p>O trabalhador por conta de outrem desconta.</p><p>A empresa contribui.</p><p>O trabalhador independente paga contribuições.</p><p>Em troca existe um contrato social implícito:</p><p>estas receitas financiam direitos sociais e pensões segundo determinadas regras.</p><p>O Estado não deveria tratar esse contrato como uma folha Excel onde se deslocam colunas até o resultado final parecer mais confortável.</p><p>Porque cada operação destas destrói uma coisa muito mais difícil de reconstruir do que um saldo:</p><p><strong>confiança.</strong></p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">Sem confiança, nenhum sistema de repartição sobrevive bem</h2><p>A Segurança Social funciona porque gerações activas financiam prestações actuais acreditando que gerações futuras farão o mesmo.</p><p>É um contrato intergeracional.</p><p>Não existe uma conta bancária individual com o nosso nome onde estejam todos os descontos à espera.</p><p>Por isso confiança institucional é essencial.</p><p>Se os cidadãos começam a acreditar que:</p><p>as regras mudam arbitrariamente, fundos são desviados entre finalidades, reservas são utilizadas conforme necessidades políticas e os saldos são apresentados de maneiras diferentes consoante a narrativa necessária,</p><p>então começam a perguntar:</p><p><strong>"Por que razão hei-de confiar?"</strong></p><p>Essa pergunta é devastadora para qualquer sistema previdencial.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">A pior reforma seria destruir confiança para corrigir contas</h2><p>Podemos reformar parâmetros.</p><p>Idades.</p><p>Taxas.</p><p>Fórmulas.</p><p>Incentivos.</p><p>Complementos.</p><p>Tudo isso é discutível.</p><p>Mas uma reforma que gere a sensação de que o Estado pode simplesmente pegar numa reserva acumulada e redireccioná-la para tapar outro buraco produz um dano invisível.</p><p>Mesmo que contabilisticamente funcione.</p><p>A credibilidade institucional não aparece na folha de cálculo.</p><p>Até desaparecer.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">A solução não precisa de magia</h2><p>O caminho parece-me bastante evidente.</p><p><strong>Primeiro: contas integralmente separadas.</strong></p><p>Segurança Social de um lado.</p><p>CGA do outro.</p><p>FEFSS claramente identificado.</p><p><strong>Segundo: visão consolidada adicional.</strong></p><p>O Estado deve publicar a totalidade das responsabilidades previdenciais futuras para que ninguém finja que o défice da CGA não existe.</p><p><strong>Terceiro: financiamento transparente da CGA pelo Orçamento do Estado.</strong></p><p>É uma obrigação histórica do Estado.</p><p>Deve aparecer como tal.</p><p><strong>Quarto: regras explícitas para utilização do FEFSS.</strong></p><p>Quando pode ser utilizado.</p><p>Para que prestações.</p><p>Em que circunstâncias.</p><p>Com que limites.</p><p>Quem autoriza.</p><p>Que obrigação existe de reposição.</p><p>Simples.</p><p>Legível.</p><p>Auditável.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">Não precisamos de promiscuidade para ter solidariedade</h2><p>Alguém argumentará que tudo é Estado.</p><p>Tudo são pensões.</p><p>Tudo são portugueses.</p><p>Portanto separar é artificial.</p><p>Não.</p><p>Solidariedade não exige falta de contabilidade.</p><p>Podemos ser solidários e saber quem paga.</p><p>Podemos garantir pensões da CGA e mostrar quanto custam.</p><p>Podemos garantir pensões da Segurança Social e proteger a sua reserva.</p><p>Podemos ter sistemas públicos robustos sem transformar todas as receitas num caldo financeiro indiferenciado.</p><p>Aliás, é precisamente a transparência que permite solidariedade duradoura.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quando tudo paga tudo, ninguém responde por nada</h2><p>Esta talvez seja a grande doença das finanças públicas.</p><p>Se uma despesa pertence claramente a um programa, podemos avaliá-la.</p><p>Se um fundo tem uma missão clara, podemos fiscalizá-lo.</p><p>Se uma transferência tem origem e destino conhecidos, podemos julgá-la.</p><p>Mas quando tudo começa a financiar tudo:</p><p>a responsabilidade dissolve-se.</p><p>O Governo seguinte culpa o anterior.</p><p>O ministério culpa o sistema.</p><p>O sistema culpa a demografia.</p><p>A demografia, felizmente, não dá entrevistas.</p><p>E o contribuinte paga.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">A CGA merece sustentabilidade. O FEFSS merece protecção.</h2><p>Não existe qualquer contradição nestas duas frases.</p><p>Os aposentados da CGA têm direitos legítimos.</p><p>Os futuros pensionistas da Segurança Social também.</p><p>O Estado deve cumprir ambos.</p><p>A dificuldade orçamental de um compromisso não reduz a legitimidade do outro.</p><p>Governar consiste precisamente em assumir essas escolhas.</p><p>Não em encontrar um cofre e fingir que o problema desapareceu.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">Um país sério não esconde os seus compromissos</h2><p>Um Estado financeiramente íntegro deveria dizer aos cidadãos:</p><p>Temos esta obrigação com a CGA.</p><p>Custa isto.</p><p>Vai evoluir desta maneira.</p><p>Será financiada desta forma.</p><p>Temos esta reserva da Segurança Social.</p><p>Vale isto.</p><p>Serve para estas situações.</p><p>Não pode ser usada para aquelas.</p><p>Ponto.</p><p>Talvez seja demasiado simples.</p><p>Portugal tem uma relação difícil com soluções que cabem em quatro linhas.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">O cofre atrai sempre quem tem um problema</h2><p>Hoje são 42 mil milhões.</p><p>Amanhã podem ser 50.</p><p>Quanto maior o FEFSS ficar, maior será a tentação política.</p><p>Uma crise económica.</p><p>Uma recessão.</p><p>Um défice orçamental.</p><p>Uma CGA mais cara.</p><p>Um programa social urgente.</p><p>Uma eleição particularmente criativa.</p><p>Haverá sempre uma boa razão.</p><p>É precisamente por isso que os fundos precisam de paredes legais altas.</p><p>Não para os proteger quando ninguém precisa deles.</p><p>Para os proteger <strong>quando toda a gente precisa</strong>.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">Não mexam no cofre</h2><p>O Fundo de Estabilização Financeira da Segurança Social existe porque alguém, em algum momento, percebeu uma ideia bastante sensata:</p><p>os tempos bons não duram para sempre.</p><p>Quando existem excedentes, reserva-se uma parte.</p><p>Quando chegar a pressão demográfica, existe uma almofada.</p><p>Isso chama-se prudência.</p><p>Destruir essa prudência para resolver responsabilidades conhecidas há vinte anos teria outro nome.</p><p><strong>Irresponsabilidade.</strong></p><p>Não financeira apenas.</p><p>Intergeracional.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">Cada problema na sua conta</h2><p>A CGA tem um problema estrutural?</p><p>Assuma-se.</p><p>Quantifique-se.</p><p>Financie-se através do Orçamento.</p><p>A Segurança Social tem excedentes?</p><p>Mostrem-se.</p><p>O FEFSS acumula reservas?</p><p>Protejam-se.</p><p>O sistema conjunto tem responsabilidades futuras?</p><p>Publiquem-se.</p><p>Não há qualquer necessidade de escolher entre transparência e sustentabilidade.</p><p>Precisamos das duas.</p><p>Aquilo de que não precisamos é da velha especialidade nacional:</p><p><strong>misturar caixas até ninguém perceber quem pagou o quê.</strong></p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">Porque o dinheiro tem memória</h2><p>Cada euro acumulado num fundo representa decisões anteriores.</p><p>Contribuições.</p><p>Poupança.</p><p>Excedentes não gastos.</p><p>Investimento.</p><p>Rendimento adiado.</p><p>É dinheiro retirado ao consumo presente para proteger o futuro.</p><p>Por isso fundos públicos deveriam ter memória institucional.</p><p>Deveriam lembrar aos governos:</p><p><strong>"Isto já tinha destino antes de chegares."</strong></p><p>Uma frase saudável para qualquer governante.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">O Estado não pode ser o primeiro a quebrar o contrato</h2><p>Exigimos aos cidadãos que cumpram.</p><p>Que paguem impostos.</p><p>Que descontem.</p><p>Que respeitem contratos.</p><p>Que planeiem a reforma.</p><p>Que sejam responsáveis.</p><p>Então o próprio Estado tem de comportar-se segundo padrões ainda mais elevados.</p><p>Não basta a operação ser juridicamente possível.</p><p>Tem de ser institucionalmente íntegra.</p><p>Porque há decisões legais profundamente imprudentes.</p><p>E há expedientes contabilísticos perfeitamente legais que destroem confiança durante décadas.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">A responsabilidade não se transfere juntamente com o dinheiro</h2><p>Esta é a questão central.</p><p>Fecharam a CGA a novas entradas em 2006.</p><p>A decisão foi do Estado.</p><p>As consequências eram previsíveis.</p><p>O Estado tem de assumi-las.</p><p>Não pode, vinte anos depois, olhar para outra reserva e descobrir retrospectivamente que afinal aquelas responsabilidades sempre pertenceram a todos os fundos disponíveis.</p><p>Isso não é reforma.</p><p>É <strong>transferência de responsabilidade</strong>.</p><p>E transferir a factura não apaga quem a criou.</p><h2 style="color:#d6a542; text-align:left; margin-top:40px;">Não mexam no cofre das pensões</h2><p>O debate sobre sustentabilidade da Segurança Social é necessário.</p><p>É urgente.</p><p>Deve ser sério.</p><p>Temos envelhecimento demográfico.</p><p>Carreiras contributivas diferentes.</p><p>Transformação tecnológica.</p><p>Novas formas de trabalho.</p><p>Imigração.</p><p>Mudanças económicas profundas.</p><p>Precisamos de discutir tudo.</p><p>Mas precisamente porque o futuro será difícil, há uma coisa que não devemos fazer:</p><p><strong>confundir uma reserva existente com uma autorização para adiar decisões difíceis.</strong></p><p>O FEFSS não é dinheiro encontrado numa gaveta.</p><p>A CGA não é uma surpresa.</p><p>E o Orçamento do Estado não pode desaparecer da equação apenas porque financiar directamente compromissos históricos torna as contas politicamente menos bonitas.</p><p>Se o Estado prometeu, o Estado paga.</p><p>Com transparência.</p><p>À vista dos cidadãos.</p><p>Sem fundos cruzados.</p><p>Sem alquimia financeira.</p><p>Sem promiscuidade contabilística.</p><p>Porque um governo responsável não pergunta:</p><p><strong>"Onde existe dinheiro que podemos utilizar?"</strong></p><p>Pergunta:</p><p><strong>"A quem pertence esta responsabilidade e como devemos financiá-la de forma justa?"</strong></p><p>Essa diferença parece pequena.</p><p>É a diferença entre administrar um país e apenas administrar a próxima dificuldade.</p><p>E os 42 mil milhões do Fundo de Estabilização não existem para tornar a vida de um Governo mais fácil em 2026.</p><p>Existem para tornar a velhice de milhões de portugueses menos incerta nas décadas que ainda não chegaram.</p><p><strong>Não mexam no cofre.</strong></p><div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+  <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+    Um governo responsável não pergunta onde existe dinheiro que pode utilizar.
+    Pergunta a quem pertence a responsabilidade e como deve financiá-la de forma justa.
+  </p>
+</div><div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+  <h3 style="color:#d6a542; margin-top:0; text-align:left;">ELEMENTOS CENTRAIS</h3>
+  <ul style="padding-left:22px; margin:0;">
+    <li>No final de 2025, o FEFSS dispunha de cerca de 42 mil milhões de euros, segundo o Governo, montante apresentado como reserva para pensões futuras e suficiente para mais de dois anos de pagamentos.</li>
+    <li>Em 2025, a carteira do FEFSS cresceu cerca de 6 mil milhões de euros, incluindo aproximadamente 4,5 mil milhões em dotações e 1,5 mil milhões em rendimentos financeiros.</li>
+    <li>Desde 1 de Janeiro de 2006, novos trabalhadores da Administração Pública passaram a ser inscritos no regime geral da Segurança Social, ficando a CGA fechada a novas inscrições nos termos da Lei n.º 60/2005.</li>
+    <li>Em 2025, a CGA registou cerca de 4,4 mil milhões de euros em quotas e contribuições e cerca de 7,6 mil milhões de transferências do Orçamento do Estado, incluindo aproximadamente 6,96 mil milhões para equilíbrio financeiro.</li>
+    <li>O grupo de trabalho para a sustentabilidade das pensões defendeu em Agosto de 2026 uma leitura conjunta da CGA e da Segurança Social e estimou um défice próximo de 2 mil milhões de euros em 2025 nessa visão consolidada.</li>
+    <li>O mesmo grupo afirmou que o mandato do FEFSS deveria ser clarificado, designadamente quanto ao momento em que pode ser utilizado e às pensões que poderá financiar.</li>
+    <li>À data de 21 de Agosto de 2026, o debate público conhecido incide sobre propostas, metodologia e regras futuras; não existe uma decisão pública consumada que determine a utilização do FEFSS para pagar o défice da CGA.</li>
+  </ul>
+</div><h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+<div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+  <p style="text-align:left;">
+    Esta crónica é um texto de opinião e crítica política de <strong>Francisco Gonçalves</strong>, actualizado
+    para <strong>21 de Agosto de 2026</strong>.
+  </p>
+  <p style="text-align:left;">
+    A crítica incide sobre a possibilidade de aproximar, consolidar ou cruzar responsabilidades financeiras
+    da Segurança Social, do Fundo de Estabilização Financeira da Segurança Social e da Caixa Geral de Aposentações,
+    defendendo contas separadas, visão consolidada adicional e financiamento orçamental transparente dos compromissos históricos do Estado.
+  </p>
+  <p style="text-align:left;">
+    O texto <strong>não afirma que exista uma decisão governamental consumada de utilizar o FEFSS para pagar o défice da CGA</strong>,
+    nem imputa qualquer ilícito criminal concreto. As expressões «promiscuidade contabilística», «contabilidade criativa» e
+    outras formulações críticas são opinião editorial. Os factos verificáveis — dimensão do FEFSS, encerramento da CGA a novas inscrições,
+    transferências do Orçamento do Estado e debate actual sobre o mandato do fundo — são documentados nas referências.
+  </p>
+  <p style="text-align:left; margin-bottom:0;">
+    <strong style="color:#d6a542;">Co-autoria editorial e pesquisa de fontes:</strong>
+    Augustus Veritas, um assistente de IA da OpenAI.
+  </p>
+</div><h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+<ul style="padding-left:22px;">
+<li><a href="https://portugal.gov.pt/pt/gc25/comunicacao/noticias/governo-reforca-fundo-das-pensoes-em-55-mil-milhoes-de-euros" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Governo de Portugal — Governo reforça fundo das pensões em 5,5 mil milhões de euros (21 Jan. 2026)</a></li>
+<li><a href="https://www.seg-social.pt/documents/10152/47586580/Rel_Ativ_FEFSS_2024/fbcc00a2-beab-47b1-af91-1e69afadd5a2" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Segurança Social — Relatório Anual do FEFSS 2024</a></li>
+<li><a href="https://abc.portal.cga.pt/eligibility-to-join-the-scheme" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">CGA — Inscrição de subscritores / regime aplicável desde 1 de Janeiro de 2006</a></li>
+<li><a href="https://www.cga.pt/fs/file/download?c=%28p-dRwhg%28whgRd-eMBte%28ktd%28Lt4_AEdWZjkFAYnXAP9FvypZZ2WOVYrPPEEYEl%28MZl2QV9mVPEZ_VEMPwlNZlKfZAOhYJmJGZnIQAV%29PVWhYJmJGZttVPYvUVVNYh2pTND2LVYfZHE%29%28jyQVAEI_PTcZNx9SLHmFwDj_cVdSLF2MUv2MUv2MLFxFJ48Cp-g%21%21" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Lei n.º 60/2005, de 29 de Dezembro — Convergência do regime de protecção social da função pública</a></li>
+<li><a href="https://app.parlamento.pt/webutils/docs/doc.pdf?fich=UTAO-Rel-2-2026_Exec_Orc_Dez2025.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">UTAO — Evolução Orçamental: Janeiro a Dezembro de 2025</a></li>
+<li><a href="https://abc.portal.cga.pt/web/guest/missao" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">CGA — Missão e âmbito do regime de protecção social convergente</a></li>
+<li><a href="https://rr.pt/noticia/pais/2026/08/18/boa-prestacao-financeira-da-seguranca-social-e-uma-ilusao/482188/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Renascença — Boa prestação financeira da Segurança Social é "uma ilusão" (18 Ago. 2026)</a></li>
+<li><a href="https://rr.pt/noticia/economia/2026/08/18/o-que-propoe-o-grupo-de-trabalho-para-a-seguranca-social/482229/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Renascença — O que propõe o Grupo de Trabalho para a Segurança Social? (18 Ago. 2026)</a></li>
+<li><a href="https://rr.pt/noticia/politica/2026/08/18/pressupostos-falsos-esquerda-critica-relatorio-sobre-seguranca-social/482253/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Renascença — "Pressupostos falsos". PS, PCP e BE criticam relatório sobre Segurança Social (18 Ago. 2026)</a></li>
+<li><a href="https://rr.pt/noticia/politica/2026/07/13/governo-ja-recebeu-relatorio-final-sobre-sustentabilidade-da-seguranca-social/478127/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Renascença — Governo já recebeu relatório final sobre sustentabilidade da Segurança Social (13 Jul. 2026)</a></li>
+</ul><div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+  <p style="color:#cfcfcf; text-align:left;">
+    <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+    Fragmentos do Caos<br>
+    FC-Chronic-News
+  </p>
+  <p style="color:#cfcfcf; text-align:left; font-size:0.95em;">
+    Crónica sobre Segurança Social, FEFSS, CGA e responsabilidade orçamental.<br>
+    Agosto de 2026.
+  </p>
+</div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
