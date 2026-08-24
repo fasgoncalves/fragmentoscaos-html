@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Estado-mercearia e a gaveta das pensões</title>
+<meta name="description" content="O Estado-mercearia e a gaveta das pensões">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Estado-mercearia e a gaveta das pensões</h1>
+      <p class="meta">Publicado em 2026-08-22 09:53:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/08/file_000000007e208243ad456e5cb0b004b9_959bad4e.jpg" alt=""></figure>
+      <div class="post-content">
+        <link rel="canonical" href="https://www.fragmentoscaos.eu/o-estado-mercearia-e-a-gaveta-das-pensoes/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://fragmentoscaos.eu/o-estado-mercearia-e-a-gaveta-das-pensoes/"},
+  "headline": "O Estado-mercearia e a gaveta das pensões",
+  "alternativeHeadline": "Uma democracia não pode administrar as contribuições de uma vida como trocos numa gaveta, ocultando as contas e exibindo o medo sempre que precisa de justificar novos sacrifícios.",
+  "description": "Uma crónica crítica sobre a gestão opaca da Segurança Social, a fragmentação das contas das pensões e o direito democrático dos contribuintes a informação anual, consolidada e auditada.",
+  "datePublished": "2026-08-02T09:53:00+01:00",
+  "dateModified": "2026-08-02T09:53:00+01:00",
+  "inLanguage": "pt-PT",
+  "articleSection": "Segurança Social, Pensões, Estado e Democracia",
+  "keywords": ["Segurança Social", "pensões", "FEFSS", "CGA", "transparência", "contribuições", "Estado", "democracia", "contas públicas"],
+  "author": {"@type": "Person", "name": "Francisco Gonçalves"},
+  "contributor": {"@type": "Person", "name": "Augustus Veritas"},
+  "publisher": {"@type": "Organization", "name": "Fragmentos do Caos", "url": "https://fragmentoscaos.eu/"}
+}
+</script>
+<div style="background:#0b0b0b; color:#e8e8e8; width:100%; margin:0; padding:0; box-sizing:border-box; font-family:Georgia, 'Times New Roman', serif; line-height:1.78;">
+  <div style="width:100%; max-width:900px; margin:0 auto; padding:0 22px 42px 22px; box-sizing:border-box;">
+    <article itemscope itemtype="https://schema.org/NewsArticle" style="margin:0; padding:0;">
+      <header style="margin:0; padding:0 0 24px 0; border-bottom:1px solid #6e5424;">
+        <p style="margin:0; padding:12px 0 8px 0; color:#c79a3b; font-family:Arial, Helvetica, sans-serif; font-size:0.78rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase;">FC · Chronic News · Segurança Social, Pensões e Democracia</p>
+        <h1 itemprop="headline" style="margin:0; padding:0; color:#d5a848; font-family:Georgia, 'Times New Roman', serif; font-size:clamp(2rem, 6vw, 3.7rem); line-height:1.08; font-weight:700; letter-spacing:-0.025em;">O Estado-mercearia e a gaveta das pensões</h1>
+        <p itemprop="alternativeHeadline" style="margin:18px 0 0 0; padding:0; color:#f1d79b; font-size:clamp(1.05rem, 2.5vw, 1.38rem); line-height:1.55; font-style:italic;">Uma democracia não pode administrar as contribuições de uma vida como trocos numa gaveta, ocultando as contas e exibindo o medo sempre que precisa de justificar novos sacrifícios.</p>
+        <p style="margin:18px 0 0 0; padding:0; color:#a9a9a9; font-family:Arial, Helvetica, sans-serif; font-size:0.9rem;">Por <strong itemprop="author" style="color:#e6e6e6;">Francisco Gonçalves</strong> · Colaboração editorial: Augustus Veritas · <time itemprop="datePublished" datetime="2026-08-02T09:53:00+01:00">2 de Agosto de 2026</time></p>
+      </header>
+      <p style="margin:26px 0 0 0; padding:19px 20px; background:#151515; border-left:5px solid #c79a3b; color:#f0f0f0; font-size:1.12rem; line-height:1.75;"><strong style="color:#d5a848;">Nota de abertura.</strong> A Segurança Social é administrada pelo Estado, mas não pertence aos governos. As contribuições representam um compromisso colectivo entre gerações e não uma gaveta auxiliar do Orçamento. O problema democrático começa quando as contas surgem fragmentadas, as projecções mudam sem explicação suficiente e o medo sobre as reformas é usado como instrumento de disciplina política.</p>
+      <aside style="margin:26px 0; padding:20px 22px; background:#111820; border:1px solid #33495f; border-radius:8px; color:#dfe9f2;">
+        <p style="margin:0 0 12px 0; color:#d5a848; font-family:Arial, Helvetica, sans-serif; font-size:0.83rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Tese central</p>
+        <p style="margin:0; font-size:1.08rem;"><strong>Os contribuintes não têm apenas o dever de pagar. Têm o direito de receber uma conta anual consolidada, auditada e compreensível sobre o dinheiro que sustenta as pensões.</strong> Sem essa prestação de contas, o Estado deixa de agir como administrador fiduciário e começa a comportar-se como proprietário de recursos que não são politicamente seus.</p>
+      </aside>
+      <section style="margin:34px 0 0 0; padding:0;">
+        <h2 style="margin:0 0 15px 0; color:#d5a848; font-size:1.72rem; line-height:1.25;">A mercearia nacional</h2>
+        <p style="margin:0 0 18px 0;">Há países administrados como organizações complexas, com contas públicas transparentes, compromissos de longo prazo e responsabilidades claramente definidas. E depois há Portugal.</p>
+        <p style="margin:0 0 18px 0;">Em Portugal, o Estado parece muitas vezes uma mercearia antiga, daquelas onde o proprietário guarda o dinheiro numa gaveta, paga ao fornecedor com as notas recebidas dos clientes, anota dívidas num caderno sebento e, no final do dia, garante que está tudo certo porque ainda existem algumas moedas na caixa.</p>
+        <p style="margin:0 0 18px 0;">A diferença é que, na mercearia, o cliente pode atravessar a rua e comprar noutro estabelecimento. No Estado português, o cidadão não dispõe dessa liberdade. Paga impostos, contribuições e taxas e recebe em troca uma contabilidade suficientemente dispersa para que poucos consigam perceber onde começa uma obrigação, onde termina outra e que compromissos foram assumidos em seu nome.</p>
+      </section>
+      <section style="margin:34px 0 0 0; padding:0;">
+        <h2 style="margin:0 0 15px 0; color:#d5a848; font-size:1.72rem; line-height:1.25;">As contribuições não são um presente ao Governo</h2>
+        <p style="margin:0 0 18px 0;">Durante décadas, milhões de trabalhadores do sector privado descontaram mensalmente uma parte significativa dos seus salários. As entidades empregadoras acrescentaram as respectivas contribuições. Esse dinheiro não foi cobrado por generosidade, nem para funcionar como receita indiferenciada disponível para qualquer despesa politicamente conveniente.</p>
+        <p style="margin:0 0 18px 0;">O sistema português é sobretudo financiado por repartição: as contribuições presentes pagam prestações presentes. Mas isso não elimina a natureza vinculada do sistema previdencial. A ficha portuguesa do Relatório Europeu sobre o Envelhecimento distingue claramente o sistema contributivo, financiado em regime de repartição, do sistema de protecção social de cidadania, de natureza não contributiva e financiado principalmente por impostos.<sup><a href="/#ref-3" style="color:#e3bb61; text-decoration:none;">[3]</a></sup></p>
+        <p style="margin:0 0 18px 0;">Quem desconta durante quarenta ou cinquenta anos participa num contrato social. Não compra uma conta individual com o seu nome gravado na tampa, mas adquire o direito político e moral de exigir que o sistema seja administrado com rigor, previsibilidade e transparência.</p>
+      </section>
+      <section style="margin:34px 0 0 0; padding:0;">
+        <h2 style="margin:0 0 15px 0; color:#d5a848; font-size:1.72rem; line-height:1.25;">O truque das gavetas e das colunas</h2>
+        <p style="margin:0 0 18px 0;">As contribuições entram por uma porta, as transferências orçamentais surgem por outra, os encargos aparecem distribuídos por sistemas diferentes e os relatórios apresentam parcelas que raramente permitem ao cidadão formar uma visão consolidada.</p>
+        <p style="margin:0 0 18px 0;">O regime geral da Segurança Social recebe, desde 2006, os novos trabalhadores da Administração Pública, enquanto a Caixa Geral de Aposentações conserva as responsabilidades relativas aos funcionários inscritos anteriormente. A Comissão Europeia descreve esta arquitectura como dois regimes contributivos distintos, integrados no mesmo sistema público de pensões.<sup><a href="/#ref-3" style="color:#e3bb61; text-decoration:none;">[3]</a></sup></p>
+        <p style="margin:0 0 18px 0;">O Tribunal de Contas foi mais longe: concluiu que o relatório oficial sobre a sustentabilidade financeira não era completo nem abrangente, porque analisava essencialmente a componente contributiva da Segurança Social e não integrava adequadamente a parte não contributiva nem o regime convergente da CGA. Advertiu ainda que as contribuições dos novos trabalhadores públicos melhoram o saldo anual da Segurança Social sem representarem, por si só, uma melhoria equivalente da sustentabilidade conjunta dos dois regimes.<sup><a href="/#ref-1" style="color:#e3bb61; text-decoration:none;">[1]</a></sup></p>
+        <p style="margin:0 0 18px 0;">Muda-se o dinheiro de coluna, apresenta-se a coluna mais fotogénica e chama-se ao resultado uma estratégia. A contabilidade pública descobre assim a sua vocação teatral.</p>
+      </section>
+      <section style="margin:34px 0 0 0; padding:0;">
+        <h2 style="margin:0 0 15px 0; color:#d5a848; font-size:1.72rem; line-height:1.25;">Um excedente real dentro de uma narrativa de medo</h2>
+        <p style="margin:0 0 18px 0;">Em 2025, a Segurança Social registou um excedente de 6.657 milhões de euros, excluindo operações ligadas a fundos europeus. O Conselho das Finanças Públicas assinalou que o sistema previdencial superou a previsão orçamental e que o aumento das contribuições foi central para esse resultado.<sup><a href="/#ref-2" style="color:#e3bb61; text-decoration:none;">[2]</a></sup></p>
+        <p style="margin:0 0 18px 0;">O mesmo relatório explica que as transferências do Orçamento do Estado financiam a despesa não contributiva e que as contribuições estão consignadas ao sistema previdencial. Portanto, a realidade é mais organizada do que a caricatura de uma caixa completamente indiferenciada, mas muito menos transparente do que a propaganda governamental pretende fazer acreditar.<sup><a href="/#ref-2" style="color:#e3bb61; text-decoration:none;">[2]</a></sup></p>
+        <p style="margin:0 0 18px 0;">Não se pode concluir, apenas a partir dos saldos anuais, que as pensões estarão eternamente seguras. Mas também não é honesto anunciar todos os anos uma catástrofe iminente sem mostrar simultaneamente os activos, as responsabilidades, os pressupostos e os cenários alternativos que sustentam essa ameaça.</p>
+      </section>
+      <section style="margin:34px 0 0 0; padding:0;">
+        <h2 style="margin:0 0 15px 0; color:#d5a848; font-size:1.72rem; line-height:1.25;">O fundo que empresta ao próprio Estado</h2>
+        <p style="margin:0 0 18px 0;">O Fundo de Estabilização Financeira da Segurança Social existe para reforçar a capacidade futura de pagamento das pensões. Parte dos seus activos pode ser investida em dívida pública. A operação é legal: o fundo conserva títulos, recebe juros e tem um crédito sobre o Estado.</p>
+        <p style="margin:0 0 18px 0;">Mas a concentração de funções é politicamente desconfortável. O Estado é administrador do fundo, emissor de parte dos activos, regulador do sistema, responsável pelas pensões e garante final. Na mercearia institucional, o dono da caixa escreve a si próprio um vale e depois apresenta o papel como prova de que o dinheiro continua disponível.</p>
+        <p style="margin:0 0 18px 0;">A OCDE sublinha que os fundos públicos de reserva precisam de estruturas que os protejam do risco político e, ao mesmo tempo, assegurem a sua responsabilização perante o público. Transparência, adequação dos responsáveis e prestação de contas não são adornos administrativos; são mecanismos de defesa do património colectivo.<sup><a href="/#ref-9" style="color:#e3bb61; text-decoration:none;">[9]</a></sup></p>
+        <p style="margin:0 0 18px 0;">A experiência internacional mostra igualmente que fundos de pensões robustos dependem de estruturas de governação que reduzam a interferência política e tornem claras as decisões de investimento. O Banco Mundial destacou precisamente estes elementos no estudo do fundo público malaio.<sup><a href="/#ref-10" style="color:#e3bb61; text-decoration:none;">[10]</a></sup></p>
+      </section>
+      <section style="margin:34px 0 0 0; padding:0;">
+        <h2 style="margin:0 0 15px 0; color:#d5a848; font-size:1.72rem; line-height:1.25;">A chantagem anual</h2>
+        <p style="margin:0 0 18px 0;">Apesar da arquitectura pouco legível, há uma mensagem que chega aos cidadãos com uma clareza quase comovente: "as pensões do futuro estão em risco".</p>
+        <p style="margin:0 0 18px 0;">A ameaça regressa em entrevistas, estudos e debates. Os jovens são informados de que talvez nunca recebam reforma. Os trabalhadores mais velhos são aconselhados a trabalhar durante mais anos. Os pensionistas são convidados a agradecer cada actualização como se o ministro tivesse retirado algumas notas da carteira pessoal.</p>
+        <p style="margin:0 0 18px 0;">Os desafios demográficos são reais. Em 2025, Portugal tinha uma das maiores taxas de dependência de idosos da União Europeia: 38,6 pessoas com 65 ou mais anos por cada 100 pessoas em idade activa, segundo o Eurostat.<sup><a href="/#ref-4" style="color:#e3bb61; text-decoration:none;">[4]</a></sup></p>
+        <p style="margin:0 0 18px 0;">O FMI prevê pressões crescentes sobre a despesa com pensões e saúde em Portugal e recomenda reformas para melhorar a sustentabilidade, a eficiência e a equidade do sistema.<sup><a href="/#ref-5" style="color:#e3bb61; text-decoration:none;">[5]</a></sup></p>
+        <p style="margin:0 0 18px 0;">A OCDE confirma que o envelhecimento populacional é um desafio estrutural para as economias desenvolvidas.<sup><a href="/#ref-6" style="color:#e3bb61; text-decoration:none;">[6]</a></sup></p>
+        <p style="margin:0 0 18px 0;">Mas um risco verdadeiro não autoriza uma comunicação enganadora. Sustentabilidade não depende apenas da natalidade e da longevidade. Depende também dos salários, do emprego, da produtividade, da imigração, da participação laboral, da informalidade económica e da distribuição do rendimento. Uma economia de salários baixos produz contribuições baixas; um país que expulsa jovens qualificados perde futuros contribuintes. Curiosamente, esta parte da equação costuma desaparecer dos sermões sobre responsabilidade.</p>
+      </section>
+      <section style="margin:34px 0 0 0; padding:0;">
+        <h2 style="margin:0 0 15px 0; color:#d5a848; font-size:1.72rem; line-height:1.25;">A democracia começa no livro de contas</h2>
+        <p style="margin:0 0 18px 0;">Uma democracia não se mede apenas pela realização periódica de eleições. Mede-se pela obrigação permanente de o poder explicar o que faz com os recursos que os cidadãos são obrigados a entregar.</p>
+        <p style="margin:0 0 18px 0;">A International Social Security Association coloca a responsabilização, a transparência, a previsibilidade e a participação entre os princípios fundamentais da boa governação das instituições de segurança social.<sup><a href="/#ref-7" style="color:#e3bb61; text-decoration:none;">[7]</a></sup></p>
+        <p style="margin:0 0 18px 0;">A mesma organização recomenda auditorias internas e externas adequadas, revisões actuariais regulares e processos formais de identificação e gestão dos riscos, com divulgação periódica de informação ao público.<sup><a href="/#ref-8" style="color:#e3bb61; text-decoration:none;">[8]</a></sup></p>
+        <p style="margin:0 0 18px 0;">O Tribunal de Contas português pediu exactamente aquilo que uma democracia adulta deveria considerar elementar: uma avaliação actuarial integrada, informação completa e comparável, divulgação dos pressupostos e análise da sensibilidade dos resultados às alterações demográficas, económicas, financeiras e legislativas.<sup><a href="/#ref-1" style="color:#e3bb61; text-decoration:none;">[1]</a></sup></p>
+        <p style="margin:0 0 18px 0;">Não é radicalismo. É contabilidade com luz acesa.</p>
+      </section>
+      <section style="margin:34px 0 0 0; padding:0;">
+        <h2 style="margin:0 0 15px 0; color:#d5a848; font-size:1.72rem; line-height:1.25;">A conta anual que os contribuintes merecem</h2>
+        <p style="margin:0 0 18px 0;">Os contribuintes deveriam poder conhecer, todos os anos, quanto entrou em contribuições, quanto foi pago em pensões e restantes prestações contributivas, quanto foi transferido pelo Orçamento do Estado, como evoluiu o Fundo de Estabilização, onde está investido, quais foram os rendimentos e perdas e quais são as projecções para dez, vinte e trinta anos.</p>
+        <p style="margin:0 0 18px 0;">Essa informação deveria ser apresentada numa conta consolidada da Segurança Social e da CGA, auditada de forma independente, com cenários actuariais comparáveis e explicações sobre qualquer alteração de metodologia.</p>
+        <p style="margin:0 0 18px 0;">Cada trabalhador deveria igualmente receber um extracto anual da carreira contributiva, com remunerações registadas, períodos validados e uma estimativa prudente da futura pensão, acompanhada dos pressupostos utilizados. O Reino Unido e outros países já permitem aos cidadãos consultar previsões personalizadas da pensão pública. Não se trata de prometer o impossível; trata-se de reduzir a distância entre quem paga e quem decide.</p>
+        <p style="margin:0 0 18px 0;">A Comissão Europeia reconhece que Portugal enfrenta custos crescentes com pensões a longo prazo, embora mantenha finanças públicas actualmente sólidas. Esta combinação exige planeamento e transparência, não dramatização selectiva.<sup><a href="/#ref-11" style="color:#e3bb61; text-decoration:none;">[11]</a></sup></p>
+      </section>
+      <section style="margin:34px 0 0 0; padding:0;">
+        <h2 style="margin:0 0 15px 0; color:#d5a848; font-size:1.72rem; line-height:1.25;">Fechar a mercearia</h2>
+        <p style="margin:0 0 18px 0;">Portugal precisa de abandonar o modelo do Estado-mercearia. Governar não é deslocar dinheiro entre gavetas, mudar etiquetas e anunciar que a caixa fecha certa.</p>
+        <p style="margin:0 0 18px 0;">Governar é assumir compromissos, apresentar contas integradas, permitir auditoria pública e preparar o futuro sem transformar o medo numa ferramenta de obediência.</p>
+        <p style="margin:0 0 18px 0;">O dinheiro da Segurança Social não pertence aos governos. Pertence a um compromisso colectivo construído pelo trabalho de gerações. O Estado é seu administrador e garante, não proprietário absoluto.</p>
+        <p style="margin:0 0 18px 0;">Enquanto este princípio não for respeitado, o cidadão continuará diante do balcão, recibo na mão, a tentar compreender como conseguiu pagar durante uma vida inteira e, ainda assim, acabar tratado como devedor.</p>
+        <p style="margin:0 0 18px 0;">E o Estado continuará atrás da caixa registadora, de lápis na orelha, a garantir que as contas estão certas.</p>
+        <p style="margin:0 0 18px 0;">Só não sabe explicar de quem.</p>
+      </section>
+      <aside style="margin:30px 0; padding:21px 23px; background:#17130c; border:1px solid #6e5424; border-radius:8px; color:#eee2c9;">
+        <p style="margin:0 0 12px 0; color:#d5a848; font-family:Arial, Helvetica, sans-serif; font-size:0.83rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Uma conta democrática mínima</p>
+        <ul style="margin:0; padding:0 0 0 22px;">
+          <li style="margin:0 0 9px 0;">Receitas contributivas e transferências fiscais claramente separadas.</li>
+          <li style="margin:0 0 9px 0;">Contas consolidadas da Segurança Social, CGA e fundos de reserva.</li>
+          <li style="margin:0 0 9px 0;">Activos, responsabilidades e projecções actuariais para vários cenários.</li>
+          <li style="margin:0 0 9px 0;">Carteira, rentabilidade, custos e risco do FEFSS publicados em linguagem acessível.</li>
+          <li style="margin:0;">Extracto anual individual da carreira contributiva e estimativa prudente da pensão.</li>
+        </ul>
+      </aside>
+      <section style="margin:38px 0 0 0; padding:24px 24px 22px 24px; background:#161616; border-top:3px solid #c79a3b; border-bottom:1px solid #55431f;">
+        <p style="margin:0 0 9px 0; color:#d5a848; font-family:Arial, Helvetica, sans-serif; font-size:0.83rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase;">Nota editorial</p>
+        <p style="margin:0 0 16px 0;">Uma democracia não se mede apenas pela realização periódica de eleições. Mede-se também pela obrigação permanente de o poder prestar contas a quem sustenta o Estado.</p>
+        <p style="margin:0 0 16px 0;">Os fundos da Segurança Social não pertencem aos governos, aos ministros nem às maiorias parlamentares de cada momento. Foram construídos pelas contribuições de milhões de trabalhadores e empresas ao longo de décadas. O Estado administra esses recursos, mas não é seu proprietário. Confundir administração com posse é uma das formas mais perigosas de abuso político.</p>
+        <p style="margin:0 0 16px 0;">Os contribuintes têm o direito de conhecer, todos os anos, quanto entrou em contribuições, quanto foi pago em pensões e prestações contributivas, quanto foi transferido pelo Orçamento do Estado, como evoluiu o Fundo de Estabilização, onde está investido, quais foram os seus rendimentos e perdas e quais são as projecções para as décadas seguintes.</p>
+        <p style="margin:0 0 16px 0;">Essa informação não deveria permanecer dispersa por centenas de páginas de relatórios técnicos, escritos numa linguagem quase impenetrável para o cidadão comum. Deveria existir uma conta anual consolidada da Segurança Social, auditada por uma entidade independente e apresentada de forma clara, simples e acessível.</p>
+        <p style="margin:0 0 16px 0;">Cada trabalhador deveria também receber um extracto anual da sua carreira contributiva, com o total de contribuições registadas, os direitos acumulados e uma estimativa prudente da futura pensão, acompanhada dos pressupostos utilizados.</p>
+        <p style="margin:0 0 16px 0;">O comportamento político torna-se particularmente grave quando o Estado mantém as contas opacas e utiliza depois essa mesma opacidade para assustar os cidadãos com a alegada falência futura do sistema.</p>
+        <p style="margin:0 0 16px 0;">Primeiro esconde os números numa floresta contabilística. Depois surge à saída da floresta a anunciar que talvez não haja dinheiro.</p>
+        <p style="margin:0 0 16px 0;">Isto não é governação responsável. É chantagem política baseada numa desigualdade de informação criada pelo próprio poder.</p>
+        <p style="margin:0 0 16px 0;">Numa democracia adulta, quem exige sacrifícios deve apresentar as contas. Quem administra dinheiro alheio deve justificar cada transferência. E quem passou uma vida inteira a contribuir não pode ser tratado como um pedinte diante do balcão do Estado.</p>
+        <p style="margin:0;"><strong style="color:#f1d79b;">A transparência dos fundos da Segurança Social não é uma concessão administrativa. É um direito dos contribuintes e uma obrigação democrática do Estado.</strong></p>
+      </section>
+      <section style="margin:40px 0 0 0; padding:0;">
+        <h2 style="margin:0 0 16px 0; color:#d5a848; font-size:1.62rem; line-height:1.25;">Referências nacionais e internacionais</h2>
+        <ol style="margin:0; padding:0 0 0 24px; color:#cfcfcf; font-family:Arial, Helvetica, sans-serif; font-size:0.92rem; line-height:1.65;">
+          <li id="ref-1" style="margin:0 0 12px 0;"><strong>Tribunal de Contas</strong> (2024), <em>Auditoria ao Relatório sobre a Sustentabilidade Financeira da Segurança Social — Relatório n.º 17/2024</em>. <a href="https://www.tcontas.pt/pt-pt/ProdutosTC/Relatorios/RelatoriosAuditoria/Documents/2024/rel017-2024-2s.pdf" target="_blank" rel="noopener noreferrer" style="color:#e3bb61; overflow-wrap:anywhere;">Consultar auditoria</a>.</li>
+          <li id="ref-2" style="margin:0 0 12px 0;"><strong>Conselho das Finanças Públicas</strong> (2026), <em>Evolução Orçamental da Segurança Social e da CGA em 2025</em>. <a href="https://www.cfp.pt/uploads/publicacoes_ficheiros/cfp-rel-04-2026.pdf" target="_blank" rel="noopener noreferrer" style="color:#e3bb61; overflow-wrap:anywhere;">Consultar relatório</a>.</li>
+          <li id="ref-3" style="margin:0 0 12px 0;"><strong>Comissão Europeia — Economic Policy Committee</strong> (2024), <em>2024 Ageing Report: Country Fiche for Portugal</em>. <a href="https://economy-finance.ec.europa.eu/document/download/0617eec0-e5ba-4635-9443-c71a953fb0cc_en?filename=2024-ageing-report-country-fiche-Portugal.pdf" target="_blank" rel="noopener noreferrer" style="color:#e3bb61; overflow-wrap:anywhere;">Consultar ficha de Portugal</a>.</li>
+          <li id="ref-4" style="margin:0 0 12px 0;"><strong>Eurostat</strong> (2026), <em>Population structure and ageing</em>. <a href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Population_structure_and_ageing" target="_blank" rel="noopener noreferrer" style="color:#e3bb61; overflow-wrap:anywhere;">Consultar estatísticas</a>.</li>
+          <li id="ref-5" style="margin:0 0 12px 0;"><strong>Fundo Monetário Internacional</strong> (2026), <em>Portugal: Staff Concluding Statement of the 2026 Article IV Mission</em>. <a href="https://www.imf.org/en/news/articles/2026/05/06/mcs-05062026-portugal-staff-concluding-statement-of-the-2026-article-iv-mission" target="_blank" rel="noopener noreferrer" style="color:#e3bb61; overflow-wrap:anywhere;">Consultar avaliação</a>.</li>
+          <li id="ref-6" style="margin:0 0 12px 0;"><strong>OCDE</strong> (2025), <em>Pensions at a Glance 2025</em>. <a href="https://www.oecd.org/en/publications/pensions-at-a-glance-2025_e40274c1-en.html" target="_blank" rel="noopener noreferrer" style="color:#e3bb61; overflow-wrap:anywhere;">Consultar publicação</a>.</li>
+          <li id="ref-7" style="margin:0 0 12px 0;"><strong>International Social Security Association</strong> (2026), <em>ISSA Guidelines on Good Governance</em>. <a href="https://www.issa.int/guidelines/gg" target="_blank" rel="noopener noreferrer" style="color:#e3bb61; overflow-wrap:anywhere;">Consultar orientações</a>.</li>
+          <li id="ref-8" style="margin:0 0 12px 0;"><strong>International Social Security Association</strong> (2008), <em>Financial governance and risk management of social security</em>. <a href="https://www.issa.int/sites/default/files/documents/publications/TR-15-2_en-25493.pdf" target="_blank" rel="noopener noreferrer" style="color:#e3bb61; overflow-wrap:anywhere;">Consultar estudo</a>.</li>
+          <li id="ref-9" style="margin:0 0 12px 0;"><strong>OCDE</strong> (2008), <em>Governance and Investment of Public Pension Reserve Funds in Selected OECD Countries</em>. <a href="https://www.oecd.org/en/publications/governance-and-investment-of-public-pension-reserve-funds-in-selected-oecd-countries_244270553278.html" target="_blank" rel="noopener noreferrer" style="color:#e3bb61; overflow-wrap:anywhere;">Consultar estudo</a>.</li>
+          <li id="ref-10" style="margin:0 0 12px 0;"><strong>Banco Mundial</strong> (2018), <em>Case Study on the Employees Provident Fund of Malaysia</em>. <a href="https://www.worldbank.org/en/country/malaysia/publication/case-study-on-the-employees-provident-fund-of-malaysia" target="_blank" rel="noopener noreferrer" style="color:#e3bb61; overflow-wrap:anywhere;">Consultar estudo de caso</a>.</li>
+          <li id="ref-11" style="margin:0 0 12px 0;"><strong>Comissão Europeia</strong> (2026), <em>European Semester documents — Portugal</em>. <a href="https://reforms-investments.ec.europa.eu/european-semester-your-country/european-semester-documents-portugal_en" target="_blank" rel="noopener noreferrer" style="color:#e3bb61; overflow-wrap:anywhere;">Consultar recomendações</a>.</li>
+        </ol>
+      </section>
+
+      <footer style="margin:40px 0 0 0; padding:22px 0 0 0; border-top:1px solid #4d4027; color:#aaaaaa; font-family:Arial, Helvetica, sans-serif; font-size:0.9rem;">
+        <p style="margin:0 0 8px 0;"><strong style="color:#d5a848;">Francisco Gonçalves</strong></p>
+        <p style="margin:0;">Fragmentos do Caos · Crónica, análise e cidadania sobre o Estado, as instituições e os direitos de quem sustenta o país.</p>
+      </footer>
+    </article>
+  </div>
+</div>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
