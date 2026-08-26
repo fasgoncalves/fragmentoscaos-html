@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Mudança é a Linguagem do Universo</title>
+<meta name="description" content="A Mudança é a Linguagem do Universo">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Mudança é a Linguagem do Universo</h1>
+      <p class="meta">Publicado em 2026-08-24 10:41:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/08/file_00000000b7c08246bc8c7bcf5c40e11b_27a5b69e.jpg" alt=""></figure>
+      <div class="post-content">
+        
+<div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="A Mudança é a Linguagem do Universo">
+      <meta itemprop="description" content="Uma crónica sobre a mudança como condição permanente do Universo, da evolução das estrelas à adaptação da vida, das sociedades e da tecnologia.">
+      <meta itemprop="datePublished" content="2026-08-23">
+      <meta itemprop="dateModified" content="2026-08-23">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_00000000b7c08246bc8c7bcf5c40e11b.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      A Mudança é a Linguagem do Universo
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      Talvez a única verdadeira permanência seja precisamente a transformação.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        A mudança não é uma força física no sentido rigoroso do termo. Mas, do nascimento e morte das estrelas à evolução da vida e das sociedades, transformar-se parece ser uma das condições mais persistentes de tudo aquilo que existe.
+      </p>
+    </div>
+
+
+    <p>Há uma ideia que atravessa silenciosamente tudo o que existe: <strong>nada permanece verdadeiramente imóvel</strong>.</p>
+
+    <p>As montanhas parecem eternas porque vivemos pouco.</p>
+    <p>As estrelas parecem fixas porque estamos demasiado longe.</p>
+    <p>As sociedades parecem sólidas porque confundimos hábito com estabilidade.</p>
+    <p>Nós próprios gostamos de acreditar que somos hoje aquilo que éramos ontem, apenas porque o espelho insiste em colaborar com a ilusão.</p>
+    <p>Mas o Universo não conhece imobilidade.</p>
+    <p>Conhece transformação.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Tudo está a tornar-se outra coisa</h2>
+
+    <p>Uma estrela nasce de uma nuvem de gás, acende-se, consome combustível, envelhece e morre.</p>
+    <p>Da sua morte podem nascer novos elementos.</p>
+    <p>Desses elementos formar-se-ão planetas.</p>
+    <p>Num desses planetas talvez apareçam moléculas capazes de se reproduzir.</p>
+    <p>Depois células.</p>
+    <p>Depois organismos.</p>
+    <p>Depois cérebros.</p>
+    <p>Depois criaturas suficientemente estranhas para construírem telescópios e perguntarem de onde vieram.</p>
+    <p>Nós.</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Não somos espectadores colocados diante do Universo. Somos uma das suas transformações.
+      </p>
+    </div>
+
+    <p>O ferro que transportamos no sangue foi produzido no interior de estrelas.</p>
+    <p>O cálcio dos nossos ossos tem uma história cósmica.</p>
+    <p>Os átomos que formam o nosso corpo já pertenceram a outras estruturas e, inevitavelmente, voltarão a pertencer a outras.</p>
+    <p>Por isso, quando falamos de mudança, não estamos a falar apenas de política, tecnologia ou sociedade.</p>
+    <p>Estamos a falar da própria arquitectura da existência.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O Universo não é uma fotografia</h2>
+
+    <p>Durante muito tempo tivemos tendência para imaginar o Universo como uma enorme máquina.</p>
+    <p>Peças.</p>
+    <p>Engrenagens.</p>
+    <p>Movimento previsível.</p>
+    <p>Uma espécie de relógio cósmico extraordinariamente complicado.</p>
+    <p>Mas talvez uma metáfora melhor seja outra.</p>
+    <p>O Universo parece-se mais com uma história permanentemente escrita.</p>
+    <p>Cada instante nasce do anterior, mas nunca é exactamente igual.</p>
+    <p>As galáxias afastam-se.</p>
+    <p>As estrelas evoluem.</p>
+    <p>Os planetas transformam-se.</p>
+    <p>As espécies adaptam-se.</p>
+    <p>Os ecossistemas reorganizam-se.</p>
+    <p>A matéria muda de estado.</p>
+    <p>A energia passa de umas formas para outras.</p>
+    <p>Até aquilo que chamamos equilíbrio é normalmente apenas uma pausa temporária entre transformações.</p>
+    <p>A estabilidade absoluta talvez seja uma das maiores ilusões humanas.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A mudança não é uma força física</h2>
+
+    <p>Convém fazer aqui uma pequena distinção, antes que Newton regresse do túmulo para apresentar uma reclamação formal.</p>
+    <p>A mudança não é uma força fundamental da natureza como a gravidade ou o electromagnetismo.</p>
+    <p>Mas, numa perspectiva mais ampla, ela é talvez a característica mais constante de tudo aquilo que observamos.</p>
+    <p>As forças produzem interacções.</p>
+    <p>O tempo ordena acontecimentos.</p>
+    <p>A termodinâmica introduz direcções estatísticas.</p>
+    <p>A evolução selecciona.</p>
+    <p>A matéria reorganiza-se.</p>
+    <p>E aquilo que emerge de tudo isso é transformação permanente.</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        As forças explicam como as coisas mudam. A mudança descreve aquilo que inevitavelmente acontece.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O grande paradoxo humano</h2>
+
+    <p>E então aparece o ser humano.</p>
+    <p>Um produto da mudança que passou grande parte da sua história a tentar impedir que as coisas mudassem.</p>
+    <p>Criámos fronteiras.</p>
+    <p>Hierarquias.</p>
+    <p>Instituições.</p>
+    <p>Dogmas.</p>
+    <p>Regulamentos.</p>
+    <p>Tradições.</p>
+    <p>Procedimentos.</p>
+    <p>Organogramas.</p>
+    <p>E, naturalmente, departamentos administrativos especializados na preservação do glorioso princípio:</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">"Sempre fizemos assim."</p>
+    </div>
+
+    <p>É extraordinário.</p>
+    <p>A evolução passou milhares de milhões de anos a produzir uma espécie capaz de aprender e adaptar-se.</p>
+    <p>E depois essa espécie inventou formulários para evitar ter de o fazer.</p>
+    <p>Há algo de quase cósmico nesta ironia.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A mudança assusta</h2>
+
+    <p>Mas talvez haja uma razão profunda para essa resistência.</p>
+    <p>A mudança introduz incerteza.</p>
+    <p>E o cérebro humano não gosta particularmente de incerteza.</p>
+    <p>Gostamos de prever.</p>
+    <p>Gostamos de controlar.</p>
+    <p>Gostamos de acreditar que amanhã será suficientemente parecido com ontem para conseguirmos atravessá-lo sem grandes surpresas.</p>
+    <p>Durante milhões de anos isso foi útil.</p>
+    <p>Num ambiente perigoso, aquilo que era conhecido tinha normalmente uma vantagem sobre aquilo que era desconhecido.</p>
+    <p>Mas o mesmo mecanismo que nos protegeu também nos pode aprisionar.</p>
+    <p>Podemos continuar agarrados a sistemas que já não funcionam simplesmente porque são familiares.</p>
+    <p>Uma empresa continua com processos absurdos.</p>
+    <p>Um Estado continua com burocracias herdadas.</p>
+    <p>Uma sociedade mantém instituições concebidas para um mundo que já desapareceu.</p>
+    <p>E todos fingem que estão a preservar estabilidade.</p>
+    <p>Na realidade estão apenas a atrasar uma transformação inevitável.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A tecnologia acelera o relógio</h2>
+
+    <p>É aqui que a tecnologia se torna particularmente interessante.</p>
+    <p>Durante grande parte da história humana, as mudanças tecnológicas aconteciam lentamente.</p>
+    <p>Uma pessoa podia nascer, viver e morrer num mundo relativamente semelhante.</p>
+    <p>Hoje isso praticamente desapareceu.</p>
+    <p>A Internet alterou comunicações, comércio, conhecimento e relações humanas em poucas décadas.</p>
+    <p>Os smartphones mudaram comportamentos numa geração.</p>
+    <p>A inteligência artificial poderá comprimir novamente o tempo da transformação.</p>
+    <p>E é exactamente por isso que a resistência à mudança se torna cada vez mais perigosa.</p>
+    <p>Uma organização podia antigamente demorar vinte anos a adaptar-se.</p>
+    <p>Hoje talvez não tenha vinte anos.</p>
+    <p>Possivelmente nem dez.</p>
+    <p>Talvez nem cinco.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Inteligência é capacidade de adaptação</h2>
+
+    <p>Há uma definição de inteligência que sempre me parece particularmente poderosa.</p>
+    <p>Inteligência não é apenas saber coisas.</p>
+    <p>É conseguir adaptar comportamento quando o ambiente muda.</p>
+    <p>Vista dessa forma, a transformação tecnológica que estamos a viver constitui uma espécie de teste colectivo de inteligência.</p>
+    <p>Não apenas para indivíduos.</p>
+    <p>Para empresas.</p>
+    <p>Para administrações públicas.</p>
+    <p>Para governos.</p>
+    <p>Para sociedades inteiras.</p>
+    <p>Ter acesso à inteligência artificial não torna automaticamente uma organização inteligente.</p>
+    <p>Da mesma forma que possuir uma biblioteca nunca tornou ninguém sábio.</p>
+    <p>A questão é outra:</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">O que fazemos com aquilo que sabemos?</p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O erro de tentar congelar o mundo</h2>
+
+    <p>Todas as civilizações cometeram alguma versão deste erro.</p>
+    <p>Em determinado momento atingem uma configuração que funciona.</p>
+    <p>Criam instituições.</p>
+    <p>Criam regras.</p>
+    <p>Criam estruturas.</p>
+    <p>Depois confundem aquilo que funcionou com aquilo que funcionará para sempre.</p>
+    <p>Mas o ambiente continua a mudar.</p>
+    <p>A tecnologia muda.</p>
+    <p>A economia muda.</p>
+    <p>A população muda.</p>
+    <p>O conhecimento muda.</p>
+    <p>As necessidades mudam.</p>
+    <p>E o sistema começa lentamente a deixar de corresponder à realidade.</p>
+    <p>É nesse ponto que aparecem duas possibilidades.</p>
+    <p>Adaptar.</p>
+    <p>Ou resistir.</p>
+    <p>A primeira costuma ser desconfortável.</p>
+    <p>A segunda costuma ser muito mais cara.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A natureza nunca pediu autorização</h2>
+
+    <p>Há talvez aqui uma lição bastante simples.</p>
+    <p>A mudança nunca precisou da nossa aprovação.</p>
+    <p>Os continentes deslocaram-se sem consultar governos.</p>
+    <p>As espécies desapareceram sem convocar assembleias.</p>
+    <p>As estrelas explodiram sem estudos de impacto ambiental.</p>
+    <p>A natureza possui esta irritante tendência para continuar o seu trabalho independentemente da opinião humana.</p>
+    <p>Nós podemos discutir a transformação.</p>
+    <p>Podemos adiá-la.</p>
+    <p>Podemos tentar regulá-la.</p>
+    <p>Podemos fingir que ela não existe.</p>
+    <p>Mas não podemos abolir o tempo.</p>
+    <p>E enquanto houver tempo haverá transformação.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O futuro pertence aos que aprendem</h2>
+
+    <p>Por isso talvez a grande vantagem do futuro não pertença necessariamente aos mais fortes.</p>
+    <p>Nem aos maiores.</p>
+    <p>Nem sequer aos que hoje possuem mais recursos.</p>
+    <p>Pertencerá provavelmente aos que aprenderem mais depressa.</p>
+    <p>À empresa capaz de abandonar um processo quando percebe que existe outro melhor.</p>
+    <p>Ao Estado capaz de redesenhar serviços em vez de simplesmente digitalizar burocracia.</p>
+    <p>Ao trabalhador capaz de aprender novas ferramentas.</p>
+    <p>Ao cientista disposto a abandonar uma teoria quando os dados mostram que estava errado.</p>
+    <p>À sociedade capaz de reconhecer que as soluções de ontem podem ter-se transformado nos problemas de hoje.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O Universo dá-nos a resposta</h2>
+
+    <p>Talvez devêssemos olhar mais vezes para aquilo que nos rodeia.</p>
+    <p>O Universo tem cerca de 13,8 mil milhões de anos.</p>
+    <p>E não passou nenhum deles imóvel.</p>
+    <p>Desde os primeiros instantes, matéria e energia reorganizam-se continuamente.</p>
+    <p>Surgiram partículas.</p>
+    <p>Átomos.</p>
+    <p>Estrelas.</p>
+    <p>Galáxias.</p>
+    <p>Planetas.</p>
+    <p>Química complexa.</p>
+    <p>Vida.</p>
+    <p>Consciência.</p>
+    <p>Tecnologia.</p>
+    <p>E agora máquinas capazes de participar no processamento do próprio conhecimento humano.</p>
+    <p>Talvez daqui a milhões de anos exista algo que hoje nem conseguimos imaginar.</p>
+    <p>Provavelmente existirá.</p>
+    <p>Porque há uma coisa que o Universo parece fazer extraordinariamente bem:</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Transformar possibilidades em novas realidades.</p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A verdadeira permanência</h2>
+
+    <p>Talvez por isso devamos inverter uma ideia antiga.</p>
+    <p>Passamos grande parte da vida à procura daquilo que permanece.</p>
+    <p>Mas talvez a única verdadeira permanência seja precisamente a transformação.</p>
+    <p>Mudam as estrelas.</p>
+    <p>Mudam os planetas.</p>
+    <p>Mudam as espécies.</p>
+    <p>Mudam as sociedades.</p>
+    <p>Mudamos nós.</p>
+    <p>E aquilo que sobreviverá melhor não será necessariamente aquilo que conseguir resistir durante mais tempo.</p>
+    <p>Será aquilo que conseguir transformar-se sem perder aquilo que verdadeiramente importa.</p>
+    <p>No fundo, talvez o Universo nos esteja a ensinar a mesma lição desde o princípio.</p>
+    <p>Uma lição que continuamos teimosamente a esquecer:</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Não é a mudança que interrompe a ordem das coisas. A mudança é a ordem das coisas.
+      </p>
+    </div>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">O QUE DEVE SER RETIDO</h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>A mudança não é uma força fundamental da física, mas a transformação é omnipresente nos sistemas naturais.</li>
+        <li>Estrelas nascem, evoluem e devolvem matéria ao espaço, alimentando novas gerações de estrelas e planetas.</li>
+        <li>A evolução biológica é inseparável da adaptação a ambientes que mudam.</li>
+        <li>O cérebro humano constrói previsões e representa incerteza, o que ajuda a explicar a nossa relação ambivalente com a mudança.</li>
+        <li>Instituições e organizações que confundem estabilidade com imobilidade tendem a acumular desajustamentos.</li>
+        <li>A inteligência prática mede-se também pela capacidade de aprender e adaptar comportamento.</li>
+        <li>A tecnologia acelera a transformação e reduz o tempo disponível para organizações que insistem em permanecer imóveis.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        Esta crónica utiliza a mudança como ideia filosófica agregadora. Em linguagem física rigorosa, a mudança não constitui uma força fundamental da natureza. Gravidade, electromagnetismo e as interacções nucleares descrevem mecanismos físicos; a transformação é antes uma característica observável da evolução dos sistemas ao longo do tempo.
+      </p>
+      <p style="text-align:left;">
+        A cosmologia moderna descreve um Universo com cerca de 13,8 mil milhões de anos, cuja história inclui expansão, formação e evolução de galáxias, estrelas e sistemas planetários. A NASA descreve igualmente o ciclo estelar como um processo de nascimento, evolução e morte em que matéria e elementos produzidos pelas estrelas regressam ao meio interestelar e podem integrar novas estrelas e planetas.
+      </p>
+      <p style="text-align:left;">
+        Na biologia, estudos de evolução a longo prazo mostram que populações e linhagens respondem a alterações ambientais através de selecção, adaptação, flutuações e mudanças acumuladas. Trabalhos recentes em evolução experimental continuam a investigar até que ponto ambientes variáveis podem favorecer a própria capacidade de adaptação.
+      </p>
+      <p style="text-align:left;">
+        Na neurociência, a relação com a incerteza é igualmente concreta. A investigação contemporânea estuda como o cérebro representa incerteza e actualiza previsões sobre o mundo. Isto não significa que exista um simples "circuito do medo da mudança", mas ajuda a compreender porque previsibilidade, expectativa e adaptação são componentes centrais da percepção e da decisão.
+      </p>
+      <p style="text-align:left;">
+        A dimensão filosófica da crónica aproxima-se da tradição da filosofia do processo e, historicamente, de Heraclito, frequentemente associado à ideia de fluxo e transformação contínuos. A formulação literária deste texto não pretende converter essa tradição numa lei da física, mas utilizar a ciência contemporânea para recordar algo mais modesto e talvez mais importante: aquilo que parece estável é muitas vezes apenas aquilo que muda numa escala de tempo maior do que a nossa.
+      </p>
+      <p style="text-align:left; margin-bottom:0;">
+        A conclusão editorial é deliberadamente humana. Se a natureza, a vida e o conhecimento se transformam continuamente, a adaptação não deve ser confundida com capitulação. Adaptar-se é aprender a mudar preservando aquilo que merece permanecer. Talvez seja essa a forma mais madura de inteligência.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+
+    <ul style="padding-left:22px;">
+      <li><a href="https://science.nasa.gov/universe/overview/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">NASA Science — Universe: Overview and Cosmic History</a></li>
+      <li><a href="https://science.nasa.gov/mission/webb/star-lifecycle/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">NASA Science / James Webb Space Telescope — Star Lifecycle</a></li>
+      <li><a href="https://science.nasa.gov/astrobiology/learning-resources/alp/are-we-really-made-of-star-stuff/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">NASA Science — Are We Really Made of Star Stuff?</a></li>
+      <li><a href="https://www.nature.com/articles/s41586-025-08597-9" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Nature — Long-term Studies Provide Unique Insights into Evolution</a></li>
+      <li><a href="https://www.nature.com/articles/s41559-025-02936-9" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Nature Ecology &amp; Evolution — Evolvability Accelerates Adaptation</a></li>
+      <li><a href="https://www.nature.com/articles/s41593-023-01444-y" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Nature Neuroscience — Studying the Neural Representations of Uncertainty</a></li>
+      <li><a href="https://plato.stanford.edu/entries/process-philosophy/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Stanford Encyclopedia of Philosophy — Process Philosophy</a></li>
+      <li><a href="https://plato.stanford.edu/entries/heraclitus/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Stanford Encyclopedia of Philosophy — Heraclitus</a></li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

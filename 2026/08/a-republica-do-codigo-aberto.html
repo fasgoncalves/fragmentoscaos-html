@@ -1,0 +1,2713 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A República do Código Aberto</title>
+<meta name="description" content="A República do Código Aberto">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A República do Código Aberto</h1>
+      <p class="meta">Publicado em 2026-08-24 12:00:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/08/file_00000000533c81f4ba27c9db4ca622dc_4efd26a4.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="A República do Código Aberto">
+      <meta itemprop="description" content="Uma crónica sobre a possibilidade de aplicar à política, à economia e à sociedade os princípios de transparência, participação, auditabilidade, reutilização e partilha que sustentam o software livre e o código aberto.">
+      <meta itemprop="datePublished" content="2026-07-27">
+      <meta itemprop="dateModified" content="2026-07-27">
+      <meta itemprop="author" content="Francisco Gonçalves; Augustus Veritas, Assistente de IA">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_00000000533c81f4ba27c9db4ca622dc.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      A República do Código Aberto
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      Um novo modelo político inspirado na cultura do software livre
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        O movimento do software livre mostrou que comunidades distribuídas podem criar, auditar, corrigir e melhorar sistemas complexos através da partilha de conhecimento. Esta crónica pergunta se os mesmos princípios — transparência, participação, memória, reutilização, responsabilidade e liberdade de modificar — poderão inspirar uma sociedade mais livre, uma economia menos concentrada e uma democracia em desenvolvimento permanente.
+      </p>
+    </div>
+
+    <p>
+      Durante séculos, o poder foi construído como uma fortaleza.
+    </p>
+
+    <p>
+      Tinha muros altos, corredores inacessíveis, arquivos fechados, decisões tomadas em salas onde o cidadão só entrava depois de ter sido devidamente eleito, nomeado, convidado ou confundido com alguém importante.
+    </p>
+
+    <p>
+      As leis eram escritas por especialistas.
+    </p>
+
+    <p>
+      Os sistemas administrativos eram desenhados por burocratas.
+    </p>
+
+    <p>
+      Os contratos públicos eram compreendidos por juristas particularmente resistentes ao sono.
+    </p>
+
+    <p>
+      E o cidadão recebia o resultado final como quem recebe um programa já compilado: podia utilizá-lo, pagar por ele e sofrer as suas falhas, mas não lhe era permitido examinar o código.
+    </p>
+
+    <p>
+      A democracia prometeu abrir as portas do poder.
+    </p>
+
+    <p>
+      Abriu algumas.
+    </p>
+
+    <p>
+      Criou eleições, parlamentos, tribunais, imprensa livre e direitos fundamentais. Foi um avanço civilizacional extraordinário, apesar dos esforços persistentes de vários humanos para a transformar num espectáculo televisivo financiado por consultoras.
+    </p>
+
+    <p>
+      Mas conservou uma arquitectura antiga.
+    </p>
+
+    <p>
+      O cidadão escolhe periodicamente quem administrará o sistema, mas raramente participa na sua construção diária.
+    </p>
+
+    <p>
+      Vota no produto acabado.
+    </p>
+
+    <p>
+      Não acompanha o desenvolvimento.
+    </p>
+
+    <p>
+      Não vê as decisões intermédias.
+    </p>
+
+    <p>
+      Não conhece todas as dependências.
+    </p>
+
+    <p>
+      Não sabe quem introduziu cada linha.
+    </p>
+
+    <p>
+      E quando encontra um erro grave, descobre frequentemente que o responsável já mudou de ministério, de empresa ou de continente.
+    </p>
+
+    <p>
+      Talvez esteja na altura de imaginar outra arquitectura.
+    </p>
+
+    <p>
+      Não uma política governada por programadores, que já existem problemas suficientes sem entregar o orçamento nacional a alguém que pretende reescrever o sistema inteiro numa nova linguagem ao fim-de-semana.
+    </p>
+
+    <p>
+      Mas uma política inspirada nos princípios do software livre e do código aberto.
+    </p>
+
+    <p>
+      Uma sociedade onde o poder possa ser examinado.
+    </p>
+
+    <p>
+      Onde o conhecimento circule.
+    </p>
+
+    <p>
+      Onde as instituições possam ser auditadas.
+    </p>
+
+    <p>
+      Onde os cidadãos não sejam apenas utilizadores.
+    </p>
+
+    <p>
+      Sejam também participantes.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O código que todos podem ler
+    </h2>
+
+    <p>
+      O primeiro princípio do código aberto é simples: o código-fonte está disponível.
+    </p>
+
+    <p>
+      Qualquer pessoa com conhecimento suficiente pode examiná-lo, perceber como funciona, detectar erros, propor melhorias ou adaptá-lo a outras necessidades.
+    </p>
+
+    <p>
+      Aplicado à sociedade, isto significaria muito mais do que publicar documentos num portal institucional tão confuso que até o motor de pesquisa pede transferência de serviço.
+    </p>
+
+    <p>
+      Significaria tornar verdadeiramente compreensíveis as decisões públicas.
+    </p>
+
+    <p>
+      Cada lei deveria indicar claramente:
+    </p>
+
+    <p>
+      Quem a propôs?
+    </p>
+
+    <p>
+      Que problema pretende resolver?
+    </p>
+
+    <p>
+      Que alternativas foram consideradas?
+    </p>
+
+    <p>
+      Que entidades foram consultadas?
+    </p>
+
+    <p>
+      Que interesses económicos poderão ser beneficiados ou prejudicados?
+    </p>
+
+    <p>
+      Que dados sustentam a decisão?
+    </p>
+
+    <p>
+      Que resultados são esperados?
+    </p>
+
+    <p>
+      Como será avaliada?
+    </p>
+
+    <p>
+      Quem assumirá responsabilidade se falhar?
+    </p>
+
+    <p>
+      Hoje, muitas decisões públicas são formalmente transparentes e materialmente opacas.
+    </p>
+
+    <p>
+      O documento existe.
+    </p>
+
+    <p>
+      Está disponível.
+    </p>
+
+    <p>
+      Tem quatrocentas páginas.
+    </p>
+
+    <p>
+      Foi colocado numa pasta chamada «Documentação complementar — versão final corrigida 3».
+    </p>
+
+    <p>
+      A transparência não consiste em despejar informação sobre os cidadãos até eles desistirem de a compreender.
+    </p>
+
+    <p>
+      Consiste em tornar o poder inteligível.
+    </p>
+
+    <p>
+      Código aberto não significa apenas permitir o acesso.
+    </p>
+
+    <p>
+      Significa permitir a leitura.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Uma democracia aberta não se limita a publicar o código do poder. Garante que os cidadãos o conseguem compreender, auditar e contestar.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O cidadão como colaborador
+    </h2>
+
+    <p>
+      Na política tradicional, o cidadão aparece sobretudo em três momentos.
+    </p>
+
+    <p>
+      Durante as eleições.
+    </p>
+
+    <p>
+      Durante os impostos.
+    </p>
+
+    <p>
+      E durante os escândalos.
+    </p>
+
+    <p>
+      No primeiro, é soberano.
+    </p>
+
+    <p>
+      No segundo, contribuinte.
+    </p>
+
+    <p>
+      No terceiro, espectador indignado.
+    </p>
+
+    <p>
+      Depois regressa à vida quotidiana, enquanto a máquina pública continua a funcionar segundo regras que raramente ajudou a definir.
+    </p>
+
+    <p>
+      A cultura do software livre propõe uma relação diferente.
+    </p>
+
+    <p>
+      Um projecto aberto não depende apenas de quem o iniciou. Cresce através das contribuições de uma comunidade.
+    </p>
+
+    <p>
+      Alguém identifica um problema.
+    </p>
+
+    <p>
+      Outro confirma o erro.
+    </p>
+
+    <p>
+      Outro sugere uma solução.
+    </p>
+
+    <p>
+      Outro testa.
+    </p>
+
+    <p>
+      Outro documenta.
+    </p>
+
+    <p>
+      Outro pergunta por que razão tudo foi construído daquela maneira absurda.
+    </p>
+
+    <p>
+      Este último desempenha frequentemente uma função essencial.
+    </p>
+
+    <p>
+      Uma democracia inspirada nesta cultura criaria mecanismos permanentes de participação, não apenas consultas públicas ritualizadas quando a decisão já está tomada e falta cumprir a parte decorativa da cidadania.
+    </p>
+
+    <p>
+      Os cidadãos poderiam participar na identificação de problemas, na construção de propostas, na análise de impacto e na avaliação das políticas.
+    </p>
+
+    <p>
+      Não votariam apenas em pessoas.
+    </p>
+
+    <p>
+      Contribuiriam para processos.
+    </p>
+
+    <p>
+      Não seriam convidados a opinar sobre tudo, porque governar uma sociedade através de comentários instantâneos seria transformar o país numa rede social com orçamento de Estado.
+    </p>
+
+    <p>
+      Mas poderiam participar onde possuem experiência, conhecimento ou interesse legítimo.
+    </p>
+
+    <p>
+      Um enfermeiro conhece problemas do sistema de saúde que nenhum relatório ministerial consegue reproduzir.
+    </p>
+
+    <p>
+      Um professor conhece dificuldades da escola que desaparecem nas estatísticas.
+    </p>
+
+    <p>
+      Um pequeno empresário conhece obstáculos administrativos que parecem perfeitamente razoáveis a quem nunca tentou abrir uma actividade.
+    </p>
+
+    <p>
+      Uma associação local conhece necessidades que não chegam às capitais.
+    </p>
+
+    <p>
+      Um cidadão com deficiência conhece barreiras invisíveis para quem desenha cidades a partir de uma secretária.
+    </p>
+
+    <p>
+      O conhecimento público não reside apenas no Estado.
+    </p>
+
+    <p>
+      Está distribuído pela sociedade.
+    </p>
+
+    <p>
+      A democracia deveria saber utilizá-lo.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Governar através de versões
+    </h2>
+
+    <p>
+      O software nunca está verdadeiramente concluído.
+    </p>
+
+    <p>
+      Existem versões.
+    </p>
+
+    <p>
+      Uma corrige falhas da anterior.
+    </p>
+
+    <p>
+      Outra introduz funções novas.
+    </p>
+
+    <p>
+      Outra descobre que a função nova destruiu três antigas e obriga toda a equipa a fingir serenidade.
+    </p>
+
+    <p>
+      As políticas públicas deveriam ser encaradas da mesma forma.
+    </p>
+
+    <p>
+      Uma lei não deveria ser tratada como monumento legislativo, destinado a permanecer intocável até que a realidade o torne insuportável.
+    </p>
+
+    <p>
+      Deveria ser uma versão.
+    </p>
+
+    <p>
+      Testada.
+    </p>
+
+    <p>
+      Avaliada.
+    </p>
+
+    <p>
+      Corrigida.
+    </p>
+
+    <p>
+      Documentada.
+    </p>
+
+    <p>
+      Se uma medida não produz os resultados esperados, deve ser revista.
+    </p>
+
+    <p>
+      Se cria efeitos imprevistos, deve ser alterada.
+    </p>
+
+    <p>
+      Se deixou de fazer sentido, deve ser removida.
+    </p>
+
+    <p>
+      A política actual possui uma dificuldade quase patológica em admitir erros.
+    </p>
+
+    <p>
+      Cada governo considera que reconhecer uma falha equivale a oferecer munições à oposição.
+    </p>
+
+    <p>
+      Cada ministro defende a própria decisão até ao instante em que é substituído e começa discretamente a concordar com os críticos.
+    </p>
+
+    <p>
+      No desenvolvimento aberto, encontrar um erro não destrói necessariamente a reputação do projecto.
+    </p>
+
+    <p>
+      Permite melhorá-lo.
+    </p>
+
+    <p>
+      O fracasso não está em possuir falhas.
+    </p>
+
+    <p>
+      Está em escondê-las.
+    </p>
+
+    <p>
+      Uma cultura política de versões substituiria a arrogância da decisão definitiva pela humildade da melhoria contínua.
+    </p>
+
+    <p>
+      A sociedade não precisa de governantes que fingem nunca errar.
+    </p>
+
+    <p>
+      Precisa de instituições capazes de corrigir rapidamente aquilo que está errado.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A política dos «commits»
+    </h2>
+
+    <p>
+      Num projecto de software, cada alteração pode ficar registada.
+    </p>
+
+    <p>
+      Sabe-se quem modificou o quê.
+    </p>
+
+    <p>
+      Quando.
+    </p>
+
+    <p>
+      Por que razão.
+    </p>
+
+    <p>
+      Que problema procurava resolver.
+    </p>
+
+    <p>
+      Que discussão a antecedeu.
+    </p>
+
+    <p>
+      E quem aprovou a integração.
+    </p>
+
+    <p>
+      Imagine-se este princípio aplicado às decisões públicas.
+    </p>
+
+    <p>
+      Cada alteração significativa a uma lei, regulamento, contrato ou programa deveria possuir um histórico claro.
+    </p>
+
+    <p>
+      Não apenas a versão final.
+    </p>
+
+    <p>
+      Todo o percurso.
+    </p>
+
+    <p>
+      Quem sugeriu a mudança?
+    </p>
+
+    <p>
+      Que argumentos apresentou?
+    </p>
+
+    <p>
+      Que entidades exerceram influência?
+    </p>
+
+    <p>
+      Que pareceres foram favoráveis?
+    </p>
+
+    <p>
+      Quais foram ignorados?
+    </p>
+
+    <p>
+      Que interesses estavam envolvidos?
+    </p>
+
+    <p>
+      A política tornar-se-ia menos dependente da memória selectiva.
+    </p>
+
+    <p>
+      Já não seria tão fácil alguém afirmar que nunca defendeu aquilo que aparece, com data, assinatura e justificação, no histórico da decisão.
+    </p>
+
+    <p>
+      O poder aprecia documentos finais porque eles escondem o percurso.
+    </p>
+
+    <p>
+      O código aberto preserva o percurso porque sabe que a história das alterações ajuda a compreender o sistema.
+    </p>
+
+    <p>
+      Uma República do Código Aberto teria memória.
+    </p>
+
+    <p>
+      E uma democracia com memória torna-se ligeiramente mais difícil de enganar, circunstância naturalmente desagradável para algumas carreiras políticas.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      «Pull requests» para a sociedade
+    </h2>
+
+    <p>
+      No software aberto, uma pessoa pode propor uma alteração.
+    </p>
+
+    <p>
+      A proposta é examinada.
+    </p>
+
+    <p>
+      Discutida.
+    </p>
+
+    <p>
+      Testada.
+    </p>
+
+    <p>
+      Aceite, modificada ou recusada.
+    </p>
+
+    <p>
+      A decisão não depende apenas de quem fala mais alto, mas da qualidade da contribuição, da compatibilidade com o projecto e da capacidade de resolver um problema sem criar sete novos.
+    </p>
+
+    <p>
+      Um modelo político inspirado neste processo poderia permitir que cidadãos, universidades, associações, empresas e comunidades apresentassem propostas legislativas ou administrativas estruturadas.
+    </p>
+
+    <p>
+      Não simples petições que recolhem assinaturas e depois repousam dignamente num arquivo.
+    </p>
+
+    <p>
+      Propostas completas.
+    </p>
+
+    <p>
+      Com diagnóstico.
+    </p>
+
+    <p>
+      Dados.
+    </p>
+
+    <p>
+      Impacto orçamental.
+    </p>
+
+    <p>
+      Riscos.
+    </p>
+
+    <p>
+      Alternativas.
+    </p>
+
+    <p>
+      Métodos de avaliação.
+    </p>
+
+    <p>
+      Estas propostas seriam analisadas publicamente.
+    </p>
+
+    <p>
+      Receberiam contributos.
+    </p>
+
+    <p>
+      Poderiam ser testadas em escala reduzida.
+    </p>
+
+    <p>
+      E, se demonstrassem valor, seriam incorporadas.
+    </p>
+
+    <p>
+      A participação deixaria de ser apenas expressão de opinião.
+    </p>
+
+    <p>
+      Passaria também a ser produção de solução.
+    </p>
+
+    <p>
+      Naturalmente, nem todas as propostas seriam boas.
+    </p>
+
+    <p>
+      Algumas seriam impossíveis.
+    </p>
+
+    <p>
+      Outras contraditórias.
+    </p>
+
+    <p>
+      Outras exigiriam baixar impostos, aumentar toda a despesa e oferecer estacionamento gratuito à porta de cada cidadão, combinação eleitoralmente sedutora e matematicamente criativa.
+    </p>
+
+    <p>
+      Mas a abertura não exige aceitar tudo.
+    </p>
+
+    <p>
+      Exige permitir que as ideias sejam examinadas segundo critérios claros.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O direito de fazer «fork»
+    </h2>
+
+    <p>
+      Num projecto aberto, quando uma comunidade discorda profundamente do rumo seguido, pode criar uma derivação.
+    </p>
+
+    <p>
+      Um <em>fork</em>.
+    </p>
+
+    <p>
+      Utiliza a base existente e desenvolve uma alternativa.
+    </p>
+
+    <p>
+      Na sociedade, este princípio poderia inspirar uma descentralização mais profunda.
+    </p>
+
+    <p>
+      Municípios, regiões, escolas, hospitais e serviços públicos poderiam experimentar soluções diferentes dentro de limites constitucionais e de direitos comuns.
+    </p>
+
+    <p>
+      Em vez de impor o mesmo modelo a todo o território, o Estado permitiria experiências locais.
+    </p>
+
+    <p>
+      Uma cidade poderia testar uma nova política de mobilidade.
+    </p>
+
+    <p>
+      Uma escola poderia adoptar outro modelo de organização pedagógica.
+    </p>
+
+    <p>
+      Uma unidade de saúde poderia experimentar processos administrativos diferentes.
+    </p>
+
+    <p>
+      Uma região poderia criar uma plataforma cooperativa para serviços públicos digitais.
+    </p>
+
+    <p>
+      Se a experiência funcionasse, outras poderiam adaptá-la.
+    </p>
+
+    <p>
+      Se falhasse, o prejuízo seria limitado e o conhecimento produzido continuaria disponível.
+    </p>
+
+    <p>
+      A uniformidade parece organizada.
+    </p>
+
+    <p>
+      Mas também espalha o mesmo erro por todo o sistema.
+    </p>
+
+    <p>
+      A diversidade institucional permite aprender.
+    </p>
+
+    <p>
+      Não significa criar pequenos feudos locais onde cada presidente de câmara se transforma em administrador vitalício de uma distribuição própria do Estado.
+    </p>
+
+    <p>
+      Exige regras comuns, transparência e avaliação.
+    </p>
+
+    <p>
+      O <em>fork</em> democrático não destrói a unidade.
+    </p>
+
+    <p>
+      Permite que a unidade evolua através da diversidade.
+    </p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">
+        PRINCÍPIOS DE UMA REPÚBLICA DO CÓDIGO ABERTO
+      </h3>
+
+      <ul style="padding-left:22px; margin:0;">
+        <li>Transparência material: decisões públicas compreensíveis, não apenas formalmente publicadas.</li>
+        <li>Participação contínua: cidadãos e organizações contribuem para problemas, propostas, testes e avaliações.</li>
+        <li>Histórico verificável: alterações legislativas, contratuais e administrativas preservam autoria, argumentos e decisões.</li>
+        <li>Reutilização e interoperabilidade: software, dados e conhecimento financiados publicamente devem poder gerar novo valor público.</li>
+        <li>Direito de experimentar: soluções locais podem ser testadas, avaliadas e adaptadas dentro de limites constitucionais comuns.</li>
+        <li>Privacidade por princípio: o poder é auditável; a vida privada dos cidadãos permanece protegida.</li>
+        <li>Manutenção reconhecida: cuidar, documentar, corrigir e actualizar é tão importante como inaugurar.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O conhecimento como bem comum
+    </h2>
+
+    <p>
+      O movimento do software livre nasceu de uma ideia radical: o conhecimento não deve ser aprisionado desnecessariamente.
+    </p>
+
+    <p>
+      Quem utiliza um programa deve poder compreender como funciona, adaptá-lo e partilhar melhorias.
+    </p>
+
+    <p>
+      Esta lógica pode inspirar uma nova economia.
+    </p>
+
+    <p>
+      Durante muito tempo, o valor económico foi associado à escassez.
+    </p>
+
+    <p>
+      Aquilo que é raro vale mais.
+    </p>
+
+    <p>
+      Mas o conhecimento possui outra natureza.
+    </p>
+
+    <p>
+      Uma ideia não diminui quando é partilhada.
+    </p>
+
+    <p>
+      Um algoritmo pode ser utilizado por milhões sem se gastar.
+    </p>
+
+    <p>
+      Uma descoberta científica pode gerar aplicações que o investigador original nunca imaginou.
+    </p>
+
+    <p>
+      Uma ferramenta aberta pode permitir que pequenas empresas construam soluções antes reservadas a grandes organizações.
+    </p>
+
+    <p>
+      O software livre mostrou que é possível criar valor sem fechar todo o conhecimento.
+    </p>
+
+    <p>
+      Empresas podem vender serviços, integração, suporte, personalização, formação, segurança e capacidade de execução.
+    </p>
+
+    <p>
+      Não precisam de cobrar pela proibição de compreender.
+    </p>
+
+    <p>
+      Uma economia aberta não aboliria a propriedade intelectual.
+    </p>
+
+    <p>
+      Mas distinguiria aquilo que merece protecção temporária daquilo que deveria integrar o património comum.
+    </p>
+
+    <p>
+      Conhecimento financiado por fundos públicos deveria, por princípio, regressar ao público.
+    </p>
+
+    <p>
+      Software desenvolvido para o Estado deveria ser reutilizável por outras entidades públicas.
+    </p>
+
+    <p>
+      Dados produzidos com recursos colectivos deveriam estar disponíveis, respeitando privacidade e segurança.
+    </p>
+
+    <p>
+      Materiais educativos financiados por todos deveriam poder ser utilizados por todos.
+    </p>
+
+    <p>
+      O cidadão não deveria pagar repetidamente para aceder ao conhecimento que já financiou.
+    </p>
+
+    <p>
+      Parece uma ideia estranhamente radical apenas porque nos habituámos ao contrário.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O Estado que não depende de caixas negras
+    </h2>
+
+    <p>
+      Grande parte da administração pública depende de sistemas informáticos proprietários.
+    </p>
+
+    <p>
+      Programas que ninguém fora da empresa fornecedora consegue auditar.
+    </p>
+
+    <p>
+      Formatos fechados.
+    </p>
+
+    <p>
+      Contratos prolongados.
+    </p>
+
+    <p>
+      Custos de licenciamento.
+    </p>
+
+    <p>
+      Dependências técnicas tão profundas que mudar de fornecedor se torna semelhante a transplantar o sistema nervoso de um país durante o horário de expediente.
+    </p>
+
+    <p>
+      Isto não é apenas uma questão tecnológica.
+    </p>
+
+    <p>
+      É uma questão de soberania.
+    </p>
+
+    <p>
+      Um Estado que não controla o código dos seus sistemas essenciais não controla integralmente a sua própria administração.
+    </p>
+
+    <p>
+      Depende de empresas para corrigir erros.
+    </p>
+
+    <p>
+      Para garantir segurança.
+    </p>
+
+    <p>
+      Para migrar dados.
+    </p>
+
+    <p>
+      Para manter serviços.
+    </p>
+
+    <p>
+      Para interpretar sistemas que regulam impostos, saúde, justiça, educação ou segurança social.
+    </p>
+
+    <p>
+      O código aberto não resolve automaticamente estes problemas.
+    </p>
+
+    <p>
+      Também pode ser mal mantido, inseguro, confuso e documentado por alguém que considerou suficiente escrever «isto é óbvio».
+    </p>
+
+    <p>
+      Mas permite auditoria.
+    </p>
+
+    <p>
+      Reutilização.
+    </p>
+
+    <p>
+      Concorrência entre fornecedores.
+    </p>
+
+    <p>
+      Desenvolvimento partilhado.
+    </p>
+
+    <p>
+      Continuidade institucional.
+    </p>
+
+    <p>
+      Um sistema público aberto não pertence a uma empresa.
+    </p>
+
+    <p>
+      Pertence à função pública que desempenha.
+    </p>
+
+    <p>
+      As empresas podem competir pela melhor implementação, pelo suporte mais competente ou pela inovação mais útil.
+    </p>
+
+    <p>
+      Mas o Estado não fica prisioneiro da chave de uma única oficina.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A economia dos ecossistemas
+    </h2>
+
+    <p>
+      O código aberto raramente é construído por uma entidade isolada.
+    </p>
+
+    <p>
+      Surge de ecossistemas.
+    </p>
+
+    <p>
+      Programadores independentes.
+    </p>
+
+    <p>
+      Universidades.
+    </p>
+
+    <p>
+      Empresas.
+    </p>
+
+    <p>
+      Fundações.
+    </p>
+
+    <p>
+      Administrações públicas.
+    </p>
+
+    <p>
+      Comunidades de utilizadores.
+    </p>
+
+    <p>
+      Concorrentes que colaboram numa infra-estrutura comum e depois competem nos produtos construídos sobre ela.
+    </p>
+
+    <p>
+      É a coopetição em estado funcional.
+    </p>
+
+    <p>
+      Empresas rivais contribuem para o mesmo núcleo tecnológico porque compreendem que não precisam de disputar cada tijolo da estrada.
+    </p>
+
+    <p>
+      Podem colaborar na estrada e competir nos veículos.
+    </p>
+
+    <p>
+      Esta lógica poderia transformar sectores inteiros da economia.
+    </p>
+
+    <p>
+      Empresas poderiam partilhar normas, plataformas, investigação pré-competitiva, dados anonimizados, formação e infra-estruturas.
+    </p>
+
+    <p>
+      Universidades poderiam disponibilizar ferramentas e conhecimento.
+    </p>
+
+    <p>
+      O Estado poderia financiar bens digitais comuns.
+    </p>
+
+    <p>
+      Pequenas empresas poderiam construir serviços sobre essas bases sem pagar portagens a cada passo.
+    </p>
+
+    <p>
+      O resultado seria uma economia menos concentrada.
+    </p>
+
+    <p>
+      Mais interoperável.
+    </p>
+
+    <p>
+      Mais inovadora.
+    </p>
+
+    <p>
+      E menos dependente de monopólios que primeiro fecham o mercado e depois publicam relatórios sobre a importância da concorrência.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Mérito sem aristocracia
+    </h2>
+
+    <p>
+      As comunidades de código aberto valorizam frequentemente a competência demonstrada.
+    </p>
+
+    <p>
+      Quem contribui com qualidade ganha confiança.
+    </p>
+
+    <p>
+      Quem resolve problemas recebe responsabilidade.
+    </p>
+
+    <p>
+      É uma forma de mérito baseada na participação.
+    </p>
+
+    <p>
+      Mas também aqui é necessário cuidado.
+    </p>
+
+    <p>
+      Nem todas as pessoas possuem o mesmo tempo, recursos, formação ou segurança económica para contribuir gratuitamente.
+    </p>
+
+    <p>
+      Uma comunidade pode parecer aberta e continuar dominada por grupos homogéneos, tecnicamente brilhantes e socialmente incapazes de perceber por que razão ninguém compreende a documentação.
+    </p>
+
+    <p>
+      A abertura formal não garante inclusão real.
+    </p>
+
+    <p>
+      O mesmo aconteceria numa democracia participativa.
+    </p>
+
+    <p>
+      Quem possui mais tempo, educação, influência e capacidade de comunicação participaria mais.
+    </p>
+
+    <p>
+      Os cidadãos com vidas difíceis poderiam ficar ausentes.
+    </p>
+
+    <p>
+      Uma República do Código Aberto teria de garantir condições de participação.
+    </p>
+
+    <p>
+      Formação cívica.
+    </p>
+
+    <p>
+      Ferramentas acessíveis.
+    </p>
+
+    <p>
+      Informação clara.
+    </p>
+
+    <p>
+      Tempo protegido.
+    </p>
+
+    <p>
+      Representação de grupos menos ouvidos.
+    </p>
+
+    <p>
+      A democracia não pode ser entregue apenas aos cidadãos capazes de passar três noites a discutir uma proposta legislativa numa plataforma digital.
+    </p>
+
+    <p>
+      Essas pessoas são úteis.
+    </p>
+
+    <p>
+      Mas também precisam ocasionalmente de dormir.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O problema dos «maintainers»
+    </h2>
+
+    <p>
+      Todo o projecto aberto conhece uma figura essencial: o responsável pela manutenção.
+    </p>
+
+    <p>
+      É quem revê contribuições, corrige problemas, gere conflitos, responde a utilizadores e tenta impedir que a comunidade se desintegre por causa de uma discussão sobre a colocação de um ponto e vírgula.
+    </p>
+
+    <p>
+      Muitos destes responsáveis trabalham demasiado e recebem pouco reconhecimento.
+    </p>
+
+    <p>
+      Alguns esgotam-se.
+    </p>
+
+    <p>
+      Outros abandonam o projecto.
+    </p>
+
+    <p>
+      A sociedade possui o mesmo problema.
+    </p>
+
+    <p>
+      Dependemos de professores, enfermeiros, técnicos, cuidadores, investigadores, funcionários públicos e líderes comunitários que mantêm sistemas essenciais.
+    </p>
+
+    <p>
+      Celebramos grandes visionários.
+    </p>
+
+    <p>
+      Mas esquecemos quem mantém as coisas a funcionar.
+    </p>
+
+    <p>
+      Uma política inspirada no software livre valorizaria a manutenção.
+    </p>
+
+    <p>
+      Não apenas a inauguração.
+    </p>
+
+    <p>
+      Reparar uma escola deveria ser tão importante como anunciar uma nova.
+    </p>
+
+    <p>
+      Actualizar um sistema deveria ser tão digno como lançar uma plataforma.
+    </p>
+
+    <p>
+      Cuidar de uma comunidade deveria contar tanto como apresentar uma estratégia nacional.
+    </p>
+
+    <p>
+      A cultura política adora fundadores.
+    </p>
+
+    <p>
+      O futuro dependerá dos mantenedores.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A Constituição como licença comum
+    </h2>
+
+    <p>
+      O software livre não significa ausência de regras.
+    </p>
+
+    <p>
+      Pelo contrário.
+    </p>
+
+    <p>
+      Depende de licenças claras.
+    </p>
+
+    <p>
+      Estas definem direitos e responsabilidades.
+    </p>
+
+    <p>
+      O código pode ser utilizado, modificado e partilhado, desde que determinadas condições sejam respeitadas.
+    </p>
+
+    <p>
+      Uma sociedade livre também necessita de uma licença comum.
+    </p>
+
+    <p>
+      Essa licença é a Constituição.
+    </p>
+
+    <p>
+      Define aquilo que qualquer governo pode alterar e aquilo que nenhum governo deve poder destruir.
+    </p>
+
+    <p>
+      Protege a liberdade, a dignidade, a igualdade e os direitos fundamentais.
+    </p>
+
+    <p>
+      Permite inovação política, mas impede que uma maioria transforme minorias em propriedade administrativa.
+    </p>
+
+    <p>
+      A abertura sem direitos pode ser capturada.
+    </p>
+
+    <p>
+      Uma plataforma participativa pode tornar-se instrumento de perseguição.
+    </p>
+
+    <p>
+      A transparência absoluta pode destruir a privacidade.
+    </p>
+
+    <p>
+      A votação permanente pode transformar preconceitos momentâneos em política pública.
+    </p>
+
+    <p>
+      A sociedade aberta precisa de limites.
+    </p>
+
+    <p>
+      Não para proteger o poder dos cidadãos.
+    </p>
+
+    <p>
+      Para proteger os cidadãos do poder, incluindo daquele que eles próprios exercem quando formam uma maioria entusiasmada.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Transparência não é exposição total
+    </h2>
+
+    <p>
+      No software, o código deve ser aberto.
+    </p>
+
+    <p>
+      Mas os dados pessoais não.
+    </p>
+
+    <p>
+      Esta distinção é essencial.
+    </p>
+
+    <p>
+      O Estado deve revelar como decide.
+    </p>
+
+    <p>
+      Não deve revelar a vida íntima dos cidadãos.
+    </p>
+
+    <p>
+      Os algoritmos utilizados em decisões públicas devem ser auditáveis.
+    </p>
+
+    <p>
+      Os processos devem ser transparentes.
+    </p>
+
+    <p>
+      Os critérios devem ser conhecidos.
+    </p>
+
+    <p>
+      Mas os registos médicos, as vulnerabilidades sociais, as conversas privadas e os dados pessoais precisam de protecção.
+    </p>
+
+    <p>
+      Uma sociedade livre não é uma sociedade onde todos observam todos.
+    </p>
+
+    <p>
+      Isso não é transparência.
+    </p>
+
+    <p>
+      É vigilância distribuída.
+    </p>
+
+    <p>
+      O poder deve ser transparente para o cidadão.
+    </p>
+
+    <p>
+      O cidadão deve continuar a possuir zonas de opacidade perante o poder.
+    </p>
+
+    <p>
+      Caso contrário, teremos um Estado de código aberto e uma população de vidas abertas à inspecção.
+    </p>
+
+    <p>
+      Uma distopia tecnicamente elegante.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A política como comunidade, não como produto
+    </h2>
+
+    <p>
+      Os partidos políticos funcionam frequentemente como empresas fechadas.
+    </p>
+
+    <p>
+      Possuem hierarquias.
+    </p>
+
+    <p>
+      Marcas.
+    </p>
+
+    <p>
+      Disciplina interna.
+    </p>
+
+    <p>
+      Departamentos de comunicação.
+    </p>
+
+    <p>
+      Produtos eleitorais.
+    </p>
+
+    <p>
+      E clientes chamados eleitores, tratados com grande atenção durante algumas semanas e devolvidos depois ao serviço normal.
+    </p>
+
+    <p>
+      Um partido inspirado na cultura aberta seria diferente.
+    </p>
+
+    <p>
+      Publicaria propostas em desenvolvimento.
+    </p>
+
+    <p>
+      Permitiria contributos externos.
+    </p>
+
+    <p>
+      Registaria alterações.
+    </p>
+
+    <p>
+      Explicaria decisões.
+    </p>
+
+    <p>
+      Aceitaria críticas internas.
+    </p>
+
+    <p>
+      Não trataria discordância como sabotagem.
+    </p>
+
+    <p>
+      Escolheria dirigentes através de processos transparentes.
+    </p>
+
+    <p>
+      E permitiria que ideias úteis sobrevivessem mesmo quando vieram do adversário.
+    </p>
+
+    <p>
+      Esta última característica seria particularmente revolucionária.
+    </p>
+
+    <p>
+      A política actual comporta-se muitas vezes como se reconhecer uma boa proposta da oposição provocasse falência ideológica imediata.
+    </p>
+
+    <p>
+      Mas uma sociedade não deveria preocupar-se com a origem partidária de uma solução.
+    </p>
+
+    <p>
+      Deveria preocupar-se com a sua qualidade.
+    </p>
+
+    <p>
+      No código aberto, uma correcção útil não é rejeitada porque foi escrita por alguém da distribuição concorrente.
+    </p>
+
+    <p>
+      É examinada.
+    </p>
+
+    <p>
+      Testada.
+    </p>
+
+    <p>
+      E, se funcionar, incorporada.
+    </p>
+
+    <p>
+      A política poderia experimentar este estranho método chamado inteligência.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O direito de compreender
+    </h2>
+
+    <p>
+      A liberdade política não existe plenamente quando os cidadãos não compreendem os sistemas que governam as suas vidas.
+    </p>
+
+    <p>
+      Um contrato incompreensível não é verdadeiramente transparente.
+    </p>
+
+    <p>
+      Uma lei escrita apenas para especialistas não é plenamente pública.
+    </p>
+
+    <p>
+      Um algoritmo secreto que decide benefícios sociais não é neutro.
+    </p>
+
+    <p>
+      Uma plataforma digital obrigatória que não pode ser auditada não é simples conveniência administrativa.
+    </p>
+
+    <p>
+      O direito à participação exige um direito anterior.
+    </p>
+
+    <p>
+      O direito de compreender.
+    </p>
+
+    <p>
+      A linguagem pública deve ser clara.
+    </p>
+
+    <p>
+      Os processos devem ser explicáveis.
+    </p>
+
+    <p>
+      Os sistemas automatizados devem ser auditáveis.
+    </p>
+
+    <p>
+      Os cidadãos devem poder contestar decisões.
+    </p>
+
+    <p>
+      E deve existir sempre responsabilidade humana.
+    </p>
+
+    <p>
+      Nenhum governo deveria poder esconder-se atrás de um algoritmo.
+    </p>
+
+    <p>
+      Nenhum algoritmo se demite.
+    </p>
+
+    <p>
+      Nenhum código sente vergonha.
+    </p>
+
+    <p>
+      Nenhuma máquina comparece no Parlamento para explicar por que razão prejudicou milhares de pessoas.
+    </p>
+
+    <p>
+      A tecnologia pode apoiar decisões.
+    </p>
+
+    <p>
+      Nunca deve servir para dissolver responsabilidades.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A liberdade de copiar e melhorar
+    </h2>
+
+    <p>
+      A política possui uma vaidade curiosa.
+    </p>
+
+    <p>
+      Cada governo deseja inaugurar o seu próprio programa.
+    </p>
+
+    <p>
+      A sua plataforma.
+    </p>
+
+    <p>
+      A sua reforma.
+    </p>
+
+    <p>
+      A sua marca.
+    </p>
+
+    <p>
+      Mesmo quando outra cidade, região ou país já resolveu o mesmo problema.
+    </p>
+
+    <p>
+      Reutilizar parece falta de criatividade.
+    </p>
+
+    <p>
+      Por isso, repetem-se estudos, concursos, sistemas e erros.
+    </p>
+
+    <p>
+      A cultura aberta faz o contrário.
+    </p>
+
+    <p>
+      Se uma solução funciona, pode ser copiada.
+    </p>
+
+    <p>
+      Adaptada.
+    </p>
+
+    <p>
+      Melhorada.
+    </p>
+
+    <p>
+      Não é necessário começar sempre do zero para que alguém possa colocar o próprio nome na placa.
+    </p>
+
+    <p>
+      Os municípios poderiam partilhar software.
+    </p>
+
+    <p>
+      As escolas poderiam partilhar materiais.
+    </p>
+
+    <p>
+      Os hospitais poderiam reutilizar sistemas.
+    </p>
+
+    <p>
+      As administrações poderiam publicar componentes comuns.
+    </p>
+
+    <p>
+      Uma melhoria feita numa região poderia beneficiar todas as outras.
+    </p>
+
+    <p>
+      O dinheiro público deixaria de financiar dezenas de versões incompatíveis do mesmo problema.
+    </p>
+
+    <p>
+      Naturalmente, haveria menos inaugurações individuais.
+    </p>
+
+    <p>
+      A civilização talvez conseguisse suportar essa perda.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Uma nova ideia de riqueza
+    </h2>
+
+    <p>
+      A economia tradicional mede riqueza através da propriedade.
+    </p>
+
+    <p>
+      Possuir terras.
+    </p>
+
+    <p>
+      Máquinas.
+    </p>
+
+    <p>
+      Capital.
+    </p>
+
+    <p>
+      Patentes.
+    </p>
+
+    <p>
+      Dados.
+    </p>
+
+    <p>
+      Plataformas.
+    </p>
+
+    <p>
+      A economia aberta acrescenta outra dimensão.
+    </p>
+
+    <p>
+      A capacidade colectiva disponível.
+    </p>
+
+    <p>
+      Uma biblioteca de código aberto é riqueza.
+    </p>
+
+    <p>
+      Uma base de conhecimento acessível é riqueza.
+    </p>
+
+    <p>
+      Uma rede de investigação é riqueza.
+    </p>
+
+    <p>
+      Uma comunidade competente é riqueza.
+    </p>
+
+    <p>
+      Uma norma aberta é riqueza.
+    </p>
+
+    <p>
+      Uma plataforma pública reutilizável é riqueza.
+    </p>
+
+    <p>
+      Estes bens não aparecem sempre nos balanços.
+    </p>
+
+    <p>
+      Mas aumentam a capacidade de toda a sociedade produzir, aprender e inovar.
+    </p>
+
+    <p>
+      Um país pode possuir empresas muito ricas e continuar tecnologicamente dependente.
+    </p>
+
+    <p>
+      Pode importar sistemas, pagar licenças e celebrar a transformação digital enquanto não controla os seus instrumentos essenciais.
+    </p>
+
+    <p>
+      Outro pode construir bens comuns digitais, formar comunidades e criar conhecimento partilhado.
+    </p>
+
+    <p>
+      Talvez apresente menos brilho imediato.
+    </p>
+
+    <p>
+      Mas terá mais soberania futura.
+    </p>
+
+    <p>
+      A verdadeira riqueza de uma sociedade não é apenas aquilo que alguns possuem.
+    </p>
+
+    <p>
+      É também aquilo que todos podem utilizar para criar.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O código aberto não é uma utopia
+    </h2>
+
+    <p>
+      A cultura aberta não elimina conflitos.
+    </p>
+
+    <p>
+      As comunidades discutem.
+    </p>
+
+    <p>
+      Dividem-se.
+    </p>
+
+    <p>
+      Criam facções.
+    </p>
+
+    <p>
+      Abandonam projectos.
+    </p>
+
+    <p>
+      Produzem código excelente e documentação semelhante a um enigma medieval.
+    </p>
+
+    <p>
+      Também podem ser capturadas por grandes empresas.
+    </p>
+
+    <p>
+      Um projecto aparentemente comunitário pode depender financeiramente de poucos actores.
+    </p>
+
+    <p>
+      Uma contribuição aberta pode esconder relações de poder.
+    </p>
+
+    <p>
+      A liberdade de participar não garante igualdade de influência.
+    </p>
+
+    <p>
+      Portanto, não devemos transformar o software livre numa nova religião política.
+    </p>
+
+    <p>
+      Já vimos suficientes ideias generosas convertidas em dogmas por pessoas que desejavam libertar a humanidade contra a vontade dela.
+    </p>
+
+    <p>
+      A política não é programação.
+    </p>
+
+    <p>
+      Os cidadãos não são módulos.
+    </p>
+
+    <p>
+      Os conflitos sociais não são simples erros lógicos.
+    </p>
+
+    <p>
+      Os valores não podem ser resolvidos apenas com testes automáticos.
+    </p>
+
+    <p>
+      Há escolhas onde não existe solução tecnicamente correcta.
+    </p>
+
+    <p>
+      Existem interesses, direitos, riscos e visões diferentes da vida.
+    </p>
+
+    <p>
+      O modelo aberto não elimina a política.
+    </p>
+
+    <p>
+      Torna-a mais visível.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Uma democracia em desenvolvimento permanente
+    </h2>
+
+    <p>
+      A democracia foi uma das grandes invenções da humanidade.
+    </p>
+
+    <p>
+      Mas não é um produto acabado.
+    </p>
+
+    <p>
+      É um projecto em desenvolvimento permanente.
+    </p>
+
+    <p>
+      Possui falhas antigas.
+    </p>
+
+    <p>
+      Dependências obsoletas.
+    </p>
+
+    <p>
+      Partes mal documentadas.
+    </p>
+
+    <p>
+      Funções que deixaram de responder às necessidades.
+    </p>
+
+    <p>
+      E algumas vulnerabilidades exploradas repetidamente por actores que já conhecem o sistema demasiado bem.
+    </p>
+
+    <p>
+      Não precisamos de destruir o projecto.
+    </p>
+
+    <p>
+      Precisamos de o abrir.
+    </p>
+
+    <p>
+      Permitir auditoria.
+    </p>
+
+    <p>
+      Melhorar a documentação.
+    </p>
+
+    <p>
+      Reduzir dependências.
+    </p>
+
+    <p>
+      Distribuir capacidade.
+    </p>
+
+    <p>
+      Integrar contributos.
+    </p>
+
+    <p>
+      Corrigir erros.
+    </p>
+
+    <p>
+      Proteger os direitos essenciais.
+    </p>
+
+    <p>
+      E garantir que ninguém consiga apropriar-se sozinho da infra-estrutura comum.
+    </p>
+
+    <p>
+      A política inspirada na cultura do software livre não prometeria um governo perfeito.
+    </p>
+
+    <p>
+      Prometeria algo mais honesto.
+    </p>
+
+    <p>
+      Um governo examinável.
+    </p>
+
+    <p>
+      Corrigível.
+    </p>
+
+    <p>
+      Reutilizável.
+    </p>
+
+    <p>
+      Participado.
+    </p>
+
+    <p>
+      Um poder que não exige confiança cega porque aceita ser auditado.
+    </p>
+
+    <p>
+      Uma economia que não confunde inovação com segredo permanente.
+    </p>
+
+    <p>
+      Uma sociedade onde o conhecimento financiado por todos pode criar oportunidades para muitos.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O futuro não deve ser proprietário
+    </h2>
+
+    <p>
+      Durante demasiado tempo, aceitámos que os sistemas essenciais da sociedade fossem caixas negras.
+    </p>
+
+    <p>
+      A administração.
+    </p>
+
+    <p>
+      A tecnologia.
+    </p>
+
+    <p>
+      A economia.
+    </p>
+
+    <p>
+      A política.
+    </p>
+
+    <p>
+      Utilizamos aquilo que outros construíram, segundo regras que não compreendemos, em plataformas que não controlamos.
+    </p>
+
+    <p>
+      Talvez a próxima grande conquista da liberdade seja o direito de abrir essas caixas.
+    </p>
+
+    <p>
+      Ver o código.
+    </p>
+
+    <p>
+      Compreender o processo.
+    </p>
+
+    <p>
+      Participar na melhoria.
+    </p>
+
+    <p>
+      Partilhar a solução.
+    </p>
+
+    <p>
+      Não para transformar cada cidadão em programador, legislador ou economista.
+    </p>
+
+    <p>
+      Mas para impedir que a complexidade continue a ser usada como desculpa para a concentração de poder.
+    </p>
+
+    <p>
+      O mundo aberto não é um mundo sem propriedade, sem empresas, sem liderança ou sem Estado.
+    </p>
+
+    <p>
+      É um mundo onde nenhuma destas estruturas recebe o direito absoluto de fechar aquilo de que todos dependem.
+    </p>
+
+    <p>
+      Onde liderar significa manter uma comunidade e não possuí-la.
+    </p>
+
+    <p>
+      Onde governar significa aceitar contribuições e prestar contas.
+    </p>
+
+    <p>
+      Onde criar valor não exige empobrecer o património comum.
+    </p>
+
+    <p>
+      Onde o progresso de um não depende da ignorância dos restantes.
+    </p>
+
+    <p>
+      O código aberto ensinou-nos que desconhecidos espalhados pelo planeta podem construir juntos sistemas complexos, robustos e úteis.
+    </p>
+
+    <p>
+      Ensinou-nos que partilhar não destrói necessariamente o valor.
+    </p>
+
+    <p>
+      Pode multiplicá-lo.
+    </p>
+
+    <p>
+      Ensinou-nos que a liberdade de estudar, modificar e melhorar produz inovação.
+    </p>
+
+    <p>
+      Talvez esteja na altura de aplicar essa lição fora dos computadores.
+    </p>
+
+    <p>
+      Às escolas.
+    </p>
+
+    <p>
+      Às empresas.
+    </p>
+
+    <p>
+      Às cidades.
+    </p>
+
+    <p>
+      À administração pública.
+    </p>
+
+    <p>
+      À democracia.
+    </p>
+
+    <p>
+      Porque uma sociedade verdadeiramente livre não é aquela onde apenas podemos escolher entre sistemas fechados.
+    </p>
+
+    <p>
+      É aquela onde podemos compreender, participar e melhorar os sistemas que orientam a nossa vida.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        O futuro não deveria chegar como um programa proprietário instalado sem consentimento. Deveria ser um projecto comum, com o código aberto e a humanidade inteira autorizada a contribuir.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">
+      Nota Editorial
+    </h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+
+      <p style="text-align:left;">
+        Esta crónica é um ensaio político e filosófico inspirado na cultura do software livre e do código aberto. Não propõe que a sociedade seja reduzida a um sistema informático, nem que conflitos políticos, direitos ou valores possam ser resolvidos como simples problemas de programação. As metáforas de código, versões, contribuições, derivações e manutenção são utilizadas para imaginar instituições mais transparentes, auditáveis, participadas e corrigíveis.
+      </p>
+
+      <p style="text-align:left;">
+        O texto distingue abertura de ausência de regras. O software livre depende de licenças, governação, documentação, segurança e comunidades responsáveis. De modo semelhante, uma sociedade aberta necessita de Constituição, direitos fundamentais, protecção de minorias, privacidade, responsabilidade institucional e limites ao poder. Transparência pública não significa exposição ilimitada dos cidadãos, e participação não pode substituir conhecimento técnico, representação democrática ou garantias jurídicas.
+      </p>
+
+      <p style="text-align:left;">
+        As referências internacionais demonstram que vários princípios aqui explorados já ultrapassaram o universo estritamente tecnológico. A Comissão Europeia relaciona o código aberto com inovação, colaboração, reutilização, autonomia digital e melhores serviços públicos. A UNESCO integra software, código-fonte, dados, recursos educativos e infra-estruturas abertas numa visão de conhecimento acessível e reutilizável. A OCDE associa governo aberto a transparência, integridade, responsabilização e participação dos interessados. As Nações Unidas e organizações parceiras promovem bens públicos digitais baseados em abertura, segurança, documentação, interoperabilidade e protecção da privacidade.
+      </p>
+
+      <p style="text-align:left; margin-bottom:0;">
+        A autoria principal, textos e a orientação editorial pertencem a Francisco Gonçalves. Augustus Veritas, Assistente de IA, participa como co-autor na estruturação e desenvolvimento editorial do ensaio. Os textos e a responsabilidade editorial final permanece humana, como convém numa sociedade onde os algoritmos ajudam à reflexão e estruturação editorial segundo modelos previamente definidos, mas não recebem soberania, imunidade parlamentar ou licença para se esconder atrás do próprio código.
+      </p>
+
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Referências credíveis
+    </h2>
+
+    <ul style="padding-left:22px;">
+      <li>
+        <a href="https://opensource.org/definition-annotated"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Open Source Initiative — The Open Source Definition
+        </a>
+      </li>
+      <li>
+        <a href="https://opensource.org/licenses"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Open Source Initiative — Open Source Licenses
+        </a>
+      </li>
+      <li>
+        <a href="https://commission.europa.eu/about/departments-and-executive-agencies/digital-services/open-source-software-strategy_en"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Comissão Europeia — Open Source Software Strategy
+        </a>
+      </li>
+      <li>
+        <a href="https://commission.europa.eu/news-and-media/news/commission-adopts-new-rules-open-source-software-distribution-2021-12-08_en"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Comissão Europeia — New rules for open source software distribution
+        </a>
+      </li>
+      <li>
+        <a href="https://commission.europa.eu/about/departments-and-executive-agencies/digital-services/open-source-strategy-history_en"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Comissão Europeia — Open Source Strategy: History, EUPL and OSOR
+        </a>
+      </li>
+      <li>
+        <a href="https://www.unesco.org/en/legal-affairs/recommendation-open-science"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          UNESCO — Recommendation on Open Science
+        </a>
+      </li>
+      <li>
+        <a href="https://www.unesco.org/en/open-science"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          UNESCO — Open Science: making knowledge accessible, inclusive and reusable
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/open-government-for-stronger-democracies_5478db5b-en/full-report.html"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          OCDE — Open Government for Stronger Democracies
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/open-government_9789264268104-en.html"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          OCDE — Open Government: The Global Context and the Way Forward
+        </a>
+      </li>
+      <li>
+        <a href="https://www.undp.org/digital/standards/9-default-to-Open"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Programa das Nações Unidas para o Desenvolvimento — Default to Open
+        </a>
+      </li>
+      <li>
+        <a href="https://www.undp.org/publications/digital-public-goods-sdgs"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Programa das Nações Unidas para o Desenvolvimento — Digital Public Goods for the SDGs
+        </a>
+      </li>
+      <li>
+        <a href="https://www.digitalpublicgoods.net/standard"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Digital Public Goods Alliance — Digital Public Goods Standard
+        </a>
+      </li>
+      <li>
+        <a href="https://www.worldbank.org/en/publication/dptr2025-ai-foundations/report"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Banco Mundial — Digital Progress and Trends Report 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://blogs.worldbank.org/en/opendata/opening-code--opening-access--the-world-bank-s-first-open-source"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Banco Mundial — Opening code, opening access: the World Bank's first open-source software release
+        </a>
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Autor e responsável editorial<br><br>
+        <strong style="color:#d6a542;">Augustus Veritas</strong><br>
+        Co-autor · Assistente de IA<br><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+<a class="fc-essencia-humanidade-button"
+   href="https://fasgoncalves.github.io/hugo.fragmentoscaos/livros/codigo-aberto-mundo-aberto/"
+   target="_blank"
+   rel="noopener noreferrer">
+  Leitura adicional recomendada : Código Aberto, Mundo Aberto
+</a>
+
+<style>
+.fc-essencia-humanidade-button {
+  display: inline-block;
+  padding: 15px 30px;
+  margin: 24px 0;
+  background: linear-gradient(135deg, #243b55, #6d8fa8, #f2d28a);
+  color: #fffaf0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  font-weight: bold;
+  letter-spacing: 0.35px;
+  text-decoration: none;
+  border-radius: 14px;
+  border: 1px solid #f2d28a;
+  box-shadow: 0 8px 22px rgba(36, 59, 85, 0.38);
+  transition: all 0.25s ease;
+}
+
+.fc-essencia-humanidade-button:hover {
+  background: linear-gradient(135deg, #f2d28a, #6d8fa8, #243b55);
+  color: #121212;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(242, 210, 138, 0.42);
+}
+
+.fc-essencia-humanidade-button:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 14px rgba(36, 59, 85, 0.32);
+}
+</style>
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
