@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Universidade do Aplauso</title>
+<meta name="description" content="A Universidade do Aplauso">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Universidade do Aplauso</h1>
+      <p class="meta">Publicado em 2026-08-30 12:30:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/08/file_00000000e1f081f49462ddd5afc82f96_45f14647.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="A Universidade do Aplauso">
+      <meta itemprop="description" content="Uma crónica crítica sobre juventudes partidárias, conformismo, propaganda, pensamento crítico e o risco de transformar formação política em treino de pertença e aplauso.">
+      <meta itemprop="datePublished" content="2026-08-30">
+      <meta itemprop="dateModified" content="2026-08-30">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_00000000e1f081f49462ddd5afc82f96.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      A Universidade do Aplauso
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      Quando uma juventude deixa de aprender a pensar e começa a aprender a obedecer
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        A 22.ª Universidade de Verão do PSD decorreu em Castelo de Vide entre 24 e 30 de Agosto de 2026, reunindo cerca de uma centena de jovens numa iniciativa assumidamente destinada à formação política. Esta crónica parte da observação pública desse tipo de ambiente partidário para discutir um problema mais vasto: o momento em que pertença, fidelidade e aplauso começam a substituir dúvida, contraditório e independência intelectual.
+      </p>
+    </div>
+
+    <p>Há qualquer coisa profundamente perturbadora numa sala cheia de jovens que aplaude um governante quase por reflexo.</p>
+
+    <p>Não porque seja proibido aplaudir.</p>
+
+    <p>Não porque um primeiro-ministro não possa dizer coisas merecedoras de aplauso.</p>
+
+    <p>E certamente não porque jovens ligados a um partido político não tenham o direito de acreditar nas suas ideias.</p>
+
+    <p>O problema começa quando o aplauso deixa de ser resposta a uma ideia e passa a ser <strong>comportamento condicionado pela pertença</strong>.</p>
+
+    <p>O líder fala.</p>
+
+    <p>A sala aplaude.</p>
+
+    <p>O líder faz uma pausa.</p>
+
+    <p>A sala percebe a deixa.</p>
+
+    <p>Novo aplauso.</p>
+
+    <p>Uma frase de efeito.</p>
+
+    <p>Aplauso.</p>
+
+    <p>Uma crítica ao adversário.</p>
+
+    <p>Aplauso.</p>
+
+    <p>Um número favorável.</p>
+
+    <p>Aplauso.</p>
+
+    <p>Uma promessa.</p>
+
+    <p>Aplauso.</p>
+
+    <p>Uma proclamação de sucesso.</p>
+
+    <p>Mais aplauso.</p>
+
+    <p>E, ao fim de algum tempo, aquilo que se anuncia como formação política começa a assemelhar-se perigosamente a outra coisa:</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        treino de obediência colectiva.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Uma universidade deveria ensinar a desconfiar</h2>
+
+    <p>Chamemos-lhe universidade de verão.</p>
+
+    <p>A palavra é interessante.</p>
+
+    <p>Porque universidade deveria significar exactamente o contrário daquilo que muitas vezes vemos nestes encontros partidários.</p>
+
+    <p>Universidade deveria significar dúvida.</p>
+
+    <p>Confronto.</p>
+
+    <p>Contradição.</p>
+
+    <p>Argumentação.</p>
+
+    <p>Conhecimento.</p>
+
+    <p>Perguntas difíceis.</p>
+
+    <p>Liberdade intelectual.</p>
+
+    <p>Um professor universitário sério não deveria querer alunos que o aplaudissem a cada parágrafo.</p>
+
+    <p>Deveria querer alunos capazes de lhe dizer:</p>
+
+    <p><strong>«Professor, isso não está demonstrado.»</strong></p>
+
+    <p><strong>«Essa conclusão não resulta dos dados.»</strong></p>
+
+    <p><strong>«Há outra interpretação possível.»</strong></p>
+
+    <p><strong>«Pode estar errado.»</strong></p>
+
+    <p>É assim que cresce o conhecimento.</p>
+
+    <p>Mas quando uma organização política cria uma «universidade» em que o líder sobe ao palco e uma sala de jovens responde com entusiasmo quase coreografado, talvez tenhamos bastante juventude partidária.</p>
+
+    <p>Universidade é que começa a ser uma palavra generosa.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A juventude deveria ser a parte mais incómoda da sociedade</h2>
+
+    <p>Há qualquer coisa biologicamente estranha numa juventude demasiado obediente.</p>
+
+    <p>Os jovens deveriam incomodar.</p>
+
+    <p>Questionar.</p>
+
+    <p>Desconfiar.</p>
+
+    <p>Desafiar autoridades.</p>
+
+    <p>Perguntar porque é assim.</p>
+
+    <p>Recusar respostas circulares.</p>
+
+    <p>Ter aquela insolência intelectual saudável que obriga os mais velhos a justificar aquilo que fazem.</p>
+
+    <p>Uma sociedade que possui jovens assim pode irritar-se bastante com eles.</p>
+
+    <p>Mas tem futuro.</p>
+
+    <p>Uma sociedade em que os jovens aprendem cedo a identificar o líder correcto, vestir a camisola certa e bater palmas no momento adequado possui outra coisa:</p>
+
+    <p><strong>quadros partidários.</strong></p>
+
+    <p>E não é exactamente a mesma coisa.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O problema não está no PSD</h2>
+
+    <p>Convém dizê-lo antes que a discussão desça ao nível habitual do futebol político.</p>
+
+    <p>Este fenómeno não pertence ao PSD.</p>
+
+    <p>Existe no PS.</p>
+
+    <p>Existe no PCP.</p>
+
+    <p>Existe no Chega.</p>
+
+    <p>Existe no Bloco.</p>
+
+    <p>Existe em praticamente todas as estruturas onde a identidade colectiva começa a valer mais do que o pensamento individual.</p>
+
+    <p>Mudam as bandeiras.</p>
+
+    <p>Mudam os slogans.</p>
+
+    <p>Mudam os inimigos.</p>
+
+    <p>O mecanismo psicológico é extraordinariamente semelhante.</p>
+
+    <p>O nosso líder fala.</p>
+
+    <p>Nós aplaudimos.</p>
+
+    <p>O líder deles fala.</p>
+
+    <p>Nós indignamo-nos.</p>
+
+    <p>Aquilo que nós fazemos é estratégia.</p>
+
+    <p>Aquilo que eles fazem é propaganda.</p>
+
+    <p>Os nossos erros têm contexto.</p>
+
+    <p>Os erros deles revelam carácter.</p>
+
+    <p>É uma máquina tribal extremamente eficiente.</p>
+
+    <p>E intelectualmente miserável.</p>
+
+    <p>A investigação recente sobre confiança política ajuda a perceber a força desta lente partidária: no inquérito da OCDE publicado em 2026, a confiança no Governo nacional era, em média, 26 pontos percentuais mais elevada entre apoiantes dos partidos que governavam do que entre os restantes cidadãos.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Primeiro escolhe-se o clube. Depois inventam-se as razões</h2>
+
+    <p>Este é talvez o aspecto mais inquietante da militância política precoce quando deixa de existir espírito crítico.</p>
+
+    <p>A sequência racional deveria ser:</p>
+
+    <p>observo a realidade;</p>
+
+    <p>analiso propostas;</p>
+
+    <p>comparo resultados;</p>
+
+    <p>formo uma opinião;</p>
+
+    <p>eventualmente aproximo-me de um partido.</p>
+
+    <p>Mas demasiadas vezes a sequência torna-se:</p>
+
+    <p>entro no partido;</p>
+
+    <p>aprendo quem são os nossos;</p>
+
+    <p>aprendo quem são os adversários;</p>
+
+    <p>e depois começo a interpretar a realidade de maneira compatível com essa pertença.</p>
+
+    <p>É uma inversão extraordinária.</p>
+
+    <p>A conclusão vem primeiro.</p>
+
+    <p>Os argumentos são contratados depois.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">É assim que nasce o militante perfeito</h2>
+
+    <p>O militante perfeito não precisa de mentir conscientemente.</p>
+
+    <p>Isso seria demasiado trabalhoso.</p>
+
+    <p>Basta aprender a filtrar.</p>
+
+    <p>Quando o Governo apresenta um indicador positivo:</p>
+
+    <p><strong>excelente trabalho.</strong></p>
+
+    <p>Quando aparece um indicador negativo:</p>
+
+    <p><strong>herança do Governo anterior.</strong></p>
+
+    <p>Quando uma medida resulta:</p>
+
+    <p><strong>competência.</strong></p>
+
+    <p>Quando falha:</p>
+
+    <p><strong>contexto internacional.</strong></p>
+
+    <p>Quando o adversário muda de posição:</p>
+
+    <p><strong>incoerência.</strong></p>
+
+    <p>Quando o nosso partido muda:</p>
+
+    <p><strong>pragmatismo.</strong></p>
+
+    <p>Quando o nosso líder exagera:</p>
+
+    <p><strong>força política.</strong></p>
+
+    <p>Quando o adversário exagera:</p>
+
+    <p><strong>populismo.</strong></p>
+
+    <p>É um sistema operacional surpreendentemente simples.</p>
+
+    <p>Depois de instalado, quase não necessita de actualizações.</p>
+
+    <p>Estudos de psicologia política descrevem mecanismos semelhantes através de conceitos como raciocínio motivado e identidade partidária: a avaliação de informação pode ser influenciada pelo desejo de proteger crenças e pertenças previamente assumidas. A literatura não reduz todo o comportamento político a esse mecanismo, mas demonstra que a motivação e a identidade podem alterar significativamente o modo como avaliamos informação.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O aplauso colectivo anestesia a dúvida</h2>
+
+    <p>Existe também uma dimensão psicológica poderosa.</p>
+
+    <p>Numa sala onde quase todos aplaudem, permanecer sentado exige mais independência do que parece.</p>
+
+    <p>O ser humano é profundamente social.</p>
+
+    <p>Procura pertença.</p>
+
+    <p>Reconhecimento.</p>
+
+    <p>Aceitação.</p>
+
+    <p>Quando toda a sala se levanta, a tendência natural é levantar.</p>
+
+    <p>Quando todos aplaudem, a mão começa praticamente a procurar a outra sozinha.</p>
+
+    <p>É exactamente por isso que uma educação política séria deveria ensinar jovens a resistir ao impulso da multidão.</p>
+
+    <p>Não a ser sistematicamente do contra.</p>
+
+    <p>Isso seria apenas outra forma de automatismo.</p>
+
+    <p>Mas a perguntar:</p>
+
+    <p><strong>«Porque estou a aplaudir?»</strong></p>
+
+    <p>Essa pequena pergunta contém uma quantidade extraordinária de liberdade.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Propaganda não é apenas aquilo que é falso</h2>
+
+    <p>Há outra ideia que precisamos de recuperar.</p>
+
+    <p>Propaganda não significa necessariamente mentira completa.</p>
+
+    <p>A propaganda moderna é bastante mais sofisticada.</p>
+
+    <p>Pode utilizar factos verdadeiros.</p>
+
+    <p>Mas selecciona-os.</p>
+
+    <p>Enquadra-os.</p>
+
+    <p>Amplifica uns.</p>
+
+    <p>Silencia outros.</p>
+
+    <p>Compara períodos convenientes.</p>
+
+    <p>Escolhe indicadores favoráveis.</p>
+
+    <p>Transforma problemas complexos em vitórias simples.</p>
+
+    <p>E apresenta tudo numa narrativa coerente:</p>
+
+    <p><strong>Estamos no caminho certo.</strong></p>
+
+    <p>A realidade, infelizmente, sofre de uma péssima disciplina partidária.</p>
+
+    <p>Tem contradições.</p>
+
+    <p>A UNESCO insiste precisamente na necessidade de literacia mediática e informacional para que cidadãos consigam aceder, analisar, avaliar e utilizar criticamente informação num ambiente saturado por tecnologia, redes sociais e conteúdos persuasivos.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Um país não cabe num discurso</h2>
+
+    <p>Portugal pode simultaneamente ter indicadores económicos que melhoraram e cidadãos que vivem pior em determinadas dimensões.</p>
+
+    <p>Pode existir crescimento e crise na habitação.</p>
+
+    <p>Mais emprego e salários insuficientes.</p>
+
+    <p>Mais investimento público e serviços incapazes de responder.</p>
+
+    <p>Boa execução financeira e má execução material.</p>
+
+    <p>Pode haver políticas acertadas e decisões incompetentes no mesmo Governo.</p>
+
+    <p>É assim que funciona uma sociedade real.</p>
+
+    <p>Mas a propaganda detesta frases que começam por:</p>
+
+    <p><strong>«Sim, mas...»</strong></p>
+
+    <p>São demasiado perigosas.</p>
+
+    <p>Introduzem pensamento.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A juventude deveria perguntar aquilo que os assessores não querem ouvir</h2>
+
+    <p>Imagino uma verdadeira universidade política.</p>
+
+    <p>O primeiro-ministro entra.</p>
+
+    <p>Não encontra uma claque.</p>
+
+    <p>Encontra cidadãos jovens.</p>
+
+    <p>E começam as perguntas.</p>
+
+    <p>Se Portugal está melhor, porque continuam tantos jovens a emigrar?</p>
+
+    <p>Se há mais rendimento, quanto sobra depois da habitação?</p>
+
+    <p>Se existem milhares de milhões de investimento, qual foi o ganho correspondente de produtividade?</p>
+
+    <p>Que reforma falhou?</p>
+
+    <p>Que promessa não foi cumprida?</p>
+
+    <p>Que decisão do Governo considera hoje errada?</p>
+
+    <p>Que indicador piorou?</p>
+
+    <p>Que sacrifício está a ser transferido para a próxima geração?</p>
+
+    <p>Como será financiada a Segurança Social quando essa geração envelhecer?</p>
+
+    <p>Qual é a estratégia para um país em envelhecimento demográfico?</p>
+
+    <p>Que sectores conseguem pagar salários europeus sem depender permanentemente de baixos custos?</p>
+
+    <p>Que reformas administrativas foram efectivamente medidas pelos resultados e não pelos anúncios?</p>
+
+    <p>Isso seria pedagogia democrática.</p>
+
+    <p>Provavelmente produziria menos aplausos.</p>
+
+    <p>Mas cidadãos muito melhores.</p>
+
+    <p>A própria Universidade de Verão do PSD de 2026 incluiu uma sessão em que os alunos puderam questionar directamente Luís Montenegro e contou com oradores exteriores ao núcleo governamental, incluindo João Soares. Isso é relevante e deve ser reconhecido. A crítica desta crónica dirige-se ao ambiente de reverência e confirmação que pode emergir em qualquer formação partidária, não à inexistência absoluta de contraditório no programa.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O poder adora salas que aplaudem</h2>
+
+    <p>Todos os governantes deveriam ter medo do aplauso excessivo.</p>
+
+    <p>É agradável.</p>
+
+    <p>Esse é precisamente o problema.</p>
+
+    <p>O poder produz facilmente ambientes onde as más notícias deixam de chegar.</p>
+
+    <p>Primeiro desaparecem as críticas mais duras.</p>
+
+    <p>Depois desaparecem os contraditórios.</p>
+
+    <p>Depois os assessores aprendem quais informações agradam.</p>
+
+    <p>Depois os dirigentes intermédios aprendem quais números apresentar.</p>
+
+    <p>Finalmente o líder entra numa sala onde todos confirmam que está tudo a correr extraordinariamente bem.</p>
+
+    <p>A História possui uma quantidade pouco saudável de exemplos desta doença.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A claque constrói uma realidade paralela</h2>
+
+    <p>O líder fala.</p>
+
+    <p>O auditório entusiasma-se.</p>
+
+    <p>A comunicação social recolhe as melhores frases.</p>
+
+    <p>As redes partidárias publicam vídeos.</p>
+
+    <p>Os militantes partilham.</p>
+
+    <p>Os dirigentes comentam:</p>
+
+    <p>«Grande intervenção.»</p>
+
+    <p>«Uma sala cheia.»</p>
+
+    <p>«Juventude mobilizada.»</p>
+
+    <p>«Confiança no futuro.»</p>
+
+    <p>Durante algumas horas constrói-se uma espécie de Portugal alternativo.</p>
+
+    <p>Tudo está a avançar.</p>
+
+    <p>Tudo está a melhorar.</p>
+
+    <p>As reformas estão a resultar.</p>
+
+    <p>Os problemas estão a ser resolvidos.</p>
+
+    <p>Depois alguém sai da sala.</p>
+
+    <p>E encontra o país.</p>
+
+    <p>Essa transição pode ser desconfortável.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A ausência de pensamento é politicamente muito conveniente</h2>
+
+    <p>Uma sociedade intelectualmente passiva é extremamente fácil de governar.</p>
+
+    <p>Não precisa de censura.</p>
+
+    <p>Basta espectáculo.</p>
+
+    <p>Não precisa de proibir perguntas.</p>
+
+    <p>Basta fazer com que ninguém tenha vontade de as fazer.</p>
+
+    <p>Não precisa de impor uma narrativa.</p>
+
+    <p>Basta repeti-la suficientemente.</p>
+
+    <p>O cidadão começa a consumir política como entretenimento.</p>
+
+    <p>O militante consome-a como identidade.</p>
+
+    <p>E a propaganda entra sem resistência.</p>
+
+    <p>Não porque todos sejam estúpidos.</p>
+
+    <p>Mas porque <strong>pensar dá trabalho</strong>.</p>
+
+    <p>Pertencer é muito mais confortável.</p>
+
+    <p>Investigação publicada na <em>Nature Human Behaviour</em> mostra como identidade política e motivações sociais podem afectar julgamentos sobre informação, e como incentivar explicitamente a precisão pode reduzir parte do enviesamento partidário. A conclusão não é que o cidadão partidário seja incapaz de pensar; é que o contexto pode empurrá-lo para objectivos diferentes da procura da verdade.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A ignomínia pode ser deglutida sem violência</h2>
+
+    <p>Talvez seja esta a parte mais perturbadora.</p>
+
+    <p>Não precisamos de imaginar regimes autoritários para perceber como sociedades começam a aceitar aquilo que deveriam questionar.</p>
+
+    <p>A habituação faz muito desse trabalho.</p>
+
+    <p>Primeiro uma pequena contradição.</p>
+
+    <p>Depois uma promessa esquecida.</p>
+
+    <p>Depois um dado escolhido convenientemente.</p>
+
+    <p>Depois uma justificação absurda.</p>
+
+    <p>Depois outra.</p>
+
+    <p>Cada episódio isolado parece pequeno.</p>
+
+    <p>Até que a capacidade de indignação se desgasta.</p>
+
+    <p>E aquilo que ontem provocaria revolta hoje recebe apenas um encolher de ombros.</p>
+
+    <p>Ou pior:</p>
+
+    <p><strong>um aplauso.</strong></p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O dogma começa quando a pergunta se torna deslealdade</h2>
+
+    <p>Este é o momento decisivo dentro de qualquer organização política.</p>
+
+    <p>Enquanto o militante pode perguntar:</p>
+
+    <p>«Será que estamos errados?»</p>
+
+    <p>há pensamento.</p>
+
+    <p>Quando essa pergunta começa a ser interpretada como falta de lealdade, nasceu o dogma.</p>
+
+    <p>O jovem aprende depressa.</p>
+
+    <p>Questionar demais atrasa a carreira.</p>
+
+    <p>Aplaudir ajuda.</p>
+
+    <p>Discordar cria problemas.</p>
+
+    <p>Repetir a linha oficial demonstra maturidade.</p>
+
+    <p>E assim começa a formação das próximas gerações de dirigentes.</p>
+
+    <p>Depois admiramo-nos que, vinte anos mais tarde, a política esteja cheia de pessoas extraordinariamente treinadas para sobreviver dentro dos partidos e bastante menos preparadas para compreender o país fora deles.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Uma democracia não precisa de discípulos</h2>
+
+    <p>Precisa de cidadãos.</p>
+
+    <p>E cidadãos não obedecem intelectualmente.</p>
+
+    <p>Avaliam.</p>
+
+    <p>Comparam.</p>
+
+    <p>Discordam.</p>
+
+    <p>Mudam de opinião.</p>
+
+    <p>Punem eleitoralmente.</p>
+
+    <p>Voltam a apoiar.</p>
+
+    <p>Exigem explicações.</p>
+
+    <p>Perguntam.</p>
+
+    <p>Uma democracia adulta deveria sentir orgulho numa juventude difícil de convencer.</p>
+
+    <p>Não numa juventude fácil de mobilizar.</p>
+
+    <p>Porque o jovem que hoje aplaude automaticamente o nosso líder pode amanhã aplaudir automaticamente outro.</p>
+
+    <p>O problema nunca foi apenas o líder.</p>
+
+    <p><strong>É o automatismo.</strong></p>
+
+    <p>A OCDE sublinha que educação cívica, ambientes de sala de aula abertos ao debate e oportunidades reais de participação podem fortalecer a agência política dos jovens. Em vez de ensinar fidelidade, uma democracia deveria ensinar voz.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O pensamento crítico começa com uma pequena heresia</h2>
+
+    <p>Talvez seja esta:</p>
+
+    <p><strong>«E se o meu partido estiver errado?»</strong></p>
+
+    <p>Quatro palavras praticamente revolucionárias.</p>
+
+    <p>E se o meu líder estiver errado?</p>
+
+    <p>E se o adversário tiver razão neste ponto?</p>
+
+    <p>E se aquilo que partilhei ontem for falso?</p>
+
+    <p>E se o indicador que me mostraram estiver fora de contexto?</p>
+
+    <p>E se aquela política que sempre defendi não estiver a funcionar?</p>
+
+    <p>Uma mente capaz destas perguntas é extremamente difícil de manipular.</p>
+
+    <p>Também é mais difícil de governar.</p>
+
+    <p>Azar.</p>
+
+    <p>Democracia nunca foi concebida para ser confortável para governantes.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A verdadeira universidade</h2>
+
+    <p>Uma verdadeira universidade de verão deveria terminar com jovens menos certos de algumas coisas do que estavam quando chegaram.</p>
+
+    <p>Deveria introduzir dúvidas.</p>
+
+    <p>Complexidade.</p>
+
+    <p>Contradições.</p>
+
+    <p>Dados desconfortáveis.</p>
+
+    <p>Ideias adversárias.</p>
+
+    <p>Professores que desafiassem a linha do partido.</p>
+
+    <p>Economistas que apresentassem números inconvenientes.</p>
+
+    <p>Cientistas que destruíssem simplificações.</p>
+
+    <p>Empresários que explicassem aquilo que o Estado não compreende.</p>
+
+    <p>Trabalhadores que mostrassem aquilo que os relatórios não mostram.</p>
+
+    <p>Jovens emigrados explicando porque partiram.</p>
+
+    <p>E opositores políticos convidados precisamente para obrigar o auditório a pensar.</p>
+
+    <p>Isso seria uma universidade.</p>
+
+    <p>O resto pode ser útil para um partido.</p>
+
+    <p>Mas chamemos às coisas aquilo que são.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A juventude que precisamos</h2>
+
+    <p>Portugal não precisa de jovens treinados para aplaudir Montenegro.</p>
+
+    <p>Nem para aplaudir José Luís Carneiro.</p>
+
+    <p>Nem André Ventura.</p>
+
+    <p>Nem Mariana Mortágua.</p>
+
+    <p>Nem Paulo Raimundo.</p>
+
+    <p>Nem líder algum.</p>
+
+    <p>Precisa de jovens capazes de olhar para qualquer um deles e pensar:</p>
+
+    <p><strong>«Convence-me.»</strong></p>
+
+    <p>Depois:</p>
+
+    <p><strong>«Prova.»</strong></p>
+
+    <p>E finalmente:</p>
+
+    <p><strong>«Se os factos mudarem, eu também mudo.»</strong></p>
+
+    <p>Essa deveria ser a ambição.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Porque uma sociedade deixa de ser livre muito antes de perder a liberdade</h2>
+
+    <p>Começa a perdê-la quando deixa de pensar.</p>
+
+    <p>Quando substitui argumentos por pertença.</p>
+
+    <p>Quando troca dúvida por fidelidade.</p>
+
+    <p>Quando prefere narrativas confortáveis a realidade desagradável.</p>
+
+    <p>Quando a pergunta se torna incómoda.</p>
+
+    <p>Quando o contraditório passa a ser inimigo.</p>
+
+    <p>Quando o líder deixa de ser avaliado e começa a ser celebrado.</p>
+
+    <p>E quando jovens, que deveriam constituir a força mais inquieta, curiosa e irreverente da sociedade, aprendem demasiado cedo a sentar-se na fila certa e a bater palmas no momento certo.</p>
+
+    <p>Não é preciso lobotomia.</p>
+
+    <p>É muito mais simples.</p>
+
+    <p>Basta ensinar que <strong>pertencer é mais importante do que pensar</strong>.</p>
+
+    <p>E talvez seja essa a verdadeira ignomínia.</p>
+
+    <p>Não aquilo que um político diz num palco.</p>
+
+    <p>Políticos sempre fizeram propaganda. Provavelmente descobriram-na três minutos depois de descobrirem a linguagem.</p>
+
+    <p>A verdadeira tragédia começa quando uma sala deixa de perguntar se aquilo que está a ouvir corresponde à realidade.</p>
+
+    <p>E passa simplesmente a esperar pela próxima frase.</p>
+
+    <p>Para poder aplaudir.</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Uma democracia não precisa de uma juventude que saiba quando aplaudir. Precisa de uma juventude que saiba quando perguntar: «Isto é mesmo verdade?»
+      </p>
+    </div>
+
+    <p>Porque o poder não teme particularmente quem grita.</p>
+
+    <p>O poder aprende a lidar com manifestações.</p>
+
+    <p>Aquilo que qualquer poder teme verdadeiramente é outra coisa.</p>
+
+    <p><strong>Uma sociedade que pensa pela própria cabeça.</strong></p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">DADOS ESSENCIAIS</h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>A Universidade de Verão do PSD de 2026 decorreu de 24 a 30 de Agosto, em Castelo de Vide, com cerca de uma centena de jovens, e é oficialmente apresentada como iniciativa de formação política.</li>
+        <li>A edição incluiu a possibilidade de alunos questionarem directamente Luís Montenegro e contou também com oradores exteriores ao núcleo governamental, um dado importante para não confundir crítica ao ambiente partidário com ausência absoluta de contraditório.</li>
+        <li>No OECD Trust Survey 2026, a confiança no Governo nacional era, em média, 26 pontos percentuais superior entre apoiantes dos partidos no Governo, mostrando como a pertença partidária se associa fortemente à percepção das instituições.</li>
+        <li>A OCDE defende que educação cívica, pensamento crítico e ambientes de aprendizagem abertos ao debate ajudam a fortalecer participação democrática e agência política dos jovens.</li>
+        <li>A UNESCO considera a literacia mediática e informacional essencial para analisar, avaliar e utilizar criticamente informação num ambiente marcado por redes sociais, tecnologia e desinformação.</li>
+        <li>Investigação em psicologia política e ciência da informação mostra que identidade partidária, motivações sociais e raciocínio motivado podem influenciar a avaliação de informação, embora não expliquem isoladamente todo o comportamento político.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        Esta crónica é uma peça de opinião inspirada na cobertura pública da 22.ª Universidade de Verão do PSD, realizada em Castelo de Vide entre 24 e 30 de Agosto de 2026. A iniciativa reuniu cerca de uma centena de participantes, não «centenas», e é promovida pelo PSD, JSD, Instituto Francisco Sá Carneiro e parceiros europeus como projecto de formação política.
+      </p>
+
+      <p style="text-align:left;">
+        A crítica ao aplauso e à reverência partidária não pretende descrever individualmente cada participante, nem sustentar que os jovens presentes eram incapazes de pensamento autónomo. Não existe base factual para qualificações clínicas ou expressões como «lobotomizados». O objecto da crónica é o conformismo de grupo e o risco de transformar espaços de formação política em ambientes de confirmação ideológica.
+      </p>
+
+      <p style="text-align:left;">
+        Também seria incorrecto afirmar que a edição de 2026 não permitiu perguntas ou contraditório. A imprensa relatou que os alunos puderam questionar directamente o primeiro-ministro e que o programa incluiu oradores com percursos políticos distintos. Esses elementos são reconhecidos no texto. A crítica incide sobre uma cultura política mais vasta, observável em múltiplos partidos, em que o aplauso ao líder e a identidade de grupo podem sobrepor-se à avaliação crítica.
+      </p>
+
+      <p style="text-align:left;">
+        As referências a raciocínio motivado e enviesamento partidário baseiam-se em literatura internacional de psicologia política e comportamento informacional. Essa investigação mostra tendências estatísticas e mecanismos possíveis, não permite diagnosticar indivíduos a partir da sua filiação partidária nem concluir que todo o apoio político resulte de irracionalidade.
+      </p>
+
+      <p style="text-align:left; margin-bottom:0;">
+        A defesa de uma juventude mais crítica não é uma defesa da antipolítica. É precisamente o contrário. Participar em partidos, movimentos e instituições democráticas é legítimo e desejável quando essa participação preserva autonomia intelectual, contraditório, respeito pelos factos e capacidade de dizer ao próprio líder: «Aqui estás errado.»
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+
+    <ul style="padding-left:22px;">
+      <li>
+        <a href="https://rr.pt/noticia/politica/2026/08/30/montenegro-leva-educacao-ao-encerramento-da-universidade-de-verao-do-psd/483527/"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Renascença — Montenegro leva educação ao encerramento da Universidade de Verão do PSD, 30 August 2026
+        </a>
+      </li>
+      <li>
+        <a href="https://rr.pt/noticia/politica/2026/08/27/luis-montenegro-vai-estar-em-direto-a-responder-a-perguntas-dos-alunos-da-universidade-de-verao-do-psd/483253/"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Renascença — Luís Montenegro responde a perguntas dos alunos da Universidade de Verão, 27 August 2026
+        </a>
+      </li>
+      <li>
+        <a href="https://www.dn.pt/pol%C3%ADtica/universidade-de-vero-do-psd-reduz-presena-do-governo-e-refora-oradores-jovens"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Diário de Notícias — Universidade de Verão do PSD reduz presença do Governo e reforça oradores jovens, 23 August 2026
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/building-trust-through-education_967fa34d-en.html"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          OECD — Building Trust through Education: The Common Thread, 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/civic-education-as-a-pathway-to-inclusive-societies_3f128be8-en.html"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          OECD — Civic Education as a Pathway to Inclusive Societies, 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/2026/06/results-of-the-2025-oecd-survey-on-drivers-of-trust-in-public-institutions_96323a65/full-report/socioeconomic-conditions-political-agency-and-trust_bb385ad9.html"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          OECD — Survey on Drivers of Trust in Public Institutions 2026: Partisanship, political agency and trust
+        </a>
+      </li>
+      <li>
+        <a href="https://www.unesco.org/en/ami"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          UNESCO — Media and Information Literacy
+        </a>
+      </li>
+      <li>
+        <a href="https://www.nature.com/articles/s41562-023-01540-w"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Nature Human Behaviour — Accuracy and social motivations shape judgements of (mis)information, 2023
+        </a>
+      </li>
+      <li>
+        <a href="https://www.nature.com/articles/s41562-024-02086-1"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Nature Human Behaviour — Spotting false news and doubting true news: systematic review and meta-analysis, 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://www.nature.com/articles/s41599-025-05714-x"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Humanities and Social Sciences Communications — Partisan attitudes and the motivation behind the spread of misleading information, 2025
+        </a>
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
