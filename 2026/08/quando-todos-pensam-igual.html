@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quando Todos Pensam Igual</title>
+<meta name="description" content="Quando Todos Pensam Igual">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Quando Todos Pensam Igual</h1>
+      <p class="meta">Publicado em 2026-08-31 12:45:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/08/file_0000000070c881f4a8c4a8af733473f5_ce66cbe9.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="Quando Todos Pensam Igual">
+      <meta itemprop="description" content="Uma crónica crítica sobre conformismo, tribalismo político, medo do contraditório e a diferença entre viver numa democracia e possuir uma verdadeira cultura de independência intelectual.">
+      <meta itemprop="datePublished" content="2026-08-30">
+      <meta itemprop="dateModified" content="2026-08-30">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_0000000070c881f4a8c4a8af733473f5.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      Quando Todos Pensam Igual
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      O conformismo, a manada e a democracia que ainda não aprendeu a gostar do contraditório
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        O 25 de Abril de 1974 devolveu aos portugueses liberdades políticas fundamentais: expressão, associação, imprensa, pluralismo partidário e eleições livres. Esta crónica não diminui essa conquista. Questiona antes uma coisa diferente e mais difícil de decretar por lei: se construímos, com a mesma profundidade, uma cultura de independência intelectual capaz de conviver serenamente com a dúvida, a dissidência e o contraditório.
+      </p>
+    </div>
+
+    <p>Há revoluções que mudam leis.</p>
+
+    <p>Outras mudam instituições.</p>
+
+    <p>Algumas mudam regimes.</p>
+
+    <p>As mais difíceis são aquelas que precisam de mudar hábitos mentais.</p>
+
+    <p>Portugal fez em 1974 uma transformação histórica extraordinária.</p>
+
+    <p>Acabou a censura.</p>
+
+    <p>Acabou a polícia política.</p>
+
+    <p>Acabou o partido único de facto.</p>
+
+    <p>Vieram eleições livres.</p>
+
+    <p>Vieram partidos.</p>
+
+    <p>Vieram jornais livres.</p>
+
+    <p>Vieram sindicatos livres.</p>
+
+    <p>Veio a possibilidade de discordar publicamente do Governo sem pedir autorização ao Governo.</p>
+
+    <p>Foi uma mudança civilizacional.</p>
+
+    <p>Mas existe uma pergunta que talvez tenhamos evitado durante demasiado tempo:</p>
+
+    <p><strong>libertámos também a cabeça?</strong></p>
+
+    <p>Porque uma sociedade pode conquistar liberdade política e conservar, durante décadas, hábitos de conformismo, dependência, prudência excessiva, medo de destoar e necessidade quase física de pertencer ao grupo certo.</p>
+
+    <p>É possível acabar com a censura oficial e manter uma espécie de censura social.</p>
+
+    <p>Mais suave.</p>
+
+    <p>Mais elegante.</p>
+
+    <p>E, por isso mesmo, extraordinariamente eficaz.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Ninguém proíbe. Apenas convém não dizer</h2>
+
+    <p>A censura clássica é simples.</p>
+
+    <p>Alguém risca uma frase.</p>
+
+    <p>Proíbe um livro.</p>
+
+    <p>Fecha um jornal.</p>
+
+    <p>Prende um opositor.</p>
+
+    <p>A censura social democrática é muito mais sofisticada.</p>
+
+    <p>Ninguém lhe diz:</p>
+
+    <p>«Não pode falar.»</p>
+
+    <p>Dizem:</p>
+
+    <p>«Pode falar, naturalmente.»</p>
+
+    <p>Depois acrescentam mentalmente:</p>
+
+    <p>«Mas não se admire com aquilo que passaremos a pensar de si.»</p>
+
+    <p>É assim que a pressão funciona.</p>
+
+    <p>Não através da proibição.</p>
+
+    <p>Através da reputação.</p>
+
+    <p>Da carreira.</p>
+
+    <p>Da pertença.</p>
+
+    <p>Do acesso.</p>
+
+    <p>Do convite que deixa de chegar.</p>
+
+    <p>Do silêncio que aparece numa sala depois de alguém dizer aquilo que não era suposto ser dito.</p>
+
+    <p>Não existe polícia política.</p>
+
+    <p>Existe apenas o olhar colectivo.</p>
+
+    <p>E o ser humano, criatura social extraordinariamente sofisticada, aprendeu há milhares de anos que ficar fora da tribo costuma ser desagradável.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A crítica transforma-se numa suspeita moral</h2>
+
+    <p>Existe um mecanismo particularmente eficaz para neutralizar o contraditório.</p>
+
+    <p>Não se responde ao argumento.</p>
+
+    <p>Classifica-se quem o apresentou.</p>
+
+    <p>Critica determinada instituição?</p>
+
+    <p>É contra as instituições.</p>
+
+    <p>Questiona uma política pública?</p>
+
+    <p>Não tem sentido de Estado.</p>
+
+    <p>Critica um consenso?</p>
+
+    <p>É radical.</p>
+
+    <p>Questiona uma narrativa histórica?</p>
+
+    <p>Está a reescrever a História.</p>
+
+    <p>Critica a forma como a democracia funciona?</p>
+
+    <p>É antidemocrático.</p>
+
+    <p>Recusa escolher imediatamente uma das duas tribos disponíveis?</p>
+
+    <p>É suspeito.</p>
+
+    <p>Este mecanismo é intelectualmente brilhante pela sua economia.</p>
+
+    <p>Dispensa o incómodo de responder.</p>
+
+    <p>Basta converter uma divergência intelectual numa falha moral.</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Quando discordar começa a ser tratado como defeito de carácter, a democracia continua formalmente livre, mas o pensamento começa a circular com travão de mão.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O conformismo é confortável</h2>
+
+    <p>Pensar pela própria cabeça tem custos.</p>
+
+    <p>É necessário ler.</p>
+
+    <p>Comparar.</p>
+
+    <p>Duvidar.</p>
+
+    <p>Confirmar.</p>
+
+    <p>Ouvir pessoas que nos irritam.</p>
+
+    <p>Admitir que os nossos adversários podem ter razão.</p>
+
+    <p>E, pior ainda, admitir que nós podemos estar errados.</p>
+
+    <p>Pertencer é muito mais fácil.</p>
+
+    <p>O grupo fornece um pacote intelectual completo.</p>
+
+    <p>Explica quem são os bons.</p>
+
+    <p>Quem são os maus.</p>
+
+    <p>Que palavras usar.</p>
+
+    <p>Que indignações adoptar.</p>
+
+    <p>Que factos destacar.</p>
+
+    <p>Que factos contextualizar até desaparecerem.</p>
+
+    <p>Que opiniões são aceitáveis.</p>
+
+    <p>E quais exigem imediatamente uma explicação sobre as nossas intenções ocultas.</p>
+
+    <p>É um serviço extraordinariamente conveniente.</p>
+
+    <p>Quase uma subscrição mental.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Primeiro pertence-se. Depois pensa-se dentro da pertença</h2>
+
+    <p>O problema não existe apenas nos partidos.</p>
+
+    <p>Aparece nas universidades.</p>
+
+    <p>Nas empresas.</p>
+
+    <p>Na comunicação social.</p>
+
+    <p>Nas associações profissionais.</p>
+
+    <p>Nas redes sociais.</p>
+
+    <p>Nos grupos de amigos.</p>
+
+    <p>Até nas famílias.</p>
+
+    <p>Primeiro identificamos aquilo que o grupo considera aceitável.</p>
+
+    <p>Depois ajustamos a linguagem.</p>
+
+    <p>Depois moderamos a pergunta.</p>
+
+    <p>Depois evitamos determinada discussão.</p>
+
+    <p>Finalmente já nem sentimos que estamos a evitar alguma coisa.</p>
+
+    <p>O mecanismo foi internalizado.</p>
+
+    <p>É nesse momento que o conformismo se torna mais poderoso.</p>
+
+    <p>Quando já não necessita de fiscalização externa.</p>
+
+    <p>O cidadão passou a fiscalizar-se a si próprio.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A manada não é uma metáfora insultuosa. É uma fragilidade humana</h2>
+
+    <p>Convém não cair numa arrogância fácil.</p>
+
+    <p>O conformismo não é doença exclusiva de pessoas pouco inteligentes.</p>
+
+    <p>Pessoas cultas conformam-se.</p>
+
+    <p>Cientistas conformam-se.</p>
+
+    <p>Jornalistas conformam-se.</p>
+
+    <p>Professores conformam-se.</p>
+
+    <p>Executivos conformam-se.</p>
+
+    <p>Políticos conformam-se.</p>
+
+    <p>Todos somos vulneráveis ao grupo.</p>
+
+    <p>É precisamente por isso que instituições livres precisam de cultivar deliberadamente mecanismos de contraditório.</p>
+
+    <p>A investigação contemporânea em psicologia política mostra que motivações sociais e identidade partidária podem interferir com a avaliação da informação. Em experiências publicadas na <em>Nature Human Behaviour</em>, incentivar participantes a procurar precisão melhorou a capacidade de distinguir notícias verdadeiras de falsas e reduziu enviesamentos partidários; incentivar a identificação com aquilo que agradaria ao próprio grupo produziu o efeito contrário.</p>
+
+    <p>Não significa que todos os militantes sejam irracionais.</p>
+
+    <p>Significa algo bastante mais desconfortável:</p>
+
+    <p><strong>o desejo de pertencer pode competir directamente com o desejo de estar certo.</strong></p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A sociedade que se adapta dá descanso ao poder</h2>
+
+    <p>Para quem governa, uma sociedade conformista é um luxo.</p>
+
+    <p>Um cidadão crítico dá trabalho.</p>
+
+    <p>Lembra promessas.</p>
+
+    <p>Procura dados.</p>
+
+    <p>Compara declarações antigas.</p>
+
+    <p>Recusa slogans.</p>
+
+    <p>Pergunta resultados.</p>
+
+    <p>Quer saber custos.</p>
+
+    <p>Pergunta quem beneficia.</p>
+
+    <p>Pergunta quem paga.</p>
+
+    <p>E, numa demonstração quase ofensiva de independência, às vezes muda de opinião.</p>
+
+    <p>Um cidadão tribal é administrativamente muito mais simples.</p>
+
+    <p>Basta recordar-lhe que o outro lado é pior.</p>
+
+    <p>A política descobre rapidamente esta vantagem.</p>
+
+    <p>Em vez de convencer cidadãos, mobiliza identidades.</p>
+
+    <p>Em vez de demonstrar resultados, apresenta narrativas.</p>
+
+    <p>Em vez de responder ao crítico, explica a que tribo o crítico alegadamente pertence.</p>
+
+    <p>E assim se consegue uma democracia eleitoral com cada vez menos democracia intelectual.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O país dos rótulos</h2>
+
+    <p>Portugal desenvolveu uma predilecção extraordinária por rótulos políticos.</p>
+
+    <p>São baratos.</p>
+
+    <p>Cabem numa frase.</p>
+
+    <p>Dispensam investigação.</p>
+
+    <p>E permitem encerrar conversas com uma eficiência que a Administração Pública invejaria.</p>
+
+    <p>Direita.</p>
+
+    <p>Esquerda.</p>
+
+    <p>Fascista.</p>
+
+    <p>Comunista.</p>
+
+    <p>Populista.</p>
+
+    <p>Neoliberal.</p>
+
+    <p>Radical.</p>
+
+    <p>Reaccionário.</p>
+
+    <p>Globalista.</p>
+
+    <p>Antidemocrático.</p>
+
+    <p>O rótulo pode ser adequado em alguns casos.</p>
+
+    <p>O problema aparece quando substitui o argumento.</p>
+
+    <p>Porque a pergunta deixa de ser:</p>
+
+    <p>«Aquilo que ele disse é verdadeiro?»</p>
+
+    <p>E passa a ser:</p>
+
+    <p>«Quem é ele para dizer isto?»</p>
+
+    <p>Ou:</p>
+
+    <p>«De que lado está?»</p>
+
+    <p>É a morte lenta da discussão racional.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Abril libertou a palavra. Não podia garantir a coragem</h2>
+
+    <p>Seria absurdo responsabilizar o 25 de Abril por aquilo que veio depois.</p>
+
+    <p>Uma revolução pode abolir censura.</p>
+
+    <p>Não pode decretar independência intelectual.</p>
+
+    <p>Pode garantir liberdade de expressão.</p>
+
+    <p>Não pode obrigar ninguém a utilizá-la.</p>
+
+    <p>Pode permitir contraditório.</p>
+
+    <p>Não pode impedir que grupos humanos prefiram unanimidade.</p>
+
+    <p>Esta talvez seja uma das tarefas inacabadas da democracia portuguesa.</p>
+
+    <p>Transformar liberdade legal em cultura de liberdade.</p>
+
+    <p>São coisas diferentes.</p>
+
+    <p>A primeira escreve-se na Constituição.</p>
+
+    <p>A segunda aprende-se em casa, na escola, na universidade, no emprego, nos partidos, nos jornais e na vida pública.</p>
+
+    <p>É a capacidade de ouvir uma ideia desagradável sem procurar imediatamente proibi-la.</p>
+
+    <p>De discordar sem transformar o outro num inimigo.</p>
+
+    <p>De criticar instituições sem querer destruí-las.</p>
+
+    <p>De defender instituições sem as considerar infalíveis.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Democracia não é unanimidade</h2>
+
+    <p>O Conselho da Europa possui um quadro inteiro dedicado às competências necessárias para uma verdadeira cultura democrática.</p>
+
+    <p>E é revelador aquilo que inclui.</p>
+
+    <p>Abertura a outras crenças e perspectivas.</p>
+
+    <p>Tolerância da ambiguidade.</p>
+
+    <p>Responsabilidade.</p>
+
+    <p>Capacidade de escutar.</p>
+
+    <p>Pensamento analítico e crítico.</p>
+
+    <p>Conhecimento e compreensão crítica de si próprio e do mundo.</p>
+
+    <p>Isto é importante porque democracia não consiste apenas em instituições.</p>
+
+    <p>É também um conjunto de hábitos mentais.</p>
+
+    <p>Podemos possuir Parlamento, eleições, tribunais e partidos e, apesar disso, cultivar cidadãos intelectualmente incapazes de tolerar uma opinião contrária sem a transformar numa ameaça existencial.</p>
+
+    <p>Formalmente a democracia permanece.</p>
+
+    <p>Culturalmente começa a empobrecer.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A escola deveria ensinar a discordar</h2>
+
+    <p>Talvez seja aqui que começa a mudança mais importante.</p>
+
+    <p>A escola não deveria ensinar apenas conhecimento.</p>
+
+    <p>Deveria ensinar contraditório.</p>
+
+    <p>Uma sala de aula democrática não é aquela onde todos chegam à mesma opinião.</p>
+
+    <p>É aquela onde alguém consegue discordar sem medo de humilhação.</p>
+
+    <p>A OCDE chama-lhe <em>open classroom climate</em>: um ambiente em que os alunos se sentem seguros para expressar opiniões, onde perspectivas diferentes são acolhidas e onde questões políticas e sociais podem ser discutidas.</p>
+
+    <p>A investigação reunida pela OCDE associa esse ambiente a melhores resultados de aprendizagem cívica e a maior confiança e participação política ao longo do tempo.</p>
+
+    <p>É precisamente o oposto da sala do aplauso.</p>
+
+    <p>A democracia aprende-se discutindo.</p>
+
+    <p>Não ensaiando unanimidade.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A frase que Einstein não disse</h2>
+
+    <p>Circula há décadas uma frase frequentemente atribuída a Albert Einstein:</p>
+
+    <p>«Quando todos pensam igual, significa que ninguém está a pensar.»</p>
+
+    <p>A ideia é excelente.</p>
+
+    <p>A autoria, não.</p>
+
+    <p>A formulação documentada pertence ao jornalista e pensador político norte-americano Walter Lippmann, em <em>The Stakes of Diplomacy</em>, publicado em 1915:</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        «Where all think alike, no one thinks very much.»
+      </p>
+    </div>
+
+    <p>Em português:</p>
+
+    <p><strong>«Onde todos pensam da mesma maneira, ninguém pensa muito.»</strong></p>
+
+    <p>Passou mais de um século.</p>
+
+    <p>Continua desconfortavelmente actual.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Consenso não é o problema</h2>
+
+    <p>Convém introduzir uma distinção importante.</p>
+
+    <p>Uma sociedade pode chegar racionalmente a consensos.</p>
+
+    <p>Não há nada de suspeito nisso.</p>
+
+    <p>Podemos analisar independentemente os mesmos factos e chegar à mesma conclusão.</p>
+
+    <p>Podemos concordar amplamente sobre democracia, direitos humanos, ciência, segurança ou políticas concretas.</p>
+
+    <p>O sinal de alarme surge quando <strong>discordar deixa de ser confortável</strong>.</p>
+
+    <p>Quando a pergunta é recebida como provocação.</p>
+
+    <p>Quando a dúvida é interpretada como deslealdade.</p>
+
+    <p>Quando todos começam a utilizar o mesmo vocabulário.</p>
+
+    <p>Quando determinadas premissas já não precisam de demonstração.</p>
+
+    <p>Quando uma posição deixa de ser argumento e passa a ser simplesmente «aquilo que pessoas sensatas pensam».</p>
+
+    <p>Nesse momento nasce pensamento único sem Ministério do Pensamento Único.</p>
+
+    <p>É muito mais eficiente.</p>
+
+    <p>E não precisa de orçamento próprio.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Portugal ainda tem um problema de voz</h2>
+
+    <p>Os dados não medem «conformismo nacional» directamente, e seria intelectualmente desonesto fingir que o fazem.</p>
+
+    <p>Mas mostram fragilidades importantes na relação entre cidadãos e instituições.</p>
+
+    <p>No inquérito da OCDE publicado em 2026, apenas 32% dos portugueses manifestavam uma percepção positiva de que pessoas como elas tinham voz naquilo que o Governo fazia, embora o indicador tivesse melhorado relativamente a 2023.</p>
+
+    <p>A confiança nos partidos políticos situava-se em 26%.</p>
+
+    <p>Entre os mais jovens, a confiança no Governo nacional era de 38%, contra 48% entre cidadãos com 50 ou mais anos.</p>
+
+    <p>Estes números não provam conformismo.</p>
+
+    <p>Mas lembram que democracia não vive apenas da possibilidade formal de votar.</p>
+
+    <p>Vive da sensação de que a voz individual possui significado.</p>
+
+    <p>Quando o cidadão sente que falar pouco altera, a tentação seguinte é simples:</p>
+
+    <p>desistir.</p>
+
+    <p>Ou refugiar-se na tribo.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O maior teste é criticar os nossos</h2>
+
+    <p>Criticar adversários não demonstra independência intelectual.</p>
+
+    <p>É fácil.</p>
+
+    <p>Por vezes até divertido.</p>
+
+    <p>A verdadeira prova começa noutra frase:</p>
+
+    <p><strong>«Os meus estão errados.»</strong></p>
+
+    <p>É aí que o cérebro entra em território perigoso.</p>
+
+    <p>Porque já não estamos a defender identidade.</p>
+
+    <p>Estamos a avaliar realidade.</p>
+
+    <p>Um democrata deveria conseguir criticar a democracia sem desejar uma ditadura.</p>
+
+    <p>Um defensor de Abril deveria conseguir discutir criticamente aquilo que aconteceu depois de Abril.</p>
+
+    <p>Um eleitor de direita deveria conseguir reconhecer uma boa medida de esquerda.</p>
+
+    <p>Um eleitor de esquerda deveria conseguir reconhecer uma boa medida de direita.</p>
+
+    <p>Um militante deveria conseguir dizer ao líder:</p>
+
+    <p>«Aqui estás errado.»</p>
+
+    <p>Sem precisar de mudar de partido.</p>
+
+    <p>Sem ser tratado como traidor.</p>
+
+    <p>Sem perder identidade.</p>
+
+    <p>Isto parece elementar.</p>
+
+    <p>Na política tribal contemporânea é quase uma forma de heroísmo.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Pensar é aceitar a possibilidade de perder</h2>
+
+    <p>Existe uma razão profunda para o conformismo ser tão atraente.</p>
+
+    <p>Pensar pode obrigar-nos a perder.</p>
+
+    <p>Perder uma certeza.</p>
+
+    <p>Uma convicção.</p>
+
+    <p>Uma discussão.</p>
+
+    <p>Uma identidade.</p>
+
+    <p>Uma ideia sobre nós próprios.</p>
+
+    <p>Uma pessoa intelectualmente livre não é aquela que nunca possui convicções.</p>
+
+    <p>É aquela que aceita a possibilidade de as rever.</p>
+
+    <p>Não vive sem princípios.</p>
+
+    <p>Vive sem transformar princípios em dogmas impermeáveis aos factos.</p>
+
+    <p>A pergunta fundamental é simples:</p>
+
+    <p><strong>«Que evidência me faria mudar de opinião?»</strong></p>
+
+    <p>Se a resposta for «nenhuma», já não estamos perante opinião racional.</p>
+
+    <p>Estamos perante fé.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Uma democracia adulta precisa de pessoas difíceis</h2>
+
+    <p>Pessoas que perguntam.</p>
+
+    <p>Que incomodam.</p>
+
+    <p>Que verificam.</p>
+
+    <p>Que recusam respostas demasiado simples.</p>
+
+    <p>Que não confundem consenso com verdade.</p>
+
+    <p>Que não confundem dissidência com inimigo.</p>
+
+    <p>Que não confundem patriotismo com obediência.</p>
+
+    <p>Que não confundem sentido de Estado com silêncio perante o Estado.</p>
+
+    <p>Essas pessoas são desagradáveis para o poder.</p>
+
+    <p>Excelente.</p>
+
+    <p>É precisamente essa a função.</p>
+
+    <p>Democracia não foi inventada para proporcionar tranquilidade aos governantes.</p>
+
+    <p>Foi inventada para impedir que a tranquilidade dos governantes custasse a liberdade dos governados.</p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">DADOS ESSENCIAIS</h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>Walter Lippmann escreveu em <em>The Stakes of Diplomacy</em> (1915), capítulo IV, a frase «Where all think alike, no one thinks very much», frequentemente atribuída erradamente a outras figuras públicas.</li>
+        <li>O Conselho da Europa inclui pensamento analítico e crítico, abertura a outras crenças e perspectivas, tolerância da ambiguidade e compreensão crítica entre as competências essenciais de uma cultura democrática.</li>
+        <li>A OCDE considera um ambiente de sala de aula aberto ao debate uma das estratégias mais eficazes para desenvolver conhecimento, competências e atitudes cívicas.</li>
+        <li>Em Portugal, o OECD Trust Survey 2026 registou 32% de percepção positiva de voz política, 26% de confiança nos partidos e confiança no Governo nacional de 38% entre jovens, contra 48% entre pessoas com 50 ou mais anos.</li>
+        <li>Experiências publicadas na <em>Nature Human Behaviour</em> mostraram que aumentar a motivação para a precisão pode melhorar a avaliação de notícias e reduzir enviesamento partidário, enquanto objectivos ligados à aprovação do grupo podem prejudicar a precisão.</li>
+        <li>Estudos internacionais sobre desinformação encontraram de forma consistente maior capacidade de distinguir verdade de falsidade entre participantes com estilo cognitivo mais analítico e maior motivação para a precisão.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A democracia que ainda falta construir</h2>
+
+    <p>Talvez a maturidade democrática portuguesa tenha agora de entrar numa segunda fase.</p>
+
+    <p>A primeira foi conquistar direitos.</p>
+
+    <p>A segunda tem de ser aprender a exercê-los sem pedir licença ao grupo.</p>
+
+    <p>Ter liberdade para falar não chega.</p>
+
+    <p>É preciso ter coragem para pensar.</p>
+
+    <p>Ter partidos não chega.</p>
+
+    <p>É preciso ser capaz de discordar deles.</p>
+
+    <p>Ter imprensa livre não chega.</p>
+
+    <p>É preciso querer ler aquilo que desafia as nossas certezas.</p>
+
+    <p>Ter universidade não chega.</p>
+
+    <p>É preciso formar alunos que não confundam professor com autoridade infalível.</p>
+
+    <p>Ter eleições não chega.</p>
+
+    <p>É preciso possuir eleitores que não tratem o boletim de voto como cartão de sócio vitalício.</p>
+
+    <p>E talvez a verdadeira independência intelectual comece com três frases extraordinariamente simples:</p>
+
+    <p><strong>«Não sei.»</strong></p>
+
+    <p><strong>«Posso estar errado.»</strong></p>
+
+    <p><strong>«Os meus também podem estar errados.»</strong></p>
+
+    <p>Uma sociedade capaz de dizer isto não é mais fraca.</p>
+
+    <p>É praticamente impossível de domesticar.</p>
+
+    <p>E talvez seja esse o Abril que ainda falta completar:</p>
+
+    <p>não apenas a liberdade de abrir a boca,</p>
+
+    <p>mas a liberdade interior de não precisar que a manada aprove aquilo que dela sai.</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Uma democracia só é verdadeiramente adulta quando discordar deixa de ser uma suspeita e passa a ser reconhecido como aquilo que é: uma das condições da liberdade.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        Esta crónica utiliza «conformismo», «manada» e «pensamento único» como conceitos críticos e metafóricos. Não afirma que a sociedade portuguesa pense uniformemente nem que os jovens portugueses sejam particularmente incapazes de pensamento autónomo. Portugal possui pluralismo político, liberdade de expressão e uma sociedade civil diversificada. O argumento é cultural: a existência de liberdade formal não elimina pressões sociais para a conformidade.
+      </p>
+
+      <p style="text-align:left;">
+        A referência ao período pós-25 de Abril não atribui à revolução democrática a origem do conformismo. Pelo contrário, reconhece explicitamente que Abril criou as condições legais e políticas para o contraditório. A questão colocada é se as instituições, escolas, partidos, empresas e práticas sociais desenvolveram com igual profundidade uma cultura de tolerância perante a dissidência.
+      </p>
+
+      <p style="text-align:left;">
+        Os dados da OCDE sobre confiança, voz política e diferenças etárias não medem «amor fismo», conformismo ou espírito de manada. São usados apenas para contextualizar a relação entre cidadãos e instituições. Seria abusivo transformar estes indicadores em prova directa de uma característica psicológica nacional.
+      </p>
+
+      <p style="text-align:left;">
+        A investigação da <em>Nature Human Behaviour</em> citada nesta peça estuda mecanismos de identidade partidária, motivação social e avaliação de informação, principalmente em contextos experimentais internacionais. Os resultados demonstram tendências e mecanismos possíveis; não autorizam diagnósticos individuais nem permitem concluir que uma pessoa que pertence a um partido avalia necessariamente a realidade de forma irracional.
+      </p>
+
+      <p style="text-align:left;">
+        A frase «Onde todos pensam da mesma maneira, ninguém pensa muito» não é de Albert Einstein. A formulação documentada «Where all think alike, no one thinks very much» aparece em Walter Lippmann, <em>The Stakes of Diplomacy</em>, publicado em 1915, capítulo IV, «The Line of Least Resistance», página 51.
+      </p>
+
+      <p style="text-align:left; margin-bottom:0;">
+        A defesa do contraditório também não implica que todas as opiniões tenham igual valor factual. Liberdade de expressão protege o direito de discordar; pensamento crítico exige, simultaneamente, evidência, lógica, verificação e disponibilidade para corrigir uma posição perante factos melhores.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+
+    <ul style="padding-left:22px;">
+      <li>
+        <a href="https://books.google.com/books/about/The_Stakes_of_Diplomacy.html?id=90ouAAAAYAAJ"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Walter Lippmann — The Stakes of Diplomacy, H. Holt, 1915
+        </a>
+      </li>
+      <li>
+        <a href="https://openlibrary.org/books/OL7045510M/The_stakes_of_diplomacy"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Open Library / Internet Archive — Walter Lippmann, The Stakes of Diplomacy, edição de 1915
+        </a>
+      </li>
+      <li>
+        <a href="https://www.coe.int/en/web/reference-framework-of-competences-for-democratic-culture"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Council of Europe — Reference Framework of Competences for Democratic Culture
+        </a>
+      </li>
+      <li>
+        <a href="https://www.coe.int/en/web/reference-framework-of-competences-for-democratic-culture/rfcdc"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Council of Europe — Competences for Democratic Culture: values, attitudes, skills and critical understanding
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/building-trust-through-education_967fa34d-en.html"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          OECD — Building Trust through Education: The Common Thread, 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/oecd-survey-on-drivers-of-trust-in-public-institutions-2026-results_c88c8869-en/portugal_8696899f-en.html"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          OECD — Survey on Drivers of Trust in Public Institutions 2026: Portugal
+        </a>
+      </li>
+      <li>
+        <a href="https://www.nature.com/articles/s41562-023-01540-w"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Nature Human Behaviour — Accuracy and social motivations shape judgements of (mis)information, 2023
+        </a>
+      </li>
+      <li>
+        <a href="https://www.nature.com/articles/s41562-023-01641-6"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Nature Human Behaviour — Understanding and combatting misinformation across 16 countries on six continents, 2023
+        </a>
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

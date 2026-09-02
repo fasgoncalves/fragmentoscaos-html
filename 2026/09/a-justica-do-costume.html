@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Justiça do Costume</title>
+<meta name="description" content="A Justiça do Costume">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Justiça do Costume</h1>
+      <p class="meta">Publicado em 2026-09-01 17:12:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_0000000084d481f485afff710bd02a82_ca968a53.jpg" alt=""></figure>
+      <div class="post-content">
+        <!--
+FC-CHRONIC-NEWS CANONICAL 1.0
+Título: A Justiça do Costume
+Subtítulo: O pilar da democracia que chega depois de o edifício ter sido demolido
+Autor: Francisco Gonçalves
+Data: 9 de Agosto de 2026
+Slug: a-justica-do-costume
+Estado editorial sugerido: draft
+Imagem Schema.org: substituir INSERIR_URL_DA_IMAGEM_AQUI
+-->
+
+<!-- SCHEMA.ORG INVISÍVEL -->
+<div itemscope itemtype="https://schema.org/NewsArticle" style="display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;">
+  <meta itemprop="headline" content="A Justiça do Costume">
+  <meta itemprop="alternativeHeadline" content="O pilar da democracia que chega depois de o edifício ter sido demolido">
+  <meta itemprop="datePublished" content="2026-08-09T17:12:00+01:00">
+  <meta itemprop="dateModified" content="2026-08-09T17:12:00+01:00">
+  <meta itemprop="description" content="Uma crónica humorística e carregada de ironia sobre a Justiça portuguesa, a lentidão processual, a burocracia e a forma como o tempo pode transformar-se numa desigualdade dentro do próprio Estado de Direito.">
+  <meta itemprop="inLanguage" content="pt-PT">
+  <meta itemprop="image" content="INSERIR_URL_DA_IMAGEM_AQUI">
+  <span itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Francisco Gonçalves"></span>
+  <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+    <meta itemprop="name" content="Fragmentos do Caos">
+    <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="INSERIR_URL_DO_LOGOTIPO_AQUI"></span>
+  </span>
+</div>
+
+<!-- FC-CHRONIC-NEWS CANONICAL CONTAINER 1 -->
+<div data-fc-format="fc-chronic-news" data-fc-version="1.0" style="max-width:980px;margin:0 auto;background:#0b0b0b;color:#e8e8e8;font-family:Georgia,'Times New Roman',serif;padding:10px;box-sizing:border-box;">
+  <article style="background:#0b0b0b;border:1px solid #262626;padding:clamp(18px,4vw,42px);box-sizing:border-box;">
+
+    <header style="text-align:center;margin:0 0 34px 0;">
+      <div style="display:inline-block;margin:0 0 14px 0;padding:7px 13px;border:1px solid #d4af37;color:#d4af37;font-family:Arial,sans-serif;font-size:0.78em;letter-spacing:0.16em;text-transform:uppercase;">FC · Chronic · News</div>
+      <h1 style="margin:0;color:#d4af37;font-size:clamp(2.0em,6vw,3.6em);line-height:1.08;font-weight:700;">A Justiça do Costume</h1>
+      <p style="margin:16px auto 0 auto;max-width:760px;color:#d6d6d6;font-size:clamp(1.12em,2.4vw,1.45em);line-height:1.5;font-style:italic;">O pilar da democracia que chega depois de o edifício ter sido demolido</p>
+      <p style="margin:18px 0 0 0;color:#999;font-family:Arial,sans-serif;font-size:0.88em;">Crónica · Justiça · Democracia · Portugal · 9 de Agosto de 2026</p>
+    </header>
+
+    <div style="margin:28px 0;padding:20px 22px;background:#141414;border-top:2px solid #d4af37;border-bottom:1px solid #333;">
+      <div style="color:#d4af37;font-family:Arial,sans-serif;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;">BOX DE FACTOS</div>
+      <ul style="margin:0;padding-left:22px;color:#dedede;line-height:1.8;">
+        <li><strong>Género:</strong> crónica humorística, sátira e opinião.</li>
+        <li><strong>Tema:</strong> Justiça, lentidão processual, burocracia e confiança democrática.</li>
+        <li><strong>Âmbito:</strong> reflexão crítica sobre o funcionamento institucional em Portugal.</li>
+        <li><strong>Critério editorial:</strong> hipérboles, caricaturas e exageros são recursos literários e não descrições factuais de processos ou pessoas concretas.</li>
+      </ul>
+    </div>
+
+    <blockquote style="margin:30px 0;padding:22px 24px;border-left:5px solid #d4af37;background:#151515;color:#f4e6b5;font-size:1.18em;line-height:1.85;font-style:italic;">
+      "Num sistema lento, o tempo transforma-se em poder."
+    </blockquote>
+
+    <!-- FC-CHRONIC-NEWS CANONICAL CONTAINER 2 -->
+    <div data-fc-section="articleBody" itemprop="articleBody" style="margin:0;padding:0;">
+      <p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Dizem-nos desde pequenos que a Justiça é um dos pilares da democracia.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E é verdade.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Em Portugal, aliás, deve ser um pilar particularmente robusto, porque está parado no mesmo sítio há décadas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não se mexe.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não cede.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não avança.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É granito institucional.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">À sua volta mudam governos, presidentes, ministros, códigos, procuradores, juízes, tribunais, sistemas informáticos e até os calendários.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A Justiça permanece.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Serena.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Imperturbável.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A estudar o processo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;"><strong>Portugal possui talvez uma das formas mais sofisticadas de Justiça conhecidas pela humanidade: a Justiça contemplativa.</strong></p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não decide precipitadamente.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Reflecte.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Analisa.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Pondera.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Reanalisa.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Solicita elementos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Aguarda resposta.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Notifica.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Torna a notificar.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Verifica se a notificação foi notificada.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Depois entra Agosto.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E Agosto, como se sabe, é um fenómeno jurídico de enorme complexidade.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Passado Agosto regressa Setembro, mês dedicado à recuperação psicológica de Agosto.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Chega Outubro.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O processo encontra-se finalmente maduro para aquilo que tecnicamente se designa por:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #d4af37;background:#171717;color:#f0dfaa;font-size:1.11em;line-height:1.82;">"aguardar tramitação".</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É uma expressão maravilhosa.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Aguardar tramitação.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É quase poesia administrativa.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;"><strong>Não acontece nada, mas com terminologia.</strong></p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A Justiça portuguesa tem uma extraordinária relação com o tempo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Einstein explicou que o tempo é relativo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Os tribunais portugueses decidiram demonstrá-lo experimentalmente.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Um minuto pode durar sessenta segundos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Um processo pode durar quinze anos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Ambos pertencem à mesma realidade física.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Em determinados processos particularmente complexos, uma testemunha pode entrar no tribunal com cabelo castanho e sair reformada.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não é necessariamente demora.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É acompanhamento longitudinal.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A Justiça portuguesa não julga apenas os factos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Acompanha o envelhecimento dos intervenientes.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É quase um serviço social.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Há quem critique esta lentidão.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">São pessoas impacientes.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Provavelmente influenciadas por sociedades estranhas onde um processo judicial serve para chegar a uma decisão.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Em Portugal desenvolvemos uma concepção muito mais filosófica.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O processo não existe necessariamente para terminar.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Existe para existir.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É a jornada que importa.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Os requerimentos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Os recursos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">As nulidades.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">As notificações.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">As perícias.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">As contraperícias.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">As reclamações.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">As decisões sobre reclamações das decisões que apreciaram as reclamações anteriores.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É uma arquitectura processual magnífica.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Uma espécie de fractal jurídico.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quanto mais se amplia, mais processo aparece.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O cidadão comum, naturalmente, ainda pensa de maneira antiquada.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Imagina que se alguém lhe deve dinheiro, vai a tribunal e um juiz decide.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Ingenuidade adorável.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Primeiro terá de descobrir qual tribunal.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Depois apresentar a acção.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Depois pagar.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Depois esperar.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Depois talvez pagar novamente.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Depois haverá uma audiência.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Ou talvez não.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Porque alguém não foi notificado.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Ou foi notificado para a morada errada.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Ou mudou de morada.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Ou o advogado está impedido.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Ou o juiz foi transferido.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Ou existe uma greve.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Ou o sistema informático decidiu aderir espontaneamente à greve sem pertencer ao sindicato.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;"><strong>Portugal conseguiu até informatizar a demora.</strong></p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Isto merece reconhecimento.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Antes esperávamos por papéis.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Agora esperamos por computadores que processam os papéis.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É progresso.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Mas o verdadeiro esplendor da Justiça portuguesa revela-se quando o processo envolve alguém importante.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Aí entramos numa dimensão superior do Direito.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O cidadão vulgar conhece coisas desagradavelmente concretas:</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">prazos,</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">penhoras,</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">multas,</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">juros,</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">execuções,</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">salários penhorados,</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">cartas registadas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A Justiça comunica com ele numa língua surpreendentemente simples:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #d4af37;background:#171717;color:#f0dfaa;font-size:1.11em;line-height:1.82;">Pague.</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É talvez a área mais eficiente da administração pública.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quando o Estado quer vinte euros de um cidadão, subitamente Portugal transforma-se na Suíça.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Os computadores funcionam.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A morada aparece.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O NIF está correcto.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O sistema comunica com o banco.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A carta chega.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O prazo existe.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A máquina administrativa, até então adormecida como um urso no Inverno, desperta com a energia de uma central nuclear.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É admirável.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Com processos de grande dimensão, porém, a Justiça revela a sua delicadeza humanista.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não podemos precipitar-nos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Há direitos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Garantias.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Recursos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Incidentes.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Questões constitucionais.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Questões europeias.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Questões processuais.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Questões sobre as questões processuais.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E certamente alguma vírgula juridicamente sensível escondida na página 47.382.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Entretanto passam cinco anos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Depois dez.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Algumas acusações caem.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Outras prescrevem.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Testemunhas esquecem.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Documentos desaparecem.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Memórias tornam-se vagas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E finalmente chega uma decisão.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Nesse momento já existe uma geração de estudantes de Direito que nasceu depois dos factos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É bonito.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A Justiça aproxima gerações.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A prescrição merece, aliás, lugar especial na cultura jurídica portuguesa.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É uma invenção extraordinária.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O Estado passa anos a investigar se alguém praticou determinado crime.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Depois conclui:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #d4af37;background:#171717;color:#f0dfaa;font-size:1.11em;line-height:1.82;">"Provavelmente sim, mas entretanto passou demasiado tempo."</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quem deixou passar o tempo?</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O Estado.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quem beneficia?</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não o Estado.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Há aqui uma elegância lógica que escapa ao cidadão vulgar.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É necessário estudar Direito muitos anos para compreender plenamente esta beleza.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Na vida quotidiana, se alguém demora dez anos a consertar um telhado, normalmente não recebe uma medalha.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Na Justiça pode receber uma prescrição.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Mas não sejamos injustos com a Justiça.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Portugal tem excelentes magistrados, procuradores, advogados, funcionários judiciais e investigadores.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Muitos trabalham em condições difíceis, com processos gigantescos, legislação excessiva, falta de recursos e sistemas administrativos que parecem ter sido desenhados durante uma experiência sobre resistência humana.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O problema não está necessariamente nas pessoas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Está numa máquina que consegue transformar profissionais competentes em passageiros de um comboio burocrático cuja locomotiva pergunta regularmente se existe autorização administrativa para arrancar.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Porque uma Justiça não se mede apenas pela qualidade jurídica das decisões.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Mede-se pelo tempo em que chegam.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Uma sentença impecável proferida quinze anos depois pode ser juridicamente brilhante e socialmente inútil.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A Justiça atrasada não é apenas Justiça lenta.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;"><strong>Pode tornar-se uma forma educada de injustiça.</strong></p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Mas Portugal aprendeu a conviver com isto.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Fazemos aquilo que fazemos melhor.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Normalizamos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Um processo dura dez anos?</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Normal.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Um julgamento começa oito anos depois dos factos?</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Complexidade.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Um recurso acrescenta mais quatro?</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Garantias.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Uma decisão é anulada e regressamos quase ao princípio?</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Estado de Direito.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E assim criámos uma extraordinária capacidade nacional para transformar disfunções em características do sistema.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não temos atrasos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Temos "pendências".</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não temos confusão.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Temos "complexidade processual".</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não temos falhas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Temos "constrangimentos".</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não temos um problema gigantesco.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Temos "necessidade de reflexão".</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Portugal é provavelmente o único país capaz de cair num buraco e criar uma comissão para estudar a terminologia adequada para buraco.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Entretanto, os políticos aparecem regularmente diante das câmaras.</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #d4af37;background:#171717;color:#f0dfaa;font-size:1.11em;line-height:1.82;">"A Justiça precisa de reformas."</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Naturalmente.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É uma tradição.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Todos os governos reformam a Justiça.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Alguns reformam aquilo que o governo anterior tinha reformado.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O seguinte reforma a reforma da reforma.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Finalmente cria-se um grupo de trabalho para avaliar os resultados.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O grupo apresenta um relatório.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O relatório conclui que são necessárias reformas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É o movimento perpétuo finalmente descoberto.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A Física dizia que era impossível.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não conhecia a administração portuguesa.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Depois surge inevitavelmente a palavra mágica:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #d4af37;background:#171717;color:#f0dfaa;font-size:1.11em;line-height:1.82;">celeridade.</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Todas as reformas prometem celeridade.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Portugal possui provavelmente mais documentos oficiais sobre celeridade do que processos céleres.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É uma questão de prioridades.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Também aparecem "simplificação", "modernização", "digitalização", "eficiência" e "proximidade ao cidadão".</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">São palavras extraordinariamente resistentes.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Sobreviveram a governos de todas as cores.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Há palavras que deviam receber pensão vitalícia por serviços prestados à República.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O cidadão, porém, não precisa de grandes conceitos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quer algo bastante primitivo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quer que quem comete um crime seja julgado num prazo razoável.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quer que um contrato seja respeitado.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quer recuperar aquilo que lhe devem.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quer que um inocente não passe anos sob suspeita.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quer que um culpado não descubra que o calendário é o seu melhor advogado.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quer perceber uma sentença sem necessitar de três licenciaturas e um tradutor de latim medieval.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Exigências absurdas, evidentemente.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Onde ficaria o encanto?</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A Justiça deveria ser aquilo que permite ao fraco enfrentar o forte em condições minimamente iguais.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Essa é uma das ideias mais belas do Estado de Direito.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O problema começa quando o forte possui dinheiro para sustentar quinze anos de processo e o fraco não consegue sustentar quinze meses.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Formalmente, ambos têm os mesmos direitos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Também eu e Cristiano Ronaldo temos juridicamente o mesmo direito de jogar futebol.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Há pequenas diferenças práticas.</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #d4af37;background:#171717;color:#f0dfaa;font-size:1.11em;line-height:1.82;">Num sistema lento, o tempo transforma-se em poder.</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quem tem dinheiro compra tempo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quem tem estruturas suporta tempo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quem tem advogados especializados gere tempo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quem não tem recursos é esmagado pelo tempo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E então a lentidão deixa de ser uma simples ineficiência administrativa.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;"><strong>Torna-se desigualdade.</strong></p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Talvez seja esse o aspecto mais perigoso.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Uma democracia consegue sobreviver a maus governos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Pode substituir políticos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Pode corrigir políticas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Pode realizar eleições.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Mas quando os cidadãos deixam de acreditar que as regras são aplicadas de forma previsível, rápida e semelhante para todos, algo mais profundo começa a desaparecer.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não é apenas confiança nos tribunais.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;"><strong>É confiança no próprio contrato social.</strong></p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Porque a Justiça é realmente um pilar da democracia.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Só que um pilar tem uma característica técnica importante:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #d4af37;background:#171717;color:#f0dfaa;font-size:1.11em;line-height:1.82;">tem de suportar peso.</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não basta existir na planta do arquitecto.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Portugal não precisa de uma Justiça espectacular.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não precisamos de juízes celebridades.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Nem de julgamentos transmitidos como campeonatos de futebol.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Nem de procuradores transformados em personagens públicas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Nem de processos judiciais tratados como séries televisivas com quinze temporadas e final inconclusivo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Precisamos de uma coisa muito mais aborrecida:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #d4af37;background:#171717;color:#f0dfaa;font-size:1.11em;line-height:1.82;">uma Justiça que funcione.</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Que investigue.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Que acuse quando deve acusar.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Que arquive quando deve arquivar.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Que julgue.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Que decida.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Que execute.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E que faça tudo isto antes de os envolvidos precisarem de consultar o processo no lar de terceira idade.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Talvez um dia aconteça.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Nesse dia um cidadão entrará num tribunal, apresentará um problema e receberá uma decisão num prazo razoável.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Provavelmente ficará desconfiado.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Perguntará ao advogado:</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">— Já está?</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O advogado responderá:</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">— Já.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O cidadão olhará em redor, inquieto.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">— Não falta nenhum recurso?</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">— Não.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">— Nenhuma nulidade?</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">— Não.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">— Nenhum incidente processual?</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">— Não.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">— Nenhuma prescrição?</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">— Não.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E haverá alguns segundos de silêncio.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Talvez alguém chame uma ambulância.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Porque em Portugal, quando a Justiça finalmente for rápida, teremos de confirmar se não se trata de um erro administrativo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Até lá, permanece firme o grande pilar da democracia portuguesa.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A Justiça do costume.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Cega, como manda a tradição.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Lenta, como manda o costume.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E solenemente sentada à espera que passe alguma coisa.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;"><strong>Preferencialmente o prazo.</strong></p>
+
+      <div style="margin:42px 0 0 0;padding:24px;background:#121212;border:1px solid #333;border-left:5px solid #d4af37;">
+        <h2 style="margin:0 0 14px 0;color:#d4af37;font-size:1.45em;line-height:1.3;">Nota Editorial</h2>
+        <p style="margin:0;color:#dedede;font-size:1em;line-height:1.85;">
+          Esta crónica utiliza sátira, exagero e ironia para reflectir sobre a relação entre Justiça, tempo, burocracia e confiança pública.
+          Não se refere a magistrados, advogados, processos ou entidades concretas, nem pretende diminuir o trabalho de profissionais
+          que diariamente asseguram o funcionamento dos tribunais. O alvo da sátira é estrutural: a ideia de que uma Justiça
+          excessivamente lenta pode perder eficácia social mesmo quando preserva formalmente todas as suas garantias.
+        </p>
+      </div>
+
+      <footer style="margin:40px 0 0 0;padding-top:24px;border-top:1px solid #333;text-align:right;">
+        <p style="margin:0;color:#d4af37;font-size:1.12em;font-weight:700;">Francisco Gonçalves</p>
+        <p style="margin:5px 0 0 0;color:#888;font-family:Arial,sans-serif;font-size:0.86em;">Fragmentos do Caos · 9 de Agosto de 2026</p>
+      </footer>
+    </div>
+  </article>
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

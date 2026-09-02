@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Os que Tudo Podem e os que Nada Podem</title>
+<meta name="description" content="Os que Tudo Podem e os que Nada Podem">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Os que Tudo Podem e os que Nada Podem</h1>
+      <p class="meta">Publicado em 2026-08-31 11:20:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/08/file_00000000c1608211934990ba45105332_7b3d7ce9.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="Os que Tudo Podem e os que Nada Podem">
+      <meta itemprop="description" content="Uma crónica dura sobre a diferença entre direitos escritos e direitos realmente exercíveis, a desigualdade perante a Justiça e a transformação da cidadania numa experiência dependente de dinheiro, tempo e poder.">
+      <meta itemprop="datePublished" content="2026-08-31">
+      <meta itemprop="dateModified" content="2026-08-31">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_00000000c1608211934990ba45105332.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">Os que Tudo Podem e os que Nada Podem</h1>
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">A farsa elegante das democracias modernas</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>
+      Uma democracia não se mede apenas pelo número de direitos inscritos numa Constituição. Mede-se pela capacidade real de um cidadão os exercer quando entra em conflito com quem possui mais dinheiro, mais tempo, mais informação, mais contactos ou mais poder. Quando as obrigações são universais mas a protecção varia com a carteira, a igualdade corre o risco de deixar de ser uma realidade e tornar-se cenografia institucional.</p>
+    </div>
+
+    <p>As democracias modernas gostam muito de se apresentar bem.</p>
+    <p>Constituições solenes.</p>
+    <p>Tribunais majestosos.</p>
+    <p>Parlamentos iluminados.</p>
+    <p>Declarações de direitos.</p>
+    <p>Cartas de princípios.</p>
+    <p>Comissões para a igualdade.</p>
+    <p>Provedores.</p>
+    <p>Entidades reguladoras.</p>
+    <p>Observatórios.</p>
+    <p>Relatórios anuais.</p>
+    <p>Cerimónias sobre cidadania.</p>
+    <p>Tudo impecavelmente vestido.</p>
+    <p><strong>Fato escuro, gravata discreta e palavras muito bonitas sobre liberdade.</strong></p>
+    <p>Depois chega a segunda-feira.</p>
+    <p>E a democracia despe a Constituição e veste a realidade.</p>
+    <p>É aí que descobrimos que há cidadãos que possuem direitos.</p>
+    <p>E há cidadãos que possuem <strong>direitos utilizáveis</strong>.</p>
+    <p>Não é exactamente a mesma coisa.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Todos iguais, excepto na vida real</h2>
+    <p>Dizem-nos desde pequenos:</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Todos são iguais perante a lei.</p></div>
+    <p>É uma frase magnífica.</p>
+    <p>O problema começa quando duas pessoas efectivamente chegam perante a lei.</p>
+    <p>Uma tem dinheiro.</p>
+    <p>Advogados especializados.</p>
+    <p>Peritos.</p>
+    <p>Consultores.</p>
+    <p>Tempo.</p>
+    <p>Contactos.</p>
+    <p>Capacidade para suportar anos de processo.</p>
+    <p>A outra tem um salário modesto, contas vencidas, um emprego que pode perder e um advogado nomeado por um sistema permanentemente sobrecarregado.</p>
+    <p>Depois o Estado observa ambas e declara:</p>
+    <p><strong>«Igualdade.»</strong></p>
+    <p>Há qualquer coisa de artisticamente extraordinário nesta palavra.</p>
+    <p>Consegue cobrir diferenças gigantescas utilizando apenas nove letras.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A democracia do papel</h2>
+    <p>A nossa civilização adquiriu um enorme talento para confundir aquilo que escreve com aquilo que pratica.</p>
+    <p>Direito à Justiça.</p><p>Direito à habitação.</p><p>Direito à saúde.</p><p>Igualdade de oportunidades.</p><p>Protecção social.</p><p>Mobilidade.</p><p>Dignidade.</p>
+    <p>Tudo existe.</p><p>Em documento.</p>
+    <p>O papel é talvez o cidadão mais bem protegido do país.</p>
+    <p>O problema são as pessoas.</p>
+    <p>Porque um direito só existe verdadeiramente quando alguém consegue utilizá-lo no momento em que precisa dele.</p>
+    <p>Caso contrário não é propriamente um direito.</p>
+    <p>É uma <strong>promessa administrativa</strong>.</p>
+    <p>E promessas administrativas têm uma característica conhecida:</p>
+    <p>não pagam renda.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O homem que pode esperar dez anos</h2>
+    <p>Há uma diferença gigantesca entre ricos e pobres que quase nunca aparece nos discursos sobre Justiça.</p>
+    <p><strong>O tempo.</strong></p>
+    <p>Um homem rico acusado num grande processo pode suportar dez anos de litígio.</p>
+    <p>Tem património.</p><p>Tem recursos.</p><p>Tem equipas jurídicas.</p><p>Tem capacidade financeira para continuar.</p>
+    <p>Pode contestar.</p><p>Recorrer.</p><p>Pedir perícias.</p><p>Contestar as perícias.</p><p>Requerer diligências.</p><p>Questionar procedimentos.</p><p>Discutir nulidades.</p><p>Impugnar decisões.</p><p>E continuar.</p>
+    <p>O cidadão pobre não tem dez anos.</p>
+    <p>Às vezes não tem dez meses.</p>
+    <p>Porque o processo não ocorre num universo abstracto.</p>
+    <p>O senhorio continua a querer renda.</p><p>O supermercado continua a vender comida em euros.</p><p>A empresa continua a exigir presença.</p><p>Os filhos continuam a precisar de coisas desagradavelmente materiais.</p>
+    <p>Para o pobre, o processo pode tornar-se condenação antes da sentença.</p>
+    <p>Para o poderoso, pode transformar-se numa estratégia de resistência.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A Justiça onde a carteira também apresenta alegações</h2>
+    <p>O dinheiro não compra necessariamente uma decisão judicial.</p>
+    <p>Essa seria uma acusação demasiado simplista.</p>
+    <p>Compra algo mais subtil e muito mais poderoso:</p>
+    <p><strong>capacidade processual.</strong></p>
+    <p>Compra horas.</p><p>Especialização.</p><p>Investigação.</p><p>Perícias.</p><p>Pareceres.</p><p>Recursos.</p><p>Estratégia.</p>
+    <p>Capacidade para estudar centenas de milhares de páginas.</p>
+    <p>Pessoas cuja única função durante meses consiste em encontrar uma falha.</p>
+    <p>E numa sociedade complexa, encontrar uma falha pode valer mais do que encontrar a verdade.</p>
+    <p>É aqui que o dinheiro deixa de ser apenas riqueza.</p>
+    <p>Transforma-se em <strong>poder jurídico</strong>.</p>
+    <p>Não é preciso subornar ninguém.</p>
+    <p>Basta conseguir utilizar o sistema muito melhor do que o cidadão do lado.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A igualdade das armas e outras peças de humor</h2>
+    <p>O Direito gosta da expressão:</p>
+    <p><strong>«igualdade de armas».</strong></p>
+    <p>É belíssima.</p>
+    <p>De um lado pode estar uma sociedade de advogados, especialistas, peritos e pareceres.</p>
+    <p>Do outro, um homem com um defensor e um dossier.</p>
+    <p>Tecnicamente há duas partes.</p>
+    <p>Logo, há equilíbrio.</p>
+    <p>Também há dois pugilistas num ringue se um deles pesar cinquenta quilos e o outro cento e vinte.</p>
+    <p>A geometria está correcta.</p>
+    <p>A competição talvez precise de pequena revisão.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Os factos também têm classes sociais</h2>
+    <p>Existe depois uma perversidade ainda maior.</p>
+    <p>Quando um pobre comete um crime simples, os factos costumam ser muito eficientes.</p>
+    <p>Uma câmara.</p><p>Uma testemunha.</p><p>Um objecto.</p><p>Uma identificação.</p>
+    <p>Factos pequenos.</p><p>Factos trabalhadores.</p><p>Chegam cedo ao tribunal.</p>
+    <p>Quando entramos nos grandes processos económicos ou políticos, o facto começa a frequentar reuniões.</p>
+    <p>Transforma-se em:</p>
+    <p>interpretação,</p><p>contexto,</p><p>nexo,</p><p>questão processual,</p><p>dúvida,</p><p>parecer,</p><p>contraparecer,</p><p>incidente,</p><p>nulidade,</p><p>recurso.</p>
+    <p>Passados alguns anos, já quase ninguém sabe onde foi parar.</p>
+    <p>Não desapareceu.</p>
+    <p>Foi promovido.</p>
+    <p>Agora é uma <strong>questão jurídica complexa</strong>.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O poder de transformar realidade em narrativa</h2>
+    <p>As sociedades modernas descobriram uma tecnologia extraordinária.</p>
+    <p>Não é necessário destruir um facto.</p>
+    <p>Basta rodeá-lo de narrativa suficiente.</p>
+    <p>Uma transferência deixa de ser uma transferência.</p><p>É «uma operação susceptível de interpretação diversa».</p>
+    <p>Uma conversa deixa de ser uma conversa.</p><p>É «um contexto comunicacional incompleto».</p>
+    <p>Uma decisão deixa de estar ligada a um benefício.</p><p>Existe apenas «proximidade temporal».</p>
+    <p>Uma contradição deixa de ser contradição.</p><p>É «evolução da memória».</p>
+    <p>Nenhuma destas expressões é necessariamente falsa.</p>
+    <p>É isso que as torna tão úteis.</p>
+    <p>A realidade raramente é eliminada frontalmente.</p>
+    <p>É dissolvida.</p><p>Pouco a pouco.</p>
+    <p>Até o cidadão começar a perguntar-se se viu realmente aquilo que viu.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">E depois dizem-nos que isto é civilização</h2>
+    <p>Civilização não consiste apenas em ter tribunais.</p><p>O Império Romano também tinha.</p>
+    <p>Não consiste apenas em ter leis.</p><p>As monarquias absolutas tinham muitas.</p>
+    <p>Nem consiste apenas em eleições.</p>
+    <p>Eleições são essenciais.</p>
+    <p>Mas uma urna não purifica automaticamente tudo o que acontece entre duas eleições.</p>
+    <p>Uma sociedade civilizada mede-se também pela capacidade do cidadão mais fraco enfrentar o cidadão mais poderoso sem começar derrotado pela diferença de recursos.</p>
+    <p>Essa talvez seja uma das provas mais difíceis da democracia.</p>
+    <p>E demasiadas democracias modernas estão a falhá-la.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O novo feudalismo não precisa de castelos</h2>
+    <p>O feudalismo antigo era menos sofisticado.</p>
+    <p>Via-se imediatamente quem mandava.</p>
+    <p>Havia castelo.</p><p>Senhor.</p><p>Terras.</p><p>Servos.</p><p>Armas.</p>
+    <p>Hoje conseguimos fazer melhor.</p>
+    <p>Todos usam roupa semelhante.</p><p>Todos possuem cartão de cidadão.</p><p>Todos podem votar.</p><p>Todos podem apresentar requerimentos.</p><p>Todos podem ir ao tribunal.</p>
+    <p>Maravilhoso.</p>
+    <p>Depois descobrimos que:</p>
+    <p>um possui património;</p><p>outro dívida;</p><p>um possui rede de contactos;</p><p>outro número de contribuinte;</p><p>um possui equipa jurídica;</p><p>outro formulário;</p><p>um consegue esperar;</p><p>outro precisa de sobreviver.</p>
+    <p>Não é feudalismo no sentido histórico.</p>
+    <p>Mas pode adquirir uma característica perigosamente semelhante:</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">uma sociedade onde o poder real se concentra enquanto a igualdade permanece cerimonial.</p></div>
+    <p>A grande modernização foi estética.</p>
+    <p>O senhor feudal agora pode apresentar-se de fato e gravata.</p>
+    <p>E talvez tenha uma página no LinkedIn sobre liderança humanista.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A subcidadania</h2>
+    <p>O pobre moderno é oficialmente cidadão completo.</p>
+    <p>Pode votar.</p><p>Pode protestar.</p><p>Pode recorrer.</p><p>Pode contratar advogado.</p><p>Pode criar empresa.</p><p>Pode comprar casa.</p><p>Pode frequentar universidade.</p><p>Pode viajar.</p><p>Pode investir.</p><p>Pode enriquecer.</p><p>Pode tudo.</p>
+    <p>Existe apenas uma pequena condição:</p>
+    <p><strong>conseguir pagar.</strong></p>
+    <p>A liberdade torna-se então uma extraordinária lista de possibilidades abstractas.</p>
+    <p>Pode comprar casa.</p><p>Só não consegue.</p>
+    <p>Pode processar uma grande empresa.</p><p>Só não aguenta cinco anos de tribunal.</p>
+    <p>Pode mudar de emprego.</p><p>Só não pode ficar dois meses sem salário.</p>
+    <p>Pode criar uma empresa.</p><p>Só não possui capital.</p>
+    <p>Pode estudar.</p><p>Só precisa de sobreviver enquanto estuda.</p>
+    <p>Legalmente é livre.</p>
+    <p>Economicamente está amarrado.</p>
+    <p>É aquilo a que poderíamos chamar <strong>subcidadania efectiva</strong>.</p>
+    <p>As obrigações são integrais.</p>
+    <p>Os direitos vêm em versão variável.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O Estado é particularmente eficiente a cobrar</h2>
+    <p>Esta é talvez uma das maiores ironias.</p>
+    <p>Quando o cidadão deve dinheiro ao Estado, a máquina sabe funcionar.</p>
+    <p>Prazos.</p><p>Juros.</p><p>Coimas.</p><p>Penhoras.</p><p>Execuções.</p><p>Notificações.</p><p>Sistemas informáticos.</p>
+    <p>Impressionante eficácia.</p>
+    <p>Quando o cidadão precisa que o Estado resolva um problema complexo:</p>
+    <p>aguarde.</p><p>Está em análise.</p><p>Falta parecer.</p><p>Mudou o responsável.</p><p>O processo foi remetido.</p><p>A plataforma não comunica com a outra plataforma.</p><p>Volte a tentar.</p>
+    <p>Há qualquer coisa de admirável nesta assimetria.</p>
+    <p><strong>O Estado moderno é muitas vezes velocista quando cobra e maratonista quando protege.</strong></p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Os que podem errar</h2>
+    <p>Depois existe uma característica curiosa das elites.</p>
+    <p>Quando o cidadão comum erra, suporta a consequência.</p>
+    <p>Quando algumas instituições erram, abre-se uma averiguação.</p><p>Depois uma comissão.</p><p>Depois um relatório.</p><p>Depois aprendem-se lições.</p><p>Depois todos continuam.</p>
+    <p>O pequeno empresário falha uma prestação.</p><p>Problema.</p>
+    <p>Uma grande estrutura desperdiça milhões.</p><p>«Constrangimentos de execução.»</p>
+    <p>O cidadão mente num formulário.</p><p>Falsas declarações.</p>
+    <p>Uma entidade apresenta previsões completamente erradas.</p><p>«Alteração das condições macroeconómicas.»</p>
+    <p>A língua também possui classes sociais.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O poder não precisa de conspirar</h2>
+    <p>Nem sequer precisamos imaginar uma sala secreta onde os poderosos combinam tudo.</p>
+    <p>Essa é a parte mais interessante.</p>
+    <p>Os sistemas de privilégio maduros não precisam necessariamente de conspiração.</p>
+    <p>Funcionam por hábito.</p><p>Redes.</p><p>Reputação.</p><p>Acesso.</p><p>Conhecimento interno.</p><p>Reciprocidade.</p><p>Carreiras circulares.</p><p>Portas giratórias.</p>
+    <p>Pessoas que estudaram juntas.</p><p>Trabalharam juntas.</p><p>Governaram juntas.</p><p>Administraram juntas.</p>
+    <p>Regulam hoje aquilo que ontem aconselhavam.</p>
+    <p>Amanhã talvez voltem a aconselhar aquilo que hoje regulam.</p>
+    <p>Tudo legal.</p><p>Tudo normal.</p><p>Tudo civilizadíssimo.</p>
+    <p>O privilégio mais eficiente é aquele que já não precisa de parecer privilégio.</p>
+    <p>Passa a chamar-se:</p><p><strong>«experiência».</strong></p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A grande farsa democrática</h2>
+    <p>É aqui que chegamos à verdadeira farsa das democracias contemporâneas.</p>
+    <p>Não a farsa das eleições inexistentes.</p>
+    <p>Essa seria demasiado evidente.</p>
+    <p>A nova farsa é mais sofisticada.</p>
+    <p>Apresenta-se através de:</p>
+    <p>institucionalidade,</p><p>procedimento,</p><p>linguagem jurídica,</p><p><em>governance</em>,</p><p><em>compliance</em>,</p><p>transparência,</p><p>participação,</p><p>responsabilidade.</p>
+    <p>Palavras importantes.</p><p>Necessárias.</p>
+    <p>Mas que também podem transformar-se numa espécie de cenário cerimonial atrás do qual continua a existir uma distribuição brutalmente desigual de poder.</p>
+    <p>O sistema não diz:</p><p><strong>«tu és pobre, portanto tens menos direitos.»</strong></p>
+    <p>Seria feio.</p>
+    <p>Diz:</p><p><strong>«possuis exactamente os mesmos direitos.»</strong></p>
+    <p>Depois deixa ao dinheiro, ao tempo e ao acesso a tarefa de decidir quanto desses direitos consegues realmente exercer.</p>
+    <p>Muito mais elegante.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A democracia sem poder democrático</h2>
+    <p>Talvez este seja o paradoxo central.</p>
+    <p>Temos igualdade política mínima:</p><p><strong>um cidadão, um voto.</strong></p>
+    <p>Mas vivemos numa sociedade onde existe enorme desigualdade de:</p>
+    <p>património,</p><p>influência,</p><p>informação,</p><p>tempo,</p><p>educação,</p><p>acesso à Justiça,</p><p>capacidade negocial,</p><p>redes sociais,</p><p>poder económico.</p>
+    <p>O voto continua igual.</p>
+    <p>Quase tudo o resto não.</p>
+    <p>Uma democracia pode sobreviver assim durante muito tempo.</p>
+    <p>Mas começa progressivamente a perder aquilo que lhe dá legitimidade.</p>
+    <p>Porque o cidadão percebe que pode escolher governos.</p>
+    <p>Mas não consegue necessariamente mudar a estrutura dentro da qual continua fraco.</p>
+    <p>E então nasce uma pergunta perigosa:</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Para que serve escolher quem manda se continuamos sem capacidade para enfrentar quem pode tudo?</p></div>
+    <p>É nessa pergunta que as democracias começam a adoecer.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O pobre não precisa de caridade</h2>
+    <p>Precisa de poder.</p>
+    <p>Isto é fundamental.</p>
+    <p>Não precisa apenas de subsídio.</p><p>Nem de campanha de solidariedade.</p><p>Nem de um político emocionado perante as câmaras.</p>
+    <p>Precisa de:</p>
+    <p>Justiça acessível.</p><p>Educação competente.</p><p>Saúde eficaz.</p><p>Habitação possível.</p><p>Salário suficiente.</p><p>Capacidade para poupar.</p><p>Tempo para viver.</p><p>Protecção contra abuso económico.</p><p>Possibilidade real de dizer não.</p>
+    <p>Porque liberdade sem capacidade para dizer <strong>não</strong> é uma liberdade muito incompleta.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quem tudo pode nunca parece responsável</h2>
+    <p>A concentração de poder produz ainda outra consequência.</p>
+    <p>Quanto mais alto se sobe, mais difusa parece tornar-se a responsabilidade.</p>
+    <p>O trabalhador tem chefe.</p><p>O chefe tem director.</p><p>O director tem administração.</p><p>A administração tem conselho.</p><p>O conselho tem consultores.</p><p>Os consultores fizeram recomendações.</p><p>O regulador acompanhava.</p><p>O Governo monitorizava.</p><p>O Parlamento fiscalizava.</p>
+    <p>No fim:</p><p><strong>ninguém fez exactamente aquilo que aconteceu.</strong></p>
+    <p>É uma capacidade extraordinária.</p>
+    <p>Milhares de pessoas conseguem participar numa decisão e a responsabilidade final consegue evaporar-se.</p>
+    <p>O cidadão comum não possui esse luxo.</p>
+    <p>Se não paga a factura, sabemos imediatamente quem foi.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Não são todos iguais</h2>
+    <p>Talvez devêssemos finalmente ter coragem para dizer isto.</p>
+    <p><strong>Não somos todos iguais perante o poder.</strong></p>
+    <p>Somos iguais em dignidade.</p>
+    <p>Devemos ser iguais perante a lei.</p>
+    <p>Mas não possuímos a mesma capacidade para enfrentar instituições, empresas, tribunais ou estruturas económicas.</p>
+    <p>Negar isso não é defender democracia.</p>
+    <p>É infantilizá-la.</p>
+    <p>Uma democracia madura começa por reconhecer as desigualdades reais para tentar reduzi-las.</p>
+    <p>Uma democracia decadente limita-se a repetir que elas não existem porque a Constituição diz que não deveriam existir.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A fraude começa quando a aparência substitui a realidade</h2>
+    <p>Não chamaria fraude à democracia simplesmente porque é imperfeita.</p>
+    <p>Todas são.</p>
+    <p>Chamaria fraude quando se utiliza deliberadamente a aparência das instituições para evitar discutir os seus resultados.</p>
+    <p>«Existe apoio judiciário.»</p><p>Então está resolvido.</p>
+    <p>«Existe direito à habitação.»</p><p>Então existe igualdade.</p>
+    <p>«Existem eleições.»</p><p>Então existe poder cidadão.</p>
+    <p>«Existe uma entidade reguladora.»</p><p>Então existe regulação.</p>
+    <p>«Existe uma comissão de ética.»</p><p>Então existe ética.</p>
+    <p>É esta lógica que transforma democracia numa cenografia.</p>
+    <p>A instituição existe.</p>
+    <p>Logo, a função presume-se cumprida.</p>
+    <p>Não interessa demasiado verificar se funciona.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A democracia mede-se no cidadão mais fraco</h2>
+    <p>Talvez devêssemos inverter completamente a forma de avaliar uma sociedade.</p>
+    <p>Não perguntar:</p><p><strong>quantos direitos possui a Constituição?</strong></p>
+    <p>Perguntar:</p><p><strong>quantos direitos consegue exercer alguém sem dinheiro, património ou contactos?</strong></p>
+    <p>Não perguntar:</p><p><strong>quantos tribunais existem?</strong></p>
+    <p>Perguntar:</p><p><strong>quanto tempo demora um cidadão comum a obter Justiça?</strong></p>
+    <p>Não perguntar:</p><p><strong>há liberdade económica?</strong></p>
+    <p>Perguntar:</p><p><strong>uma pessoa competente consegue construir património apenas através do trabalho?</strong></p>
+    <p>Não perguntar:</p><p><strong>há igualdade?</strong></p>
+    <p>Perguntar:</p><p><strong>o filho de uma família pobre tem possibilidades reais de atravessar a estrutura social?</strong></p>
+    <p>A resposta a estas perguntas diz muito mais sobre democracia do que cem discursos parlamentares.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Uma sociedade de cidadãos ou uma sociedade de súbditos modernos?</h2>
+    <p>O súbdito antigo obedecia porque não possuía direitos.</p>
+    <p>O cidadão moderno pode acabar por obedecer porque possui direitos que não consegue exercer.</p>
+    <p>A diferença é enorme juridicamente.</p>
+    <p>Mas pode tornar-se perturbadoramente pequena na experiência quotidiana.</p>
+    <p>Se não consegue enfrentar o banco.</p><p>Se não consegue enfrentar o senhorio.</p><p>Se não consegue enfrentar a seguradora.</p><p>Se não consegue enfrentar o empregador.</p><p>Se não consegue suportar um processo.</p><p>Se não consegue comprar casa.</p><p>Se não consegue acumular património.</p><p>Se não consegue abandonar uma situação injusta.</p>
+    <p>Então a liberdade jurídica começa a coexistir com uma enorme dependência material.</p>
+    <p>É aí que a democracia pode conservar todas as suas instituições e começar a perder parte da sua substância.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Os carrascos agora usam gravata</h2>
+    <p>A imagem é dura.</p>
+    <p>Mas talvez seja precisamente essa a função de uma crónica.</p>
+    <p>O poder moderno não precisa necessariamente de violência explícita.</p>
+    <p>Pode exercer-se através de:</p>
+    <p>dívida,</p><p>dependência,</p><p>complexidade,</p><p>burocracia,</p><p>demora,</p><p>custos,</p><p>litígios,</p><p>precariedade.</p>
+    <p>Não é necessário colocar correntes nos pulsos de alguém.</p>
+    <p>Basta tornar economicamente quase impossível libertar-se daquilo que o domina.</p>
+    <p>O controlo tornou-se civilizado.</p>
+    <p>Possui formulários.</p><p>Gabinetes.</p><p>PowerPoints.</p><p>E códigos de ética.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Democracia não é aquilo que está escrito</h2>
+    <p>É aquilo que acontece.</p>
+    <p>Quando um cidadão entra num tribunal.</p><p>Quando procura casa.</p><p>Quando adoece.</p><p>Quando perde o emprego.</p><p>Quando enfrenta uma instituição.</p><p>Quando tenta criar uma empresa.</p><p>Quando denuncia alguém poderoso.</p><p>Quando precisa de ser protegido exactamente contra quem possui mais recursos do que ele.</p>
+    <p>É aí que sabemos se existe realmente democracia.</p>
+    <p>Não durante a cerimónia.</p>
+    <p>Durante o conflito.</p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">O QUE AS INSTITUIÇÕES INTERNACIONAIS MEDEM</h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>A OCDE considera o acesso igual à Justiça um elemento essencial da democracia, da confiança institucional e do desenvolvimento sustentável, alertando que sistemas complexos e fragmentados podem permanecer fora do alcance efectivo de muitas pessoas.</li>
+        <li>O World Justice Project mede explicitamente se a Justiça civil é acessível e comportável, se sofre atrasos injustificados e se o sistema criminal é imparcial perante diferenças socioeconómicas.</li>
+        <li>O Rule of Law Index 2025 registou deterioração do Estado de direito em 68% dos países avaliados e enfraquecimento da Justiça civil em 68%.</li>
+        <li>A CEPEJ considera que financiamento adequado dos tribunais e do apoio judiciário é necessário para garantir independência, eficiência e acesso efectivo à Justiça.</li>
+        <li>A OCDE, na avaliação do sector da Justiça português, descreve o apoio judiciário como instrumento destinado a impedir que falta de meios económicos ou condição social impeçam alguém de exercer ou defender os seus direitos.</li>
+        <li>O Relatório de 2026 sobre o Estado de Direito da Comissão Europeia continua a avaliar os sistemas judiciais não apenas pela existência das instituições, mas pela independência, qualidade e eficiência do seu funcionamento.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O teste final</h2>
+    <p>Podemos escrever milhares de páginas sobre direitos fundamentais.</p>
+    <p>Mas talvez toda a questão possa resumir-se a uma única pergunta:</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Quando um cidadão sem dinheiro entra em conflito com alguém que possui dinheiro, influência e recursos, o sistema consegue realmente tratá-los como iguais?</p></div>
+    <p>Se a resposta for frequentemente não, então não temos apenas desigualdade económica.</p>
+    <p>Temos uma deformação da própria cidadania.</p>
+    <p>Porque democracia não significa simplesmente:</p>
+    <p><strong>todos possuem direitos.</strong></p>
+    <p>Significa:</p>
+    <p><strong>nenhum cidadão deve ser demasiado pobre para conseguir exercê-los e nenhum cidadão deve ser tão poderoso que consiga dobrá-los à sua conveniência.</strong></p>
+    <p>Quando os primeiros possuem apenas direitos escritos e os segundos possuem meios quase ilimitados para utilizar os seus, a sociedade começa a dividir-se em dois povos.</p>
+    <p>Os que podem.</p><p>E os que esperam.</p><p>Os que recorrem.</p><p>E os que desistem.</p><p>Os que compram tempo.</p><p>E os que são destruídos por ele.</p><p>Os que conhecem o sistema.</p><p>E os que apenas o sofrem.</p>
+    <p>Podemos continuar a chamar-lhe democracia.</p>
+    <p>Podemos construir parlamentos de vidro.</p>
+    <p>Podemos imprimir Constituições magníficas.</p>
+    <p>Podemos celebrar eleições de quatro em quatro anos.</p>
+    <p>Mas se o poder efectivo continuar profundamente desigual, haverá sempre uma pergunta sentada silenciosamente no fundo da sala:</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Somos realmente cidadãos iguais ou apenas aprendemos a vestir o privilégio com a farsa elegante da democracia?</p></div>
+    <p>Porque os velhos senhores desapareceram.</p>
+    <p>Os castelos também.</p>
+    <p>As correntes já quase não se vêem.</p>
+    <p><strong>Mas talvez tenhamos apenas aperfeiçoado a arte de fazer alguns obedecerem sem jamais lhes dizer que são súbditos.</strong></p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">Esta crónica é uma peça de opinião e utiliza linguagem deliberadamente dura e metafórica. Expressões como «novo feudalismo», «subcidadania», «súbditos» ou «carrascos de gravata» não pretendem equiparar juridicamente as democracias contemporâneas ao feudalismo histórico, à escravatura ou a regimes autoritários. Servem para interrogar a distância entre direitos reconhecidos e capacidade material para os exercer.</p>
+      <p style="text-align:left;">O direito de defesa, a presunção de inocência, o contraditório, o recurso e a independência judicial são pilares indispensáveis do Estado de direito. A crítica não é dirigida à existência destas garantias, mas à possibilidade de diferenças extremas de recursos económicos, tempo e especialização produzirem capacidades processuais muito diferentes entre cidadãos que possuem, em teoria jurídica, os mesmos direitos.</p>
+      <p style="text-align:left;">A existência de apoio judiciário em Portugal é real e encontra-se prevista para impedir que a falta de meios económicos impeça o acesso ao Direito e aos tribunais. A própria OCDE descreve esse objectivo. A questão editorial colocada é a da suficiência prática dos recursos, da qualidade efectiva do acesso e da capacidade de enfrentar processos particularmente complexos ou adversários muito mais poderosos.</p>
+      <p style="text-align:left;">Não se afirma que juízes, advogados, reguladores, administradores ou instituições actuem colectivamente numa conspiração ou que riqueza compre necessariamente decisões judiciais. O argumento é estrutural: riqueza pode comprar mais tempo, especialização, perícias, aconselhamento, capacidade de recurso e resistência financeira, criando assimetrias relevantes mesmo dentro de sistemas legalmente imparciais.</p>
+      <p style="text-align:left;">Esta preocupação não é exclusiva de Portugal. A OCDE, o Conselho da Europa e o World Justice Project tratam acesso, custo, atraso, imparcialidade e capacidade efectiva de resolução como componentes centrais da qualidade da Justiça. O WJP inclui especificamente na avaliação do sistema criminal a ausência de discriminação prática em função do estatuto socioeconómico.</p>
+      <p style="text-align:left;">O Rule of Law Index 2025 do World Justice Project revelou deterioração do Estado de direito em 68% dos países e jurisdições avaliados e um enfraquecimento da Justiça civil em 68% deles. Estes números não demonstram por si só a tese desta crónica sobre Portugal, mas mostram que qualidade democrática, independência judicial, atrasos e acesso efectivo são problemas internacionais reais e mensuráveis.</p>
+      <p style="text-align:left;">A CEPEJ sublinha que sistemas judiciais fiáveis necessitam de financiamento adequado e que o apoio judiciário contribui para o acesso à Justiça. No relatório europeu de 2024, baseado em dados de 2022, assinala ainda que o tempo médio, considerando três instâncias, rondava na Europa 591 dias nos processos civis, 344 dias nos criminais e 741 dias nos administrativos, ilustrando a relevância material da duração processual.</p>
+      <p style="text-align:left;">O Relatório de 2026 sobre o Estado de Direito da Comissão Europeia avalia todos os Estados-Membros em áreas como independência, qualidade e eficiência dos sistemas judiciais, combate à corrupção, pluralismo dos media e equilíbrio institucional. Isto é relevante para a tese editorial: uma democracia não é avaliada apenas pela existência de instituições, mas também pelo seu funcionamento.</p>
+      <p style="text-align:left; margin-bottom:0;">A tese central pode, portanto, ser formulada sem metáfora: uma democracia perde qualidade quando as obrigações públicas são aplicadas com grande eficácia a todos, mas a protecção dos direitos fundamentais depende excessivamente dos recursos privados disponíveis para os exercer. O objectivo democrático não deve ser impedir quem tem recursos de se defender bem. Deve ser impedir que quem não os tem fique reduzido a uma versão materialmente inferior da cidadania.</p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências internacionais</h2>
+    <ul style="padding-left:22px;">
+      <li><a href="https://www.oecd.org/en/publications/toolkit-for-access-to-justice-and-people-centred-justice-systems_aecf7f78-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Toolkit for Access to Justice and People-Centred Justice Systems, 2025</a></li>
+      <li><a href="https://www.oecd.org/en/publications/modernisation-of-the-justice-sector-in-portugal_cbde9a7a-en/full-report/component-7.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Modernisation of the Justice Sector in Portugal: Justice service delivery and legal aid</a></li>
+      <li><a href="https://www.oecd.org/en/publications/justice-transformation-in-portugal_184acf59-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Justice Transformation in Portugal: Building on Successes and Challenges</a></li>
+      <li><a href="https://commission.europa.eu/publications/2026-rule-law-report-communication-and-country-chapters_en" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">European Commission — 2026 Rule of Law Report, including Country Chapter Portugal</a></li>
+      <li><a href="https://worldjusticeproject.org/news/wjp-rule-law-index-2025-global-press-release" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">World Justice Project — Rule of Law Index 2025: Global Findings</a></li>
+      <li><a href="https://worldjusticeproject.org/rule-of-law-index/downloads/WJPIndex2025.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">World Justice Project — Rule of Law Index 2025: Civil Justice and Criminal Justice indicators</a></li>
+      <li><a href="https://www.coe.int/en/web/cepej/special-file" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Council of Europe / CEPEJ — European Judicial Systems, 2024 Evaluation Report</a></li>
+      <li><a href="https://rm.coe.int/cepej-evaluation-report-2024-general-analyses/1680b1e91d" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Council of Europe / CEPEJ — European Judicial Systems: General Analyses</a></li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;"><strong style="color:#d6a542;">Francisco Gonçalves</strong><br>Fragmentos do Caos<br>FC-Chronic-News</p>
+    </div>
+<em><strong>O Estado da Ignomínia</strong></em>
+<blockquote style="color:#ffcc67;">
+Ontem, o poder oprimia sem máscara; hoje, pratica muitas das mesmas injustiças de fato e gravata, protegidas por leis, procedimentos e discursos de democracia. E enquanto os fortes continuam a poder quase tudo, aos mais fracos resta demasiadas vezes o direito solene de assistir à própria impotência.
+</blockquote>
+  </div>
+Francisco Gonçalves (2026)
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

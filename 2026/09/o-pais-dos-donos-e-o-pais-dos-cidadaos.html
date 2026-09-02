@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O País dos Donos e o País dos Cidadãos</title>
+<meta name="description" content="O País dos Donos e o País dos Cidadãos">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O País dos Donos e o País dos Cidadãos</h1>
+      <p class="meta">Publicado em 2026-09-01 15:03:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000dc0881f485e77415c32da159_4233b3d9.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="O País dos Donos e o País dos Cidadãos">
+      <meta itemprop="description" content="Uma crónica crítica sobre qualidade institucional, proximidade ao poder, responsabilidade política e a diferença entre tratar o Estado como propriedade dos governantes ou como património comum dos cidadãos.">
+      <meta itemprop="datePublished" content="2026-08-30">
+      <meta itemprop="dateModified" content="2026-08-30">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_00000000dc0881f485e77415c32da159.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">O País dos Donos e o País dos Cidadãos</h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">Portugal, Islândia e a diferença entre governar como proprietário e administrar aquilo que pertence a todos</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>
+      A Islândia não é uma democracia perfeita nem um país sem corrupção. Portugal também não pode ser reduzido à ideia de uma «elite corrupta» que controla integralmente o Estado. A comparação que aqui se propõe é institucional e cultural: como diferentes democracias tratam responsabilidade, proximidade ao poder, integridade pública, confiança dos cidadãos e a ideia fundamental de que o Governo não é proprietário do Estado.</p>
+    </div>
+
+    <p>Portugal é um país pequeno.</p>
+    <p>A Islândia é muito mais pequena.</p>
+    <p>No início de 2026, a população islandesa era de 394.324 habitantes.</p>
+    <p>Menos do que muitas áreas metropolitanas europeias.</p>
+    <p>Um território geograficamente difícil.</p>
+    <p>Uma economia vulnerável a choques externos.</p>
+    <p>Um mercado interno minúsculo.</p>
+    <p>Uma ilha no Atlântico Norte onde, durante boa parte do ano, até o clima parece ter objecções ao projecto civilizacional.</p>
+    <p>E, no entanto, a Islândia conseguiu construir instituições que a OCDE continua a colocar entre as de maior qualidade do mundo desenvolvido.</p>
+    <p>Portugal, com quase cinquenta anos de democracia, integração europeia, fundos comunitários, infra-estruturas, universidades e uma dimensão incomparavelmente maior, continua demasiadas vezes a transmitir ao cidadão uma sensação diferente:</p>
+    <p><strong>o Estado pertence a quem o ocupa.</strong></p>
+    <p>Não juridicamente.</p>
+    <p>Mas culturalmente.</p>
+    <p>E essa diferença é devastadora.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O condomínio</h2>
+    <p>Talvez a melhor metáfora para um Estado democrático seja um condomínio.</p>
+    <p>Os condóminos são os cidadãos.</p>
+    <p>O edifício é o país.</p>
+    <p>As receitas são os impostos.</p>
+    <p>As áreas comuns são os serviços públicos.</p>
+    <p>E o Governo é a administração eleita temporariamente para gerir aquilo que pertence a todos.</p>
+    <p>Num condomínio normal, o administrador não aparece na assembleia a anunciar:</p>
+    <p>«Este ano ofereci-vos um elevador.»</p>
+    <p>Os proprietários teriam provavelmente uma resposta pouco cerimoniosa:</p>
+    <p><strong>«Não ofereceu coisa nenhuma. Pagámos nós.»</strong></p>
+    <p>Na política, curiosamente, toleramos diariamente a formulação contrária.</p>
+    <p>«O Governo deu apoios.»</p>
+    <p>«O Governo investiu milhões.»</p>
+    <p>«O Governo construiu.»</p>
+    <p>«O Governo atribuiu.»</p>
+    <p>«O Governo ofereceu.»</p>
+    <p>Com que dinheiro?</p>
+    <p><strong>Com o dinheiro dos cidadãos.</strong></p>
+    <p>O governante deveria falar como administrador:</p>
+    <p>«Recebemos estes recursos.»</p>
+    <p>«Gastámos desta forma.»</p>
+    <p>«Obtivemos estes resultados.»</p>
+    <p>«Aqui acertámos.»</p>
+    <p>«Aqui falhámos.»</p>
+    <p>«Aqui estão as contas.»</p>
+    <p>Mas essa linguagem tem um inconveniente terrível.</p>
+    <p>Recorda ao governante aquilo que ele é.</p>
+    <p><strong>Temporário.</strong></p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quando o administrador começa a sentir-se proprietário</h2>
+    <p>O problema começa quando o exercício do poder produz uma inversão psicológica.</p>
+    <p>O partido ganha eleições.</p>
+    <p>Forma Governo.</p>
+    <p>Nomeia administrações.</p>
+    <p>Escolhe assessores.</p>
+    <p>Distribui responsabilidades.</p>
+    <p>Controla agendas.</p>
+    <p>Passa a decidir sobre milhares de milhões de euros.</p>
+    <p>E lentamente instala-se uma ilusão:</p>
+    <p><strong>isto é nosso.</strong></p>
+    <p>Não é.</p>
+    <p>O ministério não pertence ao ministro.</p>
+    <p>A empresa pública não pertence ao partido.</p>
+    <p>O orçamento não pertence ao Governo.</p>
+    <p>O dinheiro europeu não pertence ao primeiro-ministro.</p>
+    <p>As instituições não são propriedade da maioria eleitoral do momento.</p>
+    <p>São instrumentos públicos temporariamente administrados por pessoas que, numa democracia saudável, devem poder ser substituídas sem que o Estado pareça mudar de dono.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Portugal e o ecossistema da proximidade</h2>
+    <p>É tentador explicar todos os males através de uma grande conspiração.</p>
+    <p>Uma elite fechada.</p>
+    <p>Meia dúzia de famílias.</p>
+    <p>Empresários numa sala escura.</p>
+    <p>Políticos distribuindo o país entre amigos.</p>
+    <p>A realidade é menos cinematográfica.</p>
+    <p>E talvez mais resistente.</p>
+    <p>Existem redes de proximidade.</p>
+    <p>Carreiras que se cruzam.</p>
+    <p>Nomeações.</p>
+    <p>Partidos.</p>
+    <p>Empresas públicas.</p>
+    <p>Empresas privadas dependentes do Estado.</p>
+    <p>Consultoras.</p>
+    <p>Escritórios de advocacia.</p>
+    <p>Reguladores.</p>
+    <p>Autarquias.</p>
+    <p>Administrações.</p>
+    <p>Associações.</p>
+    <p>Contratos.</p>
+    <p>Antigos governantes que passam para sectores que antes regulavam.</p>
+    <p>Executivos privados que entram no Governo e regressam depois ao sector privado.</p>
+    <p>Nada disto é automaticamente corrupção.</p>
+    <p>É essencial dizê-lo.</p>
+    <p>Mas quando a proximidade é demasiado densa, demasiado repetida e demasiado pouco transparente, começa a produzir uma coisa quase tão destrutiva quanto a corrupção comprovada:</p>
+    <p><strong>a percepção de que o sistema não é imparcial.</strong></p>
+    <p>E uma democracia que perde a percepção de imparcialidade começa a perder legitimidade.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Dois países no mesmo país</h2>
+    <p>É assim que nasce a sensação de existirem dois Portugais.</p>
+    <p>Um Portugal para quem conhece os corredores.</p>
+    <p>E outro para quem tira senha.</p>
+    <p>Um para quem sabe a quem telefonar.</p>
+    <p>E outro para quem envia um email para um endereço institucional.</p>
+    <p>Um para quem entra pela porta lateral.</p>
+    <p>E outro para quem aguarda no balcão.</p>
+    <p>Um onde relações pessoais aceleram.</p>
+    <p>Outro onde procedimentos paralisam.</p>
+    <p>Quando esta percepção se instala, a corrupção deixa até de precisar de existir em cada caso.</p>
+    <p>O dano político já ocorreu.</p>
+    <p>O cidadão passou a acreditar que <strong>as regras não funcionam igualmente para todos</strong>.</p>
+    <p>E poucas coisas destroem mais rapidamente uma democracia do que essa convicção.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O pequeno país que levou a responsabilidade a sério</h2>
+    <p>A Islândia também conhece redes de proximidade.</p>
+    <p>Aliás, num país tão pequeno, são praticamente inevitáveis.</p>
+    <p>O próprio Conselho da Europa já chamou a atenção para a densidade das relações pessoais e profissionais islandesas e para os riscos que isso pode criar para integridade e imparcialidade.</p>
+    <p>Portanto, não estamos perante uma sociedade de santos nórdicos imunes aos defeitos humanos.</p>
+    <p>Mas existe um episódio que marcou profundamente a cultura institucional islandesa.</p>
+    <p>Em 2008, o sistema bancário entrou em colapso.</p>
+    <p>Os três principais bancos falharam.</p>
+    <p>O desastre foi enorme.</p>
+    <p>Poderia ter sido tratado como inevitabilidade histórica.</p>
+    <p>Uma crise internacional.</p>
+    <p>Um azar.</p>
+    <p>Uma explicação colectiva onde, no final, ninguém responde individualmente.</p>
+    <p>A Islândia escolheu outro caminho.</p>
+    <p>Foi criado um Gabinete do Procurador Especial para investigar possíveis crimes económicos relacionados com o colapso.</p>
+    <p>Foram analisados comportamentos ligados a manipulação de mercado, fraude interna e abuso de confiança.</p>
+    <p>Houve acusações.</p>
+    <p>Houve julgamentos.</p>
+    <p>Houve condenações.</p>
+    <p>Investigação académica recente descreve uma agenda de responsabilização que levou à acusação de dezenas de executivos bancários.</p>
+    <p>Não significa que a Islândia tenha «prendido os banqueiros» e resolvido magicamente todos os problemas, como certas narrativas simplistas gostam de contar.</p>
+    <p>Significa algo mais importante:</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">quando o sistema falhou, a sociedade exigiu descobrir quem tinha responsabilidade.</p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Responsabilidade é mais importante do que indignação</h2>
+    <p>Portugal indigna-se muito.</p>
+    <p>Durante três dias.</p>
+    <p>Há uma notícia.</p>
+    <p>Debates.</p>
+    <p>Comentadores.</p>
+    <p>Comissões.</p>
+    <p>Declarações indignadas.</p>
+    <p>Pedidos de esclarecimento.</p>
+    <p>Talvez uma investigação.</p>
+    <p>Depois surge outro caso.</p>
+    <p>A memória pública muda de canal.</p>
+    <p>O verdadeiro teste institucional não é quantas vezes uma democracia se indigna.</p>
+    <p>É quantas vezes consegue concluir processos, esclarecer factos e atribuir responsabilidade dentro de prazos socialmente compreensíveis.</p>
+    <p>Quando a resposta demora demasiado, a justiça pode continuar juridicamente viva.</p>
+    <p>Politicamente, porém, já perdeu parte do efeito.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Os números não contam tudo. Mas contam alguma coisa</h2>
+    <p>O Índice de Percepção da Corrupção de 2025 da Transparency International colocou a Islândia entre os países europeus com melhor classificação e Portugal muito abaixo desse grupo.</p>
+    <p>Na edição de 2025, a Islândia recebeu 77 pontos em 100; Portugal, 56.</p>
+    <p>É importante compreender aquilo que este indicador mede.</p>
+    <p>Não conta políticos condenados.</p>
+    <p>Não mede directamente toda a corrupção real.</p>
+    <p>Mede percepções de corrupção no sector público a partir de várias fontes especializadas.</p>
+    <p>Mas uma diferença tão persistente não pode ser simplesmente descartada como mau humor estatístico.</p>
+    <p>A percepção de integridade é ela própria um activo institucional.</p>
+    <p>Quando cidadãos e empresas acreditam que regras são previsíveis e que decisões públicas não dependem excessivamente de relações pessoais, a sociedade funciona com menos suspeita e menor custo.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Instituições pequenas podem ser instituições grandes</h2>
+    <p>Há uma desculpa portuguesa que merece reforma antecipada.</p>
+    <p>«Somos um país pequeno.»</p>
+    <p>Como se dimensão determinasse qualidade.</p>
+    <p>A Islândia destrói essa desculpa.</p>
+    <p>A OCDE descreveu-a em 2025 como uma das economias mais ricas e igualitárias da organização, sustentada por boas condições institucionais, elevada participação laboral, mão-de-obra qualificada e cultura de inovação.</p>
+    <p>E acrescenta algo fundamental:</p>
+    <p><strong>a qualidade institucional islandesa está entre as mais elevadas da OCDE.</strong></p>
+    <p>Não é perfeita.</p>
+    <p>A OCDE identifica problemas de integridade, regulação, educação e produtividade.</p>
+    <p>A Islândia continua abaixo de alguns vizinhos nórdicos em determinados indicadores.</p>
+    <p>É precisamente isto que torna o exemplo útil.</p>
+    <p>Não precisamos de comparar Portugal com uma utopia.</p>
+    <p>Basta compará-lo com um país real que possui problemas reais e, ainda assim, consegue produzir instituições mais confiáveis.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A confiança não nasce de campanhas de comunicação</h2>
+    <p>A confiança institucional não se decreta.</p>
+    <p>Não se compra com publicidade.</p>
+    <p>Não aparece porque um ministro repete que as instituições funcionam.</p>
+    <p>Constrói-se lentamente.</p>
+    <p>Com decisões previsíveis.</p>
+    <p>Serviços competentes.</p>
+    <p>Regras aplicadas igualmente.</p>
+    <p>Transparência.</p>
+    <p>Responsabilização.</p>
+    <p>Capacidade de corrigir erros.</p>
+    <p>E sobretudo com uma ideia:</p>
+    <p><strong>o cidadão não é cliente do Estado. É a razão da existência do Estado.</strong></p>
+    <p>No inquérito de confiança da OCDE publicado em 2026, Portugal registou 40% de confiança elevada ou moderada no Governo nacional, 49% nos tribunais, 45% na função pública e apenas 26% nos partidos políticos.</p>
+    <p>A mesma OCDE sublinha que confiança depende de fiabilidade, capacidade de resposta, integridade, abertura e justiça.</p>
+    <p>Ou seja, não se trata de exigir amor aos governantes.</p>
+    <p>Trata-se de criar instituições dignas de confiança.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O dinheiro público não é dinheiro do Governo</h2>
+    <p>Esta talvez seja a frase que mais urgentemente precisa de regressar à política portuguesa.</p>
+    <p><strong>Dinheiro público não é dinheiro do Governo.</strong></p>
+    <p>É dinheiro retirado à sociedade através de impostos, contribuições, taxas e dívida pública.</p>
+    <p>Mesmo quando vem de Bruxelas.</p>
+    <p>Porque fundos europeus também são recursos de contribuintes europeus.</p>
+    <p>O governante não dá.</p>
+    <p>Administra.</p>
+    <p>Não oferece.</p>
+    <p>Decide uma afectação.</p>
+    <p>Não é benfeitor.</p>
+    <p>É responsável perante aqueles que financiam o sistema.</p>
+    <p>Esta alteração de linguagem parece pequena.</p>
+    <p>É uma revolução cultural.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">No país dos donos, a crítica parece insolência</h2>
+    <p>Quando o Governo se sente proprietário simbólico do Estado, a crítica adquire um significado estranho.</p>
+    <p>Deixa de ser fiscalização.</p>
+    <p>Passa a parecer ingratidão.</p>
+    <p>O cidadão que protesta não está a exercer soberania.</p>
+    <p>Está a criar problemas.</p>
+    <p>O jornalista que investiga é inconveniente.</p>
+    <p>O funcionário que denuncia é desleal.</p>
+    <p>O empresário que critica burocracia «só pensa no lucro».</p>
+    <p>O contribuinte que pergunta pelo dinheiro «não percebe a complexidade».</p>
+    <p>É uma cultura profundamente paternalista.</p>
+    <p>No país dos cidadãos, a lógica é oposta.</p>
+    <p>O Governo deve contas porque gere recursos alheios.</p>
+    <p>A crítica não é ataque ao Estado.</p>
+    <p>É manutenção do Estado.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">No país dos cidadãos, o governante é substituível</h2>
+    <p>Esta é talvez a diferença psicológica mais importante.</p>
+    <p>O bom governante não deve sentir-se indispensável.</p>
+    <p>Deve construir instituições que funcionem perfeitamente quando ele sair.</p>
+    <p>Uma democracia madura não precisa de salvadores.</p>
+    <p>Precisa de procedimentos.</p>
+    <p>Competência.</p>
+    <p>Transparência.</p>
+    <p>Memória institucional.</p>
+    <p>Fiscalização.</p>
+    <p>E pessoas suficientemente humildes para compreender que o Estado continuará depois delas.</p>
+    <p>O primeiro-ministro é importante.</p>
+    <p>Mas não é Portugal.</p>
+    <p>O partido é legítimo.</p>
+    <p>Mas não é o Estado.</p>
+    <p>O Governo possui autoridade.</p>
+    <p>Mas não possui o país.</p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">DADOS ESSENCIAIS</h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>A população da Islândia era de 394.324 habitantes em 1 de Janeiro de 2026, segundo o Statistics Iceland.</li>
+        <li>A OCDE descreve a Islândia como uma das economias mais ricas e igualitárias da organização e considera a qualidade das suas instituições entre as mais elevadas da OCDE, embora abaixo de alguns pares nórdicos em certos indicadores.</li>
+        <li>Após o colapso bancário de 2008, a Islândia criou um Gabinete do Procurador Especial para investigar possíveis crimes económicos ligados à crise; investigações e processos envolveram manipulação de mercado, fraude interna e abuso de confiança.</li>
+        <li>O Índice de Percepção da Corrupção de 2025 da Transparency International atribuiu 77 pontos à Islândia e 56 a Portugal, numa escala de 0 a 100 em que valores mais elevados correspondem a melhor percepção de integridade do sector público.</li>
+        <li>No OECD Trust Survey 2026, 40% dos portugueses declararam confiança elevada ou moderada no Governo nacional, 49% nos tribunais, 45% na função pública e 26% nos partidos políticos.</li>
+        <li>A OCDE identifica fiabilidade, capacidade de resposta, integridade, abertura e justiça como factores centrais para a confiança dos cidadãos nas instituições públicas.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A diferença abissal</h2>
+    <p>Talvez a diferença entre democracias não esteja apenas nas constituições.</p>
+    <p>Nem na riqueza.</p>
+    <p>Nem na dimensão.</p>
+    <p>Está na relação psicológica entre quem governa e quem é governado.</p>
+    <p>Num modelo, o Governo parece dizer:</p>
+    <p><strong>«Nós administramos. Vocês recebam.»</strong></p>
+    <p>No outro:</p>
+    <p><strong>«Vocês são os proprietários políticos. Nós administramos temporariamente.»</strong></p>
+    <p>No primeiro, impostos parecem tributo.</p>
+    <p>No segundo, contribuição colectiva.</p>
+    <p>No primeiro, apoios parecem generosidade governamental.</p>
+    <p>No segundo, aplicação de recursos públicos.</p>
+    <p>No primeiro, a crítica é incómoda.</p>
+    <p>No segundo, é fiscalização.</p>
+    <p>No primeiro, proximidade ao poder abre portas.</p>
+    <p>No segundo, as instituições devem funcionar precisamente para que ninguém precise de conhecer quem abre a porta.</p>
+    <p>É aí que a distância entre Portugal e as melhores democracias se torna verdadeiramente importante.</p>
+    <p>Não porque os outros sejam moralmente superiores.</p>
+    <p>Mas porque aprenderam melhor uma regra elementar:</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">num Estado democrático, quem governa não é dono de nada que pertença ao Estado. É apenas responsável, durante algum tempo, por cuidar daquilo que pertence a todos.</p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O administrador do condomínio</h2>
+    <p>Talvez Portugal precise de retirar solenidade ao poder.</p>
+    <p>Menos corte.</p>
+    <p>Menos propaganda.</p>
+    <p>Menos reverência.</p>
+    <p>Menos fotografia oficial.</p>
+    <p>Mais contas.</p>
+    <p>Mais resultados.</p>
+    <p>Mais prazos.</p>
+    <p>Mais responsabilidade.</p>
+    <p>Mais transparência.</p>
+    <p>E uma ideia quase ofensivamente simples:</p>
+    <p><strong>o primeiro-ministro não é o dono do condomínio.</strong></p>
+    <p>É o administrador.</p>
+    <p>Os ministros são administradores de áreas específicas.</p>
+    <p>Os altos dirigentes públicos são gestores de recursos colectivos.</p>
+    <p>E os cidadãos são aqueles a quem tudo isto pertence politicamente.</p>
+    <p>Podem escolher mal.</p>
+    <p>Podem ser manipulados.</p>
+    <p>Podem votar emocionalmente.</p>
+    <p>Mas continuam a ser a origem legítima do poder democrático.</p>
+    <p>Não os convidados.</p>
+    <p>Não os clientes.</p>
+    <p>Não os beneficiários.</p>
+    <p><strong>Os proprietários políticos.</strong></p>
+    <p>Talvez seja essa a verdadeira diferença entre um país em que governantes parecem donos e outro em que o Governo sabe que é de todos, para todos e substituível por todos.</p>
+    <p>Uma diferença de cultura.</p>
+    <p>De instituições.</p>
+    <p>De vergonha pública.</p>
+    <p>De responsabilidade.</p>
+    <p>E, sobretudo, de uma palavra que Portugal utiliza abundantemente mas pratica com dificuldade:</p>
+    <p><strong>cidadania.</strong></p>
+    <p>Porque numa democracia digna desse nome o Estado não é o senhor dos cidadãos.</p>
+    <p>É a ferramenta comum através da qual os cidadãos organizam aquilo que decidiram fazer em conjunto.</p>
+    <p>Quando esquecemos isto, nasce o país dos donos.</p>
+    <p>Quando o recordamos todos os dias, começa finalmente o país dos cidadãos.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">Esta crónica utiliza expressões como «país dos donos» e «ecossistema da proximidade» como metáforas políticas. Não afirma que Portugal seja controlado por uma organização secreta ou que todos os governantes, dirigentes públicos, empresários ou profissionais que circulam entre sectores público e privado pratiquem corrupção. Relações profissionais, nomeações políticas e mobilidade entre sectores podem ser legítimas. O problema democrático surge quando faltam transparência, prevenção de conflitos de interesses, fiscalização e percepção de imparcialidade.</p>
+      <p style="text-align:left;">A Islândia também não é apresentada como modelo perfeito. A OCDE reconhece elevada qualidade institucional, riqueza, igualdade e capacidade de inovação, mas identifica igualmente desafios em integridade pública, regulação, produtividade e educação. O Conselho da Europa já assinalou riscos resultantes das densas redes pessoais e profissionais próprias de uma sociedade muito pequena.</p>
+      <p style="text-align:left;">A referência ao colapso bancário islandês de 2008 não reproduz a narrativa simplificada segundo a qual a Islândia «recusou salvar os bancos e prendeu todos os banqueiros». Os três grandes bancos falharam, novas instituições foram criadas para assegurar operações domésticas, e foi estabelecido um Gabinete do Procurador Especial para investigar possíveis crimes económicos. Houve processos e condenações, mas o episódio foi juridicamente e economicamente complexo.</p>
+      <p style="text-align:left;">O Índice de Percepção da Corrupção da Transparency International mede percepções de corrupção no sector público com base em várias fontes especializadas. Não mede directamente todos os actos de corrupção nem permite concluir que cada instituição ou agente de um país seja mais ou menos corrupto. É usado aqui como indicador comparativo de integridade percebida.</p>
+      <p style="text-align:left;">Os dados da OCDE sobre confiança também medem percepções dos cidadãos e não constituem uma avaliação judicial ou moral das instituições. A própria OCDE sublinha que confiança depende da experiência dos serviços, da fiabilidade, capacidade de resposta, integridade, abertura e justiça das instituições.</p>
+      <p style="text-align:left; margin-bottom:0;">A tese central é institucional, não partidária: num Estado democrático, os recursos públicos pertencem à comunidade política e os governantes são administradores temporários sujeitos a escrutínio, substituição eleitoral e responsabilização. Essa regra deve valer independentemente de quem governa.</p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+    <ul style="padding-left:22px;">
+      <li><a href="https://www.statice.is/publications/news-archive/inhabitants/population-1-january-2026/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Statistics Iceland — Population 1 January 2026</a></li>
+      <li><a href="https://www.oecd.org/en/publications/2025/06/oecd-economic-surveys-iceland-2025_3f974c01.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Economic Surveys: Iceland 2025</a></li>
+      <li><a href="https://www.oecd.org/en/publications/oecd-economic-surveys-iceland-2025_890dbe05-en/full-report/the-economy-is-rebalancing_b8a57c89.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Iceland 2025: institutional quality, equality and economic fundamentals</a></li>
+      <li><a href="https://www.transparency.org/en/cpi/2025/index/com" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Transparency International — Corruption Perceptions Index 2025</a></li>
+      <li><a href="https://www.oecd.org/en/publications/oecd-survey-on-drivers-of-trust-in-public-institutions-2026-results_c88c8869-en/portugal_8696899f-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Survey on Drivers of Trust in Public Institutions 2026: Portugal</a></li>
+      <li><a href="https://www.oecd.org/en/publications/oecd-survey-on-drivers-of-trust-in-public-institutions-2026-results_9eb63fec-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Survey on Drivers of Trust in Public Institutions 2026: international results</a></li>
+      <li><a href="https://www.oecd.org/en/publications/iceland-the-financial-and-economic-crisis_221071065826.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Iceland: The Financial and Economic Crisis</a></li>
+      <li><a href="https://iris.hi.is/en/publications/criminal-proceedings-in-the-wake-of-the-icelandic-banking-crisis/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">University of Iceland — Criminal Proceedings in the Wake of the Icelandic Banking Crisis</a></li>
+      <li><a href="https://academic.oup.com/book/59618/chapter/503312852" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Oxford Academic — Iceland: Dead Banks and the Quest for Accountability, 2025</a></li>
+      <li><a href="https://www.oecd.org/content/dam/oecd/en/publications/reports/2020/10/implementing-the-oecd-anti-bribery-convention-phase-4-report-iceland_55e79a44/fff4743f-en.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Implementing the Anti-Bribery Convention, Phase 4 Report: Iceland</a></li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;"><strong style="color:#d6a542;">Francisco Gonçalves</strong><br>Fragmentos do Caos<br>FC-Chronic-News</p>
+    </div>
+
+  </div>
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

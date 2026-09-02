@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Código dos Mortos</title>
+<meta name="description" content="O Código dos Mortos">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Código dos Mortos</h1>
+      <p class="meta">Publicado em 2026-09-01 15:39:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000558c8210ad7c271fae1dffa1_f894fa95.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+<div style="display:none;">
+<span itemscope itemtype="https://schema.org/NewsArticle">
+<meta itemprop="headline" content="O Código dos Mortos">
+<meta itemprop="description" content="Uma crónica sobre os mecanismos inconscientes através dos quais genes, aprendizagem social, normas e memória cultural transportam medos e comportamentos entre gerações, e sobre a necessidade de auditar o código herdado.">
+<meta itemprop="datePublished" content="2026-08-31">
+<meta itemprop="dateModified" content="2026-08-31">
+<meta itemprop="author" content="Francisco Gonçalves">
+<meta itemprop="publisher" content="Fragmentos do Caos">
+<meta itemprop="image" content="INSERIR_URL_DA_IMAGEM_AQUI">
+</span>
+</div>
+
+<div style="max-width:900px; margin:auto; padding:10px;">
+
+<h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">O Código dos Mortos</h1>
+
+<p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">Como herdamos medos, obediências e conformismos de um mundo que já desapareceu</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+<p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>
+A expressão «código dos mortos» é uma metáfora. Não existe um gene português do conformismo, da obediência ou do «não vale a pena». O que existe é algo mais interessante: uma espécie profundamente social, biologicamente sensível à pertença, à ameaça e às hierarquias, que acrescenta a essa arquitectura uma poderosa transmissão cultural de normas, medos, hábitos e expectativas. O passado não precisa de continuar vivo nos cromossomas para continuar activo no comportamento.</p>
+</div>
+
+<p>Há uma ideia perturbadora na forma como olhamos para nós próprios.</p>
+
+<p>Gostamos de acreditar que somos criaturas do presente.</p>
+
+<p>Modernas.</p>
+
+<p>Racionais.</p>
+
+<p>Informadas.</p>
+
+<p>Autónomas.</p>
+
+<p>Vivemos rodeados de computadores, inteligência artificial, medicina avançada, satélites, universidades e acesso praticamente ilimitado ao conhecimento.</p>
+
+<p>E, no entanto, uma parte extraordinariamente importante das nossas decisões continua a ser tomada por mecanismos construídos num mundo que já não existe.</p>
+
+<p><strong>Continuamos, demasiadas vezes, a executar o código dos mortos.</strong></p>
+
+<p>Não apenas através dos genes.</p>
+
+<p>Também através dos medos.</p>
+
+<p>Dos hábitos.</p>
+
+<p>Das hierarquias.</p>
+
+<p>Das frases familiares.</p>
+
+<p>Das normas sociais.</p>
+
+<p>Dos silêncios.</p>
+
+<p>Daquilo que aprendemos sem ninguém alguma vez nos ter ensinado explicitamente.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O passado não morreu. Mudou-se para dentro de nós</h2>
+
+<p>Os nossos antepassados viveram durante milhares de gerações em pequenos grupos onde pertencer era uma questão de sobrevivência.</p>
+
+<p>Ser rejeitado podia significar morrer.</p>
+
+<p>Contrariar a autoridade podia ser perigoso.</p>
+
+<p>Desafiar a hierarquia podia custar comida, protecção ou acesso ao grupo.</p>
+
+<p>Imitar os outros era frequentemente sensato.</p>
+
+<p>Se todos fugiam, talvez fosse melhor correr primeiro e perguntar depois onde estava o leão.</p>
+
+<p>Esse cérebro ainda está connosco.</p>
+
+<p>A tecnologia mudou em poucas gerações.</p>
+
+<p><strong>O equipamento biológico não recebeu actualização equivalente.</strong></p>
+
+<p>Continuamos extremamente sensíveis à pertença.</p>
+
+<p>Ao reconhecimento.</p>
+
+<p>À autoridade.</p>
+
+<p>À desaprovação.</p>
+
+<p>Ao medo de ficarmos sozinhos contra o grupo.</p>
+
+<p>E uma parte desse mecanismo funciona antes mesmo de termos consciência dele.</p>
+
+<p>O cérebro pergunta silenciosamente:</p>
+
+<p><strong>"O que fazem os outros?"</strong></p>
+
+<p><strong>"Quem manda?"</strong></p>
+
+<p><strong>"O que acontece se eu discordar?"</strong></p>
+
+<p>Só depois aparece aquela magnífica criatura que gostamos de chamar pensamento racional para explicar porque fizemos aquilo que já tínhamos decidido fazer.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">E depois acrescentamos a cultura</h2>
+
+<p>Se a biologia fornece o terreno, a cultura escreve uma parte enorme do programa.</p>
+
+<p>Uma criança portuguesa não nasce geneticamente programada para dizer:</p>
+
+<p><strong>"Não vale a pena."</strong></p>
+
+<p>Aprende.</p>
+
+<p>Não nasce sabendo:</p>
+
+<p><strong>"Não te metas."</strong></p>
+
+<p>Ouve.</p>
+
+<p>Não existe um gene denominado:</p>
+
+<p><strong>RESPEITAR_SR_DOUTOR_v2.</strong></p>
+
+<p>Por enquanto.</p>
+
+<p>Existe aprendizagem social.</p>
+
+<p>Pais.</p>
+
+<p>Avós.</p>
+
+<p>Professores.</p>
+
+<p>Chefes.</p>
+
+<p>Colegas.</p>
+
+<p>Instituições.</p>
+
+<p>E sobretudo observação.</p>
+
+<p>A criança vê quem é recompensado.</p>
+
+<p>O jovem percebe quem progride.</p>
+
+<p>O trabalhador observa quem é promovido.</p>
+
+<p>O funcionário vê o que acontece a quem questiona.</p>
+
+<p>E aprende rapidamente aquilo que nenhum regulamento precisa de escrever.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O código português</h2>
+
+<p>Há linhas de código cultural que atravessaram várias gerações:</p>
+
+<p><strong>Não dês nas vistas.</strong></p>
+
+<p><strong>Não contradigas quem manda.</strong></p>
+
+<p><strong>Não arranjes problemas.</strong></p>
+
+<p><strong>Respeita o doutor.</strong></p>
+
+<p><strong>É melhor um emprego seguro.</strong></p>
+
+<p><strong>Isso sempre foi assim.</strong></p>
+
+<p><strong>Deixa andar.</strong></p>
+
+<p><strong>Não vale a pena.</strong></p>
+
+<p>Nenhuma destas frases parece particularmente dramática.</p>
+
+<p>Esse é precisamente o problema.</p>
+
+<p>Não chegam acompanhadas por polícia.</p>
+
+<p>Não necessitam de censura.</p>
+
+<p>Não produzem vítimas visíveis.</p>
+
+<p>Instalam-se suavemente.</p>
+
+<p>E depois começam a executar-se automaticamente.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A ditadura pode acabar antes do medo</h2>
+
+<p>Portugal viveu quase meio século de autoritarismo.</p>
+
+<p>Censura.</p>
+
+<p>Polícia política.</p>
+
+<p>Hierarquia social rígida.</p>
+
+<p>Baixa escolaridade.</p>
+
+<p>Pobreza.</p>
+
+<p>Dependência económica.</p>
+
+<p>Emigração.</p>
+
+<p>Uma cultura onde contrariar determinadas autoridades podia ter consequências muito concretas.</p>
+
+<p>O regime acabou.</p>
+
+<p>As instituições mudaram.</p>
+
+<p>A Constituição mudou.</p>
+
+<p>A sociedade mudou profundamente.</p>
+
+<p>Mas culturas não possuem botão de reinicialização.</p>
+
+<p>O comportamento que durante décadas foi adaptativo pode sobreviver às circunstâncias que o criaram.</p>
+
+<p>A polícia desaparece.</p>
+
+<p>Fica:</p>
+
+<p><strong>"É melhor não falar."</strong></p>
+
+<p>A autoridade deixa de poder prender.</p>
+
+<p>Fica:</p>
+
+<p><strong>"Não convém contrariar."</strong></p>
+
+<p>A sociedade democratiza-se.</p>
+
+<p>Fica:</p>
+
+<p><strong>"Quem sou eu para questionar?"</strong></p>
+
+<p>É assim que o passado continua a governar o presente sem precisar de ocupar nenhum ministério.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Os mortos continuam sentados à mesa</h2>
+
+<p>Há qualquer coisa quase fantasmagórica nisto.</p>
+
+<p>Uma decisão tomada hoje pode estar parcialmente condicionada por medos aprendidos há cinquenta anos.</p>
+
+<p>Uma mãe aconselha prudência ao filho porque aprendeu prudência da sua mãe.</p>
+
+<p>Que a aprendeu num contexto onde prudência significava sobrevivência.</p>
+
+<p>O contexto desapareceu.</p>
+
+<p>O conselho permaneceu.</p>
+
+<p>E assim uma estratégia criada para um determinado mundo transforma-se numa tradição.</p>
+
+<p>Os mortos já não estão presentes.</p>
+
+<p><strong>Mas as suas soluções continuam a correr nos vivos.</strong></p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O problema começa quando ninguém pergunta se o programa ainda faz sentido</h2>
+
+<p>Imagine-se um sistema informático instalado em 1960.</p>
+
+<p>Continua a executar processos escritos para máquinas, redes e necessidades daquela época.</p>
+
+<p>Ninguém conhece completamente o código.</p>
+
+<p>Todos têm medo de mexer.</p>
+
+<p>Quando alguma coisa corre mal, acrescenta-se uma correcção.</p>
+
+<p>Depois outra.</p>
+
+<p>Mais uma.</p>
+
+<p>Sessenta anos depois alguém pergunta:</p>
+
+<p><strong>"Porque fazemos isto desta maneira?"</strong></p>
+
+<p>Resposta:</p>
+
+<p><strong>"Porque sempre funcionou assim."</strong></p>
+
+<p>Qualquer programador começa imediatamente a suar.</p>
+
+<p>Mas socialmente aceitamos exactamente esse modelo.</p>
+
+<p>Chamamos-lhe:</p>
+
+<p><strong>tradição.</strong></p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A tradição pode ser memória ou malware</h2>
+
+<p>Nem tudo o que recebemos do passado deve ser destruído.</p>
+
+<p>Seria infantil.</p>
+
+<p>Família.</p>
+
+<p>Solidariedade.</p>
+
+<p>Língua.</p>
+
+<p>Conhecimento.</p>
+
+<p>Experiência acumulada.</p>
+
+<p>Prudência.</p>
+
+<p>Memória histórica.</p>
+
+<p>Tudo isso é património precioso.</p>
+
+<p>Mas existe diferença entre <strong>herdar</strong> e <strong>obedecer</strong>.</p>
+
+<p>Uma cultura madura recebe o passado e pergunta:</p>
+
+<p><strong>Isto continua útil?</strong></p>
+
+<p>Uma cultura conformista recebe-o e responde:</p>
+
+<p><strong>Sempre foi assim.</strong></p>
+
+<p>É aí que património pode transformar-se em prisão.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O cérebro prefere segurança à verdade</h2>
+
+<p>Há ainda um mecanismo mais profundo.</p>
+
+<p>A verdade não é sempre confortável.</p>
+
+<p>Descobrir que uma instituição em que confiámos falhou produz desconforto.</p>
+
+<p>Reconhecer que o nosso partido está errado produz conflito.</p>
+
+<p>Admitir que os nossos pais acreditavam numa ideia falsa pode ser doloroso.</p>
+
+<p>Perceber que construímos trinta anos de vida sobre determinada convicção pode ser devastador.</p>
+
+<p>Então o cérebro faz algo extremamente humano:</p>
+
+<p>protege a identidade.</p>
+
+<p>Procura argumentos.</p>
+
+<p>Selecciona informação.</p>
+
+<p>Desvaloriza factos inconvenientes.</p>
+
+<p>Confirma aquilo em que já acreditava.</p>
+
+<p>Não porque sejamos necessariamente estúpidos.</p>
+
+<p>Mas porque somos organismos preocupados com coerência, pertença e segurança.</p>
+
+<p>A racionalidade é magnífica.</p>
+
+<p>Só tem o pequeno defeito de viver dentro de um animal social.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A pertença é uma droga poderosa</h2>
+
+<p>Pertencer sabe bem.</p>
+
+<p>Partido.</p>
+
+<p>Família.</p>
+
+<p>Clube.</p>
+
+<p>Profissão.</p>
+
+<p>Igreja.</p>
+
+<p>Empresa.</p>
+
+<p>Comunidade.</p>
+
+<p>Grupo ideológico.</p>
+
+<p>Quando pertencemos, recebemos identidade.</p>
+
+<p>Protecção.</p>
+
+<p>Significado.</p>
+
+<p>Mas existe um preço potencial.</p>
+
+<p>O grupo começa a definir aquilo que podemos pensar sem colocar a pertença em risco.</p>
+
+<p>A pessoa já não pergunta apenas:</p>
+
+<p><strong>"Isto é verdade?"</strong></p>
+
+<p>Pergunta inconscientemente:</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Se eu disser que isto é verdade, continuo a ser um dos nossos?</p>
+</div>
+
+<p>E aqui começa uma das formas mais silenciosas de censura.</p>
+
+<p>Aquela que não necessita de censor.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O censor instala-se dentro da cabeça</h2>
+
+<p>É uma extraordinária evolução tecnológica do poder.</p>
+
+<p>No modelo antigo, alguém dizia:</p>
+
+<p><strong>"Não podes dizer isso."</strong></p>
+
+<p>No modelo cultural moderno, ninguém precisa de dizer nada.</p>
+
+<p>A pessoa calcula antecipadamente:</p>
+
+<p>Isso vai criar problemas.</p>
+
+<p>Vão achar-me radical.</p>
+
+<p>O chefe não vai gostar.</p>
+
+<p>O partido não vai apreciar.</p>
+
+<p>Os colegas vão afastar-se.</p>
+
+<p>A família vai discutir.</p>
+
+<p>Melhor ficar calado.</p>
+
+<p>O censor tornou-se portátil.</p>
+
+<p>Funciona sem electricidade.</p>
+
+<p>E actualiza-se automaticamente através da pressão social.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quando o conformismo parece personalidade nacional</h2>
+
+<p>Depois de várias gerações, deixamos até de reconhecer o mecanismo.</p>
+
+<p>Passamos a dizer:</p>
+
+<p><strong>"Os portugueses são assim."</strong></p>
+
+<p>Não.</p>
+
+<p>Os portugueses aprenderam determinadas estratégias em determinados contextos históricos.</p>
+
+<p>Essa diferença é fundamental.</p>
+
+<p>Porque aquilo que é aprendido pode ser desaprendido.</p>
+
+<p>Se dissermos:</p>
+
+<p><strong>"Somos geneticamente conformistas."</strong></p>
+
+<p>acabou a discussão.</p>
+
+<p>Se dissermos:</p>
+
+<p><strong>"Construímos uma cultura que recompensa demasiado o conformismo."</strong></p>
+
+<p>então podemos mudá-la.</p>
+
+<p>É muito menos confortável.</p>
+
+<p>Porque a primeira explicação absolve-nos.</p>
+
+<p>A segunda responsabiliza-nos.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A maior herança não são os genes</h2>
+
+<p>Talvez devêssemos falar menos de ADN e mais de memória social.</p>
+
+<p>Porque herdamos algo extraordinariamente poderoso:</p>
+
+<p><strong>medos que já não são nossos.</strong></p>
+
+<p>Receios de pobreza.</p>
+
+<p>Receios de autoridade.</p>
+
+<p>Receios de abandono.</p>
+
+<p>Receios de conflito.</p>
+
+<p>Receios de perder segurança.</p>
+
+<p>E carregamo-los para situações completamente diferentes.</p>
+
+<p>O avô precisava de estabilidade porque atravessou fome e guerra.</p>
+
+<p>O neto pode transformar essa memória num medo permanente de arriscar.</p>
+
+<p>A mãe aprendeu a não contrariar porque viveu numa sociedade autoritária.</p>
+
+<p>A filha pode transportar essa prudência para uma empresa democrática onde poderia perfeitamente falar.</p>
+
+<p>O contexto desapareceu.</p>
+
+<p>A emoção ficou.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O código dos mortos também entra nas instituições</h2>
+
+<p>Uma organização é igualmente capaz de herdar comportamento.</p>
+
+<p>"Este procedimento existe porquê?"</p>
+
+<p>Ninguém sabe.</p>
+
+<p>"Porque é necessária esta assinatura?"</p>
+
+<p>Sempre foi necessária.</p>
+
+<p>"Porque não automatizamos isto?"</p>
+
+<p>É complicado.</p>
+
+<p>"Porque continuam estas três entidades a fazer praticamente a mesma coisa?"</p>
+
+<p>Questões históricas.</p>
+
+<p>"Porque este cargo existe?"</p>
+
+<p>Bem...</p>
+
+<p>Há organizações inteiras que parecem gigantescos museus de decisões tomadas por pessoas que já morreram.</p>
+
+<p>E todos continuam a executar os procedimentos porque alterar o procedimento exige explicar porque existia.</p>
+
+<p>Isso seria embaraçoso.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">É assim que sociedades envelhecem sem perceber</h2>
+
+<p>Não envelhecem apenas porque a população fica mais velha.</p>
+
+<p>Envelhecem quando deixam de rever pressupostos.</p>
+
+<p>Quando o argumento:</p>
+
+<p><strong>"Sempre fizemos assim"</strong></p>
+
+<p>começa a derrotar:</p>
+
+<p><strong>"Isto ainda funciona?"</strong></p>
+
+<p>A partir daí, o passado ganha direito de veto sobre o futuro.</p>
+
+<p>E uma sociedade pode possuir fibra óptica, smartphones, inteligência artificial e automóveis eléctricos enquanto continua culturalmente a executar programas escritos quando ainda se telefonava através de uma telefonista.</p>
+
+<p>Tecnologia nova.</p>
+
+<p><strong>Sistema operativo emocional antigo.</strong></p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Os jovens não escapam</h2>
+
+<p>Talvez esta seja a parte mais perturbadora.</p>
+
+<p>Gostamos de acreditar que cada geração começa novamente.</p>
+
+<p>Não começa.</p>
+
+<p>Recebe o código.</p>
+
+<p>Família.</p>
+
+<p>Escola.</p>
+
+<p>Televisão.</p>
+
+<p>Redes sociais.</p>
+
+<p>Partidos.</p>
+
+<p>Instituições.</p>
+
+<p>E em poucos anos um jovem pode aprender comportamentos que demoraram décadas a consolidar nos adultos.</p>
+
+<p>É assim que surgem os jovens com cabeça de velhos.</p>
+
+<p>Não receberam os genes políticos do avô.</p>
+
+<p>Receberam os incentivos.</p>
+
+<p>E incentivos são excelentes professores.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A verdadeira educação seria ensinar a depurar a herança</h2>
+
+<p>Talvez devêssemos pensar na educação de outra maneira.</p>
+
+<p>Não apenas:</p>
+
+<p>aprender Matemática.</p>
+
+<p>História.</p>
+
+<p>Ciências.</p>
+
+<p>Literatura.</p>
+
+<p>Mas aprender a fazer <strong>debugging cultural</strong>.</p>
+
+<p>Perguntar:</p>
+
+<p>Porque acredito nisto?</p>
+
+<p>De onde veio este medo?</p>
+
+<p>Esta regra continua válida?</p>
+
+<p>Estou a concordar porque considero verdadeiro ou porque quero pertencer?</p>
+
+<p>Estou calado porque não tenho argumento ou porque receio a reacção?</p>
+
+<p>Esta tradição contém sabedoria ou apenas antiguidade?</p>
+
+<p>É talvez uma das formas mais sofisticadas de liberdade.</p>
+
+<p><strong>Conseguir observar o próprio condicionamento.</strong></p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O inconsciente não pede autorização</h2>
+
+<p>E aqui reside a dificuldade.</p>
+
+<p>Estes mecanismos não aparecem no ecrã com uma caixa de diálogo:</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Está prestes a executar um comportamento herdado do século XX. Deseja continuar?</p>
+</div>
+
+<p>Seria excelente.</p>
+
+<p>Não funciona assim.</p>
+
+<p>Sentimos apenas:</p>
+
+<p>desconforto.</p>
+
+<p>medo.</p>
+
+<p>prudência.</p>
+
+<p>aversão ao conflito.</p>
+
+<p>necessidade de aprovação.</p>
+
+<p>E construímos depois uma explicação racional.</p>
+
+<p>Por isso é tão difícil mudar.</p>
+
+<p>Estamos a tentar corrigir com pensamento consciente programas cuja execução começou antes de o pensamento consciente chegar.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Mas podemos reescrever o código</h2>
+
+<p>Esta é a parte essencial.</p>
+
+<p>Os seres humanos não são prisioneiros passivos da evolução.</p>
+
+<p>Criámos precisamente através da cultura aquilo que nos permite contrariar parcialmente a cultura.</p>
+
+<p>Ciência.</p>
+
+<p>Filosofia.</p>
+
+<p>Educação.</p>
+
+<p>Debate.</p>
+
+<p>Arte.</p>
+
+<p>Literatura.</p>
+
+<p>Pensamento crítico.</p>
+
+<p>Todas estas coisas possuem uma função comum:</p>
+
+<p><strong>permitir-nos observar aquilo que normalmente executaríamos automaticamente.</strong></p>
+
+<p>É quase um privilégio extraordinário da consciência.</p>
+
+<p>O programa corre.</p>
+
+<p>Mas conseguimos, por vezes, olhar para ele.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A liberdade começa quando vemos o programa</h2>
+
+<p>Talvez liberdade não seja apenas poder escolher.</p>
+
+<p>Talvez seja também perceber <strong>quem está a escolher dentro de nós</strong>.</p>
+
+<p>Sou eu?</p>
+
+<p>É o medo?</p>
+
+<p>É a família?</p>
+
+<p>É o grupo?</p>
+
+<p>É uma tradição?</p>
+
+<p>É uma autoridade?</p>
+
+<p>É uma memória histórica?</p>
+
+<p>É um mecanismo biológico de pertença?</p>
+
+<p>Quanto mais conseguimos fazer esta pergunta, menos automáticos nos tornamos.</p>
+
+<p>E talvez aí comece realmente uma sociedade moderna.</p>
+
+<p>Não quando compra tecnologia moderna.</p>
+
+<p>Mas quando consegue rever os comportamentos antigos que já não fazem sentido.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Os nossos antepassados não exigem obediência</h2>
+
+<p>Há ainda uma ironia quase bonita.</p>
+
+<p>A melhor maneira de respeitar os antepassados talvez não seja imitá-los.</p>
+
+<p>Eles adaptaram-se ao mundo deles.</p>
+
+<p>Sobreviveram.</p>
+
+<p>Mudaram.</p>
+
+<p>Migraram.</p>
+
+<p>Inventaram.</p>
+
+<p>Arriscaram.</p>
+
+<p>Se fossem realmente partidários do:</p>
+
+<p><strong>"Sempre foi assim"</strong></p>
+
+<p>provavelmente ainda estaríamos numa caverna particularmente tradicional.</p>
+
+<p>Portanto, utilizar a tradição para impedir mudança pode ser exactamente o contrário de honrar quem nos precedeu.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O código deve ser auditado</h2>
+
+<p>Cada geração deveria receber a herança cultural como se recebe um velho programa crítico.</p>
+
+<p>Não apagar tudo.</p>
+
+<p>Não confiar em tudo.</p>
+
+<p>Primeiro:</p>
+
+<p>ler.</p>
+
+<p>Compreender.</p>
+
+<p>Testar.</p>
+
+<p>Preservar o que funciona.</p>
+
+<p>Corrigir o que falha.</p>
+
+<p>Eliminar aquilo que se tornou perigoso.</p>
+
+<p>E documentar melhor para a geração seguinte, porque aparentemente ninguém gosta dessa parte.</p>
+
+<div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+<h3 style="color:#d6a542; margin-top:0; text-align:left;">O QUE A CIÊNCIA PERMITE DIZER</h3>
+<ul style="padding-left:22px; margin:0;">
+<li>A cultura humana transmite comportamentos, valores, conhecimentos e normas por aprendizagem social, permitindo alterações muito mais rápidas do que a evolução genética.</li>
+<li>A investigação sobre normas sociais mostra que a conformidade pode tornar-se uma disposição aprendida e internalizada através da socialização prolongada com pais, grupos e outras figuras significativas.</li>
+<li>A pertença a um grupo influencia a percepção do comportamento adequado e pode reforçar conformidade, identidade colectiva e sanções sociais contra o desvio.</li>
+<li>Estudos de ciências comportamentais distinguem motivos de conformidade como procura de informação, afiliação e aprovação social.</li>
+<li>A evolução cultural e a evolução genética interagem, mas não são equivalentes: comportamentos políticos ou culturais complexos não podem ser atribuídos a um «gene nacional».</li>
+<li>A herança epigenética transgeracional existe em alguns contextos biológicos, sobretudo estudados em modelos animais, mas os seus mecanismos e extensão são complexos e não legitimam afirmar que conformismo político ou medo social português sejam transmitidos biologicamente entre gerações.</li>
+</ul>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O verdadeiro conflito entre ontem e amanhã</h2>
+
+<p>Não é entre jovens e velhos.</p>
+
+<p>Não é entre tradição e modernidade.</p>
+
+<p>É entre dois princípios:</p>
+
+<p><strong>continuar porque sempre foi assim</strong></p>
+
+<p>e</p>
+
+<p><strong>continuar apenas se ainda fizer sentido.</strong></p>
+
+<p>Essa diferença parece pequena.</p>
+
+<p>É gigantesca.</p>
+
+<p>A primeira transforma o passado em autoridade.</p>
+
+<p>A segunda transforma-o em conhecimento.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Somos o que somos. Mas não temos de continuar exactamente assim.</h2>
+
+<p>Eduardo Punset dedicou grande parte da sua divulgação científica a uma pergunta fascinante:</p>
+
+<p><strong>porque somos como somos?</strong></p>
+
+<p>Talvez a pergunta seguinte seja ainda mais importante:</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Depois de percebermos por que somos assim, queremos continuar a sê-lo?</p>
+</div>
+
+<p>Porque compreender os mecanismos que nos moldaram não deveria servir para justificar o comportamento.</p>
+
+<p>Deveria servir para o tornar menos inevitável.</p>
+
+<p>Os genes deram-nos predisposições.</p>
+
+<p>A história deu-nos medos.</p>
+
+<p>A família deu-nos hábitos.</p>
+
+<p>A sociedade deu-nos normas.</p>
+
+<p>Os mortos deram-nos uma quantidade imensa de código.</p>
+
+<p>Mas existe uma diferença fundamental entre receber código e ser obrigado a executá-lo.</p>
+
+<p>E talvez uma sociedade verdadeiramente adulta comece exactamente aí:</p>
+
+<p><strong>quando deixa de perguntar apenas o que herdou e começa a decidir conscientemente aquilo que merece continuar.</strong></p>
+
+<p>Porque os mortos ajudaram a escrever-nos.</p>
+
+<p><strong>Mas o futuro continua, felizmente, sem autor definitivo.</strong></p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+
+<div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+<p style="text-align:left;">Esta crónica parte de uma metáfora inspirada pela leitura de Eduardo Punset: a ideia de que seres humanos continuam a executar mecanismos herdados de gerações anteriores. A formulação «código dos mortos» é editorial e não corresponde a um conceito científico formal.</p>
+
+<p style="text-align:left;">A distinção entre herança genética e herança cultural é essencial. A investigação contemporânea sobre evolução cultural mostra que os seres humanos transmitem grandes quantidades de informação adquirida através de aprendizagem social e que a cultura possui capacidade de mudança aberta e cumulativa. Isto permite que normas, tecnologias, hábitos e instituições se alterem em escalas temporais muito mais rápidas do que alterações genéticas significativas.</p>
+
+<p style="text-align:left;">A ciência das normas sociais mostra ainda que comportamentos aprendidos podem tornar-se disposições relativamente estáveis. A socialização prolongada com pais, pares e grupos permite internalizar expectativas sobre aquilo que é adequado. Uma vez interiorizadas, as normas podem ser cumpridas sem necessidade de sanção externa permanente: vergonha, culpa, pertença e identidade social podem desempenhar parte dessa função.</p>
+
+<p style="text-align:left;">A referência a mecanismos evolutivos de pertença, hierarquia e aprovação social deve igualmente ser entendida com cautela. A psicologia e a antropologia evolucionistas investigam predisposições humanas gerais, mas comportamento concreto resulta da interacção entre biologia, desenvolvimento, cultura, instituições e experiência individual. Não existe base científica para atribuir conformismo, deferência ou passividade política dos portugueses a uma particular composição genética nacional.</p>
+
+<p style="text-align:left;">Também não se utiliza «memória social» como sinónimo de herança epigenética. A epigenética estuda mecanismos de regulação da expressão genética e existem formas de herança epigenética em animais. No entanto, revisões em <em>Nature Reviews Genetics</em> e <em>Nature Reviews Molecular Cell Biology</em> mostram que os mecanismos transgeracionais em mamíferos são complexos e sujeitos a extensa reprogramação. Não existe fundamento para inferir daí a transmissão biológica de atitudes políticas portuguesas, conformismo ou medo de autoridade.</p>
+
+<p style="text-align:left;">O ponto cientificamente defensável da crónica é cultural: pais, professores, colegas, organizações e instituições transmitem modelos de comportamento através de observação, aprendizagem, recompensas, punições e expectativas sociais. Esse processo pode conservar estratégias muito depois de desaparecer o ambiente histórico que inicialmente as tornou úteis.</p>
+
+<p style="text-align:left;">A referência ao Estado Novo é histórica, não determinista. Décadas de autoritarismo, censura, pobreza e baixa escolaridade podem integrar o contexto de formação de determinadas atitudes sociais, mas não autorizam concluir que todo o comportamento português contemporâneo seja consequência directa desse regime. Portugal sofreu enormes transformações sociais, económicas, educativas e políticas desde 1974.</p>
+
+<p style="text-align:left; margin-bottom:0;">A tese central é precisamente a possibilidade de mudança. Se uma parte relevante do comportamento é culturalmente aprendida, então também pode ser revista. A herança deixa de ser destino. Torna-se matéria para avaliação crítica: preservar aquilo que contém conhecimento, corrigir aquilo que já não funciona e eliminar aquilo que continua a limitar pessoas apenas porque ninguém voltou a perguntar porquê.</p>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências internacionais</h2>
+
+<ul style="padding-left:22px;">
+<li><a href="https://www.nature.com/articles/s41562-024-02035-y" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Nature Human Behaviour — Human culture is uniquely open-ended rather than uniquely cumulative, 2025</a></li>
+<li><a href="https://plato.stanford.edu/entries/social-norms/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Stanford Encyclopedia of Philosophy — Social Norms, revisão de 2023</a></li>
+<li><a href="https://www.nature.com/articles/s41562-020-0884-z" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Nature Human Behaviour — Using social and behavioural science to support COVID-19 pandemic response, secção sobre normas sociais e conformidade</a></li>
+<li><a href="https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/abs/cultural-evolution-of-genetic-heritability/9CBEB629203EA430B6EE5549C5E729FC" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Behavioral and Brain Sciences — Cultural evolution of genetic heritability</a></li>
+<li><a href="https://onlinelibrary.wiley.com/doi/10.1002/evan.70015" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Evolutionary Anthropology — Did Down-Regulated Instincts Enable Human Gene-Culture Coevolution?, 2025</a></li>
+<li><a href="https://www.nature.com/articles/nrg3188" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Nature Reviews Genetics — Understanding transgenerational epigenetic inheritance via the gametes in mammals</a></li>
+<li><a href="https://www.nature.com/articles/s41580-018-0074-2" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Nature Reviews Molecular Cell Biology — Functions and mechanisms of epigenetic inheritance in animals</a></li>
+</ul>
+
+<div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+<p style="color:#cfcfcf; text-align:left;"><strong style="color:#d6a542;">Francisco Gonçalves</strong><br>Fragmentos do Caos<br>FC-Chronic-News</p>
+</div>
+
+</div>
+<p>
+  A imagem representa o encontro entre <strong>memória, herança e consciência</strong>. À esquerda, as figuras dos antepassados emergem da sombra como vestígios de gerações passadas, simbolizando os medos, hábitos, normas e formas de pensar que continuam a acompanhar os vivos.
+</p>
+
+<p>
+  Ao centro, uma figura contemporânea observa e reflecte, enquanto redes neuronais, padrões semelhantes a ADN e linhas de circuito sugerem a complexa ligação entre <strong>biologia, aprendizagem social e cultura</strong>.
+</p>
+
+<p>
+  À direita abre-se um horizonte luminoso, símbolo de um futuro ainda por escrever. A imagem não apresenta a herança como destino, mas como código que pode ser compreendido, questionado e parcialmente reescrito.
+</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+  <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+    Os mortos ajudaram a escrever-nos. Mas entre aquilo que herdámos e aquilo que decidimos conservar existe o espaço onde começa a liberdade.
+  </p>
+</div>
+Francisco Gonçalves © 2026
+<br>
+<strong>Uma referência sobre Eduard Punset, pensador e escritor, que é referido nesta crónica</strong>
+
+<p>Eduardo Punset tem uma rara qualidade de pegar em perguntas enormes sobre <strong>cérebro, evolução, emoções e comportamento</strong> e torná-las intelectualmente provocadoras sem transformar tudo num tratado ilegível.
+</p>
+
+<p>
+  <strong>E sobretudo quanto do que pensamos será decisão consciente e, afinal, herança biológica, hábito cultural, memória social e automatismo emocional</strong>.
+</p>
+
+<p>
+ Eduard Punset é perigoso nesse sentido: uma pessoa começa a ler por curiosidade e acaba a desconfiar de metade dos programas que o próprio cérebro executa sem pedir licença. 😄
+</p>
+
+<em>Leitura recomendada :</em>
+Viagem ao poder da mente
+
+Eduard Punset,
+Publicações D. Quixote 
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
