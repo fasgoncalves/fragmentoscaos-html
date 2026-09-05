@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Estado que Perdoa os Culpados e Cobra aos Inocentes</title>
+<meta name="description" content="O Estado que Perdoa os Culpados e Cobra aos Inocentes">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Estado que Perdoa os Culpados e Cobra aos Inocentes</h1>
+      <p class="meta">Publicado em 2026-09-04 15:02:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_000000002e0481f5a2c01cdd669dbb88_6c589f77.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- FC-CHRONIC-NEWS CANONICAL — inline styles only -->
+<div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="O Estado que Perdoa os Culpados e Cobra aos Inocentes">
+      <meta itemprop="description" content="Uma crónica dura sobre a inversão moral da responsabilidade pública: quando o sistema financeiro falha, o prejuízo pode acabar socializado; quando as contas apertam, trabalhadores e pensionistas tornam-se o alvo mais fácil.">
+      <meta itemprop="datePublished" content="2026-09-03">
+      <meta itemprop="dateModified" content="2026-09-03">
+      <meta itemprop="author" content="Aletheia Veritas">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/09/file_000000002e0481f5a2c01cdd669dbb88.png">
+    </span>
+  </div>
+  <div style="max-width:900px; margin:auto; padding:10px;">
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">O Estado que Perdoa os Culpados e Cobra aos Inocentes</h1>
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">Quando a responsabilidade desaparece nos corredores do poder, sobra quase sempre alguém muito fácil de encontrar: o contribuinte.</p>
+    <p style="text-align:center; color:#cfcfcf; margin-top:-18px; margin-bottom:35px;"><strong style="color:#d6a542;">Aletheia Veritas</strong> · Fragmentos do Caos · 3 de Setembro de 2026</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>Esta crónica não nega o problema demográfico da Segurança Social nem pretende transformar toda a intervenção pública na banca numa única categoria moral. Faz uma pergunta mais incómoda: porque é que, quando instituições e decisores falham em grande escala, a factura final encontra tantas vezes o mesmo destinatário, precisamente quem cumpriu as regras?</p>
+    </div>
+    <p>Há uma forma particularmente repugnante de injustiça: aquela que se veste de racionalidade económica para parecer inevitável.</p>
+    <p>Chamam-lhe «sustentabilidade». Chamam-lhe «equilíbrio das contas públicas». Chamam-lhe «responsabilidade orçamental». Palavras respeitáveis. Limpas. Técnicas. Quase assépticas.</p>
+    <p>Depois traduzimos o economês para português corrente e descobrimos frequentemente uma realidade bastante mais simples: <strong>alguém fez asneira e alguém que não teve nada a ver com ela vai pagar.</strong></p>
+    <p>Portugal tornou esta extraordinária habilidade numa espécie de ciência administrativa.</p>
+    <p>Durante quarenta anos, um trabalhador desconta obrigatoriamente para a Segurança Social. Não lhe perguntam se quer participar. Não lhe perguntam se prefere investir o dinheiro noutro sistema. Não lhe concedem o direito de dizer que naquele mês lhe dava jeito ficar com a contribuição porque tem uma prestação da casa para pagar.</p>
+    <p>O Estado cobra.</p>
+    <p>Todos os meses.</p>
+    <p>Religiosamente.</p>
+    <p>Depois, quando esse trabalhador envelhece, aparece um economista diante de uma folha Excel para lhe explicar que talvez aquilo que lhe prometeram já não seja sustentável.</p>
+    <p>É extraordinário.</p>
+    <p>O cidadão é obrigado a cumprir o contrato durante quarenta anos, mas o Estado reserva para si o direito de reinterpretar as cláusulas no momento de pagar.</p>
+    <p>E ainda chama a isso responsabilidade.</p>
+    <p>O texto que deu origem a esta reflexão acerta no nervo central: alterar as regras no fim da partida a cidadãos que descontaram obrigatoriamente durante décadas não é apenas uma operação contabilística. É um teste à credibilidade do contrato social.</p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quando o erro tem sempre o mesmo contribuinte</h2>
+    <p>Portugal conhece muito bem outra palavra extraordinária: <strong>resgate.</strong></p>
+    <p>Quando uma família gere mal o seu orçamento, ninguém a «recapitaliza».</p>
+    <p>Quando um pequeno empresário toma decisões desastrosas, não aparece o Estado a explicar que a sua empresa é «sistémica».</p>
+    <p>Quando um reformado se engana nas contas, o supermercado não lhe oferece um mecanismo de resolução.</p>
+    <p>Mas quando certas instituições financeiras acumulam erros monumentais, créditos ruinosos, decisões irresponsáveis, administrações desastrosas e, em alguns casos, ilícitos já reconhecidos pelos tribunais, subitamente descobrimos que todos pertencemos à mesma grande família.</p>
+    <p>Sobretudo na hora de pagar.</p>
+    <p>É aqui que convém trocar a memória selectiva por contabilidade. Segundo o Tribunal de Contas, o saldo acumulado dos apoios públicos ao sector financeiro entre 2008 e 2024 continuava desfavorável ao Estado em <strong>21.284 milhões de euros</strong>. Não é uma soma bruta de todas as injecções, nem uma imputação criminal a administradores. É o saldo líquido apurado pelo Tribunal segundo a sua metodologia para os fluxos públicos associados ao sector financeiro.</p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quadro de responsabilidades institucionais e saldo dos apoios públicos à banca</h2>
+    <div style="border:1px solid #333; background:#111; padding:16px; margin:35px 0; overflow-x:auto;">
+      <table style="width:100%; min-width:760px; border-collapse:collapse; color:#e8eef4; font-size:0.94em; line-height:1.55;">
+        <caption style="caption-side:top; text-align:left; color:#d6a542; font-weight:bold; font-size:1.12em; padding:0 0 14px 0;">Saldo dos apoios públicos ao sector financeiro, 2008–2024</caption>
+        <thead><tr>
+          <th style="border:1px solid #333; padding:10px; background:#151515; color:#d6a542; text-align:left;">Instituição / operação</th>
+          <th style="border:1px solid #333; padding:10px; background:#151515; color:#d6a542; text-align:left;">Responsabilidade institucional ou natureza do apoio</th>
+          <th style="border:1px solid #333; padding:10px; background:#151515; color:#d6a542; text-align:left;">Saldo acumulado (M€)</th>
+          <th style="border:1px solid #333; padding:10px; background:#151515; color:#d6a542; text-align:left;">Leitura do saldo</th>
+        </tr></thead><tbody>
+        <tr>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">BES / Novo Banco</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Resolução do BES em 2014, criação do banco de transição e apoios posteriores através do Fundo de Resolução.</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top; white-space:nowrap; text-align:right;">−8.293</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Desfavorável ao Estado</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">BPN</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Nacionalização em 2008, recapitalização, activos problemáticos e sociedades-veículo públicas.</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top; white-space:nowrap; text-align:right;">−5.897</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Desfavorável ao Estado</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">CGD</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Recapitalizações do banco público e fluxos contabilizados pelo Tribunal de Contas no período.</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top; white-space:nowrap; text-align:right;">−5.052</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Desfavorável ao Estado</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">BANIF</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Recapitalização pública e resolução de 2015, incluindo financiamento directo e intervenção do Fundo de Resolução.</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top; white-space:nowrap; text-align:right;">−2.871</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Desfavorável ao Estado</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">BPP</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Garantias, indemnizações e recuperação parcial de créditos associadas ao colapso do Banco Privado Português.</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top; white-space:nowrap; text-align:right;">−263</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Desfavorável ao Estado</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">BCP</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Apoio de recapitalização durante o programa de ajustamento, posteriormente reembolsado com saldo acumulado favorável ao Estado.</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top; white-space:nowrap; text-align:right;">+919</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Favorável ao Estado</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">BPI</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Apoio de recapitalização durante o programa de ajustamento, posteriormente reembolsado com saldo acumulado favorável ao Estado.</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top; white-space:nowrap; text-align:right;">+168</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Favorável ao Estado</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Outros</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Outros fluxos incluídos na metodologia do Tribunal de Contas.</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top; white-space:nowrap; text-align:right;">+5</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top;">Favorável ao Estado</td>
+        </tr>
+        <tr>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top; font-weight:bold; background:#151515;">TOTAL</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top; font-weight:bold; background:#151515;">Saldo agregado dos apoios públicos ao sector financeiro segundo o Quadro 75 do Parecer sobre a CGE 2024.</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top; font-weight:bold; background:#151515; white-space:nowrap; text-align:right;">−21.284</td>
+          <td style="border:1px solid #333; padding:10px; vertical-align:top; font-weight:bold; background:#151515;">Desfavorável ao Estado</td>
+        </tr>
+        </tbody>
+      </table>
+      <p style="color:#cfcfcf; font-size:0.88em; margin:14px 0 0 0;"><strong>Como ler:</strong> valores negativos representam saldo acumulado desfavorável ao Estado; valores positivos representam saldo favorável. O quadro reproduz os saldos do Tribunal de Contas e acrescenta uma descrição institucional sintética. Não equivale a atribuir responsabilidade criminal individual nem significa que todas as operações tiveram a mesma natureza jurídica.</p>
+    </div>
+    <p>A fotografia é incómoda precisamente porque é mais séria do que o slogan. BCP e BPI aparecem com saldos favoráveis ao Estado, mostrando que apoio público e perda definitiva não são sinónimos. Pelo contrário, BES/Novo Banco, BPN, CGD e BANIF concentram a maior parte do esforço líquido suportado pelo Estado.</p>
+    <p>O próprio Tribunal de Contas acrescenta outro número que deveria sobreviver a qualquer conferência de imprensa: no final de 2024, as operações realizadas tinham gerado activos financeiros com valor nominal de cerca de <strong>9.950 milhões de euros</strong>, menos de metade dos encargos líquidos acumulados de 21.284 milhões.</p>
+    <p>Isto não é contabilidade de tasca. É precisamente o contrário. É a razão pela qual a crítica política deve usar números que resistam ao contraditório.</p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Privatizar o lucro. Socializar o desastre.</h2>
+    <p>Esta talvez seja uma das maiores obscenidades do capitalismo contemporâneo quando os mecanismos de responsabilização falham.</p>
+    <p>Quando tudo corre bem, os lucros pertencem aos accionistas.</p>
+    <p>Os prémios pertencem aos administradores.</p>
+    <p>Os dividendos pertencem aos investidores.</p>
+    <p>Os salários milionários pertencem aos gestores.</p>
+    <p>Mas quando tudo desaba, aparece uma palavra mágica: <strong>contribuinte.</strong></p>
+    <p>Subitamente o risco privado transforma-se numa emergência nacional.</p>
+    <p>A dívida torna-se pública.</p>
+    <p>O prejuízo torna-se colectivo.</p>
+    <p>E o cidadão que nunca entrou num conselho de administração, nunca aprovou um crédito ruinoso, nunca recebeu um prémio de gestão e talvez nem tivesse acções de banco algum descobre que afinal era sócio.</p>
+    <p>Só não sabia.</p>
+    <p>Era um sócio especial.</p>
+    <p>Um sócio sem dividendos.</p>
+    <p>Só com prejuízos.</p>
+    <p>É uma inovação financeira notável.</p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">E depois vêm buscar o dinheiro aos reformados</h2>
+    <p>Quando chega a hora de equilibrar as contas, o poder político olha em redor.</p>
+    <p>Poderia enfrentar interesses instalados.</p>
+    <p>Poderia tornar mais eficaz a recuperação de activos.</p>
+    <p>Poderia exigir consequências políticas, administrativas, civis e, quando exista fundamento legal, criminais.</p>
+    <p>Poderia explicar ao país, caso a caso, o que foi recuperado, o que se perdeu, porquê e quem tomou cada decisão.</p>
+    <p>Tudo isso dá trabalho.</p>
+    <p>E pior: cria inimigos poderosos.</p>
+    <p>Há uma solução muito mais simples.</p>
+    <p>O pensionista.</p>
+    <p>Esse perigoso especulador financeiro de 75 anos.</p>
+    <p>O homem que trabalhou quatro décadas.</p>
+    <p>A mulher que descontou quarenta anos.</p>
+    <p>O funcionário público.</p>
+    <p>O trabalhador por conta de outrem.</p>
+    <p>Esses são extraordinariamente fáceis de disciplinar.</p>
+    <p>O reformado não pode transferir a sua pensão para o Luxemburgo.</p>
+    <p>Não ameaça instalar a sede nas Bahamas.</p>
+    <p>Não possui um departamento jurídico com vinte advogados.</p>
+    <p>Não controla milhares de empregos.</p>
+    <p>E frequentemente já não dispõe da capacidade física ou profissional de reconstruir a vida económica do zero.</p>
+    <p>É, portanto, o contribuinte perfeito.</p>
+    <p>Quieto.</p>
+    <p>Identificado.</p>
+    <p>Tributável.</p>
+    <p>Dependente.</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;"><strong>Uma maravilha administrativa.</strong></p>
+    </div>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A demografia não absolve a política</h2>
+    <p>Importa não cair no erro contrário.</p>
+    <p>Portugal envelheceu.</p>
+    <p>Há menos trabalhadores por pensionista.</p>
+    <p>A natalidade é baixa.</p>
+    <p>A longevidade aumentou.</p>
+    <p>Um sistema de repartição enfrenta inevitavelmente pressões quando se altera profundamente a relação entre população activa e população reformada.</p>
+    <p>Negá-lo seria infantil.</p>
+    <p>O FMI, no relatório de 2026 sobre Portugal, estima que as pressões da despesa com pensões continuem a aumentar até meados da década de 2040. A OCDE e a Comissão Europeia descrevem o mesmo pano de fundo demográfico: envelhecimento acelerado, menor população em idade activa e maior pressão sobre sistemas públicos.</p>
+    <p>Mas reconhecer um problema demográfico não significa aceitar qualquer solução política.</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;"><strong>A matemática pode dizer-nos que existe um problema. A matemática não decide quem deve pagar por ele.</strong></p>
+    </div>
+    <p>Essa decisão chama-se política.</p>
+    <p>E quando sucessivos governos escolhem repetidamente os grupos com menor capacidade de resistência para absorver ajustamentos, já não estamos perante uma inevitabilidade económica.</p>
+    <p>Estamos perante uma escolha.</p>
+    <p>Podem desenhar-lhe gráficos.</p>
+    <p>Podem preencher relatórios com palavras inglesas.</p>
+    <p>Podem chamar-lhe <em>fiscal consolidation</em>, <em>structural adjustment</em>, <em>sustainability</em> ou qualquer outra expressão suficientemente sofisticada para adormecer uma sala de conferências.</p>
+    <p>Continua a ser uma escolha.</p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O verdadeiro défice português é de responsabilidade</h2>
+    <p>Talvez o problema mais grave nem esteja nas contas públicas.</p>
+    <p>Está numa conta muito mais difícil de medir: <strong>a conta da impunidade.</strong></p>
+    <p>Num país funcional, um desastre público deveria produzir três coisas.</p>
+    <p>Conhecimento sobre o que aconteceu.</p>
+    <p>Responsabilização de quem falhou.</p>
+    <p>Reformas que impeçam a repetição.</p>
+    <p>Em Portugal produz frequentemente uma quarta:</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;"><strong>amnésia.</strong></p>
+    </div>
+    <p>Passados alguns anos, ninguém decidiu.</p>
+    <p>Ninguém sabia.</p>
+    <p>Ninguém podia prever.</p>
+    <p>Ninguém era responsável.</p>
+    <p>As administrações culpam os reguladores.</p>
+    <p>Os reguladores culpam os governos.</p>
+    <p>Os governos culpam a conjuntura internacional.</p>
+    <p>Os partidos culpam os partidos anteriores.</p>
+    <p>E a conjuntura internacional, coitada, nunca comparece às comissões parlamentares para se defender.</p>
+    <p>No fim da gigantesca cadeia de irresponsabilidade sobra uma única entidade inequivocamente identificável.</p>
+    <p>O contribuinte.</p>
+    <p>Esse nunca escapa.</p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O contrato social não pode ser unilateral</h2>
+    <p>Uma democracia não é apenas votar de quatro em quatro anos.</p>
+    <p>É existir confiança entre o cidadão e as instituições.</p>
+    <p>Quando o Estado obriga um cidadão a contribuir durante uma vida inteira, cria uma expectativa legítima de estabilidade.</p>
+    <p>Naturalmente, nenhum sistema pode prometer imutabilidade absoluta durante quarenta anos.</p>
+    <p>As sociedades mudam.</p>
+    <p>A economia muda.</p>
+    <p>A demografia muda.</p>
+    <p>Mas existe uma diferença enorme entre adaptar um sistema de forma gradual, previsível e justa e transformar direitos acumulados no botão de emergência das contas públicas.</p>
+    <p>Sobretudo quando o cidadão observa, simultaneamente, milhares de milhões absorvidos por decisões que nunca tomou.</p>
+    <p>É aí que começa a corrosão democrática.</p>
+    <p>Porque as pessoas deixam de perguntar: «Como podemos salvar o sistema?»</p>
+    <p>E passam a perguntar:</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;"><strong>«Por que razão sou sempre eu a salvá-lo?»</strong></p>
+    </div>
+    <p>Essa pergunta é perigosíssima para uma democracia.</p>
+    <p>E completamente legítima.</p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Antes de cortar pensões, apresentem a conta dos erros</h2>
+    <p>Talvez devesse existir uma regra simples.</p>
+    <p>Antes de qualquer governo propor novos sacrifícios aos cidadãos, deveria apresentar publicamente uma espécie de balanço moral do Estado.</p>
+    <p>Quanto dinheiro foi perdido por decisões políticas erradas?</p>
+    <p>Quanto foi recuperado?</p>
+    <p>Quem foi responsabilizado?</p>
+    <p>Que património foi apreendido quando a lei o permitiu?</p>
+    <p>Que administradores responderam civil ou criminalmente quando existiu fundamento e decisão judicial?</p>
+    <p>Que decisores públicos suportaram consequências políticas efectivas?</p>
+    <p>Que alterações foram feitas para impedir a repetição?</p>
+    <p>E só depois dessa prestação de contas alguém teria autoridade moral para subir a um púlpito e pedir «mais um esforço aos portugueses».</p>
+    <p>Porque governar não é distribuir sofrimento por folha de Excel.</p>
+    <p>Governar é escolher.</p>
+    <p>E escolher significa assumir responsabilidade.</p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quem parte tem de voltar a pagar</h2>
+    <p>Talvez devêssemos recuperar finalmente aquela velha regra que ensinávamos antes de inventarmos toda esta sofisticada engenharia de irresponsabilidade.</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;"><strong>Quem parte, paga.</strong></p>
+    </div>
+    <p>Se um cidadão provoca um prejuízo, responde por ele.</p>
+    <p>Se uma empresa provoca um prejuízo, responde por ele.</p>
+    <p>Se um banqueiro pratica actos ilícitos que causam prejuízos, responde por eles nos termos da lei.</p>
+    <p>Se um gestor público actua de forma juridicamente censurável, deve responder por ela.</p>
+    <p>E se um governante toma decisões políticas ruinosas, talvez seja altura de a responsabilidade política deixar de significar apenas perder umas eleições e aparecer seis meses depois como comentador televisivo.</p>
+    <p>Porque uma sociedade em que os inocentes pagam sistematicamente pelos erros dos poderosos pode continuar a chamar-se muitas coisas.</p>
+    <p>Pode ter Parlamento.</p>
+    <p>Pode ter eleições.</p>
+    <p>Pode ter Constituição.</p>
+    <p>Pode ter debates televisivos.</p>
+    <p>Pode até ter um magnífico portal de transparência cheio de gráficos coloridos.</p>
+    <p>Mas terá cada vez mais dificuldade em chamar-se <strong>justa</strong>.</p>
+    <p>E nenhum sistema político sobrevive indefinidamente quando milhões de cidadãos começam a perceber que cumprem escrupulosamente as regras de um jogo no qual outros parecem possuir o privilégio de nunca perder.</p>
+    <p>O problema das contas públicas pode resolver-se com economia.</p>
+    <p>O problema demográfico pode atenuar-se com política.</p>
+    <p>O problema da produtividade pode enfrentar-se com investimento.</p>
+    <p>Mas há um problema muito mais perigoso.</p>
+    <p>Quando uma população deixa de acreditar que o Estado joga limpo, já não existe orçamento capaz de reparar essa dívida.</p>
+    <p>Porque essa dívida não se mede em euros.</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;"><strong>Mede-se em confiança.</strong></p>
+    </div>
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">Esta é uma crónica de opinião e crítica política sustentada por dados públicos. O texto não afirma que toda a intervenção pública em instituições financeiras seja evitável: em determinadas crises, proteger depósitos, continuidade de pagamentos e estabilidade sistémica pode exigir intervenção do Estado.</p>
+      <p style="text-align:left;">O quadro usa o <strong>saldo acumulado dos apoios públicos ao sector financeiro entre 2008 e 2024</strong> publicado pelo Tribunal de Contas. Os valores negativos representam saldo desfavorável ao Estado; os positivos, saldo favorável. Por isso BCP e BPI surgem com valores positivos, enquanto BES/Novo Banco, BPN, CGD, BANIF e BPP apresentam saldos negativos.</p>
+      <p style="text-align:left;">A expressão «responsabilidade» é usada aqui em sentido <strong>institucional e político</strong>. A existência de custo público não prova, por si só, culpa criminal, fraude ou responsabilidade civil de um administrador ou governante específico. Essas matérias dependem de factos, processos e decisões judiciais próprias.</p>
+      <p style="text-align:left;">A CGD merece ainda uma ressalva: trata-se de um banco integralmente público e o saldo histórico calculado pelo Tribunal não deve ser confundido com uma afirmação de que esse valor foi «desaparecido» ou é integralmente irrecuperável. A própria metodologia contabiliza receitas e activos associados aos apoios.</p>
+      <p style="text-align:left;">Do lado das pensões, o texto reconhece expressamente o problema demográfico. O FMI, a OCDE e a Comissão Europeia projectam pressões relevantes relacionadas com o envelhecimento. A crítica é à distribuição dos sacrifícios e à qualidade da responsabilização política, não à existência da aritmética demográfica.</p>
+      <p style="text-align:left; margin-bottom:0;"><strong>Pesquisa factual e verificação de fontes assistidas por IA da OpenAI. A interpretação e o argumento editorial pertencem à crónica.</strong></p>
+    </div>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências e publicações internacionais</h2>
+    <ul style="padding-left:22px;">
+      <li style="margin-bottom:16px;">
+        <a href="https://www.tcontas.pt/pt-pt/ProdutosTC/PareceresTribunalContas/ParecerCGE/Documents/2024/pcge2024.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;"><strong>Tribunal de Contas — Parecer sobre a Conta Geral do Estado de 2024, ponto 4.3.3</strong></a>
+        <br><span style="color:#cfcfcf;">Fonte primária do Quadro 75. Apura um saldo global desfavorável ao Estado de 21.284 milhões de euros nos apoios públicos ao sector financeiro entre 2008 e 2024.</span>
+      </li>
+      <li style="margin-bottom:16px;">
+        <a href="https://www.elibrary.imf.org/view/journals/002/2026/147/article-A001-en.xml" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;"><strong>International Monetary Fund — Portugal: 2026 Article IV Consultation</strong></a>
+        <br><span style="color:#cfcfcf;">Analisa a pressão do envelhecimento sobre a despesa com pensões e projecta um pico do défice anual do sistema de pensões em meados da década de 2040.</span>
+      </li>
+      <li style="margin-bottom:16px;">
+        <a href="https://www.imf.org/en/publications/cr/issues/2026/07/27/portugal-financial-sector-assessment-program-technical-note-on-financial-safety-net-and-578099" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;"><strong>International Monetary Fund — Financial Safety Net and Crisis Management Arrangements, Portugal 2026</strong></a>
+        <br><span style="color:#cfcfcf;">Descreve o quadro de resolução bancária e refere que o Fundo de Resolução mantinha, no final de 2024, 7,6 mil milhões de euros de passivos associados a resoluções passadas.</span>
+      </li>
+      <li style="margin-bottom:16px;">
+        <a href="https://www.oecd.org/en/publications/pensions-at-a-glance-2025_e40274c1-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;"><strong>OECD — Pensions at a Glance 2025</strong></a>
+        <br><span style="color:#cfcfcf;">Contextualiza o rápido envelhecimento das populações da OCDE e as pressões que fertilidade baixa e maior longevidade colocam sobre sistemas públicos de pensões.</span>
+      </li>
+      <li style="margin-bottom:16px;">
+        <a href="https://economy-finance.ec.europa.eu/publications/2024-ageing-report-economic-and-budgetary-projections-eu-member-states-2022-2070_en" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;"><strong>European Commission — 2024 Ageing Report</strong></a>
+        <br><span style="color:#cfcfcf;">Projecções económicas e orçamentais de longo prazo para envelhecimento, pensões, saúde e despesa pública nos Estados-Membros, incluindo Portugal.</span>
+      </li>
+      <li style="margin-bottom:16px;">
+        <a href="https://ec.europa.eu/eurostat/web/government-finance-statistics/excessive-deficit-procedure/government-interventions-support-financial-institutions" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;"><strong>Eurostat — Government interventions to support financial institutions</strong></a>
+        <br><span style="color:#cfcfcf;">Base europeia que acompanha o impacto efectivo e potencial das intervenções públicas no sector financeiro sobre défice e dívida.</span>
+      </li>
+      <li style="margin-bottom:16px;">
+        <a href="https://ec.europa.eu/competition/state_aid/cases/271354/271354_1965800_138_2.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;"><strong>European Commission — State aid decision on Novo Banco</strong></a>
+        <br><span style="color:#cfcfcf;">Regista, entre outras medidas, o capital de 4,9 mil milhões de euros disponibilizado ao Novo Banco pelo Fundo de Resolução na resolução de 2014.</span>
+      </li>
+      <li style="margin-bottom:16px;">
+        <a href="https://economy-finance.ec.europa.eu/system/files/2022-08/ip040_en.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;"><strong>European Commission — Ex Post Evaluation of the Economic Adjustment Programme: Portugal 2011–2014</strong></a>
+        <br><span style="color:#cfcfcf;">Descreve a reestruturação do BPN, a recapitalização pública e a transferência de activos problemáticos para veículos detidos pelo Estado.</span>
+      </li>
+      <li style="margin-bottom:16px;">
+        <a href="https://economy-finance.ec.europa.eu/eu-financial-assistance/euro-area-countries/financial-assistance-portugal_en" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;"><strong>European Commission — Financial assistance to Portugal</strong></a>
+        <br><span style="color:#cfcfcf;">Síntese do programa de ajustamento de 2011–2014, incluindo o enquadramento de estabilização do sector financeiro.</span>
+      </li>
+      <li style="margin-bottom:16px;">
+        <a href="https://www.investing.com/news/economy/eu%2C-portugal-agree-on-recapitalization-for-bank-cgd-422038" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;"><strong>Reuters — EU, Portugal agree on recapitalization for CGD</strong></a>
+        <br><span style="color:#cfcfcf;">Cobertura internacional do acordo de recapitalização da Caixa Geral de Depósitos e do contexto de fragilidade bancária portuguesa.</span>
+      </li>
+      <li style="margin-bottom:16px;">
+        <a href="https://portugal.gov.pt/gc21/comunicacao/noticias/20151221-mf-banif" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;"><strong>Governo de Portugal — Ajuda do Estado ao Banif</strong></a>
+        <br><span style="color:#cfcfcf;">Regista o pacote de 2,255 mil milhões de euros aprovado em 2015 para a resolução do Banif, distinguindo injecção directa e financiamento ao Fundo de Resolução.</span>
+      </li>
+    </ul>
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Aletheia Veritas</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+      <p style="color:#cfcfcf; font-size:0.9em; overflow-wrap:anywhere;"><strong>URL canónica:</strong> <a href="https://fasgoncalves.github.io/fragmentoscaos-html/2026/09/o-estado-que-perdoa-os-culpados-e-cobra-aos-inocentes.html" target="_blank" rel="noopener" style="color:#ffcc66;">https://fasgoncalves.github.io/fragmentoscaos-html/2026/09/o-estado-que-perdoa-os-culpados-e-cobra-aos-inocentes.html</a></p>
+    </div>
+  </div>
+</div>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

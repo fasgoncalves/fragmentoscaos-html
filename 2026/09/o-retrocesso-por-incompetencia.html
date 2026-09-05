@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Retrocesso por Incompetência</title>
+<meta name="description" content="O Retrocesso por Incompetência">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Retrocesso por Incompetência</h1>
+      <p class="meta">Publicado em 2026-09-04 13:19:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000fa0c81f484253019b8a771b8_a6577a76.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="O Retrocesso por Incompetência">
+      <meta itemprop="description" content="Uma crónica crítica sobre o acesso à interrupção voluntária da gravidez no SNS, objecção de consciência, falhas de gestão e o risco de transformar direitos legais em direitos condicionados pela disponibilidade do sistema.">
+      <meta itemprop="datePublished" content="2026-08-30">
+      <meta itemprop="dateModified" content="2026-08-30">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_00000000fa0c81f484253019b8a771b8.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      O Retrocesso por Incompetência
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      Quando um direito existe na lei, mas desaparece à porta do hospital
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        Esta crónica não afirma que Portugal esteja perante uma proibição disfarçada da interrupção voluntária da gravidez, nem que médicos objectores actuem colectivamente por motivação religiosa ou política. O problema é mais concreto e, talvez por isso, mais incómodo: quando falhas de planeamento, falta de equipas, procedimentos deficientes ou objecção de consciência sem resposta organizativa suficiente dificultam o acesso a um cuidado legal, o resultado prático pode ser um retrocesso mesmo sem qualquer alteração da lei.
+      </p>
+    </div>
+
+    <p>Há retrocessos civilizacionais que chegam com grandes discursos.</p>
+
+    <p>Leis revogadas.</p>
+
+    <p>Direitos proibidos.</p>
+
+    <p>Governos que anunciam solenemente que determinada liberdade deixou de existir.</p>
+
+    <p>E há uma forma portuguesa, muito mais discreta e burocrática, de produzir exactamente alguns dos mesmos efeitos:</p>
+
+    <p><strong>não se proíbe nada. Simplesmente deixa de haver quem faça.</strong></p>
+
+    <p>A lei continua lá.</p>
+
+    <p>O direito continua lá.</p>
+
+    <p>O Governo garante que tudo está assegurado.</p>
+
+    <p>A Administração explica que a situação é temporária.</p>
+
+    <p>O hospital encaminha.</p>
+
+    <p>O regulador averigua.</p>
+
+    <p>E a mulher, entretanto, continua grávida.</p>
+
+    <p>Com um pequeno detalhe que a burocracia parece ter alguma dificuldade em compreender:</p>
+
+    <p><strong>o relógio não pára enquanto o processo administrativo circula entre serviços.</strong></p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O direito que depende da escala médica</h2>
+
+    <p>Em Portugal, a interrupção da gravidez por opção da mulher é legal até às dez semanas.</p>
+
+    <p>Existe consulta prévia.</p>
+
+    <p>Existem prazos definidos.</p>
+
+    <p>Existe período de reflexão.</p>
+
+    <p>Existem regras de encaminhamento.</p>
+
+    <p>Existe legislação.</p>
+
+    <p>Existe regulamentação.</p>
+
+    <p>No papel, portanto, tudo parece civilizado.</p>
+
+    <p>Depois chegamos ao Hospital Garcia de Orta.</p>
+
+    <p>A partir de 10 de Agosto de 2026, o hospital deixou temporariamente de realizar internamente a IVG, alegando não conseguir assegurar resposta atempada por falta de profissionais. A ULS Almada-Seixal estabeleceu encaminhamento para uma entidade oficialmente reconhecida, enquanto procurava retomar a resposta interna.</p>
+
+    <p>Legalmente encontrou-se uma solução.</p>
+
+    <p>Politicamente encontrou-se uma explicação.</p>
+
+    <p>Administrativamente talvez se tenha encontrado um remendo.</p>
+
+    <p>Mas permanece uma pergunta extremamente simples:</p>
+
+    <p><strong>como chega um hospital público que servia uma população enorme ao ponto de deixar de conseguir assegurar internamente um cuidado de saúde legalmente previsto?</strong></p>
+
+    <p>Essa é a questão que nenhuma referência a artigos da lei deveria conseguir esconder.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Não é preciso abolir um direito para o enfraquecer</h2>
+
+    <p>É aqui que começa o problema civilizacional.</p>
+
+    <p>Imaginemos que ninguém altera a lei da IVG.</p>
+
+    <p>O Parlamento não mexe numa vírgula.</p>
+
+    <p>Nenhum Governo anuncia qualquer recuo.</p>
+
+    <p>Mas um hospital deixa de fazer.</p>
+
+    <p>Depois outro.</p>
+
+    <p>Depois determinados serviços possuem demasiados objectores para as equipas disponíveis.</p>
+
+    <p>Noutro falta um médico.</p>
+
+    <p>Noutro falta enfermagem.</p>
+
+    <p>Noutro não existe consulta.</p>
+
+    <p>Noutro a mulher tem de telefonar para três sítios.</p>
+
+    <p>Noutro é enviada para outra cidade.</p>
+
+    <p>O direito continua formalmente intacto.</p>
+
+    <p>Mas a distância entre <strong>ter direito</strong> e <strong>conseguir exercê-lo</strong> começa a aumentar.</p>
+
+    <p>Até que um dia descobrimos uma curiosa modalidade jurídica:</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        direitos sujeitos a disponibilidade.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Uma gravidez não conhece burocracia</h2>
+
+    <p>Este ponto deveria ser óbvio.</p>
+
+    <p>A IVG por opção da mulher possui um limite temporal de dez semanas.</p>
+
+    <p>A consulta prévia deve ser assegurada dentro dos prazos legalmente definidos e existe um período mínimo obrigatório de reflexão antes do procedimento.</p>
+
+    <p>Isto significa que cada atraso tem um peso que não existe em muitos outros actos médicos.</p>
+
+    <p>Uma consulta ortopédica adiada quinze dias é má prestação de serviço.</p>
+
+    <p>Uma IVG atrasada quinze dias pode aproximar a mulher do momento em que <strong>o próprio direito deixa legalmente de poder ser exercido</strong>.</p>
+
+    <p>Portanto, criar etapas desnecessárias não é apenas burocracia.</p>
+
+    <p>Pode ter consequência material.</p>
+
+    <p>A ERS já identificou no passado situações em que utentes eram obrigadas a iniciar o percurso pelos cuidados de saúde primários, bem como falhas na referenciação e desconhecimento dos procedimentos aplicáveis.</p>
+
+    <p>Isto já não é discussão filosófica.</p>
+
+    <p>É organização de serviços.</p>
+
+    <p>E organização incompetente também pode retirar direitos.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A objecção de consciência não pode tornar-se objecção institucional</h2>
+
+    <p>Existe depois o tema inevitável dos médicos objectores.</p>
+
+    <p>Convém tratá-lo sem fanatismo de sinal contrário.</p>
+
+    <p>Um profissional de saúde tem consciência.</p>
+
+    <p>Não é propriedade do Estado.</p>
+
+    <p>Pode possuir convicções religiosas, filosóficas, morais ou éticas profundas.</p>
+
+    <p>A lei portuguesa reconhece-lhe o direito de recusar participação em determinados actos relativos à interrupção voluntária da gravidez.</p>
+
+    <p>Esse direito deve ser respeitado.</p>
+
+    <p>Mas daqui não resulta uma consequência absurda:</p>
+
+    <p><strong>a consciência individual do médico não pode transformar-se na consciência colectiva do hospital.</strong></p>
+
+    <p>O princípio é também reconhecido internacionalmente. A Assembleia Parlamentar do Conselho da Europa tem insistido que, onde a objecção de consciência é legal, ela não deve constituir uma barreira ao acesso efectivo e atempado a cuidados de aborto legalmente disponíveis.</p>
+
+    <p>Portanto, a equação democrática é perfeitamente possível.</p>
+
+    <p>O médico não deve ser obrigado a executar pessoalmente aquilo que a sua consciência rejeita.</p>
+
+    <p>A mulher não deve ser obrigada a viver segundo a consciência do médico.</p>
+
+    <p>O Estado tem de organizar o sistema de modo a proteger ambos.</p>
+
+    <p>É para isso que existe Administração.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quando muitos objectores tornam impossível o serviço, temos um problema de gestão</h2>
+
+    <p>Não sabemos sequer com rigor quantos são.</p>
+
+    <p>E isso é particularmente extraordinário.</p>
+
+    <p>A ERS concluiu que <strong>não existe um registo completo e actualizado de todos os profissionais objectores de consciência</strong>, tanto nos hospitais como nos cuidados primários, e que essa informação também não estava disponível na Ordem dos Médicos.</p>
+
+    <p>Vale a pena absorver esta pequena maravilha administrativa.</p>
+
+    <p>Temos um procedimento médico cujo acesso pode ser afectado pela objecção de consciência.</p>
+
+    <p>Temos hospitais que precisam de planear equipas.</p>
+
+    <p>Temos prazos legais extremamente curtos.</p>
+
+    <p>E o sistema não dispõe sequer de uma fotografia completa e actualizada da dimensão da objecção.</p>
+
+    <p>Depois ficamos surpreendidos quando descobrimos que faltam profissionais para assegurar o serviço.</p>
+
+    <p>Isto não é necessariamente conspiração religiosa.</p>
+
+    <p>Pode ser algo muito mais prosaico.</p>
+
+    <p><strong>Má gestão.</strong></p>
+
+    <p>E os resultados para a mulher podem ser exactamente os mesmos.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A incompetência também produz ideologia na prática</h2>
+
+    <p>Este é talvez o ponto mais importante.</p>
+
+    <p>Nem todo o retrocesso resulta de uma intenção política deliberada.</p>
+
+    <p>Um Governo pode não querer limitar o aborto.</p>
+
+    <p>Uma administração hospitalar pode não possuir qualquer agenda religiosa.</p>
+
+    <p>Um director clínico pode apenas estar desesperado por falta de gente.</p>
+
+    <p>Mas se o resultado final for:</p>
+
+    <p>menos locais disponíveis;</p>
+
+    <p>mais deslocações;</p>
+
+    <p>mais etapas;</p>
+
+    <p>mais incerteza;</p>
+
+    <p>mais atrasos;</p>
+
+    <p>maior risco de ultrapassar prazos;</p>
+
+    <p>então ocorreu um retrocesso <strong>objectivo no acesso</strong>.</p>
+
+    <p>A intenção não apaga o resultado.</p>
+
+    <p>Uma ponte que cai por incompetência não fica menos caída porque ninguém desejava derrubá-la.</p>
+
+    <p>Uma revisão internacional publicada em 2023 na revista <em>Health Policy</em>, com participação de investigadores ligados à OMS, concluiu que a evidência disponível aponta para efeitos negativos da objecção de consciência sobre o acesso de quem procura aborto e também sobre profissionais não objectores.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O Ministério pode citar a lei. A mulher precisa de um médico</h2>
+
+    <p>Foi particularmente reveladora a resposta política ao caso Garcia de Orta.</p>
+
+    <p>O Ministério da Saúde explicou que a própria lei prevê o encaminhamento para estabelecimentos reconhecidos quando uma unidade pública não consegue garantir o procedimento nos prazos legais.</p>
+
+    <p>É verdade.</p>
+
+    <p>Mas isso responde apenas à pergunta:</p>
+
+    <p><strong>«É legal encaminhar?»</strong></p>
+
+    <p>Não responde à pergunta muito mais importante:</p>
+
+    <p><strong>«Porque deixou o hospital de conseguir prestar o serviço?»</strong></p>
+
+    <p>Uma Administração Pública não pode avaliar a sua qualidade apenas perguntando se encontrou uma saída juridicamente permitida depois de o serviço falhar.</p>
+
+    <p>Também tem de perguntar porque falhou.</p>
+
+    <p>Caso contrário chegaremos a uma concepção extraordinária de SNS:</p>
+
+    <p>não interessa se determinada valência desaparece de um hospital, desde que exista um número de telefone para outro sítio.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A privatização pela incapacidade</h2>
+
+    <p>Há ainda uma questão politicamente incómoda.</p>
+
+    <p>Quando um hospital público deixa de assegurar determinado cuidado e passa a encaminhá-lo para uma entidade privada oficialmente reconhecida, pode existir uma solução clínica perfeitamente legítima.</p>
+
+    <p>Mas quando isso acontece porque o SNS deixou de conseguir organizar os próprios recursos, estamos perante aquilo que poderíamos chamar:</p>
+
+    <p><strong>privatização pela incapacidade.</strong></p>
+
+    <p>Não é necessário anunciar privatização nenhuma.</p>
+
+    <p>Basta deixar deteriorar a resposta pública.</p>
+
+    <p>Depois aparece o privado como inevitabilidade técnica.</p>
+
+    <p>E todos fingem surpresa perante o resultado.</p>
+
+    <p>No caso do Garcia de Orta, a ULS afirmou tratar-se de uma solução temporária e querer retomar o serviço internamente.</p>
+
+    <p>É importante registá-lo.</p>
+
+    <p>A questão será verificar se o temporário é realmente temporário.</p>
+
+    <p>Em Portugal, certas soluções provisórias desenvolvem uma esperança de vida admirável.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Não estamos perante o colapso nacional da IVG</h2>
+
+    <p>Uma crítica séria também precisa de dizer aquilo que contraria a narrativa mais conveniente.</p>
+
+    <p>O acesso à IVG não desapareceu em Portugal.</p>
+
+    <p>Em 2024 foram realizadas <strong>17.807 interrupções da gravidez por opção da mulher nas primeiras dez semanas</strong>, mais 5,5% do que em 2023.</p>
+
+    <p>No conjunto nacional, o tempo médio entre o pedido de marcação e a consulta prévia foi de 2,8 dias, abaixo do limite legal de cinco dias, e o tempo médio entre a consulta prévia e a IVG foi de 6,7 dias.</p>
+
+    <p>Portanto, não estamos perante uma proibição nacional disfarçada.</p>
+
+    <p>Nem perante um SNS inteiro recusando este cuidado.</p>
+
+    <p>Mas precisamente porque o sistema globalmente consegue fazê-lo, torna-se ainda mais difícil aceitar que unidades importantes deixem localmente de conseguir assegurar a mesma resposta.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Direitos não devem depender do código postal</h2>
+
+    <p>Uma mulher em Lisboa.</p>
+
+    <p>Uma mulher em Almada.</p>
+
+    <p>Uma mulher em Bragança.</p>
+
+    <p>Uma mulher no Algarve.</p>
+
+    <p>Todas vivem no mesmo país.</p>
+
+    <p>Todas estão sujeitas à mesma lei.</p>
+
+    <p>O direito deveria possuir aproximadamente a mesma densidade jurídica independentemente da morada.</p>
+
+    <p>Mas os direitos sociais possuem uma característica incómoda:</p>
+
+    <p>necessitam de pessoas, instalações, organização e dinheiro.</p>
+
+    <p>Quando essas estruturas falham, nasce uma desigualdade geográfica.</p>
+
+    <p>No papel:</p>
+
+    <p>mesmo direito.</p>
+
+    <p>Na prática:</p>
+
+    <p>diferentes quilómetros;</p>
+
+    <p>diferentes esperas;</p>
+
+    <p>diferentes dificuldades;</p>
+
+    <p>diferentes probabilidades de conseguir exercer o direito dentro do prazo.</p>
+
+    <p>É aí que a igualdade legal começa a transformar-se em ficção administrativa.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O corpo da mulher não pode adaptar-se ao horário do SNS</h2>
+
+    <p>Há um hábito institucional que atravessa demasiadas áreas da Administração portuguesa.</p>
+
+    <p>O cidadão é quem se adapta.</p>
+
+    <p>O serviço não funciona?</p>
+
+    <p>Desloque-se.</p>
+
+    <p>Falta médico?</p>
+
+    <p>Espere.</p>
+
+    <p>O email foi encerrado?</p>
+
+    <p>Telefone para outro lado.</p>
+
+    <p>A consulta mudou?</p>
+
+    <p>Pergunte no centro de saúde.</p>
+
+    <p>O procedimento não existe aqui?</p>
+
+    <p>Vá a Lisboa.</p>
+
+    <p>Esta lógica é desagradável em qualquer serviço público.</p>
+
+    <p>Numa interrupção da gravidez é especialmente grave.</p>
+
+    <p>Porque estamos perante uma decisão íntima, temporalmente limitada e muitas vezes emocionalmente difícil.</p>
+
+    <p>A última coisa de que uma mulher necessita nesse momento é transformar-se numa especialista em arquitectura administrativa do SNS.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A dignidade também está no percurso</h2>
+
+    <p>Garantir IVG não significa apenas conseguir que, algures no final do processo, o procedimento aconteça.</p>
+
+    <p>Importa o modo como acontece.</p>
+
+    <p>Informação clara.</p>
+
+    <p>Privacidade.</p>
+
+    <p>Rapidez.</p>
+
+    <p>Proximidade razoável.</p>
+
+    <p>Continuidade clínica.</p>
+
+    <p>Ausência de julgamento moral.</p>
+
+    <p>Previsibilidade.</p>
+
+    <p>Segurança.</p>
+
+    <p>A ERS recebeu 37 reclamações relativas a constrangimentos no acesso até 15 de Maio de 2025 e já desencadeou actuação regulatória e sancionatória, incluindo dezenas de instruções e processos de contra-ordenação.</p>
+
+    <p>Não é um apocalipse.</p>
+
+    <p>Mas também não é ruído administrativo irrelevante.</p>
+
+    <p>A OMS, na sua <em>Abortion care guideline</em>, trata a qualidade do acesso como um problema simultaneamente clínico, organizacional, jurídico e de prestação de serviços. A existência formal de um procedimento não esgota, portanto, a questão da qualidade do cuidado.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A consciência pertence ao médico. A decisão pertence à mulher.</h2>
+
+    <p>Esta é provavelmente a fronteira que uma sociedade pluralista precisa de preservar.</p>
+
+    <p>Não devemos obrigar um médico a abandonar uma convicção moral profunda para conservar o emprego.</p>
+
+    <p>Mas também não podemos pedir a uma mulher que abdique de um direito legal porque encontrou naquele hospital um número insuficiente de profissionais disponíveis para o assegurar.</p>
+
+    <p>As duas liberdades podem coexistir.</p>
+
+    <p>Mas apenas se alguém fizer o trabalho menos emocionante e mais necessário:</p>
+
+    <p><strong>planear.</strong></p>
+
+    <p>Saber quantos profissionais estão disponíveis.</p>
+
+    <p>Contratar.</p>
+
+    <p>Distribuir equipas.</p>
+
+    <p>Assegurar substituições.</p>
+
+    <p>Criar circuitos simples.</p>
+
+    <p>Fiscalizar prazos.</p>
+
+    <p>Manter informação actualizada.</p>
+
+    <p>Antecipar férias e saídas.</p>
+
+    <p>Garantir redundância.</p>
+
+    <p>Aquilo a que normalmente chamamos gestão.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quando a gestão falha, aparecem debates morais que não precisavam de existir</h2>
+
+    <p>É bastante conveniente transformar todos estes episódios numa guerra cultural.</p>
+
+    <p>Pró-aborto.</p>
+
+    <p>Anti-aborto.</p>
+
+    <p>Religião.</p>
+
+    <p>Laicidade.</p>
+
+    <p>Esquerda.</p>
+
+    <p>Direita.</p>
+
+    <p>Enquanto toda a gente combate nas trincheiras ideológicas, ninguém pergunta por que razão uma instituição pública não planeou recursos suficientes para cumprir aquilo que a lei lhe exige.</p>
+
+    <p>Talvez a pergunta mais perigosa seja precisamente a mais banal:</p>
+
+    <p><strong>quem era responsável por garantir que havia equipa?</strong></p>
+
+    <p>Porque aí desaparece a metafísica.</p>
+
+    <p>E começa a responsabilidade.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Um Estado civilizado não proclama direitos. Garante-os.</h2>
+
+    <p>Há uma tendência portuguesa para confundir publicação legislativa com resolução de problemas.</p>
+
+    <p>Publica-se uma lei.</p>
+
+    <p>Missão cumprida.</p>
+
+    <p>Cria-se um direito.</p>
+
+    <p>Missão cumprida.</p>
+
+    <p>Faz-se uma portaria.</p>
+
+    <p>Missão cumprida.</p>
+
+    <p>Abre-se um portal.</p>
+
+    <p>Missão cumprida.</p>
+
+    <p>Não.</p>
+
+    <p>A civilização começa depois da publicação no Diário da República.</p>
+
+    <p>Começa quando uma cidadã chega a uma instituição e aquilo que o país prometeu na lei existe efectivamente diante dela.</p>
+
+    <p>Um direito que só funciona quando há pessoal disponível não é completamente um direito.</p>
+
+    <p>É uma promessa operacional.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O retrocesso não precisa de fanáticos</h2>
+
+    <p>Talvez seja esta a conclusão mais desconfortável.</p>
+
+    <p>Não precisamos necessariamente de novas seitas religiosas.</p>
+
+    <p>Não precisamos de médicos conspirando colectivamente contra a lei.</p>
+
+    <p>Não precisamos sequer de um Governo decidido a recuar vinte anos.</p>
+
+    <p>Basta:</p>
+
+    <p>falta de planeamento;</p>
+
+    <p>escassez de profissionais;</p>
+
+    <p>informação deficiente;</p>
+
+    <p>procedimentos mal desenhados;</p>
+
+    <p>falta de dados;</p>
+
+    <p>responsabilidades dispersas;</p>
+
+    <p>objectores sem substituição suficiente;</p>
+
+    <p>e Administração habituada a reagir depois do problema aparecer.</p>
+
+    <p>Misture-se tudo.</p>
+
+    <p>Acrescente-se tempo.</p>
+
+    <p>O resultado pode parecer, para quem necessita do serviço, exactamente aquilo que chamamos:</p>
+
+    <p><strong>retrocesso civilizacional.</strong></p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Porque os direitos também morrem de negligência</h2>
+
+    <p>Nem todos os direitos desaparecem quando alguém os revoga.</p>
+
+    <p>Alguns desaparecem lentamente.</p>
+
+    <p>Primeiro tornam-se difíceis.</p>
+
+    <p>Depois raros.</p>
+
+    <p>Depois distantes.</p>
+
+    <p>Depois excepcionais.</p>
+
+    <p>Finalmente alguém pergunta porque continuamos a mantê-los na lei se quase ninguém consegue exercê-los.</p>
+
+    <p>É assim que uma sociedade deve olhar para estes sinais.</p>
+
+    <p>Não com histeria.</p>
+
+    <p>Mas também não com complacência.</p>
+
+    <p>A objecção de consciência é um direito.</p>
+
+    <p>A interrupção voluntária da gravidez também.</p>
+
+    <p>Nenhum precisa de destruir o outro.</p>
+
+    <p>Aquilo que não é aceitável é usar a primeira, a falta de profissionais ou a desorganização administrativa como explicação permanente para o enfraquecimento prático da segunda.</p>
+
+    <p>Porque uma sociedade verdadeiramente civilizada não mede os seus direitos pelo número de vezes que aparecem escritos na legislação.</p>
+
+    <p>Mede-os pela experiência de quem precisa deles.</p>
+
+    <p>E nesse teste não basta dizer à mulher:</p>
+
+    <p><strong>«O aborto continua legal.»</strong></p>
+
+    <p>É preciso conseguir acrescentar:</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        «E quando precisar, o sistema estará lá.»
+      </p>
+    </div>
+
+    <p>Quando o Estado já não consegue garantir esta segunda frase, talvez o problema não seja ainda uma regressão legislativa.</p>
+
+    <p>Mas começa perigosamente a parecer uma <strong>regressão pela incompetência</strong>.</p>
+
+    <p>E para quem está do outro lado da porta do hospital, a diferença pode ser assustadoramente pequena.</p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">DADOS ESSENCIAIS</h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>Em Portugal, a IVG por opção da mulher pode ser realizada até às 10 semanas de gestação, em estabelecimento oficial ou oficialmente reconhecido.</li>
+        <li>Em 2024 foram realizadas 17.807 IVG por opção da mulher nas primeiras 10 semanas, mais 5,5% do que em 2023.</li>
+        <li>Em 2024, o tempo médio entre o pedido de marcação e a consulta prévia foi de 2,8 dias e o intervalo médio entre consulta prévia e realização da IVG foi de 6,7 dias.</li>
+        <li>Até 15 de Maio de 2025, a ERS tinha recebido 37 reclamações relativas a constrangimentos no acesso e a monitorização originou 78 instruções e três processos de contra-ordenação.</li>
+        <li>A ERS concluiu que não existe um registo completo e actualizado de todos os profissionais objectores de consciência nos cuidados hospitalares e primários, informação que também não estava disponível na Ordem dos Médicos.</li>
+        <li>A Assembleia Parlamentar do Conselho da Europa afirma que a objecção de consciência, quando permitida, não deve constituir obstáculo ao acesso efectivo e atempado a aborto legal.</li>
+        <li>Revisões internacionais da literatura encontram evidência de que objecção de consciência mal regulada pode aumentar barreiras, tempos de espera e desigualdades geográficas no acesso.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        «Retrocesso civilizacional» e «regressão pela incompetência» são formulações opinativas utilizadas para descrever a degradação prática de acesso a um direito legalmente reconhecido. Não significam que Portugal tenha revogado ou suspendido nacionalmente o regime jurídico da interrupção voluntária da gravidez.
+      </p>
+
+      <p style="text-align:left;">
+        O caso do Hospital Garcia de Orta é apresentado como uma suspensão temporária da realização interna do procedimento, acompanhada por encaminhamento para uma entidade oficialmente reconhecida. A existência desse encaminhamento é juridicamente e clinicamente relevante e impede que se descreva o episódio como eliminação absoluta do acesso. A crítica dirige-se à perda de capacidade interna de uma unidade pública e às causas organizativas que a produziram.
+      </p>
+
+      <p style="text-align:left;">
+        Não existe actualmente base factual suficiente para afirmar que o número nacional de médicos objectores esteja a «crescer assustadoramente». A própria ERS concluiu que não existe um registo completo e actualizado dos profissionais objectores. Por isso, esta crónica critica a ausência de informação e a capacidade de planeamento, não atribui uma tendência quantitativa que os dados disponíveis não permitem demonstrar.
+      </p>
+
+      <p style="text-align:left;">
+        A objecção de consciência é tratada aqui como um direito individual legítimo. O argumento não é obrigar profissionais objectores a praticar actos contrários às suas convicções, mas exigir que a organização do sistema garanta equipas, encaminhamento e acesso atempado. Esta posição é compatível com a abordagem do Conselho da Europa, que procura equilibrar consciência individual e acesso efectivo a cuidados legalmente disponíveis.
+      </p>
+
+      <p style="text-align:left;">
+        A crónica também rejeita generalizações sobre religião ou motivações pessoais dos profissionais. Um médico pode objectar por razões religiosas, filosóficas ou éticas; sem evidência individual, não é legítimo atribuir-lhe pertença a «seitas», fanatismo ou motivação política.
+      </p>
+
+      <p style="text-align:left;">
+        Os dados nacionais mostram simultaneamente duas realidades: o sistema realizou 17.807 IVG em 2024 e os tempos médios nacionais permaneceram dentro dos limites legais, mas a ERS identificou constrangimentos, incumprimentos locais e necessidade de intervenção regulatória. Uma crítica séria deve reconhecer ambas.
+      </p>
+
+      <p style="text-align:left; margin-bottom:0;">
+        As referências internacionais da OMS, Conselho da Europa e literatura científica são usadas como enquadramento comparativo sobre qualidade do acesso, objecção de consciência e barreiras à prestação de cuidados. Não substituem a legislação portuguesa nem permitem inferir automaticamente que problemas documentados noutros países ocorram da mesma forma em Portugal.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+
+    <ul style="padding-left:22px;">
+      <li>
+        <a href="https://www.ers.pt/pt/atividade/supervisao/selecionar/informacao-de-monitorizacao/informacoes/acesso-a-interrupcao-voluntaria-da-gravidez-no-servico-nacional-de-saude-entre-2022-e-2024/"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Entidade Reguladora da Saúde — Acesso à Interrupção Voluntária da Gravidez no SNS entre 2022 e 2024
+        </a>
+      </li>
+      <li>
+        <a href="https://ers.pt/pt/utentes/perguntas-frequentes/faq/interrupcao-voluntaria-da-gravidez-ivg-por-opcao-da-mulher/"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Entidade Reguladora da Saúde — Interrupção Voluntária da Gravidez por opção da mulher, actualização de Março de 2026
+        </a>
+      </li>
+      <li>
+        <a href="https://www.ers.pt/pt/comunicacao/destaques/lista-de-destaques/acesso-a-interrupcao-voluntaria-da-gravidez-ivg-no-sns/"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Entidade Reguladora da Saúde — Estudo sobre acesso à IVG e objectores de consciência no SNS
+        </a>
+      </li>
+      <li>
+        <a href="https://www.sns.min-saude.pt/urgencia-centralizada-de-ambito-regional-de-ginecologia-e-obstetricia-da-peninsula-de-setubal-arranca-a-15-de-abril/"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Direcção Executiva do SNS — Organização da actividade de Ginecologia e Obstetrícia na Península de Setúbal, 2026
+        </a>
+      </li>
+      <li>
+        <a href="https://rr.pt/noticia/amp/pais/2026/08/16/utentes-dizem-que-ivg-foram-descontinuadas-no-garcia-de-orta-hospital-diz-que-suspensao-e-temporaria/482021/"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Renascença — Hospital Garcia de Orta confirma suspensão temporária da realização interna de IVG, Agosto de 2026
+        </a>
+      </li>
+      <li>
+        <a href="https://www.who.int/publications/i/item/9789240104204"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          World Health Organization — Abortion care guideline, 2nd edition, 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://www.who.int/news/item/09-03-2022-access-to-safe-abortion-critical-for-health-of-women-and-girls"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          World Health Organization — Access to safe abortion critical for health of women and girls
+        </a>
+      </li>
+      <li>
+        <a href="https://pace.coe.int/en/files/30069/html"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Parliamentary Assembly of the Council of Europe — Resolution 2439 (2022), Access to abortion in Europe
+        </a>
+      </li>
+      <li>
+        <a href="https://pace.coe.int/files/34509/html"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Parliamentary Assembly of the Council of Europe — Resolution 2614 (2025), sexual and reproductive health and rights
+        </a>
+      </li>
+      <li>
+        <a href="https://pubmed.ncbi.nlm.nih.gov/36740467/"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Health Policy — The Impact of 'conscientious objection' on abortion-related outcomes: a synthesis of legal and health evidence, 2023
+        </a>
+      </li>
+      <li>
+        <a href="https://pubmed.ncbi.nlm.nih.gov/35129083/"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Global Public Health — Impact of conscientious objection by health professionals on women's access to abortion: literature review, 2022
+        </a>
+      </li>
+      <li>
+        <a href="https://pubmed.ncbi.nlm.nih.gov/28630541/"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Health and Human Rights — Regulation of Conscientious Objection to Abortion: international comparative study including Portugal
+        </a>
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

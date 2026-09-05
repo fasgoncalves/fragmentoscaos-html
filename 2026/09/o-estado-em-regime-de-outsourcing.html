@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Estado em Regime de Outsourcing</title>
+<meta name="description" content="O Estado em Regime de Outsourcing">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Estado em Regime de Outsourcing</h1>
+      <p class="meta">Publicado em 2026-09-04 17:24:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000d22481f4b696c6bb8e155cc2_75f444dd.jpg" alt=""></figure>
+      <div class="post-content">
+        <!--
+FC-CHRONIC-NEWS CANONICAL 1.0
+Título: O Estado em Regime de Outsourcing
+Subtítulo: Quando a consultoria deixa de ajudar o Estado e começa a substituir o Estado
+Autor: Francisco Gonçalves
+Data: 9 de Agosto de 2026
+Slug: o-estado-em-regime-de-outsourcing
+Estado editorial sugerido: draft
+Imagem Schema.org: substituir INSERIR_URL_DA_IMAGEM_AQUI
+-->
+
+<!-- SCHEMA.ORG INVISÍVEL -->
+<div itemscope itemtype="https://schema.org/NewsArticle" style="display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;">
+  <meta itemprop="headline" content="O Estado em Regime de Outsourcing">
+  <meta itemprop="alternativeHeadline" content="Quando a consultoria deixa de ajudar o Estado e começa a substituir o Estado">
+  <meta itemprop="datePublished" content="2026-08-09T17:24:00+01:00">
+  <meta itemprop="dateModified" content="2026-08-09T17:24:00+01:00">
+  <meta itemprop="description" content="Uma crónica sobre o paradoxo das grandes consultoras internacionais: quando a contratação externa deixa de complementar competências públicas e começa a substituir a inteligência, a memória e a capacidade institucional do Estado.">
+  <meta itemprop="inLanguage" content="pt-PT">
+  <meta itemprop="image" content="INSERIR_URL_DA_IMAGEM_AQUI">
+  <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+    <meta itemprop="name" content="Francisco Gonçalves">
+  </span>
+  <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+    <meta itemprop="name" content="Fragmentos do Caos">
+    <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+      <meta itemprop="url" content="INSERIR_URL_DO_LOGOTIPO_AQUI">
+    </span>
+  </span>
+</div>
+
+<!-- FC-CHRONIC-NEWS CANONICAL CONTAINER 1 -->
+<div data-fc-format="fc-chronic-news" data-fc-version="1.0"
+     style="max-width:980px;margin:0 auto;background:#0a0a0a;color:#e7e7e7;font-family:Georgia,'Times New Roman',serif;padding:10px;box-sizing:border-box;">
+  <article style="background:#0a0a0a;border:1px solid #282828;padding:clamp(18px,4vw,42px);box-sizing:border-box;">
+
+    <header style="text-align:center;margin:0 0 34px 0;">
+      <div style="display:inline-block;margin:0 0 14px 0;padding:7px 13px;border:1px solid #e0b44f;color:#e0b44f;font-family:Arial,sans-serif;font-size:.78em;letter-spacing:.16em;text-transform:uppercase;">
+        FC · Chronic · News
+      </div>
+      <h1 style="margin:0;color:#e0b44f;font-size:clamp(2em,6vw,3.6em);line-height:1.08;font-weight:700;">O Estado em Regime de Outsourcing</h1>
+      <p style="margin:16px auto 0 auto;max-width:800px;color:#d4d4d4;font-size:clamp(1.12em,2.4vw,1.45em);line-height:1.5;font-style:italic;">
+        Quando a consultoria deixa de ajudar o Estado e começa a substituir o Estado
+      </p>
+      <p style="margin:18px 0 0 0;color:#929292;font-family:Arial,sans-serif;font-size:.88em;">
+        Crónica · Estado · Consultoria · Democracia · Tecnologia · 9 de Agosto de 2026
+      </p>
+    </header>
+
+    <div style="margin:28px 0;padding:20px 22px;background:#141414;border-top:2px solid #e0b44f;border-bottom:1px solid #333;">
+      <div style="color:#e0b44f;font-family:Arial,sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">
+        BOX DE FACTOS
+      </div>
+      <ul style="margin:0;padding-left:22px;color:#dedede;line-height:1.8;">
+        <li><strong>Género:</strong> crónica de opinião, análise institucional e sátira.</li>
+        <li><strong>Tema:</strong> consultoria internacional, outsourcing, capacidade do Estado e memória institucional.</li>
+        <li><strong>Tese:</strong> consultoria externa pode acrescentar capacidade; dependência estrutural pode substituir e enfraquecer competências internas.</li>
+        <li><strong>Âmbito:</strong> fenómeno internacional, não acusação dirigida a uma empresa ou contrato específico.</li>
+      </ul>
+    </div>
+
+    <blockquote style="margin:30px 0;padding:22px 24px;border-left:5px solid #e0b44f;background:#151515;color:#f3e3af;font-size:1.18em;line-height:1.85;font-style:italic;">
+      "Uma boa consultoria deveria tornar-se progressivamente menos necessária."
+    </blockquote>
+
+    <!-- FC-CHRONIC-NEWS CANONICAL CONTAINER 2 -->
+    <div data-fc-section="articleBody" itemprop="articleBody" style="margin:0;padding:0;">
+      <p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Há negócios extraordinários.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E depois há o negócio de vender ao Estado a capacidade que o próprio Estado decidiu deixar de possuir.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É difícil imaginar modelo empresarial mais elegante.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Primeiro, as instituições públicas perdem técnicos, conhecimento acumulado, autonomia, memória organizacional e capacidade para planear a longo prazo.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Depois descobrem, com genuína surpresa, que já não conseguem executar determinadas tarefas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Convocam então uma consultora internacional.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">A consultora entra.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Estuda.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Analisa.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mapeia.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Redesenha.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Produz apresentações.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Cria um diagnóstico.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Identifica precisamente aquilo que todos já suspeitavam:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">o Estado perdeu capacidade interna.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E apresenta a solução.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mais consultoria.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É quase perfeito.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não existe nada de intrinsecamente errado na consultoria.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Seria absurdo defender que um Estado moderno deveria possuir internamente todas as competências imagináveis.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nenhuma organização racional funciona assim.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Há momentos em que é perfeitamente sensato contratar especialistas externos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Para uma auditoria independente.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma migração tecnológica complexa.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma transformação temporária.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma competência extremamente especializada.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma avaliação externa.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Um projecto que exige capacidade adicional durante alguns meses.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O problema começa quando aquilo que deveria ser excepcional se transforma em modelo de funcionamento.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quando o Estado deixa de contratar consultores para executar tarefas específicas e começa a contratá-los para responder a perguntas fundamentais:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Como devemos organizar-nos?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Como devemos funcionar?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que sistemas devemos ter?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Como devemos gerir os nossos dados?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que processos devemos alterar?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Como devemos tomar decisões?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nesse momento já não estamos simplesmente perante outsourcing.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>Estamos perante uma espécie de terceirização da inteligência institucional.</strong></p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma empresa pode contratar alguém para pintar o edifício.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É perfeitamente normal.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas se precisar de contratar uma consultora todos os anos para lhe explicar onde ficam as portas, talvez o problema já não seja a pintura.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E é precisamente aqui que o Estado moderno começou, em muitos países, a construir uma relação profundamente paradoxal com as grandes consultoras internacionais.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quanto menos capacidade possui internamente, mais precisa delas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quanto mais precisa delas, menos incentivos possui para reconstruir essa capacidade.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E quanto menos capacidade reconstrói, maior será a próxima contratação.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O círculo fecha-se.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>A fragilidade institucional transforma-se em mercado.</strong></p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É um mercado magnífico, aliás.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Um cliente que sabe exactamente aquilo de que precisa possui enorme poder negocial.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Um cliente que não sabe aquilo de que precisa necessita primeiro de pagar a alguém para descobrir.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Depois paga para desenhar a solução.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Depois paga para implementar a solução.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Depois paga para acompanhar a implementação.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Finalmente paga para avaliar se aquilo que foi implementado corresponde àquilo que a consultora anteriormente recomendara implementar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Poucos sectores económicos conseguem atingir semelhante perfeição circular.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É quase energia renovável.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>A matéria-prima é a própria dependência.</strong></p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">As grandes consultoras compreenderam há muito aquilo que muitas administrações públicas ainda não perceberam:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #e0b44f;background:#151515;color:#f5e7ba;font-size:1.12em;line-height:1.85;">conhecimento institucional é poder.</blockquote>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quem conhece os sistemas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quem domina os dados.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quem compreende os processos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quem conhece os contratos anteriores.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quem sabe porque determinada decisão foi tomada.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quem possui equipas capazes de navegar dezenas de sistemas, regulamentos e entidades diferentes.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Essa organização possui algo extremamente valioso:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">memória.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E as instituições públicas perderam demasiada memória.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Funcionários reformam-se.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Especialistas saem.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Carreiras técnicas tornam-se pouco atractivas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Salários ficam longe do mercado.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Equipas são reorganizadas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Direcções mudam.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ministérios fundem-se.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Serviços desaparecem.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Novas estruturas aparecem com siglas diferentes.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E no meio desta permanente engenharia administrativa vai desaparecendo uma coisa que raramente aparece no organograma:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">aquilo que as pessoas sabem.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">As grandes consultoras, pelo contrário, vivem precisamente da acumulação desse conhecimento.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Têm metodologias.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Bases de experiência.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Equipas internacionais.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Especialistas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Modelos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Benchmarking.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ferramentas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Conhecimento sectorial.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E sobretudo conseguem pagar salários capazes de atrair pessoas que o Estado dificilmente consegue contratar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não há conspiração aqui.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Há mercado.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O problema não está em as consultoras terem construído capacidade.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O problema está em o Estado ter permitido que a sua própria capacidade se degradasse ao ponto de depender delas para funções cada vez mais centrais.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Existe também uma assimetria extraordinária.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quando uma organização sabe exactamente aquilo que pretende comprar, contrata um fornecedor.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quando não sabe, contrata alguém para lhe dizer aquilo que deve comprar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas se esse alguém também estiver interessado em vender aquilo que recomenda, entra-se num território conceptualmente desconfortável.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É como entrar numa oficina sem saber nada sobre automóveis e perguntar ao mecânico:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">— O que acha que devo substituir?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É possível que o mecânico seja absolutamente honesto.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Provavelmente será.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas a estrutura da relação já não é equilibrada.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma das partes conhece o problema.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Conhece as soluções.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Conhece os preços.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Conhece as alternativas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E conhece aquilo que o cliente desconhece.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Chama-se assimetria de informação.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nos manuais de economia costuma aparecer como problema.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nas grandes organizações aparece frequentemente como contrato.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Depois chega o PowerPoint.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Talvez uma das maiores invenções da história da consultoria.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O PowerPoint possui uma capacidade quase alquímica:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">transforma o óbvio em estratégia.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma organização descobre que os departamentos não comunicam entre si.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Depois de algumas semanas de análise recebe um slide:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">"Promover uma cultura transversal de colaboração interdepartamental."</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Excelente.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ninguém alguma vez tinha pensado nisso.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Segue-se outro:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">"Colocar o cidadão no centro."</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É sempre tranquilizador descobrir onde estava o cidadão.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Frequentemente encontrava-se perdido algures entre o slide 37 e o anexo metodológico.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas seria injusto reduzir a consultoria a caricatura.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Muitas consultoras possuem profissionais extraordinariamente competentes.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Alguns dos melhores técnicos do mercado trabalham nelas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Conseguem mobilizar rapidamente equipas multidisciplinares.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Conhecem experiências internacionais.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Transportam conhecimento entre sectores.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Identificam problemas que organizações excessivamente habituadas a si próprias já deixaram de ver.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Tudo isso possui enorme valor.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O paradoxo não está na qualidade da consultoria.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Está na relação criada quando o cliente deixa de aprender com ela.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Porque uma boa consultoria deveria possuir uma característica curiosa:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #e0b44f;background:#151515;color:#f5e7ba;font-size:1.12em;line-height:1.85;">deveria tornar-se progressivamente menos necessária.</blockquote>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Se uma equipa externa entra numa organização, resolve um problema, transfere conhecimento, forma pessoas, documenta processos e reforça competências internas, deixou valor.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Se cinco anos depois a organização precisa da mesma consultora para resolver essencialmente o mesmo problema, alguma coisa falhou.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Talvez não tenha falhado o contrato.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Talvez tenha sido precisamente esse o problema.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>O contrato terminou.</strong></p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>A dependência ficou.</strong></p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Existe uma expressão bonita no mundo empresarial:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">"transferência de conhecimento".</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É uma expressão particularmente apreciada em propostas comerciais.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Aparece frequentemente próxima de palavras como:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">capacitação,</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">empowerment,</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">governance,</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">framework,</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">roadmap,</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">knowledge transfer.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Depois o projecto termina.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">A equipa externa sai.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Os consultores mais experientes regressam à sede.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Alguns documentos ficam num SharePoint.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Três pessoas que acompanharam o projecto mudam de serviço.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma reforma-se.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Outra vai trabalhar precisamente para uma consultora.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E dois anos depois alguém pergunta:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">— Quem sabe como isto funciona?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Silêncio.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Abre-se concurso.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Há outra ironia fascinante.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O Estado pode gastar milhões numa consultora porque não consegue contratar vinte especialistas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas talvez pudesse contratar esses vinte especialistas durante vários anos pelo mesmo dinheiro.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Só que existe um problema administrativo.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Contratar trabalhadores aumenta quadros.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Implica carreiras.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Responsabilidade permanente.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Concursos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Remunerações.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Gestão.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Formação.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Comprar consultoria chama-se aquisição de serviços.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É orçamento.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Tem início.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Tem fim.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Produz um contrato.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Politicamente é muito mais limpo.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O conhecimento alugado possui uma enorme vantagem contabilística:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">não exige compromisso de longo prazo.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Só exige contratos de longo prazo repetidamente renovados.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Chegámos assim a uma das grandes ironias da administração contemporânea.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Durante décadas disseram-nos que o Estado deveria comportar-se mais como uma empresa.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Reduzir estruturas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Externalizar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Flexibilizar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Concentrar-se no core business.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Comprar ao mercado aquilo que o mercado faz melhor.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Tudo pareceu muito moderno.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Até descobrirmos que o core business do Estado talvez inclua coisas como:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">saber governar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Saber comprar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Saber fiscalizar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Saber gerir projectos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Saber construir sistemas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Saber analisar dados.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Saber avaliar políticas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Saber preservar conhecimento.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Porque um Estado que externaliza tudo pode finalmente tornar-se extremamente eficiente numa única actividade:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">contratar empresas que fazem aquilo que anteriormente o Estado sabia fazer.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E não estamos apenas perante um problema económico.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>É também democrático.</strong></p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma consultora privada não responde perante os cidadãos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não se apresenta a eleições.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não pode ser substituída pelo eleitorado.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não está sujeita ao mesmo nível de escrutínio político que um ministério.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Naturalmente responde ao contrato e à lei.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas a responsabilidade última pelas decisões públicas continua a pertencer ao Estado.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ou deveria.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Por isso é essencial distinguir duas coisas:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">consultoria técnica e decisão política.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma consultora pode construir cenários.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Pode analisar dados.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Pode propor opções.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Pode identificar riscos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas não deve transformar-se silenciosamente na entidade que define aquilo que o Estado deve querer.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Porque nesse momento aparece uma pergunta desconfortável:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #e0b44f;background:#151515;color:#f5e7ba;font-size:1.12em;line-height:1.85;">quem governa?</blockquote>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Há ainda outra questão raramente discutida.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">As grandes consultoras trabalham frequentemente para múltiplos sectores simultaneamente.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Governos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Bancos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Empresas tecnológicas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Seguradoras.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Energia.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Saúde.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Defesa.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Telecomunicações.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Infraestruturas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Possuem uma visão transversal extraordinária da economia.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Isso pode representar enorme vantagem intelectual.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas significa também que empresas privadas podem acumular mais conhecimento operacional sobre o funcionamento do Estado do que determinadas estruturas do próprio Estado.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É uma realidade nova.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E merece reflexão.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Porque soberania no século XXI não é apenas possuir território, exército e bandeira.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É também possuir capacidade técnica.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Dados.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Arquitectura digital.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Conhecimento.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Competência.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Memória institucional.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Um país que não consegue compreender tecnicamente os sistemas que utiliza começa lentamente a perder soberania sobre eles.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Um ministério que não consegue auditar a tecnologia que compra torna-se dependente de quem a fornece.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma administração incapaz de avaliar uma proposta técnica torna-se dependente de quem a escreve.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E uma organização incapaz de preservar conhecimento fica eternamente condenada a pagar pela recuperação daquilo que já deveria saber.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não é preciso qualquer teoria conspirativa.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Basta uma folha de cálculo.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Talvez a pergunta que deveríamos fazer depois de cada grande contrato público de consultoria não seja:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #e0b44f;background:#151515;color:#f5e7ba;font-size:1.12em;line-height:1.85;">Quanto custou?</blockquote>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Essa é importante.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas existe outra talvez ainda mais importante:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #e0b44f;background:#151515;color:#f5e7ba;font-size:1.12em;line-height:1.85;">O que ficará cá dentro quando eles saírem?</blockquote>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que técnicos foram formados?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que competências ficaram?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que documentação existe?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quem consegue continuar o trabalho?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O Estado tornou-se mais autónomo?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ou apenas resolveu mais uma emergência?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Porque existe enorme diferença entre pagar milhões para adquirir conhecimento e pagar milhões para alugá-lo.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O verdadeiro sucesso de uma consultora deveria poder ser medido por uma coisa aparentemente paradoxal:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">quanto reduziu a necessidade futura do cliente de voltar a contratá-la para o mesmo problema.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não é exactamente o modelo comercial mais romântico.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nenhuma empresa sonha com clientes que deixam de precisar dela.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas é precisamente por isso que o Estado necessita de ser um cliente particularmente competente.</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #e0b44f;background:#151515;color:#f5e7ba;font-size:1.12em;line-height:1.85;">A função do fornecedor é vender.</blockquote>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #e0b44f;background:#151515;color:#f5e7ba;font-size:1.12em;line-height:1.85;">A função do Estado é saber comprar.</blockquote>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não podemos exigir à consultora que proteja o Estado da dependência que o próprio Estado não sabe evitar.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">No fundo, a questão não é Deloitte, PwC, EY, KPMG, McKinsey, BCG, Accenture ou qualquer outro nome suficientemente internacional para ficar elegante numa capa de relatório.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">As empresas fazem aquilo que empresas fazem.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Encontram mercado.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Prestam serviços.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ganham dinheiro.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">A pergunta interessante é outra:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">por que razão o Estado continua a produzir tanto mercado para aquilo que deveria constituir parte da sua própria inteligência?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Talvez porque reconstruir competência demora anos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Consultoria chega segunda-feira.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Talvez porque criar boas carreiras técnicas é politicamente invisível.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Um contrato produz anúncio.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Talvez porque formar equipas internas exige liderança.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Comprar uma equipa externa exige apenas orçamento.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Talvez porque governos vivem em ciclos eleitorais.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>Capacidade institucional vive em décadas.</strong></p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E assim chegamos ao grande paradoxo.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O Estado procura consultoras porque necessita de inteligência externa.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas se depender demasiado dessa inteligência, enfraquece a sua inteligência interna.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Depois precisa ainda mais da inteligência externa.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É um sistema admiravelmente estável.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Para as consultoras.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Menos para o Estado.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Um dia talvez percebamos que modernizar a administração pública não significa apenas comprar tecnologia, metodologias e apresentações.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Significa reconstruir conhecimento dentro dela.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Criar carreiras capazes de atrair especialistas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Valorizar técnicos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Preservar memória.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Premiar competência.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Criar estruturas que aprendem.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E sobretudo garantir que cada contratação externa deixa o Estado mais forte do que encontrou.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Caso contrário continuaremos a assistir a um espectáculo curioso:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">o Estado sentado à mesa de uma grande consultora, pagando uma soma considerável para descobrir como voltar a ser Estado.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O consultor abrirá o computador.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Apresentará o primeiro slide.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">No centro estará escrita uma palavra:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #e0b44f;background:#151515;color:#f5e7ba;font-size:1.12em;line-height:1.85;">Autonomia.</blockquote>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E por baixo, discretamente:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #e0b44f;background:#151515;color:#f5e7ba;font-size:1.12em;line-height:1.85;">Fase II sujeita a contratação adicional.</blockquote>
+
+      <div style="margin:42px 0 0 0;padding:24px;background:#121212;border:1px solid #333;border-left:5px solid #e0b44f;">
+        <h2 style="margin:0 0 14px 0;color:#e0b44f;font-size:1.45em;line-height:1.3;">Nota Editorial</h2>
+        <p style="margin:0 0 14px 0;color:#dedede;font-size:1em;line-height:1.85;">Esta crónica é um ensaio de opinião e utiliza ironia, hipérbole e caricatura para discutir um problema institucional real:
+a relação entre capacidade interna do Estado e recurso continuado a consultoria externa. Não imputa qualquer ilegalidade,
+conflito de interesses ou conduta imprópria às empresas mencionadas. Deloitte, PwC, EY, KPMG, McKinsey, BCG e Accenture são
+referidas apenas como exemplos reconhecíveis de grandes grupos internacionais de consultoria e serviços profissionais.
+
+A literatura e a experiência comparada mostram um quadro mais complexo do que a simples oposição entre "Estado" e "consultoras".
+A contratação externa pode ser racional quando fornece especialização rara, independência, capacidade temporária ou conhecimento
+que não faz sentido manter permanentemente dentro da administração. O risco surge quando funções recorrentes de análise, arquitectura,
+gestão, aconselhamento ou conhecimento institucional são repetidamente externalizadas sem mecanismos eficazes de transferência de
+conhecimento e reforço das equipas públicas.
+
+A questão editorial central é, por isso, menos "quanto se gasta em consultoria?" e mais "que capacidade permanece no Estado depois
+de terminar o contrato?". É nesse ponto que eficiência económica, soberania técnica, memória institucional e responsabilidade
+democrática se encontram.</p>
+      </div>
+
+      <div style="margin:34px 0 0 0;padding:22px;background:#101010;border:1px solid #2c2c2c;">
+        <h2 style="margin:0 0 16px 0;color:#e0b44f;font-size:1.4em;">Referências e enquadramento internacional</h2>
+        <ol style="margin:0;padding-left:24px;color:#ddd;font-size:.98em;line-height:1.75;">
+          <li style="margin:0 0 14px 0;"><a href="https://www.oecd.org/en/publications/2025/06/government-at-a-glance-2025_70e14c6c/full-report/production-costs-and-outsourcing_af2e6a54.html" target="_blank" rel="noopener noreferrer" style="color:#e0b44f;text-decoration:none;">OECD — Government at a Glance 2025: "Production costs and outsourcing". A OCDE enquadra o outsourcing como uma componente importante dos custos de produção dos governos e distingue bens e serviços usados pelo Estado dos serviços financiados pelo Estado e prestados por entidades não governamentais.</a></li>
+<li style="margin:0 0 14px 0;"><a href="https://www.nao.org.uk/insights/governments-use-of-external-consultants/" target="_blank" rel="noopener noreferrer" style="color:#e0b44f;text-decoration:none;">National Audit Office (Reino Unido) — "Government's use of external consultants" (2025). O NAO assinala dificuldades em medir a despesa e em identificar funções para as quais consultores são contratados repetidamente, incluindo situações em que poderia existir vantagem em contratar ou promover pessoal permanente.</a></li>
+<li style="margin:0 0 14px 0;"><a href="https://academic.oup.com/policyandsociety/article/32/3/241/6420753" target="_blank" rel="noopener noreferrer" style="color:#e0b44f;text-decoration:none;">Michael Howlett &amp; Andrea Migone — "The role of external consultants in contemporary policy advisory systems", Policy and Society, vol. 32, n.º 3, 2013, pp. 241–254. O artigo analisa a externalização do aconselhamento público e a discussão académica em torno de uma possível "consultocracia".</a></li>
+<li style="margin:0 0 14px 0;"><a href="https://academic.oup.com/oxrep/article/36/Supplement_1/S256/5899016" target="_blank" rel="noopener noreferrer" style="color:#e0b44f;text-decoration:none;">Mariana Mazzucato &amp; Rainer Kattel — "COVID-19 and public-sector capacity", Oxford Review of Economic Policy, vol. 36, Supplement 1, 2020, pp. S256–S269. Os autores defendem a importância de investimento acumulado nas capacidades dinâmicas do sector público: aprender, adaptar, governar dados e gerir sistemas complexos.</a></li>
+<li style="margin:0 0 14px 0;"><a href="https://www.cambridge.org/core/journals/american-political-science-review/article/outsourcing-bureaucracy-to-evade-accountability-how-public-servants-build-shadow-state-capacity/CF5F45483CA5AFC333BAFB562E5E2DFF" target="_blank" rel="noopener noreferrer" style="color:#e0b44f;text-decoration:none;">Jessica A. J. Rich — "Outsourcing Bureaucracy to Evade Accountability: How Public Servants Build Shadow State Capacity", American Political Science Review, vol. 117, n.º 3, 2023, pp. 835–850. O estudo mostra como o outsourcing pode criar capacidade eficaz no curto prazo e, paradoxalmente, limitar a capacidade do Estado no longo prazo.</a></li>
+<li style="margin:0 0 14px 0;"><a href="https://www.procurement.govt.nz/guides/guide-to-procurement/source-your-suppliers/using-contractors-and-consultants-in-the-public-sector/" target="_blank" rel="noopener noreferrer" style="color:#e0b44f;text-decoration:none;">New Zealand Government Procurement — "Using contractors and consultants in the public sector". A orientação oficial distingue usos legítimos de consultores, como especialização rara, independência ou capacidade temporária, de funções nucleares que devem permanecer no serviço público, e recomenda pessoal interno para actividades permanentes.</a></li>
+        </ol>
+      </div>
+
+      <footer style="margin:40px 0 0 0;padding-top:24px;border-top:1px solid #333;text-align:right;">
+        <p style="margin:0;color:#e0b44f;font-size:1.12em;font-weight:700;">Francisco Gonçalves</p>
+        <p style="margin:5px 0 0 0;color:#888;font-family:Arial,sans-serif;font-size:.86em;">
+          Fragmentos do Caos · 9 de Agosto de 2026
+        </p>
+      </footer>
+    </div>
+  </article>
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
