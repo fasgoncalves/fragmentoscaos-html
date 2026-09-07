@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sobre os Ombros de Gigantes — e o Rés-do-Chão da Estupidez</title>
+<meta name="description" content="Sobre os Ombros de Gigantes — e o Rés-do-Chão da Estupidez">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Sobre os Ombros de Gigantes — e o Rés-do-Chão da Estupidez</h1>
+      <p class="meta">Publicado em 2026-09-06 13:20:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000865881f4bac41f327592084d_7360c156.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="Sobre os Ombros de Gigantes — e o Rés-do-Chão da Estupidez">
+      <meta itemprop="description" content="Uma crónica sobre a natureza cumulativa da ciência, a humildade intelectual, a ilusão de competência e a facilidade com que a ignorância recomeça do zero sem reconhecer o edifício de conhecimento que já existe.">
+      <meta itemprop="datePublished" content="2026-08-26">
+      <meta itemprop="dateModified" content="2026-08-26">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_00000000865881f4bac41f327592084d.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      Sobre os Ombros de Gigantes — e o Rés-do-Chão da Estupidez
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      A ciência avança porque herda conhecimento. A ignorância tem o curioso hábito de recomeçar do princípio convencida de que acabou de descobrir o mundo.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        Há uma vantagem extraordinária na ciência que raramente encontramos com a mesma disciplina noutros domínios humanos: o cientista sério sabe que não começa do zero. Recebe séculos de trabalho acumulado, erros corrigidos, instrumentos aperfeiçoados, teorias testadas e perguntas que outros tiveram a inteligência de formular antes dele. É assim que uma geração consegue ver mais longe do que a anterior.
+      </p>
+    </div>
+
+    <p>
+      A imagem de <strong>"subir aos ombros de gigantes"</strong> ficou para sempre associada a Isaac Newton.
+    </p>
+
+    <p>
+      Em 1676, numa carta a Robert Hooke, Newton reconheceu que aquilo que conseguira ver mais longe devia muito ao trabalho de quem o precedera. A metáfora era anterior a Newton, mas encontrou nele a formulação que atravessou os séculos.
+    </p>
+
+    <p>
+      E talvez nenhuma frase descreva melhor uma das diferenças fundamentais entre conhecimento e ignorância.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        A ciência avança porque cada geração sobe aos ombros dos gigantes anteriores. A estupidez recomeça frequentemente do rés-do-chão convencida de que descobriu o edifício.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A ciência não começa novamente todas as manhãs</h2>
+
+    <p>
+      Newton não teve de reinventar toda a matemática que existia antes dele.
+    </p>
+
+    <p>
+      Einstein não começou a física do princípio.
+    </p>
+
+    <p>
+      A física quântica não surgiu num vazio intelectual.
+    </p>
+
+    <p>
+      A genética moderna não começou quando alguém decidiu olhar para uma molécula de ADN com ar inspirado.
+    </p>
+
+    <p>
+      Cada avanço nasce dentro de uma história.
+    </p>
+
+    <p>
+      Maxwell herda Faraday. Einstein dialoga com Newton, Maxwell, Lorentz e outros. A biologia molecular cresce sobre genética, química, física e décadas de trabalho experimental. O telescópio espacial James Webb transporta consigo séculos de óptica, astronomia, matemática, engenharia, ciência de materiais e computação.
+    </p>
+
+    <p>
+      A Nature descreve precisamente esta característica ao estudar a evolução da ciência e da tecnologia: o conhecimento acumulado cria as condições sobre as quais novas descobertas podem ser construídas. Mesmo quando uma nova teoria rompe com partes do passado, fá-lo a partir de uma estrutura intelectual que o passado tornou possível.
+    </p>
+
+    <p>
+      É esta continuidade que faz da ciência uma das máquinas civilizacionais mais extraordinárias alguma vez construídas.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O conhecimento aceita a dívida</h2>
+
+    <p>
+      Há também uma forma de humildade escondida neste mecanismo.
+    </p>
+
+    <p>
+      Um investigador pode descobrir algo extraordinário e, ainda assim, reconhecer que dependeu de milhares de pessoas que nunca conhecerá.
+    </p>
+
+    <p>
+      Do matemático que formulou uma equação dois séculos antes ao técnico que calibrava o instrumento.
+    </p>
+
+    <p>
+      Do autor de um artigo obscuro ao engenheiro que construiu o detector.
+    </p>
+
+    <p>
+      Do professor que ensinou um princípio básico ao investigador que o transformou numa descoberta.
+    </p>
+
+    <p>
+      O conhecimento científico possui memória.
+    </p>
+
+    <p>
+      E possui uma característica ainda mais incómoda para o ego humano: <strong>aceita ser corrigido</strong>.
+    </p>
+
+    <p>
+      Uma hipótese pode ser elegante, celebrada e construída por uma autoridade mundial. Se os dados a contradizem, a realidade não se levanta respeitosamente para pedir desculpa.
+    </p>
+
+    <p>
+      A hipótese é que tem de mudar.
+    </p>
+
+    <p>
+      A Natureza não conhece reputações.
+    </p>
+
+    <p>
+      Talvez seja por isso que a ciência conseguiu avançar tanto: institucionalizou, imperfeitamente mas de forma extraordinariamente poderosa, a possibilidade de alguém dizer:
+    </p>
+
+    <p>
+      <strong>"Estávamos errados."</strong>
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A ignorância possui outro método</h2>
+
+    <p>
+      A ignorância não sente normalmente esta obrigação.
+    </p>
+
+    <p>
+      Não precisa de reconstruir a cadeia de conhecimento.
+    </p>
+
+    <p>
+      Não necessita de compreender o que já foi estudado.
+    </p>
+
+    <p>
+      Não exige sequer que a pessoa perceba aquilo que desconhece.
+    </p>
+
+    <p>
+      Basta uma impressão.
+    </p>
+
+    <p>
+      Uma intuição.
+    </p>
+
+    <p>
+      Um vídeo.
+    </p>
+
+    <p>
+      Uma frase particularmente convincente publicada por alguém que aprendeu a apontar para gráficos sem saber interpretá-los.
+    </p>
+
+    <p>
+      E nasce uma certeza.
+    </p>
+
+    <p>
+      É aqui que a nossa época produziu uma transformação extraordinária.
+    </p>
+
+    <p>
+      Nunca foi tão fácil aceder ao conhecimento humano.
+    </p>
+
+    <p>
+      E nunca foi tão fácil contorná-lo.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A igualdade de publicação não é igualdade de conhecimento</h2>
+
+    <p>
+      As redes digitais democratizaram uma coisa preciosa: a possibilidade de falar publicamente.
+    </p>
+
+    <p>
+      Isso é, em si mesmo, uma conquista.
+    </p>
+
+    <p>
+      Mas trouxe consigo uma ilusão extraordinariamente perigosa:
+    </p>
+
+    <p>
+      a ideia de que, porque todos possuem a mesma caixa de comentários, todas as afirmações possuem o mesmo valor.
+    </p>
+
+    <p>
+      Não possuem.
+    </p>
+
+    <p>
+      Todas as pessoas têm igual dignidade.
+    </p>
+
+    <p>
+      Todas têm direito à opinião.
+    </p>
+
+    <p>
+      Mas duas opiniões não se tornam epistemologicamente equivalentes apenas porque foram publicadas com o mesmo tamanho de letra.
+    </p>
+
+    <p>
+      Uma afirmação construída sobre vinte anos de investigação, dados verificáveis e conhecimento especializado não possui o mesmo peso de uma afirmação produzida depois de três vídeos e um almoço particularmente animado.
+    </p>
+
+    <p>
+      Esta distinção não é elitismo.
+    </p>
+
+    <p>
+      É precisamente aquilo que fazemos em todas as áreas onde a realidade possui consequências.
+    </p>
+
+    <p>
+      Não perguntamos ao passageiro se prefere pilotar o avião porque também possui uma opinião sobre aerodinâmica.
+    </p>
+
+    <p>
+      Não entregamos uma cirurgia ao comentador mais popular da sala.
+    </p>
+
+    <p>
+      Não escolhemos o cálculo estrutural de uma ponte através de uma votação no TikTok.
+    </p>
+
+    <p>
+      Pelo menos ainda não.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O problema de não saber que não se sabe</h2>
+
+    <p>
+      A psicologia estudou precisamente a dificuldade humana de avaliar a própria competência.
+    </p>
+
+    <p>
+      O conhecido trabalho de Justin Kruger e David Dunning, publicado em 1999, mostrou que participantes com baixo desempenho em determinadas tarefas podiam sobrestimar significativamente a sua própria prestação.
+    </p>
+
+    <p>
+      Mas convém não transformar ciência em meme enquanto criticamos quem transforma ciência em meme.
+    </p>
+
+    <p>
+      O chamado efeito Dunning–Kruger foi posteriormente discutido, refinado e contestado. Investigações posteriores encontraram evidência de problemas de calibração metacognitiva em alguns domínios, enquanto outros trabalhos demonstraram que parte do padrão observado pode resultar de propriedades estatísticas e que a magnitude do efeito depende da tarefa, da medida e da população estudada.
+    </p>
+
+    <p>
+      Portanto, não significa simplesmente que "os incompetentes pensam que são génios".
+    </p>
+
+    <p>
+      Significa algo mais interessante: <strong>a capacidade de avaliar correctamente aquilo que sabemos também exige conhecimento</strong>.
+    </p>
+
+    <p>
+      E reconhecer os próprios limites é uma competência intelectual.
+    </p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">A DIFERENÇA ESSENCIAL</h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>A ciência preserva memória e acumula resultados.</li>
+        <li>O conhecimento especializado reconhece dependências e limitações.</li>
+        <li>O método científico cria mecanismos de correcção, revisão e replicação.</li>
+        <li>A opinião sem método pode começar do zero e confundir novidade pessoal com descoberta.</li>
+        <li>Ter acesso à informação não equivale a possuir conhecimento sobre ela.</li>
+        <li>Liberdade de expressão não transforma todas as afirmações em afirmações igualmente verdadeiras.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O paradoxo tecnológico</h2>
+
+    <p>
+      É aqui que a humanidade contemporânea oferece uma das suas melhores comédias involuntárias.
+    </p>
+
+    <p>
+      Uma pequena parte da sociedade desenvolveu semicondutores, redes globais de telecomunicações, sistemas operativos, criptografia, satélites, centros de dados, ecrãs de alta resolução e computadores capazes de executar milhares de milhões de operações por segundo.
+    </p>
+
+    <p>
+      Depois colocámos tudo isso na mão de alguém para que pudesse escrever:
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        "A ciência não sabe nada."
+      </p>
+    </div>
+
+    <p>
+      E a mensagem atravessa continentes em fracções de segundo.
+    </p>
+
+    <p>
+      A engenharia funciona impecavelmente.
+    </p>
+
+    <p>
+      O conteúdo, nem sempre.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O edifício já lá estava</h2>
+
+    <p>
+      Talvez seja essa a grande diferença.
+    </p>
+
+    <p>
+      Quem trabalha seriamente no conhecimento começa normalmente por perguntar:
+    </p>
+
+    <p>
+      <strong>"O que sabemos até agora?"</strong>
+    </p>
+
+    <p>
+      Quem começa pela convicção pergunta outra coisa:
+    </p>
+
+    <p>
+      <strong>"Como provo aquilo em que já acredito?"</strong>
+    </p>
+
+    <p>
+      Um sobe.
+    </p>
+
+    <p>
+      O outro escava.
+    </p>
+
+    <p>
+      Um agradece aos gigantes.
+    </p>
+
+    <p>
+      O outro olha para os primeiros tijolos e anuncia que inventou a arquitectura.
+    </p>
+
+    <p>
+      Talvez o progresso humano dependa, afinal, desta escolha aparentemente pequena:
+    </p>
+
+    <p>
+      reconhecer que chegámos tarde a uma conversa iniciada muito antes de nós.
+    </p>
+
+    <p>
+      Porque nenhum de nós começa no primeiro andar.
+    </p>
+
+    <p>
+      Recebemos um edifício.
+    </p>
+
+    <p>
+      Podemos acrescentar-lhe um piso.
+    </p>
+
+    <p>
+      Podemos corrigir uma parede.
+    </p>
+
+    <p>
+      Podemos descobrir que parte dos alicerces precisa de ser reconstruída.
+    </p>
+
+    <p>
+      Mas a pior coisa que podemos fazer é entrar pela porta, olhar em redor e declarar:
+    </p>
+
+    <p>
+      <strong>"Fui eu que descobri isto."</strong>
+    </p>
+
+    <p>
+      A ciência aprendeu, com enorme dificuldade, a respeitar os gigantes.
+    </p>
+
+    <p>
+      A ignorância continua frequentemente fascinada com o rés-do-chão.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        Esta crónica usa as expressões "estupidez" e "rés-do-chão" em sentido satírico e filosófico. Não pretende classificar grupos humanos por inteligência nem reduzir competência intelectual a um único indicador psicológico.
+      </p>
+
+      <p style="text-align:left;">
+        A metáfora dos "ombros de gigantes" é muito anterior a Isaac Newton, mas ficou célebre através da sua carta a Robert Hooke, datada de 1676, na qual reconheceu que o seu próprio alcance intelectual dependia do trabalho anterior. O Newton Project da Universidade de Oxford documenta esta tradição e a formulação utilizada por Newton.
+      </p>
+
+      <p style="text-align:left;">
+        A ideia de ciência cumulativa é igualmente compatível com investigação contemporânea. Um estudo publicado na Nature em 2023, baseado em cerca de 45 milhões de artigos e 3,9 milhões de patentes, parte explicitamente do princípio de que o conhecimento anterior cria condições para avanços posteriores, embora tenha encontrado uma redução da chamada "disruptividade" média da ciência e da tecnologia ao longo de várias décadas.
+      </p>
+
+      <p style="text-align:left;">
+        A referência ao efeito Dunning–Kruger exige particular cuidado. O estudo original de 1999 encontrou forte sobrestimação do desempenho entre participantes do quartil inferior em determinadas tarefas. Contudo, trabalhos posteriores mostraram que a interpretação popular do efeito é excessivamente simplificada. Uma grande replicação publicada na Nature Human Behaviour em 2021 encontrou evidência de menor sensibilidade ao erro em participantes de baixo desempenho em gramática e raciocínio lógico, enquanto outros estudos têm discutido a contribuição de factores estatísticos e a magnitude real do fenómeno.
+      </p>
+
+      <p style="text-align:left; margin-bottom:0;">
+        O argumento editorial é, portanto, mais amplo e mais prudente: conhecimento especializado inclui não apenas informação, mas também memória disciplinar, método, capacidade de avaliar evidência e consciência dos próprios limites. A liberdade de opinião é um direito democrático; o valor factual de uma afirmação continua, contudo, dependente das provas que a sustentam.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências internacionais</h2>
+
+    <ul style="padding-left:22px;">
+      <li>
+        <a href="https://newtonproject.ox.ac.uk/view/texts/normalized/OTHE00018" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Newton Project, University of Oxford — "Standing on the Shoulders of Giants"
+        </a>
+      </li>
+      <li>
+        <a href="https://www.nature.com/articles/s41586-022-05543-x" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Nature — Park, Leahey &amp; Funk (2023), "Papers and patents are becoming less disruptive over time"
+        </a>
+      </li>
+      <li>
+        <a href="https://doi.org/10.1037/0022-3514.77.6.1121" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Journal of Personality and Social Psychology / APA — Kruger &amp; Dunning (1999), "Unskilled and unaware of it"
+        </a>
+      </li>
+      <li>
+        <a href="https://www.nature.com/articles/s41562-021-01057-0" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Nature Human Behaviour — Jansen, Rafferty &amp; Griffiths (2021), "A rational model of the Dunning–Kruger effect supports insensitivity to evidence in low performers"
+        </a>
+      </li>
+      <li>
+        <a href="https://www.nature.com/articles/s41562-021-01101-z" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Nature Human Behaviour — Mazor &amp; Fleming (2021), "The Dunning-Kruger effect revisited"
+        </a>
+      </li>
+      <li>
+        <a href="https://www.sciencedirect.com/science/article/pii/S0160289624000242" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Intelligence — "Rethinking the Dunning-Kruger effect" (2024)
+        </a>
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+<img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000bf54820c8da56db74f7acf1b_9a4dd970.jpg">
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

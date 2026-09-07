@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Estado Dono Disto Tudo</title>
+<meta name="description" content="O Estado Dono Disto Tudo">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Estado Dono Disto Tudo</h1>
+      <p class="meta">Publicado em 2026-09-05 12:18:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000fdb8824691c884fe6bb5affb_e757b580.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="O Estado Dono Disto Tudo">
+      <meta itemprop="description" content="Uma crónica crítica sobre burocracia, licenciamento, fiscalidade, propriedade privada e a assimetria entre as obrigações do cidadão e a responsabilidade administrativa do Estado.">
+      <meta itemprop="datePublished" content="2026-08-30">
+      <meta itemprop="dateModified" content="2026-08-30">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_00000000fdb8824691c884fe6bb5affb.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      O Estado Dono Disto Tudo
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      Quando o cidadão paga, espera, pede licença e agradece por poder usar aquilo que é seu
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        Esta crónica não defende a ausência de regras urbanísticas, fiscais ou administrativas. Segurança, ambiente, património, direitos dos vizinhos e ordenamento do território exigem regulação. O que aqui se critica é outra coisa: uma relação em que o cidadão suporta custos, prazos e sanções imediatas enquanto a Administração pode tornar-se lenta, opaca e desproporcionada sem assumir responsabilidade equivalente.
+      </p>
+    </div>
+
+    <p>Há países onde o Estado serve os cidadãos.</p>
+
+    <p>E há países onde os cidadãos parecem existir para alimentar o Estado.</p>
+
+    <p>Portugal aproxima-se demasiadas vezes da segunda categoria.</p>
+
+    <p>Não porque vivamos numa ditadura.</p>
+
+    <p>Não porque a propriedade privada tenha desaparecido.</p>
+
+    <p>Não porque o cidadão não tenha direitos no papel.</p>
+
+    <p>Mas porque, na prática quotidiana, se instalou uma cultura administrativa profundamente paternalista:</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        O Estado decide, o cidadão pede.<br>
+        O Estado cobra, o cidadão paga.<br>
+        O Estado demora, o cidadão espera.<br>
+        O Estado falha, o cidadão adapta-se.
+      </p>
+    </div>
+
+    <p>E depois ainda lhe chamamos modernização administrativa.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">É sua a casa, é seu o terreno, mas quem manda é o Estado</h2>
+
+    <p>A frase parece exagerada.</p>
+
+    <p>Até começarmos a desmontá-la.</p>
+
+    <p>O terreno é seu.</p>
+
+    <p>Foi comprado com dinheiro que já pagou impostos.</p>
+
+    <p>A casa é sua.</p>
+
+    <p>Será construída com dinheiro seu.</p>
+
+    <p>Os materiais serão pagos por si.</p>
+
+    <p>Os arquitectos serão pagos por si.</p>
+
+    <p>Os engenheiros serão pagos por si.</p>
+
+    <p>Os trabalhadores serão pagos por si.</p>
+
+    <p>O financiamento, se existir, será pago por si.</p>
+
+    <p>Os riscos são seus.</p>
+
+    <p>Os juros são seus.</p>
+
+    <p>Os atrasos custam-lhe dinheiro.</p>
+
+    <p>As derrapagens são problema seu.</p>
+
+    <p>Mas antes de pôr uma pedra em cima de outra é necessário atravessar aquilo que em Portugal se tornou quase uma instituição nacional:</p>
+
+    <p><strong>a autorização administrativa.</strong></p>
+
+    <p>Não basta ser proprietário.</p>
+
+    <p>É preciso ser proprietário autorizado.</p>
+
+    <p>E aqui a hipérbole encontra dados bastante menos poéticos. O OECD Economic Survey: Portugal 2026 descreve os procedimentos de licenciamento de construção como frequentemente pesados e demorados. Com base em dados do Banco Mundial para 2023, refere tempos entre 272 dias no Funchal e 548 em Coimbra, com Lisboa nos 545 dias e Porto nos 453.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A propriedade privada portuguesa vem com tutor</h2>
+
+    <p>Há uma diferença entre propriedade privada e soberania absoluta.</p>
+
+    <p>Nenhum proprietário deve poder fazer tudo aquilo que quiser.</p>
+
+    <p>Existem razões legítimas para haver regras.</p>
+
+    <p>Segurança.</p>
+
+    <p>Ordenamento do território.</p>
+
+    <p>Saneamento.</p>
+
+    <p>Protecção ambiental.</p>
+
+    <p>Património.</p>
+
+    <p>Direitos dos vizinhos.</p>
+
+    <p>Risco de incêndio.</p>
+
+    <p>Infra-estruturas.</p>
+
+    <p>Tudo isso é razoável.</p>
+
+    <p>O problema começa quando o Estado utiliza essas razões legítimas para justificar uma máquina administrativa que frequentemente ultrapassa aquilo que seria necessário para proteger o interesse colectivo.</p>
+
+    <p>A regulação transforma-se em tutela.</p>
+
+    <p>O licenciamento transforma-se em peregrinação.</p>
+
+    <p>O parecer transforma-se em poder.</p>
+
+    <p>E o funcionário transforma-se, ainda que involuntariamente, no guardião de uma porta através da qual o cidadão tem de passar para exercer um direito que já possuía.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O cidadão tem prazos. O Estado tem calendário</h2>
+
+    <p>Esta talvez seja uma das maiores obscenidades administrativas.</p>
+
+    <p>O cidadão tem datas.</p>
+
+    <p>Pagamentos.</p>
+
+    <p>Declarações.</p>
+
+    <p>Licenças.</p>
+
+    <p>Renovações.</p>
+
+    <p>Prazos fiscais.</p>
+
+    <p>Prazos processuais.</p>
+
+    <p>Prazos para responder.</p>
+
+    <p>Prazos para corrigir.</p>
+
+    <p>Prazos para entregar.</p>
+
+    <p>Falhou?</p>
+
+    <p>Multa.</p>
+
+    <p>Juros.</p>
+
+    <p>Coima.</p>
+
+    <p>Indeferimento.</p>
+
+    <p>Penalização.</p>
+
+    <p>Agora imaginemos o Estado.</p>
+
+    <p>Um processo pode ficar semanas.</p>
+
+    <p>Meses.</p>
+
+    <p>Por vezes muito mais.</p>
+
+    <p>À espera de parecer.</p>
+
+    <p>À espera de despacho.</p>
+
+    <p>À espera de outra entidade.</p>
+
+    <p>À espera de alguém que está de férias.</p>
+
+    <p>À espera de um documento que já foi entregue.</p>
+
+    <p>À espera de um esclarecimento sobre o esclarecimento.</p>
+
+    <p>O cidadão pergunta:</p>
+
+    <p><strong>«Quando terei resposta?»</strong></p>
+
+    <p>E recebe frequentemente aquela extraordinária criação burocrática:</p>
+
+    <p><strong>«Está em análise.»</strong></p>
+
+    <p>É uma expressão maravilhosa.</p>
+
+    <p>Não significa sim.</p>
+
+    <p>Não significa não.</p>
+
+    <p>Não significa amanhã.</p>
+
+    <p>Não significa este ano.</p>
+
+    <p>Significa apenas que o processo está algures dentro do aparelho e que o cidadão pode continuar a envelhecer em paz.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O Estado cobra eficiência que não pratica</h2>
+
+    <p>Esta assimetria corrói confiança.</p>
+
+    <p>Um Estado fiscalmente exigente deveria ser administrativamente exemplar.</p>
+
+    <p>Se exige cumprimento rigoroso, deveria cumprir rigorosamente.</p>
+
+    <p>Se exige prazos, deveria ter prazos.</p>
+
+    <p>Se cobra taxas, deveria prestar serviços.</p>
+
+    <p>Se restringe direitos, deveria fundamentar rapidamente.</p>
+
+    <p>Se exige documentos, deveria saber onde estão.</p>
+
+    <p>Se possui informação num organismo público, não deveria obrigar o cidadão a transportá-la para outro como um estafeta não remunerado da própria Administração.</p>
+
+    <p>Mas não.</p>
+
+    <p>Temos ainda demasiadas vezes um Estado digitalizado com mentalidade analógica.</p>
+
+    <p>Um formulário em papel passou a PDF.</p>
+
+    <p>Uma fila passou a senha electrónica.</p>
+
+    <p>Um balcão passou a portal.</p>
+
+    <p>E chamámos-lhe transformação digital.</p>
+
+    <p>A burocracia continuou inteira.</p>
+
+    <p>Só ganhou palavra-passe.</p>
+
+    <p>A OCDE mede actualmente estes problemas através de indicadores de qualidade regulatória e experiência administrativa. No Government at a Glance 2025, Portugal obteve 0,9 pontos em 4 no indicador da qualidade dos sistemas de avaliação de impacto regulatório para legislação primária, abaixo da média da OCDE de 2,3.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A taxa é imediata. A resposta é filosófica</h2>
+
+    <p>Existe uma eficiência administrativa extraordinária em Portugal.</p>
+
+    <p>Normalmente manifesta-se quando é preciso cobrar.</p>
+
+    <p>A referência Multibanco aparece depressa.</p>
+
+    <p>O imposto chega a horas.</p>
+
+    <p>A taxa está calculada.</p>
+
+    <p>O prazo de pagamento é cristalino.</p>
+
+    <p>Curiosamente, essa precisão perde alguma intensidade quando é o Estado que deve alguma coisa ao cidadão.</p>
+
+    <p>Aí entram palavras mais contemplativas.</p>
+
+    <p>Avaliação.</p>
+
+    <p>Apreciação.</p>
+
+    <p>Parecer.</p>
+
+    <p>Análise.</p>
+
+    <p>Tramitação.</p>
+
+    <p>Articulação.</p>
+
+    <p>Competência da entidade.</p>
+
+    <p>Remessa para os serviços.</p>
+
+    <p>Há burocratas que conseguem transformar uma casa numa tese de doutoramento em Direito Administrativo.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O cidadão é presumido incompetente</h2>
+
+    <p>Existe também uma atitude cultural profundamente paternalista.</p>
+
+    <p>O cidadão parece ser tratado como alguém que precisa permanentemente de supervisão.</p>
+
+    <p>Não pode decidir.</p>
+
+    <p>Não pode alterar.</p>
+
+    <p>Não pode construir.</p>
+
+    <p>Não pode abrir.</p>
+
+    <p>Não pode fechar.</p>
+
+    <p>Não pode instalar.</p>
+
+    <p>Não pode modificar.</p>
+
+    <p>Primeiro precisa de saber se o Estado permite.</p>
+
+    <p>A presunção deveria ser outra:</p>
+
+    <p><strong>o cidadão pode exercer os seus direitos, excepto onde exista uma razão legal clara para os limitar.</strong></p>
+
+    <p>Mas demasiadas vezes a lógica parece invertida:</p>
+
+    <p><strong>o cidadão não pode, excepto se a Administração autorizar.</strong></p>
+
+    <p>Parece uma diferença linguística.</p>
+
+    <p>É uma diferença de filosofia política.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O Estado democrático não é proprietário dos cidadãos</h2>
+
+    <p>É aqui que a discussão deixa de ser burocrática e passa a ser política.</p>
+
+    <p>Num Estado liberal e democrático, o poder público não existe acima da sociedade.</p>
+
+    <p>Existe por delegação dela.</p>
+
+    <p>Os cidadãos não são hóspedes do Estado.</p>
+
+    <p>O Estado é uma construção dos cidadãos.</p>
+
+    <p>Foi criado para administrar aquilo que individualmente não conseguimos administrar.</p>
+
+    <p>Justiça.</p>
+
+    <p>Segurança.</p>
+
+    <p>Infra-estruturas.</p>
+
+    <p>Educação.</p>
+
+    <p>Saúde.</p>
+
+    <p>Protecção social.</p>
+
+    <p>Regulação.</p>
+
+    <p>Mas existe uma tendência perigosa para inverter esta relação.</p>
+
+    <p>O Estado passa a comportar-se como entidade originária.</p>
+
+    <p>O cidadão aparece quase como utilizador condicionado.</p>
+
+    <p>A propriedade existe.</p>
+
+    <p>Mas condicionada.</p>
+
+    <p>A iniciativa existe.</p>
+
+    <p>Mas licenciada.</p>
+
+    <p>A liberdade existe.</p>
+
+    <p>Mas regulamentada.</p>
+
+    <p>A responsabilidade existe.</p>
+
+    <p>Essa, curiosamente, continua quase sempre do lado do cidadão.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quem constrói é suspeito. Quem nada faz raramente incomoda</h2>
+
+    <p>Existe uma ironia económica particularmente destrutiva.</p>
+
+    <p>Quem investe cria problemas administrativos.</p>
+
+    <p>Quem constrói precisa de licenças.</p>
+
+    <p>Quem abre uma empresa precisa de autorizações.</p>
+
+    <p>Quem contrata entra em legislação laboral complexa.</p>
+
+    <p>Quem importa entra em regras aduaneiras.</p>
+
+    <p>Quem produz entra em normas ambientais e técnicas.</p>
+
+    <p>Quem vende entra em obrigações fiscais.</p>
+
+    <p>Quem cresce começa a interessar ainda mais à máquina.</p>
+
+    <p>Quem nada faz costuma ter uma vida administrativa bastante mais tranquila.</p>
+
+    <p>É uma pedagogia económica estranha.</p>
+
+    <p>Uma sociedade deveria tornar fácil criar valor e difícil violar regras.</p>
+
+    <p>Nós conseguimos demasiadas vezes tornar difícil criar valor e igualmente difícil perceber quais regras se aplicam.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Depois perguntamos porque falta investimento</h2>
+
+    <p>Os governos gostam de falar em investimento.</p>
+
+    <p>Empreendedorismo.</p>
+
+    <p>Habitação.</p>
+
+    <p>Construção.</p>
+
+    <p>Inovação.</p>
+
+    <p>Reindustrialização.</p>
+
+    <p>Competitividade.</p>
+
+    <p>Agilização.</p>
+
+    <p>E depois colocam sobre cada actividade uma sedimentação geológica de legislação, portarias, regulamentos, pareceres, taxas e competências sobrepostas.</p>
+
+    <p>É como convidar alguém para jantar e depois exigir licença de utilização da cadeira.</p>
+
+    <p>Queremos casas.</p>
+
+    <p>Mas construir é complexo.</p>
+
+    <p>Queremos empresas.</p>
+
+    <p>Mas abrir e operar pode ser administrativamente pesado.</p>
+
+    <p>Queremos investimento estrangeiro.</p>
+
+    <p>Mas qualquer investidor sério pergunta primeiro:</p>
+
+    <p><strong>«Quanto tempo demora?»</strong></p>
+
+    <p>E essa pergunta continua a produzir embaraço.</p>
+
+    <p>Porque preço é negociável.</p>
+
+    <p>Risco pode ser calculado.</p>
+
+    <p>Mas incerteza administrativa é veneno económico.</p>
+
+    <p>A própria OCDE concluiu em 2026 que os processos de licenciamento de construção em Portugal são frequentemente complexos, demorados e diferentes entre municípios, atrasando a oferta habitacional e desencorajando investimento privado.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O Estado não precisa de ser pequeno. Precisa de saber o seu lugar</h2>
+
+    <p>Esta crítica não exige um Estado mínimo.</p>
+
+    <p>Essa é outra simplificação.</p>
+
+    <p>Um Estado pode ser grande e funcionar bem.</p>
+
+    <p>Pode cobrar impostos elevados e prestar serviços excelentes.</p>
+
+    <p>Pode regular intensamente e, ainda assim, ser previsível, rápido e respeitador.</p>
+
+    <p>O problema não é simplesmente o tamanho.</p>
+
+    <p>É a relação.</p>
+
+    <p>Um Estado forte pode ser democrático.</p>
+
+    <p>Um Estado intrusivo pode ser incompetente.</p>
+
+    <p>Um Estado caro pode ser eficiente.</p>
+
+    <p>Um Estado barato pode ser miserável.</p>
+
+    <p>A pergunta séria é:</p>
+
+    <p><strong>o cidadão recebe em previsibilidade, qualidade, justiça e serviço aquilo que o Estado lhe exige em dinheiro, tempo e obediência?</strong></p>
+
+    <p>Essa é a conta que importa.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A fiscalidade torna tudo mais difícil de aceitar</h2>
+
+    <p>A irritação aumenta porque a burocracia não aparece sozinha.</p>
+
+    <p>Vem acompanhada de impostos.</p>
+
+    <p>IRS.</p>
+
+    <p>IVA.</p>
+
+    <p>IMI.</p>
+
+    <p>IMT.</p>
+
+    <p>Imposto do selo.</p>
+
+    <p>Taxas.</p>
+
+    <p>Contribuições.</p>
+
+    <p>Emolumentos.</p>
+
+    <p>Licenças.</p>
+
+    <p>Mais taxas sobre as licenças.</p>
+
+    <p>O cidadão vê o Estado em praticamente todas as fases da vida económica.</p>
+
+    <p>Ao comprar.</p>
+
+    <p>Ao vender.</p>
+
+    <p>Ao trabalhar.</p>
+
+    <p>Ao poupar.</p>
+
+    <p>Ao investir.</p>
+
+    <p>Ao construir.</p>
+
+    <p>Ao herdar.</p>
+
+    <p>Ao transmitir património.</p>
+
+    <p>E depois, quando necessita de uma decisão administrativa, descobre frequentemente que a máquina que foi extraordinariamente eficiente a cobrar não possui a mesma urgência para responder.</p>
+
+    <p>Essa combinação é politicamente corrosiva.</p>
+
+    <p><strong>Carga elevada e serviço medíocre são uma fórmula eficiente para produzir ressentimento.</strong></p>
+
+    <p>Convém, contudo, quantificar em vez de adjectivar. Segundo a OCDE, o <em>tax wedge</em> de um trabalhador solteiro sem filhos a receber o salário médio foi de 39,3% do custo total do trabalho em Portugal em 2025, acima da média da OCDE de 35,1%. Isso não significa que cada cidadão entregue 39,3% do seu rendimento ao Estado; é uma medida internacional que soma imposto sobre o rendimento e contribuições sociais do trabalhador e do empregador relativamente ao custo laboral total.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A burocracia também é um imposto</h2>
+
+    <p>Existe um imposto que nunca aparece no Orçamento do Estado.</p>
+
+    <p>O imposto do tempo.</p>
+
+    <p>Horas passadas a preencher formulários.</p>
+
+    <p>Dias à espera.</p>
+
+    <p>Reuniões.</p>
+
+    <p>Deslocações.</p>
+
+    <p>Telefonemas.</p>
+
+    <p>Documentos repetidos.</p>
+
+    <p>Projectos parados.</p>
+
+    <p>Capital imobilizado.</p>
+
+    <p>Advogados.</p>
+
+    <p>Arquitectos.</p>
+
+    <p>Consultores.</p>
+
+    <p>Engenheiros.</p>
+
+    <p>Tudo para interpretar procedimentos que deveriam ser suficientemente claros para um cidadão normal compreender.</p>
+
+    <p>Esse custo é real.</p>
+
+    <p>Só não aparece na factura.</p>
+
+    <p>E penaliza particularmente quem cumpre.</p>
+
+    <p>Quem tenta fazer tudo legalmente.</p>
+
+    <p>Quem pede licença.</p>
+
+    <p>Quem declara.</p>
+
+    <p>Quem factura.</p>
+
+    <p>Quem paga.</p>
+
+    <p>Há algo profundamente perverso quando a honestidade administrativa começa a parecer uma desvantagem competitiva.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Cumprir a lei não deveria exigir vocação para mártir</h2>
+
+    <p>Um sistema saudável deve tornar simples cumprir e difícil fugir.</p>
+
+    <p>Um sistema doente faz o contrário.</p>
+
+    <p>Quando as regras são excessivamente complexas, lentas ou contraditórias, começa a nascer uma cultura paralela.</p>
+
+    <p>«Faça primeiro.»</p>
+
+    <p>«Depois logo se vê.»</p>
+
+    <p>«Conheço alguém.»</p>
+
+    <p>«Arranja-se.»</p>
+
+    <p>«Não meta isso no processo.»</p>
+
+    <p>«Se perguntar demasiado, nunca mais sai.»</p>
+
+    <p>E assim nasce o pior resultado possível.</p>
+
+    <p>O Estado cria burocracia para aumentar controlo.</p>
+
+    <p>A burocracia gera fuga.</p>
+
+    <p>A fuga justifica mais controlo.</p>
+
+    <p>E o ciclo recomeça.</p>
+
+    <p>Magnífica engenharia institucional.</p>
+
+    <p>Se fosse uma máquina, já alguém teria carregado no botão de emergência.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O problema não é haver regras. É não haver proporcionalidade</h2>
+
+    <p>Uma casa não é uma central nuclear.</p>
+
+    <p>Uma pequena alteração não é um aeroporto.</p>
+
+    <p>Uma garagem não é um arranha-céus.</p>
+
+    <p>Um muro não é uma barragem.</p>
+
+    <p>A regulação deveria acompanhar o risco.</p>
+
+    <p>Baixo risco.</p>
+
+    <p>Procedimento simples.</p>
+
+    <p>Risco médio.</p>
+
+    <p>Controlo proporcional.</p>
+
+    <p>Risco elevado.</p>
+
+    <p>Fiscalização rigorosa.</p>
+
+    <p>Quando tudo recebe a mesma cultura de suspeita e autorização, o sistema perde racionalidade.</p>
+
+    <p>E o cidadão perde paciência.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Silêncio administrativo deveria significar alguma coisa</h2>
+
+    <p>Uma reforma séria teria de começar por uma regra básica.</p>
+
+    <p>O Estado não pode beneficiar indefinidamente da própria inacção.</p>
+
+    <p>Existem matérias em que o silêncio administrativo pode ter consequências jurídicas, mas a lógica deveria ser muito mais forte e abrangente onde o risco o permita.</p>
+
+    <p>Se a Administração possui prazo para decidir e não decide, não pode simplesmente transferir o custo dessa incapacidade para o cidadão.</p>
+
+    <p>Caso contrário, criamos uma forma extraordinária de poder:</p>
+
+    <p><strong>o poder de impedir sem sequer ter de dizer não.</strong></p>
+
+    <p>Basta não responder.</p>
+
+    <p>Isso é administrativamente cómodo.</p>
+
+    <p>Democraticamente é péssimo.</p>
+
+    <p>Portugal introduziu em 2024 prazos fixos e mecanismos de aprovação tácita em parte dos procedimentos urbanísticos e aboliu a licença de utilização em determinados moldes. A própria OCDE considera, porém, que subsiste espaço para harmonizar requisitos entre municípios, tornar a informação mais acessível e aprofundar a digitalização.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O funcionário também é vítima do sistema</h2>
+
+    <p>Convém dizer isto.</p>
+
+    <p>O problema não é simplesmente «os funcionários públicos».</p>
+
+    <p>Essa crítica é demasiado fácil e frequentemente injusta.</p>
+
+    <p>Muitos trabalham dentro de sistemas desorganizados.</p>
+
+    <p>Leis complexas.</p>
+
+    <p>Software inadequado.</p>
+
+    <p>Falta de pessoal.</p>
+
+    <p>Competências sobrepostas.</p>
+
+    <p>Normas contraditórias.</p>
+
+    <p>Responsabilidade pessoal elevada.</p>
+
+    <p>E, como ninguém quer ser responsabilizado por autorizar alguma coisa, surge um incentivo poderoso:</p>
+
+    <p><strong>não decidir.</strong></p>
+
+    <p>Pedir outro parecer.</p>
+
+    <p>Outro documento.</p>
+
+    <p>Outra validação.</p>
+
+    <p>Mais segurança processual.</p>
+
+    <p>O cidadão chama-lhe burocracia.</p>
+
+    <p>O funcionário chama-lhe protecção.</p>
+
+    <p>O sistema produz ambos.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Precisamos de inverter a filosofia</h2>
+
+    <p>Um Estado moderno deveria partir de princípios radicalmente simples.</p>
+
+    <p>O cidadão é adulto.</p>
+
+    <p>A propriedade é um direito, embora limitado por interesse público legítimo.</p>
+
+    <p>A Administração tem de justificar a restrição.</p>
+
+    <p>Os procedimentos devem ser proporcionais ao risco.</p>
+
+    <p>Os prazos devem vincular também o Estado.</p>
+
+    <p>Informação já existente no sector público não deve ser novamente exigida.</p>
+
+    <p>Licenças simples devem ser substituídas, sempre que possível, por comunicação prévia e fiscalização posterior.</p>
+
+    <p>Decisões devem ser fundamentadas de forma compreensível.</p>
+
+    <p>E quem sofre prejuízo grave por atraso administrativo injustificado deve dispor de mecanismos reais de responsabilização.</p>
+
+    <p>Isso não enfraquece o Estado.</p>
+
+    <p>Civiliza-o.</p>
+
+    <p>É também a direcção das recomendações internacionais. A OCDE defende serviços administrativos centrados no utilizador, desenhados para reduzir barreiras, simplificar interacções, responder às necessidades das pessoas e tornar claros os papéis e responsabilidades das entidades públicas.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">É seu. Até deixar de parecer</h2>
+
+    <p>Talvez seja essa a sensação que cresce.</p>
+
+    <p>A casa é sua.</p>
+
+    <p>Mas para construir precisa de autorização.</p>
+
+    <p>Para alterar precisa de autorização.</p>
+
+    <p>Para ampliar precisa de autorização.</p>
+
+    <p>Para mudar determinados usos precisa de autorização.</p>
+
+    <p>Para demolir pode precisar de autorização.</p>
+
+    <p>Para cortar certas árvores pode precisar de autorização.</p>
+
+    <p>Para fazer determinadas obras pode precisar de pareceres.</p>
+
+    <p>Depois paga imposto sobre aquilo que comprou.</p>
+
+    <p>Sobre aquilo que construiu.</p>
+
+    <p>Sobre aquilo que transmite.</p>
+
+    <p>E se decidir vender, o Estado volta a aparecer.</p>
+
+    <p>Em algum momento o cidadão começa inevitavelmente a perguntar:</p>
+
+    <p><strong>«Afinal, isto é meu em que sentido?»</strong></p>
+
+    <p>É uma pergunta legítima.</p>
+
+    <p>E um Estado democrático deveria sentir-se desconfortável quando demasiados cidadãos começam a fazê-la.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O Estado não é o senhorio de Portugal</h2>
+
+    <p>A função do Estado não é tolerar a existência dos cidadãos.</p>
+
+    <p>É servi-los dentro de regras comuns.</p>
+
+    <p>Não é conceder direitos como favores.</p>
+
+    <p>É garanti-los.</p>
+
+    <p>Não é substituir permanentemente decisões individuais.</p>
+
+    <p>É intervir onde exista interesse público suficiente.</p>
+
+    <p>Não é controlar porque pode.</p>
+
+    <p>É limitar-se precisamente porque pode.</p>
+
+    <p>Esse é o ponto essencial.</p>
+
+    <p>Todo o poder tende a expandir-se.</p>
+
+    <p>Também o poder administrativo.</p>
+
+    <p>Cada nova crise cria uma regra.</p>
+
+    <p>Cada abuso cria um formulário.</p>
+
+    <p>Cada risco cria uma autorização.</p>
+
+    <p>Cada autorização cria um departamento.</p>
+
+    <p>Cada departamento cria procedimentos.</p>
+
+    <p>Décadas depois ninguém sabe exactamente porque existem todos, mas ninguém ousa retirar nenhum.</p>
+
+    <p>A burocracia possui uma característica extraordinária:</p>
+
+    <p><strong>raramente morre de causas naturais.</strong></p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Um Estado de cidadãos, não de súbditos</h2>
+
+    <p>Portugal precisa de uma reforma administrativa muito mais profunda do que novos portais e novos logótipos.</p>
+
+    <p>Precisa de uma reforma cultural.</p>
+
+    <p>O Estado tem de reaprender que trabalha para pessoas.</p>
+
+    <p>Que o tempo delas vale.</p>
+
+    <p>Que o capital delas custa.</p>
+
+    <p>Que esperar possui consequências.</p>
+
+    <p>Que atrasar uma casa pode destruir um orçamento familiar.</p>
+
+    <p>Que atrasar um investimento pode matar uma empresa.</p>
+
+    <p>Que uma licença não é um favor.</p>
+
+    <p>Que o cidadão não é suspeito por defeito.</p>
+
+    <p>Que pagar impostos não transforma ninguém em subordinado.</p>
+
+    <p>E que propriedade privada, iniciativa individual e liberdade económica não são inconvenientes que o Estado suporta.</p>
+
+    <p>São partes essenciais de uma sociedade livre.</p>
+
+    <p>A percepção dos cidadãos também importa. No inquérito da OCDE publicado em 2026, a satisfação com serviços administrativos em Portugal subiu de 43% em 2023 para 52% em 2025. É uma melhoria relevante, mas ainda significa que uma parcela muito grande da população não expressa satisfação elevada ou moderada. A mesma investigação conclui, no conjunto dos países, que rapidez e facilidade de acesso estão entre os factores que mais influenciam a satisfação com esses serviços.</p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">DADOS ESSENCIAIS</h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>Segundo a OCDE, obter uma licença de construção em Portugal demorava, em 2023, entre 272 dias no Funchal e 548 dias em Coimbra; Lisboa registava 545 dias e Porto 453.</li>
+        <li>O Banco Mundial, no Subnational Business Ready in the European Union 2024, atribuiu pontuações elevadas ao enquadramento regulatório português da construção, mas bastante inferiores à eficiência operacional, mostrando que o problema está muitas vezes menos na existência formal das regras do que na forma como são executadas.</li>
+        <li>No Government at a Glance 2025, Portugal obteve 0,9 pontos em 4 no indicador da OCDE sobre qualidade dos sistemas de avaliação de impacto regulatório para legislação primária, contra 2,3 de média da OCDE.</li>
+        <li>O OECD Survey on Drivers of Trust 2026 registou uma subida da satisfação com serviços administrativos em Portugal de 43% em 2023 para 52% em 2025.</li>
+        <li>Segundo Taxing Wages 2026, o <em>tax wedge</em> de um trabalhador solteiro sem filhos a receber o salário médio foi de 39,3% do custo laboral em Portugal em 2025, contra 35,1% na média da OCDE.</li>
+        <li>A OCDE recomenda que os serviços administrativos sejam centrados no utilizador, simplifiquem interacções e removam barreiras, com responsabilidades institucionais claras e melhor coordenação entre entidades.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">É sua a casa. É seu o terreno. É seu o dinheiro.</h2>
+
+    <p>E devia haver uma frase que qualquer Administração pública tivesse permanentemente escrita na parede:</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        O Estado não é dono do cidadão.
+      </p>
+    </div>
+
+    <p>Pode regular.</p>
+
+    <p>Pode fiscalizar.</p>
+
+    <p>Pode tributar.</p>
+
+    <p>Pode impedir aquilo que prejudica seriamente outros.</p>
+
+    <p>Mas cada uma dessas intervenções precisa de fundamento, proporção, prazo e responsabilidade.</p>
+
+    <p>Sem isso, a regulação começa a parecer domínio.</p>
+
+    <p>A tributação começa a parecer extracção.</p>
+
+    <p>A Administração começa a parecer tutela.</p>
+
+    <p>E o cidadão começa a sentir-se exactamente como não deveria sentir-se numa democracia:</p>
+
+    <p><strong>um súbdito dentro do país que também é seu.</strong></p>
+
+    <p>É sua a casa.</p>
+
+    <p>É seu o terreno.</p>
+
+    <p>É seu o dinheiro.</p>
+
+    <p>São seus os riscos.</p>
+
+    <p>São seus os impostos.</p>
+
+    <p>E sim, o Estado precisa de regras.</p>
+
+    <p>Mas talvez esteja na altura de recordar uma coisa extremamente simples:</p>
+
+    <p><strong>Portugal não pertence ao Estado.</strong></p>
+
+    <p><strong>O Estado pertence aos portugueses.</strong></p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        «Estado dono» é uma metáfora crítica. Portugal é um Estado de direito democrático, a propriedade privada é constitucionalmente protegida e os actos administrativos estão sujeitos à lei e a controlo jurisdicional. A crónica questiona a proporcionalidade, previsibilidade e responsabilidade de certos procedimentos, não afirma que os cidadãos não tenham direitos ou que o Estado possua juridicamente todo o património privado.
+      </p>
+
+      <p style="text-align:left;">
+        O licenciamento urbanístico existe por razões legítimas, incluindo segurança, ordenamento do território, ambiente, património e direitos de terceiros. A crítica dirige-se aos atrasos, à diversidade de procedimentos entre municípios, à dificuldade de acesso à informação e aos custos de incerteza. O OECD Economic Survey: Portugal 2026 reconhece explicitamente estes problemas e regista também reformas introduzidas desde 2024 para simplificar procedimentos, fixar prazos e criar mecanismos de aprovação tácita.
+      </p>
+
+      <p style="text-align:left;">
+        Os tempos de licenciamento citados correspondem a exercícios comparativos do Banco Mundial e da OCDE relativos a procedimentos padronizados e não significam que toda e qualquer obra em cada município demore exactamente esse número de dias. Servem para comparar eficiência administrativa e evidenciar diferenças significativas entre cidades.
+      </p>
+
+      <p style="text-align:left;">
+        Da mesma forma, o <em>tax wedge</em> não é a percentagem do salário líquido entregue directamente pelo trabalhador ao Estado. É uma medida comparável internacionalmente que relaciona imposto sobre o rendimento e contribuições sociais do trabalhador e do empregador com o custo laboral total. É usada aqui para contextualizar a exigência fiscal sobre o trabalho, não para sustentar que todos os cidadãos suportam a mesma taxa efectiva.
+      </p>
+
+      <p style="text-align:left; margin-bottom:0;">
+        A melhoria da satisfação com serviços administrativos registada pela OCDE entre 2023 e 2025 também é relevante e foi incluída deliberadamente. Uma crítica séria ao Estado não necessita de apagar progressos. Necessita de perguntar se esses progressos são suficientes perante o custo económico, o tempo perdido e a necessidade de uma Administração verdadeiramente centrada no cidadão.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+
+    <ul style="padding-left:22px;">
+      <li>
+        <a href="https://www.oecd.org/en/publications/oecd-economic-surveys-portugal-2026_025b3445-en/full-report/tackling-portugal-s-housing-affordability-challenge-promoting-sustainable-and-inclusive-housing_c920df36.html"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          OECD — Economic Surveys: Portugal 2026 — Tackling Portugal's housing affordability challenge
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/oecd-economic-surveys-portugal-2026_025b3445-en.html"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          OECD — Economic Surveys: Portugal 2026
+        </a>
+      </li>
+      <li>
+        <a href="https://documents1.worldbank.org/curated/en/099110124145585959/pdf/P179952-c4bcdd8f-bda5-474b-88be-c92a8980ff3a.pdf"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          World Bank — Subnational Business Ready in the European Union 2024: Portugal
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/government-at-a-glance-2025-country-notes_da3361e1-en/portugal_f8f0f0ed-en.html"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          OECD — Government at a Glance 2025: Portugal
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report/seamless-and-accessible-public-administrative-services_3dae4bc2.html"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          OECD — Government at a Glance 2025: Seamless and accessible public administrative services
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/oecd-survey-on-drivers-of-trust-in-public-institutions-2026-results_c88c8869-en/portugal_8696899f-en.html"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          OECD — Survey on Drivers of Trust in Public Institutions 2026: Portugal
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/content/dam/oecd/en/publications/reports/2026/04/taxing-wages-2026-country-notes_491a0e97/portugal_da445fe2/8f8e9540-en.pdf"
+           target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          OECD — Taxing Wages 2026: Portugal
+        </a>
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
