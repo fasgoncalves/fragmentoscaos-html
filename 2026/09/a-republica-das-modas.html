@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A República das Modas</title>
+<meta name="description" content="A República das Modas">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A República das Modas</h1>
+      <p class="meta">Publicado em 2026-09-07 10:38:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000c37881f6945c3b0f27e619fc_a8a0e6d8.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="A República das Modas">
+      <meta itemprop="description" content="Crónica crítica e irónica sobre a governação por modas, a micromobilidade, as trotinetes eléctricas e a incapacidade política de antecipar riscos, regular e fiscalizar.">
+      <meta itemprop="datePublished" content="2026-08-06">
+      <meta itemprop="dateModified" content="2026-08-06">
+      <meta itemprop="author" content="Francisco António dos Santos Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/09/file_00000000c37881f6945c3b0f27e619fc.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      A República das Modas
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      Em Portugal, muitas políticas públicas não nascem de um problema estudado. Nascem de uma palavra moderna, de uma conferência internacional e de uma fotografia com ar de futuro.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        As trotinetes eléctricas não são o inimigo e a mobilidade sustentável não é uma fraude.
+        O problema surge quando tecnologias potencialmente úteis são introduzidas como adereços
+        políticos, sem planeamento integrado, infra-estrutura adequada, fiscalização consistente
+        ou avaliação dos resultados. Em Portugal existem regras aplicáveis à circulação destes
+        veículos, mas o enquadramento continua fragmentado e a distância entre a norma, a rua e a
+        fiscalização permanece demasiado grande.
+      </p>
+    </div>
+
+    <p>
+      Os dirigentes políticos portugueses descobriram uma forma particularmente cómoda de governar:
+      seguir modas.
+    </p>
+
+    <p>
+      Pensar exige tempo, competência, estudo e a desagradável obrigação de prever consequências.
+      Seguir uma moda é muito mais simples. Basta encontrar uma palavra moderna, organizar uma
+      conferência, inaugurar um projecto-piloto e garantir que há fotógrafos no local.
+    </p>
+
+    <p>
+      Durante alguns meses, todos falam da mesma coisa.
+    </p>
+
+    <p>
+      Mobilidade eléctrica.
+    </p>
+
+    <p>
+      Cidades inteligentes.
+    </p>
+
+    <p>
+      Transição digital.
+    </p>
+
+    <p>
+      Economia circular.
+    </p>
+
+    <p>
+      Hidrogénio verde.
+    </p>
+
+    <p>
+      Bicicletas partilhadas.
+    </p>
+
+    <p>
+      Trotinetes.
+    </p>
+
+    <p>
+      Inteligência artificial.
+    </p>
+
+    <p>
+      Um novo vocabulário chega aos gabinetes ministeriais e, subitamente, o país inteiro tem de
+      fingir que encontrou o futuro.
+    </p>
+
+    <p>
+      Não interessa compreender como a ideia vai funcionar, quem a vai regular, quanto custa, que
+      problemas poderá criar ou se existe sequer infra-estrutura para a suportar. O essencial é
+      parecer moderno antes que a moda seguinte chegue.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A política transformada em catálogo
+    </h2>
+
+    <p>
+      Os políticos contemporâneos comportam-se frequentemente como consumidores ansiosos diante de
+      um catálogo de tendências.
+    </p>
+
+    <p>
+      Se uma grande capital europeia instala trotinetes eléctricas, Portugal precisa imediatamente
+      de trotinetes eléctricas.
+    </p>
+
+    <p>
+      Se Bruxelas menciona a mobilidade suave, todas as autarquias descobrem subitamente uma paixão
+      antiga por ciclovias.
+    </p>
+
+    <p>
+      Se uma empresa tecnológica apresenta uma plataforma digital, aparece logo um secretário de
+      Estado disposto a anunciar que o país será líder mundial nessa área.
+    </p>
+
+    <p>
+      Líder mundial é uma expressão muito apreciada em Portugal. Tem a enorme vantagem de não exigir
+      qualquer relação com a realidade.
+    </p>
+
+    <p>
+      A moda chega, instala-se e multiplica-se.
+    </p>
+
+    <p>
+      A regulamentação virá depois.
+    </p>
+
+    <p>
+      A fiscalização talvez um dia.
+    </p>
+
+    <p>
+      A avaliação nunca.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        A estratégia nacional consiste demasiadas vezes em importar a tendência, subsidiar o
+        entusiasmo e nacionalizar as consequências.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      As trotinetes e a modernidade aos ziguezagues
+    </h2>
+
+    <p>
+      As trotinetes eléctricas são um exemplo perfeito desta política feita de entusiasmo e
+      irresponsabilidade.
+    </p>
+
+    <p>
+      Foram apresentadas como símbolo da cidade sustentável, da mobilidade do futuro e da libertação
+      do automóvel. As empresas espalharam veículos pelas ruas, os municípios sorriram para as
+      fotografias e os responsáveis políticos pronunciaram solenemente a expressão
+      "micromobilidade urbana".
+    </p>
+
+    <p>
+      Parecia estar resolvido o trânsito, o ambiente e talvez a própria civilização ocidental.
+    </p>
+
+    <p>
+      Depois começaram os pequenos detalhes.
+    </p>
+
+    <p>
+      As trotinetes passaram a circular em passeios, estradas, praças, zonas pedonais e, sempre que
+      possível, na trajectória exacta de um idoso distraído.
+    </p>
+
+    <p>
+      Foram abandonadas diante de portas, rampas, passadeiras, paragens de autocarro e acessos para
+      pessoas com mobilidade reduzida.
+    </p>
+
+    <p>
+      Alguns utilizadores conduziam com auscultadores, outros transportavam passageiros, outros
+      circulavam de noite sem iluminação e vários pareciam acreditar que as regras de trânsito eram
+      apenas sugestões dirigidas a pessoas menos criativas.
+    </p>
+
+    <p>
+      Nada disto era imprevisível.
+    </p>
+
+    <p>
+      Qualquer pessoa com dois neurónios disponíveis poderia ter antecipado que colocar veículos
+      eléctricos leves no espaço público, sem uma rede coerente, estacionamento bem definido,
+      fiscalização suficiente e educação dos utilizadores, acabaria em conflito.
+    </p>
+
+    <p>
+      Infelizmente, os dois neurónios estavam aparentemente ocupados a preparar a inauguração.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Não é ausência absoluta de lei. É ausência de sistema
+    </h2>
+
+    <p>
+      Convém ser exacto. Portugal não vive num vazio jurídico completo. O Código da Estrada equipara
+      a velocípedes as trotinetes eléctricas que respeitem determinados limites de potência e
+      velocidade. Existem regras gerais de circulação e podem existir regulamentos municipais,
+      contratos com operadores e zonas de estacionamento.
+    </p>
+
+    <p>
+      Mas uma soma de normas dispersas não constitui necessariamente uma política coerente.
+    </p>
+
+    <p>
+      O problema está na fragmentação, na ambiguidade sentida pelos utilizadores, nas diferenças
+      entre municípios, na fiscalização irregular, na falta de dados suficientemente detalhados e
+      na ocupação desordenada do espaço pedonal.
+    </p>
+
+    <p>
+      A própria Europa continua a debater uma harmonização técnica. O Conselho Europeu para a
+      Segurança dos Transportes tem defendido requisitos obrigatórios para estabilidade, travagem,
+      aceleração, iluminação e limitação de velocidade, além de recomendações sobre idade mínima,
+      capacete, passageiros e condução sob o efeito de álcool ou drogas.
+    </p>
+
+    <p>
+      Ou seja, a discussão internacional já não é sobre a existência das trotinetes. É sobre como
+      impedir que a inovação seja paga em fracturas, traumatismos e passeios transformados em
+      armazéns improvisados.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Primeiro o entusiasmo, depois as vítimas
+    </h2>
+
+    <p>
+      O método político é quase sempre o mesmo.
+    </p>
+
+    <p>
+      Primeiro, anuncia-se a inovação.
+    </p>
+
+    <p>
+      Depois, distribuem-se subsídios.
+    </p>
+
+    <p>
+      Em seguida, autorizam-se operadores.
+    </p>
+
+    <p>
+      Mais tarde, surgem conflitos, abusos, acidentes e mortes.
+    </p>
+
+    <p>
+      Finalmente, os responsáveis aparecem na televisão com expressão grave para declarar que é
+      necessário "repensar o modelo".
+    </p>
+
+    <p>
+      Repensar é uma palavra generosa. Pressupõe que alguma coisa tenha sido pensada antes.
+    </p>
+
+    <p>
+      Quando os acidentes aumentam, quando os hospitais recebem vítimas, quando os peões começam a
+      ter medo de caminhar nos passeios e quando as cidades se enchem de veículos abandonados, os
+      políticos descobrem subitamente a necessidade de regras.
+    </p>
+
+    <p>
+      Talvez seja preciso limitar a velocidade.
+    </p>
+
+    <p>
+      Talvez seja necessário criar zonas de estacionamento.
+    </p>
+
+    <p>
+      Talvez não seja sensato circular nos passeios.
+    </p>
+
+    <p>
+      Talvez os operadores devam assumir responsabilidades.
+    </p>
+
+    <p>
+      Talvez.
+    </p>
+
+    <p>
+      É assim que se governa o país: através de uma longa sucessão de descobertas tardias sobre
+      problemas inteiramente previsíveis.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O culto da fotografia inaugural
+    </h2>
+
+    <p>
+      O político moderno não precisa de resolver problemas. Precisa de produzir imagens de que está
+      a resolvê-los.
+    </p>
+
+    <p>
+      Uma ciclovia inaugurada rende fotografias.
+    </p>
+
+    <p>
+      Um regulamento eficaz não.
+    </p>
+
+    <p>
+      Uma frota de autocarros eléctricos permite discursos.
+    </p>
+
+    <p>
+      A manutenção das baterias daqui a oito anos não.
+    </p>
+
+    <p>
+      Uma aplicação digital oferece apresentações com gráficos coloridos.
+    </p>
+
+    <p>
+      A compatibilidade entre sistemas, a segurança dos dados e a formação dos funcionários são
+      assuntos excessivamente pouco fotogénicos.
+    </p>
+
+    <p>
+      A governação passou assim a favorecer tudo aquilo que pode ser anunciado e a ignorar tudo
+      aquilo que precisa de ser mantido.
+    </p>
+
+    <p>
+      Portugal encheu-se de projectos-piloto, plataformas, observatórios, estratégias nacionais e
+      planos de transição. Muitos possuem logótipos excelentes. Alguns até funcionam.
+    </p>
+
+    <p>
+      Durante algum tempo.
+    </p>
+
+    <p>
+      Depois desaparece o financiamento, muda o ministro, termina o contrato ou chega uma moda nova.
+      O projecto anterior fica abandonado num servidor, num armazém ou numa página institucional
+      actualizada pela última vez há vários anos.
+    </p>
+
+    <p>
+      Mas a fotografia inaugural permanece.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Palavras modernas, hábitos antigos
+    </h2>
+
+    <p>
+      A modernidade portuguesa tem uma característica fascinante: muda o vocabulário sem alterar o
+      método.
+    </p>
+
+    <p>
+      Antes chamava-se improvisação.
+    </p>
+
+    <p>
+      Agora chama-se experimentação ágil.
+    </p>
+
+    <p>
+      Antes era falta de planeamento.
+    </p>
+
+    <p>
+      Agora é capacidade de adaptação.
+    </p>
+
+    <p>
+      Antes era desperdício.
+    </p>
+
+    <p>
+      Agora é investimento estratégico.
+    </p>
+
+    <p>
+      Antes era uma trapalhada.
+    </p>
+
+    <p>
+      Agora é um ecossistema em desenvolvimento.
+    </p>
+
+    <p>
+      A linguagem política evoluiu extraordinariamente. A realidade continua a tropeçar nos mesmos
+      buracos.
+    </p>
+
+    <p>
+      Os dirigentes aprenderam a utilizar termos técnicos, siglas europeias e expressões inglesas com
+      grande segurança. Conseguem falar durante vinte minutos sobre sustentabilidade, inovação e
+      resiliência sem dizer exactamente o que vão fazer.
+    </p>
+
+    <p>
+      É uma espécie de energia renovável: transforma palavras vazias em tempo de antena.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Governar é antecipar
+    </h2>
+
+    <p>
+      Uma política pública responsável devia começar por perguntas elementares.
+    </p>
+
+    <p>
+      Que problema pretende resolver?
+    </p>
+
+    <p>
+      Que benefício produzirá?
+    </p>
+
+    <p>
+      Que riscos cria?
+    </p>
+
+    <p>
+      Quem fiscaliza?
+    </p>
+
+    <p>
+      Quem responde pelos danos?
+    </p>
+
+    <p>
+      Quanto custa instalar?
+    </p>
+
+    <p>
+      Quanto custa manter?
+    </p>
+
+    <p>
+      Como será avaliada?
+    </p>
+
+    <p>
+      O que acontece se falhar?
+    </p>
+
+    <p>
+      Em Portugal, estas perguntas são frequentemente consideradas excessivamente negativas. Podem
+      perturbar o entusiasmo, atrasar o anúncio e, no pior dos casos, revelar que a ideia não está
+      preparada.
+    </p>
+
+    <p>
+      Por isso, prefere-se avançar.
+    </p>
+
+    <p>
+      Quando os problemas aparecem, diz-se que ninguém poderia ter previsto.
+    </p>
+
+    <p>
+      É uma frase extraordinária, geralmente pronunciada sobre acontecimentos que quase toda a gente
+      previu.
+    </p>
+
+    <p>
+      Governar não é apenas reagir ao que aconteceu. É antecipar aquilo que provavelmente acontecerá.
+    </p>
+
+    <p>
+      Qualquer pessoa consegue governar depois do acidente, da falência, do incêndio ou da inundação.
+      Basta visitar o local, prometer uma investigação e anunciar medidas.
+    </p>
+
+    <p>
+      A competência mede-se antes.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O contribuinte como financiador de experiências
+    </h2>
+
+    <p>
+      As modas políticas possuem ainda outra vantagem: são pagas pelos cidadãos.
+    </p>
+
+    <p>
+      Se uma empresa privada lança um produto sem estudar o mercado, corre o risco de perder dinheiro.
+    </p>
+
+    <p>
+      Se um governo lança uma política mal planeada, perde o dinheiro dos outros.
+    </p>
+
+    <p>
+      O risco é público.
+    </p>
+
+    <p>
+      A fotografia é privada.
+    </p>
+
+    <p>
+      Os contribuintes financiam experiências, corrigem erros, pagam indemnizações, suportam sistemas
+      abandonados e ainda escutam discursos sobre a coragem reformista dos responsáveis.
+    </p>
+
+    <p>
+      Quando o projecto falha, ninguém devolve o dinheiro.
+    </p>
+
+    <p>
+      Quando o ministro muda, ninguém assume o erro.
+    </p>
+
+    <p>
+      Quando surge uma nova moda, o país começa novamente do princípio, com a mesma esperança
+      institucional de um peixe dourado diante de um aquário redecorado.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A irresponsabilidade com aparência de progresso
+    </h2>
+
+    <p>
+      O mais perigoso é que esta governação por modas se apresenta sempre como progresso.
+    </p>
+
+    <p>
+      Quem questiona é conservador.
+    </p>
+
+    <p>
+      Quem pede estudos está contra a inovação.
+    </p>
+
+    <p>
+      Quem exige regras não compreende o futuro.
+    </p>
+
+    <p>
+      Quem alerta para riscos quer travar a modernização.
+    </p>
+
+    <p>
+      Esta chantagem intelectual permite que ideias potencialmente úteis sejam aplicadas da pior
+      maneira possível.
+    </p>
+
+    <p>
+      As trotinetes não são o problema.
+    </p>
+
+    <p>
+      As bicicletas não são o problema.
+    </p>
+
+    <p>
+      A mobilidade eléctrica não é o problema.
+    </p>
+
+    <p>
+      A inteligência artificial, a digitalização e a transição energética também não são o problema.
+    </p>
+
+    <p>
+      O problema é introduzir tecnologias e modelos novos sem planeamento, sem fiscalização, sem
+      responsabilidade e sem respeito pelas pessoas que terão de viver com as consequências.
+    </p>
+
+    <p>
+      Uma boa ideia não sobrevive necessariamente a uma má execução.
+    </p>
+
+    <p>
+      Por vezes, torna-se precisamente a sua principal vítima.
+    </p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">
+        O QUE UMA POLÍTICA SÉRIA DEVERIA CONTER
+      </h3>
+
+      <ul style="padding-left:22px; margin:0;">
+        <li>Definição inequívoca dos locais onde cada veículo pode circular.</li>
+        <li>Limites técnicos e operacionais de velocidade, potência, aceleração e travagem.</li>
+        <li>Protecção prioritária dos peões, incluindo idosos e pessoas com deficiência.</li>
+        <li>Zonas obrigatórias de estacionamento e penalizações por obstrução do passeio.</li>
+        <li>Responsabilidade efectiva dos operadores de sistemas partilhados.</li>
+        <li>Regras claras sobre idade mínima, capacete, passageiros, álcool e utilização nocturna.</li>
+        <li>Dados públicos sobre utilização, acidentes, feridos e infracções.</li>
+        <li>Fiscalização regular, visível e proporcional ao risco.</li>
+        <li>Avaliação periódica dos benefícios ambientais e dos custos sociais.</li>
+        <li>Infra-estrutura coerente antes da multiplicação dos veículos.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O país governado pela tendência da semana
+    </h2>
+
+    <p>
+      Portugal não precisa de dirigentes apaixonados pela última tendência internacional.
+    </p>
+
+    <p>
+      Precisa de dirigentes capazes de distinguir uma política útil de uma palavra elegante.
+    </p>
+
+    <p>
+      Precisa de menos anúncios e mais engenharia institucional.
+    </p>
+
+    <p>
+      Menos estratégias nacionais e mais execução local.
+    </p>
+
+    <p>
+      Menos projectos-piloto eternos e mais sistemas que funcionem depois de terminarem as
+      conferências.
+    </p>
+
+    <p>
+      Menos fotografias com capacetes, bicicletas, computadores e painéis solares.
+    </p>
+
+    <p>
+      Mais responsabilidade.
+    </p>
+
+    <p>
+      Mais fiscalização.
+    </p>
+
+    <p>
+      Mais competência.
+    </p>
+
+    <p>
+      Governar não é correr atrás do futuro com uma trotinete alugada.
+    </p>
+
+    <p>
+      É construir uma estrada segura, definir regras claras, proteger quem nela circula e saber
+      exactamente para onde se pretende ir.
+    </p>
+
+    <p>
+      Mas isso exige pensamento, trabalho e coragem.
+    </p>
+
+    <p>
+      As modas, pelo contrário, exigem apenas um slogan, um orçamento e alguém disponível para cortar
+      a fita.
+    </p>
+
+    <p>
+      E desses, infelizmente, nunca tivemos falta.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">
+      Nota Editorial
+    </h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        Esta crónica critica a forma como determinadas políticas públicas são lançadas e executadas,
+        não a mobilidade sustentável nem a inovação tecnológica. Trotinetes, bicicletas eléctricas,
+        transportes colectivos descarbonizados e sistemas digitais podem trazer benefícios reais,
+        desde que sejam integrados numa estratégia urbana segura, acessível e fiscalizável.
+      </p>
+
+      <p style="text-align:left;">
+        Em Portugal, as trotinetes eléctricas que respeitem os limites definidos no Código da Estrada
+        são equiparadas a velocípedes. Existem, portanto, normas aplicáveis à sua circulação. A crítica
+        incide sobre a fragmentação do enquadramento, a desigualdade entre municípios, a falta de
+        clareza pública, a fiscalização insuficiente e a frequente ocupação abusiva do espaço pedonal.
+      </p>
+
+      <p style="text-align:left;">
+        A investigação internacional recomenda uma abordagem de "sistema seguro": veículos com
+        requisitos técnicos mínimos, velocidades moderadas, infra-estruturas adequadas, utilizadores
+        informados, operadores responsabilizados e protecção prioritária dos utentes mais vulneráveis.
+        A existência de riscos não justifica rejeitar a micromobilidade; justifica governá-la.
+      </p>
+
+      <p style="text-align:left; margin-bottom:0;">
+        A inovação deixa de ser progresso quando os benefícios são anunciados por quem governa, mas
+        os custos, os acidentes e o caos são entregues aos cidadãos. Uma política moderna não se mede
+        pela novidade do equipamento. Mede-se pela inteligência do sistema que o torna útil e seguro.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Referências credíveis
+    </h2>
+
+    <ul style="padding-left:22px;">
+      <li>
+        <a href="https://www.itf-oecd.org/safer-micromobility"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          International Transport Forum / OCDE — Safer Micromobility
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/content/dam/oecd/en/publications/reports/2024/03/safer-micromobility_f7dee627/0d2e0dd5-en.pdf"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          International Transport Forum / OCDE — Safer Micromobility, relatório integral
+        </a>
+      </li>
+      <li>
+        <a href="https://road-safety.transport.ec.europa.eu/document/download/6ed38dab-eb7c-42e0-a4a7-06bdd20677ec_en?filename=ERSO-TR-PersonalMobilityDevices-20241217.pdf"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Comissão Europeia — Road Safety Thematic Report: Personal Mobility Devices
+        </a>
+      </li>
+      <li>
+        <a href="https://etsc.eu/improving-the-road-safety-of-e-scooters-pin-flash-47/"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          European Transport Safety Council — Improving the Road Safety of E-scooters
+        </a>
+      </li>
+      <li>
+        <a href="https://etsc.eu/national-governments-and-industry-step-into-eu-regulatory-vacuum-on-e-scooters/"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          European Transport Safety Council — National governments and industry step into EU regulatory vacuum on e-scooters
+        </a>
+      </li>
+      <li>
+        <a href="https://road-safety-charter.ec.europa.eu/content/road-safety-e-scooter-national-rules"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Comissão Europeia — Regras nacionais de segurança rodoviária para trotinetes eléctricas
+        </a>
+      </li>
+      <li>
+        <a href="https://www.reuters.com/world/europe/italy-enforce-helmets-insurance-e-scooter-riders-after-accidents-2024-11-20/"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Reuters — Itália impõe capacete, seguro e regras mais exigentes às trotinetes eléctricas
+        </a>
+      </li>
+      <li>
+        <a href="https://dre.pt/legislacao-consolidada/-/lc/116041830/view"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Diário da República — Código da Estrada: enquadramento das trotinetes eléctricas em Portugal
+        </a>
+      </li>
+      <li>
+        <a href="https://ansr.pt/comunicacao/noticias/comunicado-conselho-europeu-seguranca-transportes"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Autoridade Nacional de Segurança Rodoviária — Normas de segurança recomendadas para trotinetes eléctricas
+        </a>
+      </li>
+      <li>
+        <a href="https://www.imt-ip.pt/wp-content/uploads/2025/01/Micromobilidade_V3_VF.pdf"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Instituto da Mobilidade e dos Transportes — Micromobilidade
+        </a>
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco António dos Santos Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

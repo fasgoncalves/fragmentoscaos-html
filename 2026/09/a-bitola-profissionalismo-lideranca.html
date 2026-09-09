@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Minha Bitola</title>
+<meta name="description" content="A Minha Bitola">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Minha Bitola</h1>
+      <p class="meta">Publicado em 2026-09-07 19:05:55</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_000000009eb08246a198cbf994cc8775_3c6e0e3a.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+<span itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+<meta itemprop="headline" content="A Minha Bitola">
+<meta itemprop="description" content="Uma reflexão sobre profissionalismo, exigência, liderança, competência e responsabilidade: exigir aos outros apenas aquilo que primeiro se exige a si próprio e nunca abandonar uma equipa perante um problema.">
+<meta itemprop="datePublished" content="2026-09-07">
+<meta itemprop="dateModified" content="2026-09-07">
+<meta itemprop="author" content="Francisco Gonçalves">
+<meta itemprop="publisher" content="Fragmentos do Caos">
+<meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_000000009eb08246a198cbf994cc8775.png">
+</span>
+
+<div style="max-width:900px; margin:auto; padding:10px;">
+
+<h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">A Bitola</h1>
+
+<p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">Exigir muito aos outros só é legítimo quando se exige ainda mais a nós próprios</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+<p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>
+Esta crónica parte de uma ideia simples de profissionalismo: a exigência só ganha legitimidade quando quem a exerce se submete à mesma bitola, assume a responsabilidade pelas decisões e permanece ao lado da equipa quando surgem dificuldades. <strong>Não se trata de defender dureza gratuita, mas coerência, competência, justiça e presença.</strong></p>
+</div>
+
+<p>Há uma diferença enorme entre ser exigente e ser autoritário.</p>
+<p>O autoritário exige porque tem poder.</p>
+<p>O profissional exigente exige porque acredita que o trabalho deve ter um determinado nível de qualidade e porque começa por aplicar esse padrão a si próprio.</p>
+<p>Essa diferença nem sempre é visível numa reunião.</p>
+<p>Mas torna-se evidente quando surgem os problemas.</p>
+<p>Porque é muito fácil pedir rigor aos outros quando tudo corre bem.</p>
+<p>Mais difícil é ficar ao lado da equipa quando o sistema falha, o projecto atrasa, o cliente pressiona, a solução não aparece e toda a gente começa a procurar alguém a quem atribuir a culpa.</p>
+<p>Foi sempre aí que, para mim, se definia verdadeiramente a responsabilidade profissional.</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Nunca exigi a uma equipa aquilo que não estivesse disposto a exigir a mim próprio. E nunca deixei uma equipa sozinha perante um problema.</p>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Amizade é amizade. Trabalho é trabalho.</h2>
+<p>Ao longo de uma carreira aparecem inevitavelmente amigos, conhecidos, colegas antigos e pessoas por quem temos simpatia.</p>
+<p>Isso é normal.</p>
+<p>O que nunca me pareceu normal foi transformar essa proximidade numa qualificação profissional.</p>
+<p>Podia ser amigo de alguém.</p>
+<p>Podia gostar muito dessa pessoa.</p>
+<p>Podia almoçar com ela, conversar durante horas e ter por ela enorme estima.</p>
+<p>Mas se fosse necessário contratar alguém para uma função técnica ou de gestão, a pergunta era outra:</p>
+<p><strong>é competente para o trabalho?</strong></p>
+<p>Se não fosse, a amizade não resolvia o problema.</p>
+<p>Uma empresa não existe para proteger susceptibilidades.</p>
+<p>Existe para produzir, cumprir, servir clientes, resolver problemas e sobreviver.</p>
+<p>Misturar amizade com avaliação profissional é uma das formas mais rápidas de destruir simultaneamente a empresa e, por vezes, a própria amizade.</p>
+<p>Por isso sempre separei os dois mundos.</p>
+<p>No plano pessoal, amizade.</p>
+<p>No plano profissional, competência.</p>
+<p>Pode parecer frio.</p>
+<p>Na realidade, é respeito pelos dois.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A exigência tem de começar no espelho</h2>
+<p>Existe uma forma profundamente injusta de liderança:</p>
+<p>o chefe que exige dos outros aquilo que nunca aceitaria exigir de si.</p>
+<p>Chega tarde, mas exige pontualidade.</p>
+<p>Não estuda, mas exige preparação.</p>
+<p>Não assume erros, mas exige responsabilidade.</p>
+<p>Desaparece quando há problemas e regressa quando chega a hora de distribuir culpas.</p>
+<p>Esse tipo de chefe não é exigente.</p>
+<p>É apenas hierarquicamente confortável.</p>
+<p>A exigência só tem legitimidade quando começa no próprio.</p>
+<p>Se eu queria preparação, tinha de estar preparado.</p>
+<p>Se exigia qualidade, o meu trabalho tinha de respeitar a mesma qualidade.</p>
+<p>Se esperava esforço, não podia desaparecer quando a equipa continuava a lutar com um problema.</p>
+<p>A bitola era a mesma.</p>
+<p>Na verdade, muitas vezes era maior para mim.</p>
+<p>Porque quem lidera deve suportar mais responsabilidade, não menos.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Nunca deixar a equipa sozinha</h2>
+<p>Este talvez tenha sido o princípio mais importante.</p>
+<p>Problemas sérios têm uma característica interessante:</p>
+<p>revelam rapidamente quem ocupa um cargo e quem exerce liderança.</p>
+<p>Quando um projecto corre bem, quase toda a gente parece competente.</p>
+<p>Quando as coisas correm mal, começam as diferenças.</p>
+<p>Há quem convoque uma reunião para perguntar quem falhou.</p>
+<p>Há quem envie um e-mail a exigir explicações.</p>
+<p>Há quem procure proteger a própria posição.</p>
+<p>E há quem se sente ao lado da equipa e pergunte:</p>
+<p><strong>"O que temos de fazer para resolver isto?"</strong></p>
+<p>Sempre preferi a última opção.</p>
+<p>Se era necessária uma noite inteira, ficava.</p>
+<p>Se era necessário estudar uma tecnologia nova, estudava.</p>
+<p>Se fosse preciso falar com o cliente, falava.</p>
+<p>Se a decisão final fosse minha, a responsabilidade final também era minha.</p>
+<p>Isso não significa fazer o trabalho dos outros.</p>
+<p>Significa garantir que ninguém sente que foi abandonado no momento em que mais precisava de apoio.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Popularidade e liderança raramente são a mesma coisa</h2>
+<p>Nunca fui particularmente estimado por toda a gente.</p>
+<p>Também nunca fiz disso um objectivo.</p>
+<p>A exigência raramente cria popularidade imediata.</p>
+<p>Quem pede qualidade incomoda.</p>
+<p>Quem rejeita soluções medíocres incomoda.</p>
+<p>Quem diz que determinado trabalho ainda não está suficientemente bom incomoda.</p>
+<p>Quem distingue competência de amizade incomoda ainda mais.</p>
+<p>E quem não aceita desculpas fáceis acaba inevitavelmente por coleccionar algumas antipatias.</p>
+<p>Com o tempo aprendi uma coisa simples:</p>
+<p><strong>ser apreciado e ser respeitado são coisas diferentes.</strong></p>
+<p>Naturalmente, todos preferimos trabalhar num ambiente cordial.</p>
+<p>Mas um gestor que transforma a necessidade de ser querido no principal critério das suas decisões começa rapidamente a perder capacidade de liderar.</p>
+<p>Há momentos em que é necessário dizer não.</p>
+<p>Há momentos em que é necessário devolver um trabalho.</p>
+<p>Há momentos em que é necessário dizer a alguém que não está preparado.</p>
+<p>E há momentos em que a decisão certa não é a decisão popular.</p>
+<p>Se o objectivo for acumular simpatias, quase todas essas decisões se tornam difíceis.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Exigir não significa humilhar</h2>
+<p>Também existe aqui um limite que sempre considerei essencial.</p>
+<p>Uma pessoa pode falhar.</p>
+<p>Pode não saber.</p>
+<p>Pode cometer um erro grave.</p>
+<p>Isso não lhe retira dignidade.</p>
+<p>O rigor profissional não exige agressividade.</p>
+<p>Pode-se dizer:</p>
+<p>"Isto está errado."</p>
+<p>sem dizer:</p>
+<p>"Tu és incapaz."</p>
+<p>Pode-se corrigir um erro sem destruir a pessoa que o cometeu.</p>
+<p>Pode-se exigir muito e, simultaneamente, ensinar.</p>
+<p>Aliás, um dos deveres de quem possui mais experiência é precisamente transmitir conhecimento.</p>
+<p>A exigência sem aprendizagem apenas produz medo.</p>
+<p>A exigência acompanhada de apoio pode produzir profissionais melhores.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O erro é aceitável. A negligência não é.</h2>
+<p>Sempre fiz uma distinção importante.</p>
+<p>Errar faz parte do trabalho.</p>
+<p>Especialmente em áreas técnicas complexas.</p>
+<p>Quem nunca errou provavelmente nunca tomou decisões suficientemente difíceis.</p>
+<p>O que me incomodava não era o erro honesto.</p>
+<p>Era a falta de preparação.</p>
+<p>A repetição do mesmo erro.</p>
+<p>A ausência de curiosidade.</p>
+<p>O trabalho entregue sabendo que estava mal feito.</p>
+<p>A desculpa apresentada antes de qualquer tentativa séria de solução.</p>
+<p>Uma pessoa podia chegar e dizer:</p>
+<p>"Fiz isto, correu mal e não percebo porquê."</p>
+<p>Isso é um problema técnico.</p>
+<p>Outra situação é dizer:</p>
+<p>"Não vi."</p>
+<p>"Não tive tempo."</p>
+<p>"Pensei que alguém tratava."</p>
+<p>Aí já estamos perante um problema profissional.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A competência também é uma forma de respeito</h2>
+<p>Às vezes fala-se da competência como se fosse apenas uma qualidade individual.</p>
+<p>Não é.</p>
+<p>Ser competente é também uma forma de respeito pelos outros.</p>
+<p>Pelo colega que depende do nosso trabalho.</p>
+<p>Pelo cliente que paga.</p>
+<p>Pela empresa que assume riscos.</p>
+<p>Pelas pessoas que terão de resolver amanhã aquilo que deixámos mal feito hoje.</p>
+<p>Um sistema mal desenhado não é apenas tecnicamente mau.</p>
+<p>Transfere problemas para outras pessoas.</p>
+<p>Um prazo irresponsavelmente assumido não é apenas optimismo.</p>
+<p>Obriga alguém a trabalhar sob pressão mais tarde.</p>
+<p>Uma decisão mal preparada não afecta apenas quem a tomou.</p>
+<p>Espalha custos pela organização.</p>
+<p>É por isso que sempre vi o profissionalismo como uma responsabilidade colectiva.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O perigo das organizações que premiam a conveniência</h2>
+<p>Há empresas onde esta lógica desaparece.</p>
+<p>A competência deixa de ser o principal critério.</p>
+<p>Entram a amizade, a proximidade, a política interna, a conveniência.</p>
+<p>O gestor não escolhe quem resolve melhor o problema.</p>
+<p>Escolhe quem lhe cria menos problemas.</p>
+<p>O resultado é previsível.</p>
+<p>Os melhores começam a perceber que a excelência não é recompensada.</p>
+<p>Os medianos aprendem que basta pertencer ao círculo certo.</p>
+<p>Os incompetentes descobrem que a protecção é mais importante do que o desempenho.</p>
+<p>E começa uma forma silenciosa de decadência organizacional.</p>
+<p>Não acontece num dia.</p>
+<p>Acontece contratação após contratação.</p>
+<p>Promoção após promoção.</p>
+<p>Até que um dia a empresa olha à volta e pergunta onde desapareceram as pessoas capazes de resolver problemas.</p>
+<p>Muitas vezes já partiram.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Não vale a pena lamentar a coerência</h2>
+<p>Ao fim de muitos anos, podia olhar para trás e pensar que talvez devesse ter sido mais tolerante.</p>
+<p>Mais diplomático.</p>
+<p>Mais cuidadoso com determinadas susceptibilidades.</p>
+<p>Talvez tivesse sido mais popular.</p>
+<p>Mas não lamento a bitola.</p>
+<p>Porque nunca pedi aos outros aquilo que não estivesse disposto a fazer.</p>
+<p>Nunca usei a exigência para esconder preguiça própria.</p>
+<p>E nunca abandonei uma equipa quando apareciam problemas.</p>
+<p>Isso, para mim, vale mais do que ter sido unanimemente apreciado.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O profissionalismo não é uma pose</h2>
+<p>Não é usar um fato caro.</p>
+<p>Não é ter um cargo comprido no cartão de visita.</p>
+<p>Não é falar em reuniões durante quarenta minutos.</p>
+<p>Não é ter dezenas de pessoas subordinadas.</p>
+<p>Profissionalismo é algo muito mais simples.</p>
+<p>É estudar antes de decidir.</p>
+<p>É cumprir aquilo que se prometeu.</p>
+<p>É admitir quando não se sabe.</p>
+<p>É corrigir rapidamente quando se erra.</p>
+<p>É proteger a equipa quando está sob pressão.</p>
+<p>É exigir qualidade sem humilhar.</p>
+<p>É separar relações pessoais de decisões profissionais.</p>
+<p>É assumir responsabilidade.</p>
+<p>E, sobretudo, é manter a mesma bitola quando ninguém está a observar.</p>
+
+<p>Talvez por isso algumas pessoas exigentes nunca sejam particularmente populares.</p>
+<p>Mas há uma diferença que só o tempo revela.</p>
+<p>Há gestores de quem todos gostavam enquanto estavam presentes.</p>
+<p>E há profissionais de quem muitos talvez não gostassem, mas de quem ainda anos depois se diz:</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">"Podia exigir muito. Mas quando havia um problema, estava lá."</p>
+</div>
+
+<p>Entre as duas memórias, sei perfeitamente qual prefiro deixar.</p>
+<p><strong>Nunca exigi menos aos outros do que exigia a mim próprio.</strong></p>
+<p>E nunca deixei uma equipa sozinha diante de um problema.</p>
+<p>No fim, talvez isso seja apenas uma forma simples de definir aquilo a que sempre chamei profissionalismo.</p>
+
+<div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+<h3 style="color:#d6a542; margin-top:0; text-align:left;">O QUE A INVESTIGAÇÃO AJUDA A SUSTENTAR</h3>
+<ul style="padding-left:22px; margin:0;">
+<li>A investigação de Amy Edmondson sobre segurança psicológica mostrou que equipas onde as pessoas sentem que podem assumir riscos interpessoais, admitir erros e falar sobre problemas tendem a apresentar mais comportamentos de aprendizagem.</li>
+<li>Uma meta-análise publicada em <em>Personnel Psychology</em>, reunindo 136 amostras independentes, mais de 22.000 indivíduos e quase 5.000 grupos, encontrou associações relevantes entre segurança psicológica, desempenho e outros resultados organizacionais.</li>
+<li>O trabalho de Ingrid Nembhard e Amy Edmondson sobre liderança inclusiva mostrou que comportamentos do líder que convidam e valorizam contributos podem favorecer segurança psicológica e participação em esforços de melhoria.</li>
+<li>Um estudo de James Detert e Ethan Burris, com 3.149 trabalhadores e 223 gestores, encontrou uma relação consistente entre abertura do gestor e a disposição dos colaboradores para falar sobre melhorias, mediada pela percepção de segurança psicológica.</li>
+<li>Uma revisão de evidência do CIPD conclui que gestores que tratam as pessoas com justiça, fornecem apoio e feedback, desenvolvem os colaboradores e promovem cooperação estão associados a equipas mais saudáveis, satisfeitas e com melhor desempenho.</li>
+</ul>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+
+<div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+<p style="text-align:left;">Esta crónica é uma reflexão pessoal sobre profissionalismo e liderança. As experiências descritas não pretendem constituir uma teoria universal de gestão nem provar que gestores exigentes são necessariamente melhores gestores.</p>
+<p style="text-align:left;">A investigação internacional sobre equipas acrescenta, contudo, um ponto importante: exigência e segurança psicológica não são conceitos incompatíveis. Uma equipa pode trabalhar com padrões elevados e, simultaneamente, sentir que é possível admitir erros, pedir ajuda, discordar e levantar problemas sem receio de humilhação ou punição arbitrária.</p>
+<p style="text-align:left;">Os estudos de Amy Edmondson e trabalhos posteriores sobre segurança psicológica mostram que ambientes onde as pessoas podem falar sobre falhas e riscos favorecem aprendizagem e melhoria. Isso não significa ausência de responsabilidade. Significa distinguir entre um erro cometido num processo sério de trabalho e comportamentos negligentes ou repetidamente irresponsáveis.</p>
+<p style="text-align:left;">A literatura sobre liderança inclusiva e <em>employee voice</em> também reforça a importância da postura do gestor. A disponibilidade para ouvir, valorizar contributos e permanecer acessível influencia a disposição dos colaboradores para comunicar problemas e propor melhorias.</p>
+<p style="text-align:left;">Deve igualmente evitar-se romantizar a dureza. Exigência sem clareza, justiça, respeito ou apoio pode produzir medo, silêncio e ocultação de erros. A legitimidade da bitola depende precisamente da reciprocidade defendida nesta crónica: <strong>o líder deve submeter-se ao mesmo padrão que exige e assumir mais, não menos, responsabilidade quando as coisas correm mal.</strong></p>
+<p style="text-align:left; margin-bottom:0;">O argumento central é, portanto, simples: profissionalismo não é uma estética de autoridade. É coerência entre aquilo que se exige, aquilo que se pratica e aquilo que se está disposto a assumir quando aparece um problema.</p>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências internacionais</h2>
+
+<ul style="padding-left:22px;">
+<li><a href="https://doi.org/10.2307/2666999" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">EDMONDSON, Amy C. — "Psychological Safety and Learning Behavior in Work Teams", <em>Administrative Science Quarterly</em>, 44(2), 1999</a></li>
+<li><a href="https://doi.org/10.1111/peps.12183" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">FRAZIER, M. Lance et al. — "Psychological Safety: A Meta-Analytic Review and Extension", <em>Personnel Psychology</em>, 70(1), 2017</a></li>
+<li><a href="https://doi.org/10.1002/job.413" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">NEMBHARD, Ingrid M.; EDMONDSON, Amy C. — "Making it safe: the effects of leader inclusiveness and professional status on psychological safety and improvement efforts in health care teams", <em>Journal of Organizational Behavior</em>, 27(7), 2006</a></li>
+<li><a href="https://doi.org/10.5465/amj.2007.26279183" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">DETERT, James R.; BURRIS, Ethan R. — "Leadership Behavior and Employee Voice: Is the Door Really Open?", <em>Academy of Management Journal</em>, 50(4), 2007</a></li>
+<li><a href="https://www.cipd.org/en/knowledge/evidence-reviews/people-managers/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">CIPD — <em>Effective People Managers: Evidence Review</em>, 2023</a></li>
+<li><a href="https://www.cipd.org/uk/knowledge/reports/importance-of-people-management/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">CIPD — <em>The Importance of People Management: Analysis of its Impact on Employees</em>, 2023</a></li>
+</ul>
+
+<div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+<p style="color:#cfcfcf; text-align:left;"><strong style="color:#d6a542;">Francisco Gonçalves</strong><br>Fragmentos do Caos<br>FC-Chronic-News</p>
+</div>
+
+</div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

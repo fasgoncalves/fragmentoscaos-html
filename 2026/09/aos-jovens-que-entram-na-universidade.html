@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aos Jovens que Entram na Universidade</title>
+<meta name="description" content="Aos Jovens que Entram na Universidade">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Aos Jovens que Entram na Universidade</h1>
+      <p class="meta">Publicado em 2026-09-07 12:00:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_0000000071bc8211aa8b363440d6633a_796af15a.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+<div style="display:none;">
+<span itemscope itemtype="https://schema.org/NewsArticle">
+<meta itemprop="headline" content="Aos Jovens que Entram na Universidade">
+<meta itemprop="description" content="Uma mensagem aos jovens que entram na universidade: aprender a pensar, a aprender depressa, a navegar o caos e a preparar-se para mudanças profissionais, tecnológicas e sociais que ainda não conseguimos prever.">
+<meta itemprop="datePublished" content="2026-09-01">
+<meta itemprop="dateModified" content="2026-09-01">
+<meta itemprop="author" content="Francisco Gonçalves">
+<meta itemprop="publisher" content="Fragmentos do Caos">
+<meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/09/file_0000000071bc8211aa8b363440d6633a.png">
+</span>
+</div>
+
+<div style="max-width:900px; margin:auto; padding:10px;">
+
+<h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">Aos Jovens que Entram na Universidade</h1>
+
+<p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">Aprendam a navegar o caos antes que o caos aprenda a navegar-vos</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+<p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>
+Entrar na universidade já não significa receber um mapa relativamente estável para uma profissão. Significa, cada vez mais, aprender a construir mapas enquanto o território muda. Num mundo onde tecnologia, ciência, economia e profissões se transformam em ciclos cada vez mais curtos, a principal competência talvez seja esta: <strong>aprender a navegar o caos e estar preparado para surpreender a mudança antes que a mudança nos surpreenda.</strong></p>
+</div>
+
+<p>Entrar na universidade continua a ser apresentado como o início de uma estrada relativamente previsível.</p>
+
+<p>Escolher um curso.</p>
+
+<p>Aprender uma profissão.</p>
+
+<p>Obter um diploma.</p>
+
+<p>Encontrar emprego.</p>
+
+<p>Construir uma carreira.</p>
+
+<p>Durante muito tempo, esta sequência teve alguma correspondência com a realidade.</p>
+
+<p>Hoje, cada vez menos.</p>
+
+<p>Quem entra agora na universidade poderá trabalhar, dentro de vinte anos, em profissões que ainda não existem, utilizar tecnologias que ainda não foram inventadas e resolver problemas que neste momento ninguém consegue sequer formular.</p>
+
+<p>Por isso, talvez o pior conselho que se possa dar a um jovem seja:</p>
+
+<p><strong>"Prepara-te para o emprego que vais ter."</strong></p>
+
+<p>O conselho deveria ser outro:</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Prepara-te para um mundo que vai mudar várias vezes enquanto estiveres nele.</p>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O diploma é o começo, não o destino</h2>
+
+<p>A universidade continua a ser importante.</p>
+
+<p>Mas não deveria servir apenas para ensinar ferramentas.</p>
+
+<p>Ferramentas envelhecem.</p>
+
+<p>Linguagens mudam.</p>
+
+<p>Plataformas desaparecem.</p>
+
+<p>Empresas deixam de existir.</p>
+
+<p>Profissões transformam-se.</p>
+
+<p>Até conhecimentos altamente especializados podem perder valor quando o contexto muda.</p>
+
+<p>Aquilo que permanece é outra coisa:</p>
+
+<p><strong>capacidade de pensar.</strong></p>
+
+<p>Perceber um problema.</p>
+
+<p>Questionar pressupostos.</p>
+
+<p>Aprender autonomamente.</p>
+
+<p>Relacionar conhecimentos diferentes.</p>
+
+<p>Reconhecer quando estamos errados.</p>
+
+<p>Adaptar uma estratégia.</p>
+
+<p>Começar novamente.</p>
+
+<p>Essas competências envelhecem muito mais devagar.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Aprendam sobretudo a aprender</h2>
+
+<p>Uma das maiores ilusões do ensino é fazer-nos acreditar que primeiro aprendemos e depois utilizamos aquilo que aprendemos.</p>
+
+<p>A vida profissional raramente funciona assim.</p>
+
+<p>Frequentemente recebemos primeiro o problema.</p>
+
+<p>E só depois descobrimos aquilo que precisamos de aprender para o resolver.</p>
+
+<p>É aí que se distingue quem sabe apenas executar procedimentos de quem realmente sabe pensar.</p>
+
+<p>Não tenham medo de dizer:</p>
+
+<p><strong>"Não sei."</strong></p>
+
+<p>Tenham medo de acrescentar:</p>
+
+<p><strong>"E não quero descobrir."</strong></p>
+
+<p>A pessoa intelectualmente forte não é aquela que possui todas as respostas.</p>
+
+<p>É aquela que sabe construir uma resposta quando ainda não existe nenhuma.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O mundo não vos deve estabilidade</h2>
+
+<p>Esta talvez seja uma ideia desagradável, mas útil.</p>
+
+<p>O mundo não tem obrigação de permanecer semelhante ao que encontraram quando entraram na universidade.</p>
+
+<p>A Inteligência Artificial já está a alterar profissões inteiras.</p>
+
+<p>A automatização continuará.</p>
+
+<p>A ciência acelerará.</p>
+
+<p>Empresas nascerão e desaparecerão.</p>
+
+<p>Novos conflitos políticos e económicos mudarão mercados.</p>
+
+<p>A transição energética criará indústrias e destruirá outras.</p>
+
+<p>E provavelmente acontecerão várias coisas que ninguém antecipou.</p>
+
+<p>A humanidade possui um talento particular para produzir acontecimentos não previstos e depois constituir uma comissão para estudar por que razão ninguém os previu.</p>
+
+<p>Habituem-se a isso.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Não estudem apenas dentro da vossa área</h2>
+
+<p>Um engenheiro deveria conhecer alguma economia.</p>
+
+<p>Um economista deveria compreender tecnologia.</p>
+
+<p>Um médico deveria conhecer estatística.</p>
+
+<p>Um programador deveria ler filosofia.</p>
+
+<p>Um gestor deveria perceber ciência.</p>
+
+<p>E todos deveriam conhecer História suficientemente bem para perceber que quase todas as gerações acreditaram viver num mundo estável imediatamente antes de alguma coisa o alterar profundamente.</p>
+
+<p>Os problemas interessantes raramente respeitam fronteiras académicas.</p>
+
+<p>A inovação acontece muitas vezes precisamente onde duas áreas que normalmente não conversavam começam finalmente a conversar.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Aprendam a discordar</h2>
+
+<p>A universidade deveria ser também um lugar onde se aprende algo actualmente em vias de extinção:</p>
+
+<p><strong>discordar sem transformar o outro em inimigo.</strong></p>
+
+<p>Procurem pessoas que contradigam as vossas ideias.</p>
+
+<p>Leiam autores com quem não concordam.</p>
+
+<p>Tentem provar que vocês próprios estão errados.</p>
+
+<p>Uma ideia que só sobrevive num ambiente onde ninguém a questiona não é uma ideia forte.</p>
+
+<p>É uma espécie protegida.</p>
+
+<p>E nunca confundam consenso com verdade.</p>
+
+<p>O consenso pode ser útil.</p>
+
+<p>Mas:</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Sem dissenso, o consenso transforma-se facilmente em silêncio organizado.</p>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Não construam a identidade em torno de uma profissão</h2>
+
+<p>Não digam demasiado cedo:</p>
+
+<p><strong>"Eu sou isto."</strong></p>
+
+<p>Digam:</p>
+
+<p><strong>"Neste momento faço isto."</strong></p>
+
+<p>Parece uma diferença pequena.</p>
+
+<p>Não é.</p>
+
+<p>Quem transforma uma profissão em identidade pode sentir qualquer mudança tecnológica como ameaça pessoal.</p>
+
+<p>Quem constrói a identidade em torno da curiosidade e da capacidade de aprender consegue mudar de profissão sem sentir que deixou de existir.</p>
+
+<p>O futuro pertencerá cada vez mais a pessoas capazes de reconstruir competências várias vezes durante a vida.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Tenham projectos próprios</h2>
+
+<p>Não esperem sempre por autorização institucional.</p>
+
+<p>Construam qualquer coisa.</p>
+
+<p>Um programa.</p>
+
+<p>Um artigo.</p>
+
+<p>Uma investigação.</p>
+
+<p>Uma associação.</p>
+
+<p>Uma pequena empresa.</p>
+
+<p>Um projecto aberto.</p>
+
+<p>Uma experiência.</p>
+
+<p>Uma solução para um problema real.</p>
+
+<p>É extraordinária a diferença entre aprender teoricamente que algo funciona e descobrir, às duas da manhã, que aquilo afinal não funciona.</p>
+
+<p>É nesse momento que começa grande parte da aprendizagem verdadeira.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">E aprendam a navegar o caos</h2>
+
+<p>Talvez esta seja a competência principal.</p>
+
+<p>O caos não significa ausência completa de ordem.</p>
+
+<p>Significa viver num ambiente onde informação é incompleta, regras mudam, acontecimentos inesperados surgem e ninguém possui o mapa completo.</p>
+
+<p>Não esperem sempre por certezas.</p>
+
+<p>Aprendam a avançar com conhecimento imperfeito.</p>
+
+<p>Reavaliar.</p>
+
+<p>Corrigir.</p>
+
+<p>Mudar de direcção.</p>
+
+<p>E continuar.</p>
+
+<p>Porque uma das capacidades mais importantes deste século será conseguir dizer:</p>
+
+<p><strong>"O plano deixou de funcionar. Vamos construir outro."</strong></p>
+
+<p>Sem drama.</p>
+
+<p>Sem orgulho ferido.</p>
+
+<p>Sem nostalgia pelo plano antigo.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Uma mensagem para quem começa</h2>
+
+<p>Entrem na universidade para aprender muito mais do que uma profissão.</p>
+
+<p>Aprendam ciência.</p>
+
+<p>Aprendam tecnologia.</p>
+
+<p>Aprendam História.</p>
+
+<p>Aprendam a escrever.</p>
+
+<p>Aprendam a argumentar.</p>
+
+<p>Aprendam a ouvir.</p>
+
+<p>Aprendam sobretudo a pensar.</p>
+
+<p>Cultivem curiosidade suficiente para nunca considerar terminada a vossa formação.</p>
+
+<p>E não tentem prever exactamente onde estarão daqui a trinta anos.</p>
+
+<p>Provavelmente falhariam.</p>
+
+<p>Preparem-se antes para conseguir continuar a avançar quando o mundo mudar.</p>
+
+<p>Porque vai mudar.</p>
+
+<p>Várias vezes.</p>
+
+<p>E talvez o melhor conselho que vos possa ser dado no primeiro dia seja este:</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Não entrem na universidade apenas para aprender uma profissão. Entrem para aprender a pensar, a aprender depressa, a navegar o caos e a estar preparados para surpreender a mudança antes que a mudança vos surpreenda.</p>
+</div>
+
+<p>O futuro não pertence necessariamente aos que sabem mais hoje.</p>
+
+<p><strong>Pertence aos que continuarem capazes de aprender amanhã.</strong></p>
+
+<div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+<h3 style="color:#d6a542; margin-top:0; text-align:left;">O QUE OS DADOS INTERNACIONAIS SUGEREM</h3>
+<ul style="padding-left:22px; margin:0;">
+<li>O World Economic Forum estima que cerca de 39% das competências essenciais dos trabalhadores poderão mudar até 2030, segundo empregadores inquiridos para o <em>Future of Jobs Report 2025</em>.</li>
+<li>Entre as competências cuja importância mais cresce aparecem Inteligência Artificial e <em>big data</em>, redes e cibersegurança, literacia tecnológica, pensamento criativo, resiliência, flexibilidade, agilidade, curiosidade e aprendizagem ao longo da vida.</li>
+<li>A OCDE destaca no <em>Skills Outlook 2025</em> a importância do pensamento adaptativo, da resolução de problemas, das competências socioemocionais e da aprendizagem contínua num contexto em que as exigências do mercado mudam mais depressa do que os ciclos tradicionais de política educativa.</li>
+<li>O mesmo relatório da OCDE sublinha que aprendizagem ao longo da vida e informação actualizada sobre o mercado de trabalho são essenciais para permitir adaptação, produtividade e mobilidade num ambiente económico em transformação.</li>
+</ul>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+
+<div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+<p style="text-align:left;">Este artigo é uma mensagem editorial dirigida a jovens que iniciam o ensino superior. Não pretende diminuir a importância da formação académica nem sugerir que conhecimentos técnicos ou especializados perderam valor. Pelo contrário: quanto mais complexo se torna o mundo, maior é a necessidade de bases sólidas em ciência, tecnologia, humanidades, literacia, numeracia e pensamento analítico.</p>
+
+<p style="text-align:left;">A tese central é outra: num ambiente profissional marcado por rápidas mudanças tecnológicas, económicas, demográficas e geopolíticas, a formação inicial já não pode ser encarada como um pacote fechado de conhecimentos destinado a durar uma carreira inteira. A capacidade de aprender, desaprender, reaprender e transferir conhecimentos entre contextos torna-se parte essencial da própria competência profissional.</p>
+
+<p style="text-align:left;">O <em>Future of Jobs Report 2025</em>, do World Economic Forum, baseado em respostas de mais de mil grandes empregadores em 55 economias, estima que 39% das competências essenciais dos trabalhadores poderão mudar até 2030. O relatório identifica simultaneamente competências tecnológicas e humanas entre as que mais crescem em importância, incluindo IA e <em>big data</em>, cibersegurança, literacia tecnológica, pensamento criativo, resiliência, flexibilidade, curiosidade e aprendizagem ao longo da vida.</p>
+
+<p style="text-align:left;">A OCDE, no <em>Skills Outlook 2025</em>, chega a uma conclusão complementar: capacidades fundamentais como literacia, numeracia, resolução adaptativa de problemas e competências sociais e emocionais continuam centrais, enquanto a aprendizagem ao longo da vida se torna indispensável para acompanhar necessidades que evoluem mais rapidamente do que os ciclos tradicionais de educação e política pública.</p>
+
+<p style="text-align:left;">A expressão «navegar o caos» é, portanto, metafórica. Não defende improvisação permanente nem abandono do conhecimento estruturado. Significa desenvolver capacidade para agir perante informação incompleta, rever hipóteses, aprender novas ferramentas e mudar de estratégia sem perder rigor intelectual.</p>
+
+<p style="text-align:left; margin-bottom:0;">A universidade continua a ter uma missão decisiva. Talvez deva apenas recordar com maior frequência que a sua melhor contribuição não é entregar aos estudantes um mapa definitivo do futuro, mas ajudá-los a construir a inteligência necessária para continuar a desenhá-lo quando o mapa deixar de corresponder ao território.</p>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências internacionais</h2>
+
+<ul style="padding-left:22px;">
+<li><a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">World Economic Forum — The Future of Jobs Report 2025</a></li>
+<li><a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/3-skills-outlook/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">World Economic Forum — Future of Jobs 2025: Skills Outlook</a></li>
+<li><a href="https://www.oecd.org/en/publications/oecd-skills-outlook-2025_26163cd3-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Skills Outlook 2025: Building the Skills of the 21st Century for All</a></li>
+<li><a href="https://www.oecd.org/en/publications/oecd-skills-outlook-2025_26163cd3-en/full-report.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Skills Outlook 2025, relatório completo</a></li>
+</ul>
+
+<div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+<p style="color:#cfcfcf; text-align:left;"><strong style="color:#d6a542;">Francisco Gonçalves</strong><br>Fragmentos do Caos<br>FC-Chronic-News</p>
+</div>
+
+</div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
