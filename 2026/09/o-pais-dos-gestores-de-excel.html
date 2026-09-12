@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O País dos Gestores de Excel</title>
+<meta name="description" content="O País dos Gestores de Excel">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O País dos Gestores de Excel</h1>
+      <p class="meta">Publicado em 2026-09-11 14:30:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000f43481f595d3cd950b35d1a3_907ba63d.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+<span itemscope itemtype="https://schema.org/NewsArticle" style="display:none;">
+<meta itemprop="headline" content="O País dos Gestores de Excel">
+<meta itemprop="description" content="Uma crónica crítica sobre o paradoxo entre o prestígio internacional das escolas portuguesas de gestão e a dificuldade persistente de transformar conhecimento académico em produtividade, inovação e excelência organizacional.">
+<meta itemprop="datePublished" content="2026-09-08">
+<meta itemprop="dateModified" content="2026-09-08">
+<meta itemprop="author" content="Francisco Gonçalves">
+<meta itemprop="publisher" content="Fragmentos do Caos">
+<meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/09/file_00000000f43481f595d3cd950b35d1a3.png">
+</span>
+
+<div style="max-width:900px; margin:auto; padding:10px;">
+
+<h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">O País dos Gestores de Excel</h1>
+
+<p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">Quando o prestígio académico sobe nos rankings mais depressa do que a produtividade das empresas</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+<p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>
+Portugal possui hoje escolas de gestão com reconhecimento internacional real. Isso é uma conquista e não deve ser diminuído. A questão desta crónica é outra: <strong>até que ponto o prestígio académico e o currículo dos gestores se traduzem efectivamente em empresas mais produtivas, organizações mais bem dirigidas e melhores resultados económicos para o país?</strong> Um ranking mede a qualidade e os resultados de um programa. Não mede, por si só, a qualidade da gestão de uma economia inteira.</p>
+</div>
+
+<p>Portugal conseguiu produzir um paradoxo bastante sofisticado.</p>
+
+<p>Tem excelentes diplomas.</p>
+
+<p>Excelentes currículos.</p>
+
+<p>Excelentes rankings académicos.</p>
+
+<p>Excelentes conferências sobre liderança, inovação, competitividade e transformação.</p>
+
+<p>E continua, ao mesmo tempo, a discutir há décadas baixa produtividade, baixos salários, empresas de pequena escala, dificuldade de internacionalização e uma gestão que demasiadas vezes parece não conseguir transformar conhecimento em resultados.</p>
+
+<p>O problema não está em haver boas universidades.</p>
+
+<p>Pelo contrário.</p>
+
+<p>O problema começa quando <strong>o prestígio académico é confundido com competência executiva comprovada</strong>.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Uma escola de gestão não é uma fábrica de grandes gestores</h2>
+
+<p>Uma boa escola pode ensinar finanças.</p>
+
+<p>Estratégia.</p>
+
+<p>Marketing.</p>
+
+<p>Operações.</p>
+
+<p>Liderança.</p>
+
+<p>Modelos quantitativos.</p>
+
+<p>Teoria organizacional.</p>
+
+<p>Pode produzir investigação excelente e formar pessoas tecnicamente muito preparadas.</p>
+
+<p>Mas nenhuma dessas coisas demonstra automaticamente que um diplomado consegue recuperar uma empresa em dificuldades, aumentar produtividade de forma sustentada, construir equipas competentes, decidir sob incerteza, eliminar estruturas inúteis, enfrentar interesses instalados, executar uma transformação real e produzir resultados mensuráveis durante anos.</p>
+
+<p>É aí que termina o saber académico e começa outra coisa.</p>
+
+<p><strong>A gestão.</strong></p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Saber o conceito não é conseguir executá-lo</h2>
+
+<p>Há uma diferença brutal entre conhecer o conceito de <em>turnaround</em> e fazer um.</p>
+
+<p>Entre estudar liderança e conseguir que cinquenta pessoas confiem numa decisão difícil.</p>
+
+<p>Entre aprender estratégia competitiva e descobrir, numa terça-feira às onze da manhã, que o maior cliente acabou de abandonar a empresa.</p>
+
+<p>Entre discutir inovação num anfiteatro e convencer uma administração a arriscar dinheiro numa tecnologia que ainda não provou retorno.</p>
+
+<p>Entre resolver um caso académico em noventa minutos e assumir uma decisão cujas consequências podem aparecer cinco anos depois.</p>
+
+<p>A realidade empresarial tem uma característica terrivelmente inconveniente:</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Não atribui notas pela elegância da teoria. Ou funciona ou não funciona.</p>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O diploma como certificação social</h2>
+
+<p>Em determinados círculos portugueses existe quase uma sequência automática.</p>
+
+<p>Boa universidade.</p>
+
+<p>Mestrado ou MBA prestigiado.</p>
+
+<p>Consultora conhecida.</p>
+
+<p>Administração.</p>
+
+<p>Conselho de administração.</p>
+
+<p>Outra administração.</p>
+
+<p>E finalmente conferências sobre liderança.</p>
+
+<p>Cada posição anterior valida a seguinte.</p>
+
+<p>Depois alguém olha para o currículo e conclui:</p>
+
+<p>"Tem enorme experiência de gestão."</p>
+
+<p>Talvez tenha.</p>
+
+<p>Mas falta fazer a pergunta inconveniente:</p>
+
+<p><strong>Que organizações ficaram efectivamente melhores depois de essa pessoa passar por lá?</strong></p>
+
+<p>Aumentou produtividade?</p>
+
+<p>Criou mercados?</p>
+
+<p>Melhorou margens?</p>
+
+<p>Reduziu dependências?</p>
+
+<p>Desenvolveu tecnologia própria?</p>
+
+<p>Criou profissionais melhores?</p>
+
+<p>Conseguiu internacionalizar?</p>
+
+<p>Deixou a organização estruturalmente mais forte?</p>
+
+<p>Essas perguntas são muito menos elegantes do que contar cargos.</p>
+
+<p>Mas são infinitamente mais úteis.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Portugal também gere por pedigree</h2>
+
+<p>E aqui regressamos às elites.</p>
+
+<p>As universidades prestigiadas não produzem apenas conhecimento.</p>
+
+<p>Produzem redes sociais.</p>
+
+<p>Colegas.</p>
+
+<p>Professores.</p>
+
+<p>Antigos alunos.</p>
+
+<p>Consultoras.</p>
+
+<p>Escritórios.</p>
+
+<p>Administrações.</p>
+
+<p>Gabinetes ministeriais.</p>
+
+<p>Ao fim de alguns anos, aquele universo transforma-se numa espécie de mercado interno de reputações.</p>
+
+<p>"Trabalhei com ele."</p>
+
+<p>"Foi meu aluno."</p>
+
+<p>"Conheço-a bem."</p>
+
+<p>"Esteve connosco."</p>
+
+<p>E lentamente a experiência passa a ser medida não apenas pelos resultados, mas pelo <strong>número de portas certas por onde a pessoa já entrou</strong>.</p>
+
+<p>É possível construir uma carreira extraordinária assim.</p>
+
+<p>Mesmo deixando muito pouco para trás.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O paradoxo português</h2>
+
+<p>Portugal tem economistas.</p>
+
+<p>Doutorados.</p>
+
+<p>MBAs.</p>
+
+<p>Consultores.</p>
+
+<p>Administradores.</p>
+
+<p>Especialistas.</p>
+
+<p>Estudos.</p>
+
+<p>Planos estratégicos.</p>
+
+<p>Seminários sobre competitividade.</p>
+
+<p>Congressos sobre inovação.</p>
+
+<p>E tem, agora, escolas de gestão que aparecem com enorme destaque nos rankings internacionais.</p>
+
+<p>Em Setembro de 2026, o <em>Financial Times</em> colocou o Mestrado Internacional em Gestão da Nova SBE no <strong>2.º lugar mundial</strong>. Cinco escolas portuguesas entraram no grupo das cem instituições classificadas.</p>
+
+<p>É um resultado académico notável.</p>
+
+<p>Mas no mesmo país a OCDE continua a encontrar uma produtividade do trabalho cerca de <strong>17% abaixo da média da organização</strong>.</p>
+
+<p>E observa ainda que cerca de 40% do emprego na economia empresarial portuguesa se concentra em microempresas, que frequentemente têm falta de competências de gestão profissional e investem pouco em tecnologia e inovação.</p>
+
+<p>Alguma coisa não encaixa.</p>
+
+<p>Não significa que as universidades sejam más.</p>
+
+<p>Significa que <strong>a excelência académica não está automaticamente a converter-se em excelência organizacional à escala da economia</strong>.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Talvez estejamos a medir as coisas erradas</h2>
+
+<p>Um ranking académico pode medir salários dos antigos alunos.</p>
+
+<p>Progressão de carreira.</p>
+
+<p>Mobilidade internacional.</p>
+
+<p>Satisfação.</p>
+
+<p>Diversidade.</p>
+
+<p>Qualificações do corpo docente.</p>
+
+<p>São métricas legítimas.</p>
+
+<p>Mas não respondem necessariamente à pergunta que interessa a um país:</p>
+
+<p><strong>esta formação está a aumentar a capacidade de transformar as empresas que compõem a nossa economia?</strong></p>
+
+<p>Há antigos alunos portugueses que fazem carreiras extraordinárias no estrangeiro.</p>
+
+<p>Isso demonstra qualidade da formação.</p>
+
+<p>Mas pode também significar que parte do melhor talento produzido pelas nossas escolas está a ser absorvido por organizações internacionais mais capazes de o utilizar.</p>
+
+<p>O diploma pode ser excelente.</p>
+
+<p>O ecossistema pode continuar medíocre.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A gestão é uma tecnologia produtiva</h2>
+
+<p>A investigação internacional há muito que demonstra que qualidade de gestão não é decoração corporativa.</p>
+
+<p>Os trabalhos de Nicholas Bloom e John Van Reenen encontraram uma associação forte entre melhores práticas de gestão e produtividade, rentabilidade, crescimento e sobrevivência empresarial.</p>
+
+<p>Gestão significa medir.</p>
+
+<p>Definir objectivos.</p>
+
+<p>Seleccionar pessoas.</p>
+
+<p>Premiar desempenho.</p>
+
+<p>Detectar erros.</p>
+
+<p>Corrigir rapidamente.</p>
+
+<p>Investir.</p>
+
+<p>Abandonar aquilo que não funciona.</p>
+
+<p>Ou seja, exactamente aquelas coisas que não se resolvem com a frase:</p>
+
+<p>"Tenho um MBA."</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Nem tudo está parado</h2>
+
+<p>Também seria intelectualmente preguiçoso pintar toda a economia portuguesa como um deserto empresarial.</p>
+
+<p>Não é.</p>
+
+<p>Existem excelentes empresas portuguesas, gestores extraordinários, sectores internacionalizados e organizações tecnologicamente avançadas.</p>
+
+<p>O Inquérito ao Investimento do Banco Europeu de Investimento de 2025 mostra, aliás, empresas portuguesas com fortes intenções de investimento, investimento em inovação acima da média europeia e utilização significativa de Inteligência Artificial em processos internos.</p>
+
+<p>Isso demonstra precisamente que o país possui capacidade empresarial.</p>
+
+<p>O problema é transformá-la de excepção em escala.</p>
+
+<p>Porque uma economia não converge através dos seus dez melhores casos.</p>
+
+<p>Converge quando milhares de empresas medianas passam a gerir, investir e produzir melhor.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O currículo não pode ser um salvo-conduto vitalício</h2>
+
+<p>Talvez Portugal tenha passado demasiado tempo a perguntar:</p>
+
+<p>"Onde estudou?"</p>
+
+<p>"Por que empresas passou?"</p>
+
+<p>"Que cargos ocupou?"</p>
+
+<p>E demasiado pouco tempo a perguntar:</p>
+
+<p><strong>"O que transformou?"</strong></p>
+
+<p>Porque uma carreira pode ser longa sem ser produtiva.</p>
+
+<p>Pode ser prestigiante sem ser transformadora.</p>
+
+<p>Pode possuir dezenas de cargos e pouquíssimos resultados demonstráveis.</p>
+
+<p>Credenciais são úteis para seleccionar.</p>
+
+<p>Resultados são necessários para avaliar.</p>
+
+<p>Confundir as duas coisas é uma forma particularmente elegante de mediocridade.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O saber livresco não é inútil. É insuficiente.</h2>
+
+<p>Seria absurdo desprezar teoria.</p>
+
+<p>É precisamente a teoria que nos permite compreender padrões, evitar erros conhecidos e acumular conhecimento entre gerações.</p>
+
+<p>Mas teoria sem execução transforma-se em ornamentação intelectual.</p>
+
+<p>E execução sem teoria transforma-se facilmente em improvisação.</p>
+
+<p>Os melhores gestores precisam das duas.</p>
+
+<p>Conhecimento e experiência.</p>
+
+<p>Método e julgamento.</p>
+
+<p>Dados e instinto.</p>
+
+<p>Estratégia e execução.</p>
+
+<p>O problema português não é possuir gestores excessivamente instruídos.</p>
+
+<p>É eventualmente possuir demasiados sistemas de selecção que confundem <strong>instrução, pedigree e circulação pelas instituições certas com prova suficiente de competência</strong>.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A realidade não consulta rankings</h2>
+
+<p>Uma universidade pode subir cinquenta lugares numa classificação internacional.</p>
+
+<p>Uma economia não sobe automaticamente com ela.</p>
+
+<p>Um antigo aluno pode duplicar o salário três anos depois do curso.</p>
+
+<p>Isso não significa que a empresa portuguesa média tenha duplicado a produtividade.</p>
+
+<p>Uma escola pode formar excelentes profissionais para Londres, Frankfurt, Paris ou Nova Iorque.</p>
+
+<p>Portugal continuará com o mesmo problema se não conseguir criar organizações onde esse talento possa produzir transformação comparável.</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Portugal tornou-se muito competente a formar pessoas que sabem explicar como uma empresa deveria ser gerida. Continua muito menos competente a provar, à escala da economia, que sabe transformar esse conhecimento em gestão excepcional.</p>
+</div>
+
+<p>E há uma frase ainda mais incómoda:</p>
+
+<p><strong>uma escola pode subir cinquenta lugares num ranking internacional sem que a produtividade do país suba um único.</strong></p>
+
+<p>É exactamente aí que termina a celebração académica.</p>
+
+<p>E começa a realidade.</p>
+
+<div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+<h3 style="color:#d6a542; margin-top:0; text-align:left;">FACTOS E CONTEXTO</h3>
+<ul style="padding-left:22px; margin:0;">
+<li>O <em>Financial Times Masters in Management 2026</em> colocou o Mestrado Internacional em Gestão da Nova SBE no 2.º lugar mundial. O ranking avalia programas através de indicadores que incluem salários e progressão dos antigos alunos, valor do curso, mobilidade internacional, diversidade e características da escola.</li>
+<li>Além da Nova SBE, o ranking de 2026 incluiu Católica Lisbon, ISEG, Iscte Business School e Católica Porto entre as cem escolas classificadas, evidenciando uma presença portuguesa relevante no ensino internacional de gestão.</li>
+<li>A OCDE estima que a produtividade do trabalho em Portugal permanece cerca de 17% abaixo da média da organização e nota que aproximadamente 40% do emprego na economia empresarial está concentrado em microempresas, muitas das quais têm limitações em competências de gestão profissional e investimento tecnológico.</li>
+<li>A mesma OCDE observa que os resultados de inovação não têm sido proporcionais ao apoio público e ao investimento em investigação e desenvolvimento, apontando ambiente empresarial, regulação, dimensão das empresas e difusão tecnológica como áreas importantes para o crescimento da produtividade.</li>
+<li>O Banco Europeu de Investimento mostra um quadro menos pessimista em vários indicadores: em 2025, as empresas portuguesas apresentavam fortes intenções de investimento, investimento em inovação superior à média da UE e utilização relevante de IA em processos internos. Persistiam, contudo, obstáculos ligados a qualificações, incerteza e regulação.</li>
+<li>A investigação académica internacional de Nicholas Bloom e John Van Reenen encontrou relações fortes entre qualidade das práticas de gestão e produtividade, rentabilidade, crescimento e sobrevivência das empresas. O ponto essencial é que a qualidade de gestão é uma variável económica mensurável, não apenas uma credencial curricular.</li>
+</ul>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+
+<div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+<p style="text-align:left;">Esta crónica é deliberadamente satírica na comparação entre prestígio académico e desempenho económico. Não pretende afirmar que as escolas portuguesas de gestão são responsáveis pela baixa produtividade do país, nem que os seus diplomados são, em geral, maus gestores.</p>
+
+<p style="text-align:left;">Os rankings do <em>Financial Times</em> medem programas concretos segundo metodologias próprias e incluem resultados profissionais dos antigos alunos. São indicadores de qualidade académica e de carreira, não índices de eficiência da gestão nacional. O excelente resultado internacional da Nova SBE e a presença de outras escolas portuguesas devem ser reconhecidos como conquistas reais.</p>
+
+<p style="text-align:left;">Também seria incorrecto atribuir a produtividade portuguesa apenas à qualidade de gestão. Dimensão das empresas, capital disponível, especialização sectorial, burocracia, concorrência, qualificação da mão-de-obra, investimento, tecnologia, infra-estruturas, fiscalidade e enquadramento institucional influenciam decisivamente os resultados.</p>
+
+<p style="text-align:left;">A OCDE fornece, contudo, fundamento para a questão central desta crónica ao destacar simultaneamente o défice de produtividade e as limitações de gestão profissional existentes em muitas microempresas. A investigação internacional de Bloom e Van Reenen reforça que práticas de gestão estão associadas a diferenças reais de desempenho entre empresas.</p>
+
+<p style="text-align:left;">O Inquérito ao Investimento do BEI aconselha igualmente prudência contra uma narrativa de decadência absoluta. Empresas portuguesas apresentam sinais positivos de investimento, inovação e adopção tecnológica. O problema estrutural é de escala e difusão: transformar exemplos de excelência numa base empresarial mais produtiva.</p>
+
+<p style="text-align:left; margin-bottom:0;">A tese é, portanto, mais limitada e mais exigente: <strong>Portugal deve celebrar a qualidade das suas escolas de gestão, mas não confundir a qualidade do ensino com prova de excelência da gestão praticada no país. O teste final de um gestor não é o nome da escola no diploma. É a organização que deixa depois de ter passado por ela.</strong></p>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências internacionais</h2>
+
+<ul style="padding-left:22px;">
+<li><a href="https://www.ft.com/content/e1be5ce1-aaf3-4177-a1b3-1e55eccaac40" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Financial Times — <em>European business schools dominate FT Masters in Management ranking</em>, 7 Setembro 2026</a></li>
+<li><a href="https://www.ft.com/content/fc77e06c-d13b-4ba6-8384-4880dac8c9f3" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Financial Times — <em>Masters in Management Ranking 2026: Methodology and key</em>, 2026</a></li>
+<li><a href="https://www.oecd.org/en/publications/oecd-economic-surveys-portugal-2026_025b3445-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — <em>OECD Economic Surveys: Portugal 2026</em>, 6 Janeiro 2026</a></li>
+<li><a href="https://www.eib.org/en/publications/20250218-econ-eibis-2025-portugal" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">European Investment Bank — <em>EIB Investment Survey 2025: Portugal overview</em>, 9 Dezembro 2025</a></li>
+<li><a href="https://academic.oup.com/qje/article-abstract/122/4/1351/1850493" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">BLOOM, Nicholas; VAN REENEN, John — "Measuring and Explaining Management Practices Across Firms and Countries", <em>The Quarterly Journal of Economics</em>, 122(4), 2007</a></li>
+<li><a href="https://doi.org/10.1257/jep.24.1.203" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">BLOOM, Nicholas; VAN REENEN, John — "Why Do Management Practices Differ across Firms and Countries?", <em>Journal of Economic Perspectives</em>, 24(1), 2010</a></li>
+<li><a href="https://economy-finance.ec.europa.eu/economic-surveillance-eu-member-states/country-pages-including-country-reports/country-report-portugal_en" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">European Commission — <em>2026 Country Report: Portugal</em>, 3 Junho 2026</a></li>
+</ul>
+
+<div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+<p style="color:#cfcfcf; text-align:left;"><strong style="color:#d6a542;">Francisco Gonçalves</strong><br>Fragmentos do Caos<br>FC-Chronic-News</p>
+</div>
+
+</div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
