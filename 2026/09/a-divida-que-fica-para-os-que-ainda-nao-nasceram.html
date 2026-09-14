@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A dívida que fica para os que ainda não nasceram</title>
+<meta name="description" content="A dívida que fica para os que ainda não nasceram">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A dívida que fica para os que ainda não nasceram</h1>
+      <p class="meta">Publicado em 2026-09-12 17:30:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000a57482108019eb9f528c168a_ed3da4f8.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="A dívida que fica para os que ainda não nasceram">
+      <meta itemprop="description" content="Da Operação Marquês ao financiamento de Vale do Lobo: uma crónica sobre dinheiro, responsabilidade pública, justiça lenta e a factura que pode atravessar gerações.">
+      <meta itemprop="datePublished" content="2026-09-12">
+      <meta itemprop="dateModified" content="2026-09-12">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/09/file_00000000a57482108019eb9f528c168a.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      A dívida que fica para os que ainda não nasceram
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      Quando o benefício é privado e a perda é pública, a factura não termina no orçamento de um ano: atravessa gerações.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        Esta crónica distingue deliberadamente três planos: os factos materiais documentados, as teses da acusação e aquilo que ainda depende de decisão judicial. José Sócrates continua a beneficiar da presunção de inocência relativamente aos crimes pelos quais está a ser julgado. A crítica aqui feita dirige-se também à capacidade do Estado para proteger o património público, investigar em tempo útil e impedir que prejuízos de enorme dimensão sejam simplesmente transferidos para os cidadãos.
+      </p>
+    </div>
+
+    <p>
+      Há crimes em que alguém parte uma montra, rouba uma carteira ou leva mercadoria de uma loja. O prejuízo vê-se, o autor muitas vezes identifica-se rapidamente e a máquina judicial avança.
+    </p>
+
+    <p>
+      E depois existem os outros.
+    </p>
+
+    <p>
+      Os que atravessam bancos, sociedades, contratos, contas suíças, intermediários, administradores, empresários e gabinetes de poder. Os valores deixam de ser centenas ou milhares de euros e passam a contar-se por milhões. Quando alguma coisa corre mal, raramente encontramos uma carteira vazia no chão.
+    </p>
+
+    <p>
+      Encontramos imparidades. Encontramos créditos incobráveis. Encontramos recapitalizações. E encontramos contribuintes.
+    </p>
+
+    <p>
+      A Operação Marquês tornou-se o retrato mais monumental desta dificuldade portuguesa em confrontar poder, dinheiro e responsabilidade.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O processo que atravessou uma década
+    </h2>
+
+    <p>
+      José Sócrates foi acusado em 2017 de 31 crimes. Depois de uma decisão instrutória em 2021 ter afastado grande parte da acusação, a Relação de Lisboa reverteu posteriormente uma parte substancial dessa decisão. O julgamento principal começou em Julho de 2025. Sócrates responde actualmente, segundo a pronúncia que chegou a julgamento, por 22 crimes — três de corrupção, treze de branqueamento de capitais e seis de fraude fiscal — e nega as acusações.
+    </p>
+
+    <p>
+      Nada disto autoriza uma condenação antecipada. Mas também não autoriza o exercício inverso: fingir que não existe um vasto corpo documental, financeiro e testemunhal que justificou anos de investigação e a abertura de julgamento.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O dinheiro deixou pegadas
+    </h2>
+
+    <p>
+      A investigação envolveu centenas de buscas e testemunhas, cooperação internacional, documentação bancária e fiscal, contratos, comunicações e dados relativos a centenas de contas. O despacho de acusação ultrapassou quatro mil páginas.
+    </p>
+
+    <p>
+      Segundo o DCIAP, entre 2006 e 2009 foi acumulado na Suíça um montante superior a 24 milhões de euros com origem nos universos empresariais do Grupo Lena, Grupo Espírito Santo e Vale do Lobo. O Ministério Público descreveu um circuito que passou por contas controladas por José Paulo Pinto de Sousa, por Joaquim Barroca e, posteriormente, por Carlos Santos Silva.
+    </p>
+
+    <p>
+      A tese da acusação é que parte substancial desses fundos, embora formalmente titulada por terceiros, foi colocada à disposição de José Sócrates e utilizada no seu interesse. A defesa sustenta, pelo contrário, que o dinheiro pertencia a Carlos Santos Silva e que as quantias entregues a Sócrates correspondiam a empréstimos entre amigos.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        O coração judicial do processo não está em saber se o dinheiro existiu. Está em determinar a quem pertencia economicamente, por que razão circulou daquela forma e se esteve ligado a contrapartidas ilícitas.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Numerário, despesas e intermediários
+    </h2>
+
+    <p>
+      A investigação descreveu levantamentos em numerário, entregas efectuadas directamente ou através de intermediários e despesas suportadas por Carlos Santos Silva. Surgiram nas escutas expressões como "fotocópias" e "documentos", interpretadas pela investigação como linguagem usada em determinados contextos para referir dinheiro.
+    </p>
+
+    <p>
+      O valor probatório dessas conversas não resulta apenas das palavras. A acusação procurou cruzá-las com movimentos bancários, levantamentos, deslocações e entregas posteriores. Esse encadeamento — comunicação, levantamento, intermediário, entrega — é precisamente uma das matérias que o tribunal tem de apreciar.
+    </p>
+
+    <p>
+      Também foram investigados imóveis, viagens, obras de arte, pagamentos de despesas e a utilização do apartamento de Paris colocado à disposição de Sócrates por Carlos Santos Silva. A defesa atribui esses factos à relação de amizade entre ambos e rejeita qualquer origem corruptiva dos fundos.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      BES, Portugal Telecom e Ricardo Salgado
+    </h2>
+
+    <p>
+      Um dos núcleos da acusação relaciona fundos provenientes de estruturas associadas ao antigo Grupo Espírito Santo com alegadas intervenções favoráveis aos interesses empresariais de Ricardo Salgado, nomeadamente em matérias relacionadas com a Portugal Telecom.
+    </p>
+
+    <p>
+      A acusação sustenta a existência de intermediários e contas estrangeiras utilizadas para fazer circular os fundos. Sócrates rejeita a tese e argumenta que decisões tomadas enquanto primeiro-ministro chegaram, pelo contrário, a contrariar interesses de Ricardo Salgado.
+    </p>
+
+    <p>
+      Mais uma vez, a existência dos movimentos financeiros e a interpretação criminal que lhes é atribuída são coisas diferentes. A primeira pode ser reconstruída documentalmente; a segunda exige prova bastante em tribunal.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Grupo Lena
+    </h2>
+
+    <p>
+      Outro núcleo conduz ao Grupo Lena. O Ministério Público sustentou que a actuação de José Sócrates, enquanto primeiro-ministro e também após abandonar funções, proporcionou benefícios comerciais ao grupo e que determinados pagamentos circularam através de intermediários e contratos considerados fictícios pela acusação.
+    </p>
+
+    <p>
+      Sócrates rejeita ter recebido qualquer pagamento como contrapartida por intervenções políticas ou comerciais. O julgamento tem vindo a confrontar estas duas versões com documentos, testemunhos e fluxos financeiros.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      E chegamos a Vale do Lobo
+    </h2>
+
+    <p>
+      É aqui que a questão deixa de dizer respeito apenas a alegados pagamentos clandestinos e toca directamente no património de um banco público.
+    </p>
+
+    <p>
+      A Caixa Geral de Depósitos assumiu uma exposição de enorme dimensão ao projecto Vale do Lobo. O financiamento concedido e a evolução posterior do crédito transformaram o empreendimento num dos casos paradigmáticos do problema dos grandes créditos de risco da CGD.
+    </p>
+
+    <p>
+      A acusação do Ministério Público sustenta que José Sócrates, em articulação com Armando Vara, então administrador da CGD, recebeu pagamentos com origem em receitas desviadas do grupo Vale do Lobo e que esses pagamentos tiveram como finalidade facilitar financiamentos concedidos pela Caixa.
+    </p>
+
+    <p>
+      Esta é uma acusação criminal e, como tal, necessita de prova judicial. Mas existem factos económicos que não dependem dessa condenação: os financiamentos existiram, a exposição existiu, o crédito deteriorou-se e a CGD teve de reconhecer perdas e imparidades na sua carteira de activos.
+    </p>
+
+    <p>
+      É igualmente importante não deformar os números. Uma imparidade não significa automaticamente que cada euro tenha sido definitivamente perdido, e o montante financiado não pode ser tratado como se tivesse simplesmente desaparecido. Existem garantias, recuperações, vendas de créditos e activos. O que importa é apurar a perda económica final e, sobretudo, perceber como decisões de risco daquela magnitude foram tomadas.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O contribuinte não aparece no contrato. Aparece no fim.
+    </h2>
+
+    <p>
+      Um banco público não administra dinheiro sem dono.
+    </p>
+
+    <p>
+      O seu capital pertence ao Estado e, portanto, indirectamente aos cidadãos. Quando a qualidade dos activos se degrada de forma maciça, quando se acumulam imparidades e quando se torna necessária uma recapitalização, o impacto atinge o património colectivo.
+    </p>
+
+    <p>
+      O próprio processo de recapitalização da CGD foi acompanhado por uma revisão profunda da carteira de activos e pelo reconhecimento de milhares de milhões de euros em imparidades e provisões. Isso não significa que todas essas perdas tenham origem em crime — seria absurdo afirmá-lo —, mas significa que os erros, abusos ou crimes que eventualmente existam num banco público nunca são um assunto exclusivamente privado.
+    </p>
+
+    <p>
+      Alguém suporta a perda.
+    </p>
+
+    <p>
+      E quando o accionista é o Estado, essa perda acaba, directa ou indirectamente, no património comum.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Na corrupção pública, quando ela é demonstrada, o mecanismo é perversamente simples: privatiza-se o benefício e socializa-se o prejuízo.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O pequeno ladrão e o grande processo
+    </h2>
+
+    <p>
+      Um cidadão furta mercadoria num supermercado. Há câmaras, testemunhas, um objecto furtado e um arguido. A Justiça consegue normalmente reconstruir a ocorrência sem atravessar cinquenta sociedades, três jurisdições, contas numeradas e milhões de páginas.
+    </p>
+
+    <p>
+      Um processo de criminalidade económico-financeira sofisticada funciona de maneira diferente. Há perícias, recursos, incidentes, cooperação internacional, estruturas societárias, discussão sobre validade da prova, prescrições e equipas jurídicas altamente especializadas.
+    </p>
+
+    <p>
+      Essa complexidade é real e as garantias de defesa não são um obstáculo inconveniente: são uma condição do Estado de direito.
+    </p>
+
+    <p>
+      O intolerável começa quando a complexidade se transforma, na prática, numa vantagem para quem dispõe de recursos suficientes para fazer o relógio processual correr durante anos.
+    </p>
+
+    <p>
+      Porque então aparece um paradoxo socialmente devastador: o pequeno delito pode receber resposta rápida enquanto o eventual crime capaz de causar prejuízos de milhões atravessa uma geração antes de conhecer uma decisão definitiva.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Presunção de inocência não é presunção de inexistência
+    </h2>
+
+    <p>
+      A presunção de inocência protege o cidadão contra o poder do Estado. É uma das maiores conquistas civilizacionais do direito moderno.
+    </p>
+
+    <p>
+      Mas não pode ser transformada retoricamente em presunção de que os factos materiais nunca aconteceram.
+    </p>
+
+    <p>
+      Uma conta bancária existe ou não existe. Uma transferência ocorreu ou não ocorreu. Um crédito foi aprovado ou não foi. Uma imparidade foi reconhecida ou não foi. Um imóvel foi comprado ou não foi. Uma chamada foi gravada ou não foi.
+    </p>
+
+    <p>
+      O que o tribunal decide é se, do conjunto desses factos, resulta responsabilidade criminal para uma determinada pessoa e se essa responsabilidade foi provada para além da dúvida razoável.
+    </p>
+
+    <p>
+      Esta distinção é fundamental, porque permite simultaneamente respeitar os direitos do arguido e exigir que o Estado explique os factos.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A factura atravessa gerações
+    </h2>
+
+    <p>
+      O dinheiro público tem uma característica que raramente entra nas manchetes: tem tempo.
+    </p>
+
+    <p>
+      Um milhão desperdiçado há vinte anos não representa apenas esse milhão. Representa o rendimento que deixou de gerar, a dívida que poderia ter reduzido, o investimento que poderia ter financiado ou o capital que não precisaria de ser reposto.
+    </p>
+
+    <p>
+      É por isso que um prejuízo provocado por corrupção — quando esta é judicialmente demonstrada — não termina no exercício orçamental em que ocorreu.
+    </p>
+
+    <p>
+      A vítima encontra-se no presente e no futuro.
+    </p>
+
+    <p>
+      Está no contribuinte que paga hoje. Está no cidadão que recebe menos serviços públicos amanhã. Está na geração futura que herdará dívida e menos património sem ter participado em qualquer das decisões que produziram a factura.
+    </p>
+
+    <p>
+      Não há aqui qualquer necessidade de recorrer a teorias conspirativas. Basta contabilidade.
+    </p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">
+        ELEMENTOS CENTRAIS
+      </h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>José Sócrates está a ser julgado e beneficia da presunção de inocência.</li>
+        <li>A acusação descreveu circuitos financeiros internacionais envolvendo mais de 24 milhões de euros acumulados na Suíça entre 2006 e 2009.</li>
+        <li>O julgamento inclui núcleos relacionados com o Grupo Lena, Grupo Espírito Santo, Portugal Telecom e Vale do Lobo.</li>
+        <li>O Ministério Público sustenta que pagamentos ligados a Vale do Lobo procuraram facilitar financiamentos da CGD; essa tese continua sujeita a prova judicial.</li>
+        <li>As perdas, imparidades e riscos de um banco público atingem o património colectivo mesmo quando não resultam de crime.</li>
+        <li>A protecção do erário público exige prevenção, auditoria, investigação, recuperação de activos e Justiça em tempo útil.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O verdadeiro teste ao Estado de direito
+    </h2>
+
+    <p>
+      Um Estado de direito não se mede apenas pela capacidade de punir o pequeno delinquente.
+    </p>
+
+    <p>
+      Mede-se pela capacidade de investigar quem tem poder. De seguir dinheiro através de fronteiras. De abrir contas. De compreender contratos. De desmontar sociedades instrumentais. De interrogar administradores, banqueiros e governantes. De recuperar activos. E de chegar a uma decisão antes que o tempo substitua a Justiça.
+    </p>
+
+    <p>
+      As garantias processuais têm de permanecer intactas. O direito ao contraditório, à defesa, ao recurso e a um tribunal independente não pode ser sacrificado em nome da indignação pública.
+    </p>
+
+    <p>
+      Mas também não podemos aceitar que "Estado de direito" passe a significar uma Justiça tecnicamente incapaz de concluir os processos mais complexos antes que a responsabilidade se dissolva no calendário.
+    </p>
+
+    <p>
+      Proteger o acusado contra o arbítrio do Estado é uma obrigação.
+    </p>
+
+    <p>
+      Proteger o cidadão contra quem eventualmente se apropria do Estado é outra.
+    </p>
+
+    <p>
+      Um Estado democrático precisa das duas.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Os milhões perdidos não desaparecem. Mudam de balanço. E as dívidas também não desaparecem: mudam de geração.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">
+      Nota Editorial
+    </h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        Esta crónica é um texto de opinião sustentado em documentação pública e cobertura jornalística identificada nas referências. Não declara como provados crimes que continuam em julgamento nem substitui a apreciação do tribunal.
+      </p>
+      <p style="text-align:left;">
+        Quando são referidas corrupção, branqueamento, fraude fiscal ou pagamentos destinados a favorecer interesses privados, essas referências correspondem às imputações do Ministério Público e à matéria levada a julgamento, salvo quando se indique expressamente a existência de decisão judicial definitiva.
+      </p>
+      <p style="text-align:left; margin-bottom:0;">
+        A crítica editorial incide sobre a defesa do erário público, a responsabilidade inerente à gestão de instituições públicas e a necessidade de uma Justiça capaz de investigar e decidir criminalidade económico-financeira complexa em prazo compatível com um Estado de direito.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Referências credíveis
+    </h2>
+
+    <ul style="padding-left:22px;">
+      <li>
+        <a href="https://www.reuters.com/business/finance/portuguese-former-prime-minister-socrates-goes-trial-graft-case-2025-07-03/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Reuters — Portuguese former prime minister Socrates goes on trial in graft case</a>
+      </li>
+      <li>
+        <a href="https://pt.euronews.com/2017/10/11/operacao-marques-jose-socrates-acusado-de-31-crimes" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Euronews — Operação Marquês: José Sócrates acusado de 31 crimes</a>
+      </li>
+      <li>
+        <a href="https://pt.euronews.com/my-europe/2025/03/17/pela-primeira-vez-em-portugal-um-ex-primeiro-ministro-vai-sentar-se-no-banco-dos-reus" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Euronews — Pela primeira vez em Portugal, um ex-primeiro-ministro vai sentar-se no banco dos réus</a>
+      </li>
+      <li>
+        <a href="https://apnews.com/article/781173c00fe310d9c6dc665f0be329c8" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Associated Press — Corruption scandals cast a shadow over Portugal's early general election</a>
+      </li>
+      <li>
+        <a href="https://dciap.ministeriopublico.pt/destaque/operacao-marques-acusacao-0" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">DCIAP / Ministério Público — Operação Marquês: acusação</a>
+      </li>
+      <li>
+        <a href="https://www.cgd.pt/Investor-Relations/Informacao-Financeira/CGD/Relatorios-Contas/2017/Documents/Relatorio-Contas-CGD-2017.PDF" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Caixa Geral de Depósitos — Relatório e Contas 2017</a>
+      </li>
+      <li>
+        <a href="https://www.rtp.pt/noticias/economia/operacao-marques-julgamento-retoma-na-terca-feira-apos-interrupcao-de-tres-semanas_n1726465" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">RTP — Operação Marquês: julgamento e enquadramento processual</a>
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+<blockquote style="color:#ffcc67;">
+Os milhões perdidos não desaparecem. Mudam de balanço. E as dívidas também não desaparecem: mudam de geração.
+</blockquote>
+  </div>
+<a class="fc-essencia-humanidade-button"
+   href="https://fasgoncalves.github.io/hugo.fragmentoscaos/livros/a-grande-ilusao-era-socrates/"
+   target="_blank"
+   rel="noopener noreferrer">
+  Ler o livro : A Grande Ilusão 
+</a>
+
+<style>
+.fc-essencia-humanidade-button {
+  display: inline-block;
+  padding: 15px 30px;
+  margin: 24px 0;
+  background: linear-gradient(135deg, #243b55, #6d8fa8, #f2d28a);
+  color: #fffaf0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  font-weight: bold;
+  letter-spacing: 0.35px;
+  text-decoration: none;
+  border-radius: 14px;
+  border: 1px solid #f2d28a;
+  box-shadow: 0 8px 22px rgba(36, 59, 85, 0.38);
+  transition: all 0.25s ease;
+}
+
+.fc-essencia-humanidade-button:hover {
+  background: linear-gradient(135deg, #f2d28a, #6d8fa8, #243b55);
+  color: #121212;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(242, 210, 138, 0.42);
+}
+
+.fc-essencia-humanidade-button:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 14px rgba(36, 59, 85, 0.32);
+}
+</style>
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

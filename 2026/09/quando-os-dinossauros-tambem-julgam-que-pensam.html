@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quando os Dinossauros Também Julgam que Pensam</title>
+<meta name="description" content="Quando os Dinossauros Também Julgam que Pensam">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Quando os Dinossauros Também Julgam que Pensam</h1>
+      <p class="meta">Publicado em 2026-09-12 11:03:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_0000000034f481f490b1d11bfa719883_cc5e13b0.jpg" alt=""></figure>
+      <div class="post-content">
+        <style>
+.fc-chronic-news{
+  --fc-bg:#101318;
+  --fc-panel:#171c23;
+  --fc-panel-2:#202630;
+  --fc-text:#e9edf2;
+  --fc-muted:#aeb7c3;
+  --fc-accent:#d6a33a;
+  --fc-accent-soft:#f2d28a;
+  --fc-line:#343d49;
+  --fc-danger:#d36b60;
+  max-width:980px;
+  margin:2rem auto;
+  padding:clamp(1.1rem,3vw,3rem);
+  color:var(--fc-text);
+  background:
+    radial-gradient(circle at 85% 8%,rgba(214,163,58,.13),transparent 28%),
+    linear-gradient(180deg,#11151b 0%,#0d1015 100%);
+  border:1px solid var(--fc-line);
+  border-radius:20px;
+  box-shadow:0 24px 60px rgba(0,0,0,.34);
+  font-family:Georgia,"Times New Roman",serif;
+  line-height:1.78;
+}
+.fc-chronic-news *{box-sizing:border-box}
+.fc-chronic-news .fc-kicker{
+  margin:0 0 .8rem;
+  color:var(--fc-accent-soft);
+  font:700 .78rem/1.3 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.fc-chronic-news .fc-title{
+  margin:0;
+  color:var(--fc-accent)!important;
+  font-size:clamp(2rem,5vw,4.25rem);
+  line-height:1.04;
+  letter-spacing:-.035em;
+  text-wrap:balance;
+}
+.fc-chronic-news .fc-subtitle{
+  max-width:790px;
+  margin:1.2rem 0 0;
+  color:#d9dee6;
+  font-size:clamp(1.08rem,2vw,1.42rem);
+  line-height:1.5;
+}
+.fc-chronic-news .fc-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem 1.1rem;
+  margin:1.35rem 0 0;
+  padding-top:1rem;
+  border-top:1px solid var(--fc-line);
+  color:var(--fc-muted);
+  font:500 .88rem/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.fc-chronic-news .fc-lead{
+  margin:2rem 0;
+  padding:1.3rem 1.45rem;
+  color:#fff4d4;
+  background:linear-gradient(135deg,rgba(214,163,58,.18),rgba(214,163,58,.06));
+  border-left:5px solid var(--fc-accent);
+  border-radius:8px 16px 16px 8px;
+  font-size:clamp(1.12rem,2vw,1.36rem);
+  line-height:1.62;
+}
+.fc-chronic-news h2{
+  margin:2.2rem 0 .8rem;
+  color:var(--fc-accent-soft);
+  font-size:clamp(1.45rem,3vw,2.15rem);
+  line-height:1.2;
+}
+.fc-chronic-news p{margin:0 0 1.15rem}
+.fc-chronic-news strong{color:#fff1c4}
+.fc-chronic-news blockquote{
+  margin:2rem 0;
+  padding:1.4rem 1.6rem;
+  color:#fff;
+  background:var(--fc-panel-2);
+  border:1px solid var(--fc-line);
+  border-left:5px solid var(--fc-danger);
+  border-radius:8px 16px 16px 8px;
+  font-size:clamp(1.16rem,2.4vw,1.55rem);
+  font-style:italic;
+  line-height:1.55;
+}
+.fc-chronic-news .fc-editorial,
+.fc-chronic-news .fc-factbox,
+.fc-chronic-news .fc-references{
+  margin-top:2.3rem;
+  padding:1.35rem 1.45rem;
+  background:var(--fc-panel);
+  border:1px solid var(--fc-line);
+  border-radius:14px;
+}
+.fc-chronic-news .fc-factbox ul,
+.fc-chronic-news .fc-references ol{margin:.6rem 0 0;padding-left:1.25rem}
+.fc-chronic-news .fc-factbox li,
+.fc-chronic-news .fc-references li{margin:.68rem 0}
+.fc-chronic-news .fc-references small{display:block;color:var(--fc-muted);margin-top:.15rem}
+.fc-chronic-news a{color:#f2ca70;text-decoration-thickness:.08em;text-underline-offset:.18em}
+.fc-chronic-news a:hover{color:#fff0b5}
+.fc-chronic-news .fc-signature{
+  margin-top:2.2rem;
+  padding-top:1.25rem;
+  border-top:1px solid var(--fc-line);
+  color:#dce2ea;
+  font-style:italic;
+}
+.fc-chronic-news .fc-format{
+  color:var(--fc-muted);
+  font:500 .82rem/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+@media (max-width:640px){
+  .fc-chronic-news{margin:1rem .35rem;padding:1.2rem;border-radius:14px}
+  .fc-chronic-news .fc-title{font-size:2.25rem}
+  .fc-chronic-news .fc-lead,
+  .fc-chronic-news blockquote,
+  .fc-chronic-news .fc-editorial,
+  .fc-chronic-news .fc-factbox,
+  .fc-chronic-news .fc-references{padding:1.05rem}
+}
+@media print{
+  body{background:#fff!important}
+  .fc-chronic-news{max-width:none;margin:0;border:0;box-shadow:none;background:#fff;color:#111}
+  .fc-chronic-news p,.fc-chronic-news li,.fc-chronic-news .fc-subtitle{color:#111}
+  .fc-chronic-news .fc-title,.fc-chronic-news h2,.fc-chronic-news strong,.fc-chronic-news a{color:#111!important}
+  .fc-chronic-news .fc-lead,.fc-chronic-news blockquote,.fc-chronic-news .fc-editorial,.fc-chronic-news .fc-factbox,.fc-chronic-news .fc-references{background:#fff;color:#111}
+}
+</style>
+
+<article class="fc-chronic-news" itemscope itemtype="https://schema.org/NewsArticle">
+  <meta itemprop="datePublished" content="2026-08-06T11:03:00+01:00">
+  <meta itemprop="dateModified" content="2026-08-06T11:03:00+01:00">
+  <meta itemprop="mainEntityOfPage" content="https://fasgoncalves.github.io/fragmentoscaos-html/2026/08/quando-os-dinossauros-tambem-julgam-que-pensam.html">
+
+  <header>
+    <p class="fc-kicker">FC-Chronic-News · Política, vaidade e paleontologia intelectual</p>
+    <h1 class="fc-title" itemprop="headline">Quando os Dinossauros Também Julgam que Pensam</h1>
+    <p class="fc-subtitle" itemprop="description">A extraordinária estabilidade de certas convicções, preservadas durante décadas ao abrigo de factos, dúvidas e outras intempéries cognitivas.</p>
+    <div class="fc-meta">
+      <span itemprop="author" itemscope itemtype="https://schema.org/Person">Por <strong itemprop="name">Francisco Gonçalves</strong></span>
+      <span>Coautoria editorial: Augustus Veritas</span>
+      <span><time datetime="2026-08-06">6 de Agosto de 2026</time></span>
+      <span>Fragmentos do Caos</span>
+    </div>
+  </header>
+
+  <p class="fc-lead"><strong>O dinossauro político não desapareceu.</strong> Adaptou-se. Trocou a cauda por uma coluna de opinião, as escamas por um ar professoral e o rugido por uma certeza semanal sobre tudo aquilo que os outros ainda estão, inutilmente, a tentar compreender.</p>
+
+  <section class="fc-factbox" aria-labelledby="ponto-partida">
+    <h2 id="ponto-partida">O ponto de partida</h2>
+    <ul>
+      <li>Num Questionário de Proust publicado pelo <em>PÚBLICO</em> em 6 de Agosto de 2026, Francisco Louçã respondeu, em tom aparentemente jocoso, que a última vez que mudara de opinião fora quando aceitara voltar a responder ao questionário.</li>
+      <li>Disse também não apreciar o elogio de quem conclui que ele «afinal não é estúpido» e que, por isso, deveria pertencer a um partido grande.</li>
+      <li>A frase pode ser apenas humor seco. Mas certos gracejos são radiografias tiradas sem receita médica: mostram a pose, a época e a confortável convicção de quem já não espera encontrar um facto capaz de o surpreender.</li>
+    </ul>
+  </section>
+
+  <h2>Um gracejo com fósseis incluídos</h2>
+
+  <p>Comecemos pela concessão obrigatória, antes que a polícia da literalidade nos arrombe a porta: Francisco Louçã estava provavelmente a brincar. E tem o direito de brincar, até porque a política portuguesa já fornece material cómico suficiente para dispensar argumentistas.</p>
+
+  <p>Mas a piada tem aquela qualidade rara dos bons acidentes: revela qualquer coisa. Não necessariamente sobre Louçã enquanto pessoa, mas sobre uma espécie política muito portuguesa, embora com habitat internacional: o <strong>intelectual permanente</strong>, criatura que entra jovem na vida pública, envelhece dentro da mesma moldura ideológica e acaba por confundir a resistência das suas opiniões com a resistência dos materiais.</p>
+
+  <p>Não mudar de opinião durante décadas pode parecer coerência. Também uma cómoda pode permanecer cinquenta anos no mesmo lugar. Ninguém lhe atribui, por isso, extraordinária lucidez sobre a arquitectura da sala.</p>
+
+  <blockquote>Há convicções que resistem ao tempo porque são sólidas. Outras resistem porque ninguém voltou a abrir a janela.</blockquote>
+
+  <h2>A coerência como frigorífico avariado</h2>
+
+  <p>Na política, a mudança de opinião é tratada como pecado mortal. Um dirigente que revê uma posição é acusado de cambalhota, traição, oportunismo ou, no mínimo, contacto indevido com a realidade. Já quem repete a mesma tese desde os tempos em que os telefones tinham disco é celebrado como coerente.</p>
+
+  <p>Esta veneração da imobilidade produziu uma estranha moral pública. O homem que aprende é suspeito; o homem que nunca reconsidera é estadista. A dúvida tornou-se fraqueza e a rigidez passou a ser vendida como carácter, numa embalagem suficientemente solene para esconder o prazo de validade.</p>
+
+  <p>A coerência, quando desligada dos factos, é apenas um frigorífico avariado: conserva tudo, incluindo aquilo que já devia ter sido deitado fora.</p>
+
+  <p>O mundo, entretanto, teve a falta de educação de mudar. Desapareceu a União Soviética, a China tornou-se uma potência capitalista administrada por um partido comunista, a globalização criou riqueza e devastou equilíbrios sociais, o trabalho foi digitalizado, a inteligência artificial começou a invadir profissões cognitivas e a Europa descobriu, com o seu habitual atraso cerimonial, que dependência energética e ingenuidade estratégica não eram exactamente políticas de paz.</p>
+
+  <p>Perante tudo isto, algumas convicções políticas permaneceram impecavelmente imóveis. Não por terem explicado cada transformação, mas porque desenvolveram a habilidade superior de reinterpretar qualquer acontecimento como confirmação daquilo em que já acreditavam. É um sistema teórico admirável: nunca perde, porque o marcador é operado pelo próprio jogador.</p>
+
+  <h2>O cérebro como monumento nacional</h2>
+
+  <p>Louçã é culto, inteligente e intelectualmente treinado. Precisamente por isso, a frase merece ironia. A inteligência não vacina contra a vaidade. Por vezes fornece-lhe apenas um vocabulário mais elegante, melhores referências bibliográficas e uma capacidade quase olímpica para explicar por que razão o erro estava, afinal, nos factos.</p>
+
+  <p>A vaidade intelectual raramente entra numa sala aos gritos. Prefere a subtileza. Apresenta-se como rigor, memória histórica ou fidelidade aos princípios. Depois instala-se, escolhe a melhor cadeira e começa a tratar qualquer discordância como uma deficiência de leitura.</p>
+
+  <p>É neste ponto que o cérebro deixa de ser instrumento de investigação e passa a monumento nacional. Pode ser visitado, admirado e iluminado em datas comemorativas, mas já não convém mexer-lhe. Qualquer alteração poderia comprometer a fachada.</p>
+
+  <blockquote>Mudar de opinião não prova que antes éramos estúpidos. Prova apenas que o cérebro ainda não foi classificado como património imóvel.</blockquote>
+
+  <h2>A ciência tem o péssimo hábito de aprender</h2>
+
+  <p>Na ciência, mudar de opinião perante nova evidência não é uma desonra. É o mecanismo. Hipóteses são testadas, resultados são discutidos, teorias são corrigidas e consensos podem ser revistos. Não porque os cientistas sejam criaturas moralmente superiores, outra fantasia que os laboratórios tratam de desmentir, mas porque o método exige que a realidade tenha direito de resposta.</p>
+
+  <p>A investigação contemporânea sobre <strong>humildade intelectual</strong> define-a, em termos gerais, como a capacidade de reconhecer os limites do próprio conhecimento e a possibilidade de as nossas crenças estarem erradas. Estudos associam essa disposição a maior abertura ao diálogo, maior tolerância política e menor hostilidade perante adversários ideológicos. Não transforma ninguém num sábio. Apenas impede que a certeza ocupe todas as divisões da casa.</p>
+
+  <p>A política faz frequentemente o contrário. Primeiro escolhe a conclusão, depois contrata os argumentos e, por fim, inaugura um grupo de trabalho para confirmar que tudo foi metodologicamente inevitável. Quando os factos discordam, os factos são acusados de falta de consciência social.</p>
+
+  <p>É por isso que uma pessoa capaz de dizer «mudei de opinião» merece mais confiança, não menos, desde que explique o que mudou, porquê e com base em quê. A revisão honesta de uma posição é trabalho intelectual. A repetição automática é apenas manutenção de arquivo.</p>
+
+  <h2>O elogio que chega disfarçado de ofensa</h2>
+
+  <p>Há ainda a referência ao elogio de que Louçã menos gosta: dizerem-lhe que «afinal não é estúpido» e que deveria, portanto, estar num partido grande. A observação denuncia um preconceito real e bastante rudimentar: o de medir a inteligência pela dimensão eleitoral da organização a que alguém pertence. Se assim fosse, a história política mundial teria sido escrita exclusivamente por maiorias absolutas, uma hipótese que até as maiorias absolutas teriam dificuldade em defender sem rir.</p>
+
+  <p>Mas a resposta transporta também uma pequena jóia de vaidade: a pessoa recorda-nos que os outros reconhecem a sua inteligência enquanto simula desconforto com o reconhecimento. É modéstia com iluminação de estúdio. Uma forma sofisticada de dizer «não me elogiem», certificando-se de que o elogio fica devidamente registado em acta.</p>
+
+  <p>Nada disto é exclusivo de Louçã. O comentário político português está cheio de antigos dirigentes, ex-ministros, ex-deputados e professores vitalícios que aparecem semanalmente para explicar o presente com a segurança de quem nunca teve de pedir desculpa por uma previsão. Quando acertam, demonstram génio. Quando falham, o acontecimento foi atípico. A estatística, coitada, é sempre apanhada desprevenida.</p>
+
+  <h2>O Parque Jurássico da República</h2>
+
+  <p>A televisão transformou-se no grande Parque Jurássico da política nacional. Ali convivem espécies que pareciam extintas, protegidas por contratos de comentário e alimentadas com tempo de antena. Todas conhecem o passado, dominam o presente e prevêem o futuro, geralmente depois de ele acontecer.</p>
+
+  <p>O problema não está na idade. Seria absurdo e intelectualmente preguiçoso confundir experiência com fossilização. Há pessoas que chegam aos oitenta anos curiosas, inquietas e dispostas a rever ideias; e há jovens de trinta já mineralizados em certezas de plástico. O dinossauro de que aqui se fala não é biológico. É mental: define-se pela incapacidade de imaginar que o mundo possa conter uma pergunta para a qual ainda não preparou a resposta.</p>
+
+  <p>Os dinossauros originais tinham, pelo menos, a desculpa do meteorito. Os políticos fossilizados nem isso. Dispõem de bibliotecas, universidades, dados, viagens, debates e acesso instantâneo ao conhecimento produzido em todo o planeta. Mesmo assim, alguns atravessam décadas sem encontrar uma única razão digna de alterar o rumo de uma ideia. É uma proeza comparável a navegar o Atlântico e regressar convencido de que a água não existe.</p>
+
+  <h2>A dignidade de corrigir o rumo</h2>
+
+  <p>Uma democracia saudável não precisa de dirigentes sem dúvidas. Precisa de pessoas capazes de distinguir princípios de dogmas, convicção de obstinação e memória de nostalgia. Precisa também de cidadãos que não castiguem automaticamente quem reconhece um erro, porque uma cultura que humilha toda a mudança acaba inevitavelmente governada por pessoas incapazes de mudar.</p>
+
+  <p>Mudar de opinião não significa mudar ao sabor do vento. Significa ter uma bússola e admitir que o mapa estava incompleto. A diferença entre oportunismo e aprendizagem não está na mudança, mas na honestidade da explicação e na qualidade da evidência.</p>
+
+  <p>Talvez Francisco Louçã tenha mudado muitas vezes de opinião e apenas escolhido uma resposta espirituosa para um questionário leve. É provável. Mas a frase oferece uma imagem perfeita da nossa aristocracia comentadora: homens e mulheres que atravessam épocas, crises e revoluções tecnológicas com a expressão serena de quem suspeita que a História existe sobretudo para lhes dar razão.</p>
+
+  <blockquote>Quem nunca muda de opinião pode ter encontrado a verdade absoluta. Ou pode simplesmente ter deixado de procurar.</blockquote>
+
+  <p>O pensamento começa onde termina a necessidade de vencer todas as discussões. Até lá, temos apenas certezas bem vestidas, currículos extensos e fósseis convencidos de que ainda estão a evoluir.</p>
+
+  <section class="fc-editorial" aria-labelledby="nota-editorial">
+    <h2 id="nota-editorial">Nota editorial</h2>
+    <p>Esta crónica parte de respostas atribuídas a Francisco Louçã num Questionário de Proust publicado pelo <em>PÚBLICO</em> em 6 de Agosto de 2026. A resposta sobre a mudança de opinião é tratada como humor e utilizada como ponto de partida para uma reflexão satírica mais ampla sobre dogmatismo, vaidade intelectual e permanência das elites de comentário.</p>
+    <p>O texto não pretende diagnosticar a capacidade intelectual de Francisco Louçã, negar a sua obra académica ou afirmar que nunca reviu posições políticas. «Dinossauro» e «fóssil» são metáforas editoriais para rigidez mental e longevidade no espaço público, não referências à idade biológica. A crítica dirige-se a uma cultura política que recompensa a certeza permanente e castiga a aprendizagem pública.</p>
+    <p>A investigação citada nas referências associa humildade intelectual, abertura à revisão de crenças e tolerância no debate, mas não permite inferir características psicológicas individuais a partir de uma resposta jornalística.</p>
+  </section>
+
+  <section class="fc-references" aria-labelledby="referencias">
+    <h2 id="referencias">Referências e leitura complementar</h2>
+    <ol>
+      <li><a href="https://www.publico.pt/2026/08/06/impar/noticia/francisco-louca-ultima-mudei-opiniao-voltei-aceitar-responder-questionario-proust-2181947" target="_blank" rel="noopener noreferrer"><em>PÚBLICO</em> — "Francisco Louçã: 'A última vez que mudei de opinião foi mesmo quando voltei a aceitar responder a um questionário de Proust'"</a><small>6 de Agosto de 2026. Fonte jornalística que motiva a crónica.</small></li>
+      <li><a href="https://www.theguardian.com/science/blog/2008/jan/01/changeofheart" target="_blank" rel="noopener noreferrer"><em>The Guardian</em> — "Change of heart"</a><small>1 de Janeiro de 2008. Reflexão sobre a diferença entre a valorização científica e a penalização política da mudança de opinião.</small></li>
+      <li><a href="https://time.com/6556113/curiosity-propaganda-hala-alyan-essay/" target="_blank" rel="noopener noreferrer"><em>TIME</em> — "The Power of Changing Your Mind"</a><small>17 de Janeiro de 2024. Ensaio sobre flexibilidade cognitiva, identidade e humildade.</small></li>
+      <li><a href="https://www.newyorker.com/culture/open-questions/should-you-question-everything" target="_blank" rel="noopener noreferrer"><em>The New Yorker</em> — "Should You Question Everything?"</a><small>21 de Janeiro de 2025. Ensaio sobre pensamento socrático, dúvida e revisão profunda de crenças.</small></li>
+      <li><a href="https://www.theguardian.com/commentisfree/2025/may/18/change-mind-evidence-arguing-social-relationships" target="_blank" rel="noopener noreferrer"><em>The Guardian</em> — "This article won't change your mind. Here's why"</a><small>18 de Maio de 2025. Análise sobre os limites do debate formal e o papel das relações e experiências na mudança política.</small></li>
+      <li><a href="https://www.nature.com/articles/s44159-022-00081-9" target="_blank" rel="noopener noreferrer"><em>Nature Reviews Psychology</em> — "Predictors and consequences of intellectual humility"</a><small>27 de Junho de 2022. Revisão científica sobre definição, medição, benefícios e limites da humildade intelectual.</small></li>
+      <li><a href="https://jspp.psychopen.eu/index.php/jspp/article/view/5553" target="_blank" rel="noopener noreferrer"><em>Journal of Social and Political Psychology</em> — "Sociopolitical Intellectual Humility as a Predictor of Political Attitudes and Behavioral Intentions"</a><small>19 de Fevereiro de 2021. Estudo sobre humildade intelectual, tolerância política e abertura ao diálogo.</small></li>
+      <li><a href="https://www.apa.org/pubs/journals/releases/psp-pspi0000462.pdf" target="_blank" rel="noopener noreferrer"><em>Journal of Personality and Social Psychology / American Psychological Association</em> — "Effects of Intellectual Humility in the Context of Affective Polarization"</a><small>2024. Investigação sobre humildade intelectual e disposição para abordar interlocutores em contextos politicamente polarizados.</small></li>
+    </ol>
+  </section>
+
+  <footer class="fc-signature">
+    <p><strong>Francisco Gonçalves</strong><br>com coautoria editorial de Augustus Veritas<br>Fragmentos do Caos · 2026</p>
+    <p class="fc-format">Formato editorial: FC-Chronic-News Canonical</p>
+  </footer>
+</article>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

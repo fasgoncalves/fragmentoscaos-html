@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mapa-múndi com os Estados Unidos isolados por um círculo</title>
+<meta name="description" content="Mapa-múndi com os Estados Unidos isolados por um círculo">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Mapa-múndi com os Estados Unidos isolados por um círculo</h1>
+      <p class="meta">Publicado em 2026-09-13 09:27:39</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000afa48210b8da20d46dd80e87_96d449c4.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- INÍCIO DO ARTIGO PARA WORDPRESS (FUNDO PRETO, ALTO CONTRASTE) -->
+<div style="background-color: #000000; color: #f0f0f0; padding: 1.5rem; border-radius: 0; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Georgia, 'Times New Roman', serif; line-height: 1.65; max-width: 100%;">
+    
+    <!-- IMAGEM (SUBSTITUIR URL) -->
+    <div style="margin-bottom: 1.5rem;">
+        <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000f7708210878f4ba1a08851df_f86cab12.jpg" alt="Mapa-múndi com os Estados Unidos isolados por um círculo" style="width: 100%; height: auto; display: block; border-radius: 8px;">
+        <p style="font-size: 0.75rem; color: #cccccc; margin-top: 0.5rem;">📷 O efeito bumerangue: a América que se queria senhora do mundo e acabou sozinha na sala.</p>
+    </div>
+
+    <!-- TÍTULO -->
+    <h1 style="font-size: 1.8rem; font-weight: 700; margin: 0 0 0.5rem 0; color: #ffffff; border-left: 5px solid #c49a6c; padding-left: 1rem;">A América sozinha: como a doutrina «América Primeiro» está a isolar os Estados Unidos</h1>
+    
+    <!-- SUBTÍTULO -->
+    <p style="font-size: 0.9rem; color: #d4c5b0; margin-bottom: 1.5rem; border-bottom: 1px solid #2a2a2a; padding-bottom: 0.75rem; font-style: italic;">Análise prospectiva sobre o efeito bumerangue das políticas transacionais, o despertar estratégico da Europa e o deslocamento do centro de gravidade do Ocidente</p>
+
+    <!-- TEXTO DE ABERTURA -->
+    <p>Há um erro de cálculo que atravessa a história das grandes potências: confundir força com influência. A força impõe-se; a influência conquista-se. E nenhuma nação, por mais poderosa que seja, consegue liderar durante muito tempo um mundo que deixou de confiar nela. É precisamente aí que nos encontramos. A aplicação rigorosa da doutrina «América Primeiro» (<em>America First</em>) — com a sua postura de confrontação tarifária bilateral e o seu cepticismo crónico face às alianças tradicionais — produziu um efeito bumerangue involuntário: <strong style="color: #e0cba0;">o isolamento progressivo dos próprios Estados Unidos e a união acelerada das restantes democracias industrializadas do planeta.</strong></p>
+
+    <p>Não é uma previsão de catástrofe. É um diagnóstico. O que estava desenhado para submeter os aliados acabou por os despertar. O que devia dividir os adversários acabou por os unir. E o resultado, a confirmar-se, será uma nova arquitectura global onde Washington deixa de ser o centro de gravidade — não porque alguém o expulsou, mas porque ele próprio se retirou da sala.</p>
+
+    <!-- VÍDEO (PONDÉ) -->
+    <div style="margin: 1.5rem 0; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
+        <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" src="https://www.youtube.com/embed/s1XVFbfwEP8" title="Pondé - Politicamente Correto é uma FARSA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <p style="font-size: 0.75rem; color: #bbaa8a; margin-top: 0.5rem; text-align: center;">🎬 Pondé: a farsa do politicamente correcto é irmã gémea da farsa das grandes potências — que confundem ser temido com ser respeitado.</p>
+
+    <h2 style="font-size: 1.5rem; margin: 1.8rem 0 0.8rem; color: #c49a6c; border-left: 4px solid #c49a6c; padding-left: 0.9rem;">O efeito bumerangue: quando o aliado deixa de ser fiável</h2>
+    
+    <h3 style="font-size: 1.25rem; margin: 1.2rem 0 0.4rem; color: #e0d4c0;">🔄 Do «aliado garantido» ao «parceiro imprevisível»</h3>
+    <p>A percepção de que os Estados Unidos deixaram de ser um parceiro previsível e fiável obrigou as maiores democracias do Hemisfério Ocidental e do Pacífico a desenharem estratégias independentes de salvaguarda geopolítica. No meio diplomático, este fenómeno tem nome: <strong style="color: #e0cba0;">hedging estratégico</strong> — a arte de não romper com ninguém, mas de deixar de depender de alguém. É o que fazem os países prudentes quando percebem que o seu protector pode, a qualquer momento, apresentar-lhes a factura ou virar-lhes as costas.</p>
+
+    <h3 style="font-size: 1.25rem; margin: 1.2rem 0 0.4rem; color: #e0d4c0;">🇨🇦🇪🇺 O eixo Canadá–União Europeia</h3>
+    <p>O Canadá — historicamente o vizinho mais leal de Washington — converteu-se num pilar fundamental de ligação à União Europeia, integrando de forma inédita mecanismos de contratação e financiamento militar do bloco europeu. Uma cooperação de segurança autónoma, construída precisamente para não depender da Casa Branca. É uma viragem silenciosa, mas de enorme significado: quando Otava decide reforçar Bruxelas em vez de Washington, alguma coisa se quebrou na velha aliança atlântica.</p>
+
+    <h3 style="font-size: 1.25rem; margin: 1.2rem 0 0.4rem; color: #e0d4c0;">🌏 Blocos comerciais contra as tarifas</h3>
+    <p>Diante das ameaças de tarifas aduaneiras unilaterais aplicadas pela Casa Branca, potências como o Japão, a Austrália, o Reino Unido, Singapura e a Nova Zelândia estabeleceram pontes comerciais reforçadas entre si, para diluir o impacto do proteccionismo americano. Não é um bloco formal, nem uma aliança militar. É algo mais subtil e mais eficaz: <strong style="color: #e0cba0;">uma rede de rotas alternativas que tornam o mercado americano menos indispensável.</strong> Quando se constroem estradas alternativas, a ponte principal perde poder de chantagem.</p>
+
+    <h3 style="font-size: 1.25rem; margin: 1.2rem 0 0.4rem; color: #e0d4c0;">🛡️ A autonomia de defesa europeia</h3>
+    <p>A União Europeia acelerou decisivamente a sua autonomia estratégica, expandindo orçamentos de defesa e criando cadeias de abastecimento militar independentes. O objectivo confessado é claro: mitigar a volatilidade política dos ciclos eleitorais norte-americanos. <strong style="color: #e0cba0;">A Europa percebeu finalmente que não pode continuar a entregar a sua segurança a um país onde a cada quatro anos tudo pode mudar.</strong> E, ironia das ironias, foi precisamente a pressão de Washington que forneceu o argumento político que faltava a Bruxelas para avançar.</p>
+
+    <div style="background-color: #0f0f0f; padding: 0.2rem 1rem 0.8rem 1rem; border-radius: 16px; margin: 1.5rem 0; border: 1px solid #2a2a2a;">
+        <div style="margin-bottom: 0.5rem; padding-left: 1rem; border-left: 3px solid #c49a6c;">
+            <strong style="color: #e0cba0;">📊 O retrato da viragem</strong>
+            <div style="margin-top: 0.5rem; color: #e0d8cc;">
+            <p><strong style="color: #d4c5b0;">• Hedging estratégico</strong> — Conceito-chave: diversificar dependências sem romper formalmente com nenhum aliado.<br>
+            <strong style="color: #d4c5b0;">• Eixo Canadá–UE</strong> — Integração inédita em contratos e financiamento militar europeu.<br>
+            <strong style="color: #d4c5b0;">• Alianças comerciais</strong> — Japão, Austrália, Reino Unido, Singapura e Nova Zelândia a reforçar trocas mútuas.<br>
+            <strong style="color: #d4c5b0;">• Defesa europeia</strong> — Orçamentos em alta e cadeias de abastecimento próprias.</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 style="font-size: 1.5rem; margin: 1.8rem 0 0.8rem; color: #c49a6c; border-left: 4px solid #c49a6c; padding-left: 0.9rem;">O isolamento de Washington e o abraço aos párias</h2>
+    <p>Enquanto se afasta da sua rede histórica de parceiros do G7, a diplomacia da Casa Branca procurou refúgio em canais de negociação personalistas e transacionais com regimes tradicionalmente considerados adversários do Ocidente — com destaque para a Federação Russa de Vladimir Putin.</p>
+
+    <h3 style="font-size: 1.25rem; margin: 1.2rem 0 0.4rem; color: #e0d4c0;">🧊 O paradoxo estratégico em relação a Moscovo</h3>
+    <p>A equipa de política externa de Donald Trump tentou aplicar uma versão invertida da célebre estratégia de Richard Nixon de 1972, procurando uma aproximação táctica a Moscovo — através de propostas de congelamento territorial da guerra na Ucrânia — com o objectivo teórico de afastar a Rússia da órbita de influência da China.</p>
+    <p>O problema é que este cálculo ignora realidades estruturais provavelmente irreversíveis. E são três, todas elas fatais:</p>
+
+    <h3 style="font-size: 1.25rem; margin: 1.2rem 0 0.4rem; color: #e0d4c0;">⛓️ A dependência assimétrica concreta</h3>
+    <p>A economia russa encontra-se plenamente integrada e dependente das estruturas financeiras, tecnológicas e energéticas de Pequim, actuando já como <strong style="color: #e0cba0;">parceiro júnior</strong> do regime chinês. Não se trata de uma afinidade ideológica — trata-se de sobrevivência económica. Depois das sanções ocidentais, a Rússia não tem para onde ir. E Pequim sabe disso melhor do que ninguém. Tentar «separar» Moscovo de Pequim em 2026 é como tentar separar o oxigénio do pulmão: a metáfora é elegante, mas a biologia não colabora.</p>
+
+    <h3 style="font-size: 1.25rem; margin: 1.2rem 0 0.4rem; color: #e0d4c0;">🕊️ A validação das autocracias</h3>
+    <p>Ao forçar cedências territoriais ou ao abandonar unilateralmente o apoio a Kyiv, os Estados Unidos sinalizam fraqueza estratégica. E esse sinal não afasta a Rússia de Pequim — pelo contrário, consolida o eixo. Simultaneamente, valida as próprias ambições territoriais da China em palcos como Taiwan. <strong style="color: #e0cba0;">Cada cedência a Moscovo é um sinal a Pequim de que a violação de fronteiras compensa.</strong> É a lição mais antiga da geopolítica: a impunidade é um convite.</p>
+
+    <h3 style="font-size: 1.25rem; margin: 1.2rem 0 0.4rem; color: #e0d4c0;">☠️ O abraço tóxico com um Estado pária</h3>
+    <p>O regime de Putin permanece classificado e isolado como <strong style="color: #e0cba0;">Estado pária</strong> pelas restantes economias desenvolvidas, devido às suas agressões e tácticas de guerra híbrida. Qualquer aliança ou acordo com Washington torna-se, por isso, altamente instável e desprovido de legitimidade internacional. Um acordo com um pária não é um acordo: é uma promessa que pode ser desmentida no dia seguinte, em qualquer capital europeia.</p>
+
+    <h2 style="font-size: 1.5rem; margin: 1.8rem 0 0.8rem; color: #c49a6c; border-left: 4px solid #c49a6c; padding-left: 0.9rem;">O que se pretendeu e o que resultou</h2>
+
+    <div style="background-color: #0f0f0f; padding: 0.2rem 1rem 0.8rem 1rem; border-radius: 16px; margin: 1.5rem 0; border: 1px solid #2a2a2a;">
+        <div style="margin-bottom: 0.5rem; padding-left: 1rem; border-left: 3px solid #c49a6c;">
+            <strong style="color: #e0cba0;">📋 A tabela do erro de cálculo</strong>
+            <div style="margin-top: 0.5rem; color: #e0d8cc;">
+            <p><strong style="color: #d4c5b0;">• Alianças globais</strong> — <em>Pretendido:</em> submeter os aliados por pressão tarifária e militar. <em>Resultado:</em> isolamento dos EUA e união entre Canadá, UE, Japão e Austrália.<br>
+            <strong style="color: #d4c5b0;">• Eixo euroasiático</strong> — <em>Pretendido:</em> dividir a Rússia da China com acordos transacionais. <em>Resultado:</em> consolidação de um bloco autocrático liderado economicamente por Pequim.</p>
+            </div>
+        </div>
+    </div>
+
+    <p>O resultado prático da actual postura estratégica norte-americana caminha, assim, no sentido inverso ao pretendido pelo lema nacionalista. Em vez de uma América rejuvenescida que dita as regras globais a partir de uma posição de força incontestável, o cenário que se desenha é o de uma potência que, ao tentar libertar-se dos custos da liderança, perdeu os instrumentos da mesma.</p>
+
+    <!-- DESTAQUE (CITAÇÃO CENTRAL) -->
+    <div style="background-color: #111111; border-left: 5px solid #c49a6c; padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0;">
+        <strong style="color: #f0e6d5;">🗣️ "Uma potência que deixa de ser previsível deixa de ser indispensável. E uma potência dispensável não dita regras — negociais, quando muito, à mesa dos outros."</strong> <span style="color: #d4cdc0;">— Sombra de Dúvida</span>
+    </div>
+
+    <h2 style="font-size: 1.5rem; margin: 1.8rem 0 0.8rem; color: #c49a6c; border-left: 4px solid #c49a6c; padding-left: 0.9rem;">Os trunfos que se desgastam: o dólar e a inteligência partilhada</h2>
+    <p>A longo prazo, o isolamento americano tende a desgastar os seus maiores trunfos geopolíticos — aqueles que, ao contrário dos porta-aviões, não se compram nem se constroem em série. Falamos de dois, em particular:</p>
+    <p><strong style="color: #e0cba0;">O dólar como moeda de reserva global.</strong> Este estatuto não assenta apenas no tamanho da economia americana. Assenta na confiança. Quando a confiança se degrada, os bancos centrais começam a diversificar reservas — discretamente, primeiro, depois com mais ousadia. É um processo lento, mas tem uma característica terrível: é difícil de travar uma vez iniciado.</p>
+    <p><strong style="color: #e0cba0;">A rede integrada de partilha de dados de inteligência militar.</strong> Esta é a arma mais invisível e mais valiosa de Washington. E também a mais frágil, porque depende inteiramente da reciprocidade e da confiança dos parceiros. Aliados que já não confiam no protector têm menos incentivo em partilhar os seus segredos — sobretudo se suspeitarem que esses segredos podem ser negociados noutra mesa.</p>
+
+    <h2 style="font-size: 1.5rem; margin: 1.8rem 0 0.8rem; color: #c49a6c; border-left: 4px solid #c49a6c; padding-left: 0.9rem;">O futuro multipolar: um Ocidente sem centro único</h2>
+    <p>O futuro perfila-se, assim, multipolar. E aqui convém evitar dois erros de leitura. O primeiro é concluir que o Ocidente democrático se desfaz. Não se desfaz: <strong style="color: #e0cba0;">faz o seu caminho, mas agora com o centro de gravidade deslocado de Washington para um eixo coordenado entre Otava, Bruxelas, Tóquio e Camberra.</strong> O segundo erro é imaginar que este novo eixo é uma aliança formal, com tratados e quartéis-generais. Não é. É algo mais fluido, mais pragmático e, por isso, mais resistente a pressões: uma rede de democracias que aprenderam a colaborar sem pedir licença a ninguém.</p>
+    <p>É um mundo mais complicado, certamente mais instável, mas também potencialmente mais equilibrado. E para a Europa — incluindo Portugal — representa uma oportunidade histórica que não se repetirá: <strong style="color: #e0cba0;">a de deixar de ser espectadora e passar a ser autora da sua própria segurança, da sua própria energia e da sua própria tecnologia.</strong> O problema é que uma oportunidade só é oportunidade se alguém a agarrar. E nós, como bem sabemos, temos uma enorme tradição de deixar passar as oportunidades enquanto discutimos quem tem razão.</p>
+
+    <h2 style="font-size: 1.5rem; margin: 1.8rem 0 0.8rem; color: #c49a6c; border-left: 4px solid #c49a6c; padding-left: 0.9rem;">Conclusão: o centro de gravidade muda — mas não desaparece</h2>
+    <p>A doutrina «América Primeiro» foi concebida como um exercício de força. Está a revelar-se um exercício de solidão. Ao tratar os aliados como clientes e os adversários como parceiros de ocasião, Washington acelerou exactamente aquilo que mais temia: a construção de um mundo onde já não é indispensável. <strong style="color: #e0cba0;">E uma potência que não é indispensável deixa de ser obedecida — passa a ser apenas ouvida, quando dá jeito.</strong></p>
+    <p>Nada disto significa o fim dos Estados Unidos como grande potência. Significa algo mais subtil e, talvez, mais definitivo: o fim da sua hegemonia incontestada. O centro de gravidade do Ocidente está a mudar de lugar. Não desapareceu — deslocou-se. E quem não perceber isso a tempo, continuará a olhar para o lado errado do mapa enquanto o mundo se reorganiza à sua frente.</p>
+    <p>A história não avisa quando muda de capítulo. Apenas nos deixa, um dia, a ler uma página que já não reconhecemos.</p>
+
+    <!-- ASSINATURA -->
+    <div style="margin-top: 2rem; padding-top: 1rem; text-align: right; border-top: 1px dashed #3a3a3a;">
+        <div style="font-size: 1.3rem; font-weight: 400; color: #c49a6c; letter-spacing: 1px;">Sombra de Dúvida</div>
+        <div style="font-size: 0.8rem; color: #d4cdc0; font-style: italic;">nem todas as certezas merecem descanso</div>
+    </div>
+
+    <!-- METADADOS FINAIS -->
+    <hr style="margin: 1.8rem 0; border: 0; height: 1px; background: #2a2a2a;">
+    <p style="font-size: 0.75rem; color: #bbaa8a; text-align: center;">✍️ Ensaio publicado em <strong style="color: #d4c5b0;">Fragmentos do Caos</strong> — cidadania, Portugal e o mundo. Texto em português de Portugal (anterior ao AO 1990). Análise prospectiva baseada em documento de trabalho. Partilha livre com citação da fonte e do autor.</p>
+
+</div>
+<!-- FIM DO ARTIGO --><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

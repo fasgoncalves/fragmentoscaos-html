@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O agente que nunca soube que era agente?</title>
+<meta name="description" content="O agente que nunca soube que era agente?">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O agente que nunca soube que era agente?</h1>
+      <p class="meta">Publicado em 2026-09-12 11:40:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_0000000076b4820ab2977d59ef21807d-1_d83a3002.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="O agente que nunca soube que era agente?">
+      <meta itemprop="description" content="Uma crónica de análise que distingue factos documentados sobre Donald Trump e a Rússia de um exercício hipotético sobre operações de influência sem recrutamento formal.">
+      <meta itemprop="datePublished" content="2026-09-12">
+      <meta itemprop="dateModified" content="2026-09-13">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/09/file_0000000076b4820ab2977d59ef21807d-1.png">
+    </span>
+  </div>
+  <div style="max-width:900px; margin:auto; padding:10px;">
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">O agente que nunca soube que era agente?</h1>
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">Uma hipótese de contra-inteligência sobre influência, ego e poder — não uma acusação de recrutamento, espionagem ou obediência consciente.</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>
+      Esta crónica distingue deliberadamente factos documentados de hipótese interpretativa. <strong>Não existe prova pública de que Donald Trump tenha sido formalmente recrutado pela KGB, por serviços russos, ou de que tenha conscientemente actuado sob ordens de Moscovo.</strong> O texto não afirma que tal tenha acontecido. Examina antes, como exercício de contra-inteligência, uma questão geral: até que ponto uma potência pode tentar explorar interesses, predisposições, ambições ou vulnerabilidades de uma pessoa sem recrutamento, obediência consciente ou sequer percepção de influência?</p>
+    </div>
+
+<p>Há uma imagem clássica da espionagem que o cinema nos ensinou a reconhecer: dois homens encontram-se discretamente num quarto de hotel, um envelope muda de mãos, estabelece-se um código secreto e nasce um agente.</p>
+<p>Talvez os melhores serviços de informações não precisem de nada disso.</p>
+<p>Talvez uma operação muito mais sofisticada consista em identificar alguém, compreender profundamente a sua personalidade, descobrir aquilo que alimenta a sua ambição, a sua vaidade e a sua visão do mundo e, depois, criar circunstâncias em que essa pessoa faça voluntariamente aquilo que também serve os nossos interesses.</p>
+<p>Sem contrato.</p><p>Sem salário.</p><p>Sem ordens.</p><p>E, sobretudo, sem que alguma vez se considere um agente.</p>
+<p>Donald Trump torna esta hipótese extraordinariamente interessante.</p>
+<p>Não porque esteja demonstrado que tenha sido recrutado pela KGB ou posteriormente pelos serviços russos. <strong>Não está.</strong> E qualquer análise intelectualmente séria deve começar por deixar isso absolutamente claro.</p>
+<p>Mas os factos conhecidos permitem fazer uma pergunta diferente:</p>
+<p><strong>E se nunca tivesse sido necessário recrutá-lo?</strong></p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Moscovo, 1987</h2>
+<p>A relação de Trump com o universo soviético não começou quando Vladimir Putin chegou ao Kremlin, nem quando Trump decidiu candidatar-se à Presidência.</p>
+<p>Começou décadas antes.</p>
+<p>Em 1986, Trump conheceu Yuri Dubinin, então embaixador soviético nos Estados Unidos, durante um almoço em Nova Iorque. Segundo o próprio Trump contou posteriormente, dessa conversa surgiu a possibilidade de construir um grande hotel de luxo perto do Kremlin.</p>
+<p>Em Janeiro de 1987, a Intourist — a agência soviética de turismo internacional — manifestou interesse numa reunião. Em Julho desse ano, Donald e Ivana Trump viajaram para Moscovo e visitaram vários locais onde poderia ser desenvolvido o projecto.</p>
+<p>O <em>Washington Post</em> descrevia já em 1988 essa aproximação e recordava que o projecto seria desenvolvido em parceria com o próprio governo soviético.</p>
+<p>Nada disto prova recrutamento.</p>
+<p>Mas existe um contexto que não devemos ignorar.</p>
+<p>A União Soviética era um Estado em que o contacto prolongado com empresários estrangeiros potencialmente relevantes não acontecia num vazio institucional. Os serviços soviéticos dedicavam enormes recursos à observação de estrangeiros, à identificação de personalidades influentes e às chamadas <em>active measures</em>: operações destinadas não apenas a obter segredos, mas também a influenciar opiniões, elites e sociedades estrangeiras.</p>
+<p>Portanto, a pergunta historicamente interessante não é saber se, numa sala de Moscovo, alguém disse:</p>
+<p><strong>«Senhor Trump, quer trabalhar para a KGB?»</strong></p>
+<p>Isso seria quase demasiado rudimentar.</p>
+<p>A pergunta é saber se alguém poderá ter pensado:</p>
+<p><strong>«Este homem merece ser acompanhado.»</strong></p>
+<p>Não sabemos.</p>
+<p>Mas sabemos que a relação de Trump com a Rússia não terminou naquela viagem.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Décadas à procura de Moscovo</h2>
+<p>Trump continuaria durante muitos anos a procurar oportunidades de negócio na Rússia.</p>
+<p>Houve diferentes tentativas de desenvolver projectos imobiliários em Moscovo. Muitas nunca se concretizaram. Em 2013, Trump levou o concurso Miss Universo à capital russa.</p>
+<p>E mesmo durante a campanha presidencial de 2016 existia ainda um projecto Trump Tower Moscow.</p>
+<p>O relatório Mueller documentou que Trump assinara uma carta de intenções para o projecto em 2015 e que as negociações continuaram pelo menos até Junho de 2016. Michael Cohen chegou a contactar o gabinete de Dmitry Peskov, porta-voz de Putin, a propósito do projecto.</p>
+<p>Isto também não demonstra qualquer operação de inteligência.</p>
+<p>Demonstra outra coisa:</p>
+<p><strong>a Rússia esteve durante décadas presente no horizonte empresarial de Donald Trump.</strong></p>
+<p>E aqui surge um testemunho particularmente interessante vindo de dentro da própria família.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">«Vemos muito dinheiro a entrar da Rússia»</h2>
+<p>Em 2008, Donald Trump Jr. participou numa conferência sobre imobiliário e mercados emergentes.</p>
+<p>Falando sobre compradores de propriedades de luxo nos Estados Unidos, disse que os russos constituíam uma parcela <em>«pretty disproportionate»</em> dos activos e acrescentou:</p>
+<div style="background:#151515; border-left:4px solid #d6a542; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="margin:0;"><strong style="color:#d6a542;">Donald Trump Jr., 2008:</strong><br>«We see a lot of money pouring in from Russia.»</p></div>
+<p>Ou seja:</p>
+<p><strong>«Vemos muito dinheiro a entrar da Rússia.»</strong></p>
+<p>Trump Jr. referia-se sobretudo a russos que compravam imóveis ligados à marca Trump nos Estados Unidos e não estava a confessar empréstimos secretos do Kremlin ao pai. Essa distinção é importante porque a frase tem sido muitas vezes utilizada fora do seu contexto.</p>
+<p>Mas o que disse continua a ser extraordinariamente relevante.</p>
+<p>A própria família Trump reconhecia publicamente que compradores russos tinham adquirido uma presença desproporcionada em parte do imobiliário de luxo associado aos seus projectos.</p>
+<p>Portanto, é preciso distinguir duas afirmações muito diferentes.</p>
+<p><strong>«Os russos salvaram Trump da falência através de uma operação organizada pelo Kremlin.»</strong></p>
+<p>Não temos provas públicas que permitam afirmá-lo.</p>
+<p>Mas:</p>
+<p><strong>«Dinheiro proveniente de compradores russos entrou significativamente em propriedades e projectos associados a Trump.»</strong></p>
+<p>Isso foi reconhecido publicamente pelo próprio Donald Trump Jr.</p>
+<p>A diferença é fundamental.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O dinheiro nem sequer precisa de comprar obediência</h2>
+<p>Aqui regressamos ao problema da influência.</p>
+<p>Existe uma visão demasiado simples segundo a qual uma potência estrangeira só consegue controlar alguém se lhe entregar dinheiro em troca de decisões.</p>
+<p>A realidade humana é bastante mais complicada.</p>
+<p>Dinheiro pode criar relações.</p><p>Relações criam expectativas.</p><p>Expectativas criam predisposições.</p>
+<p>Mas também existem outras moedas.</p>
+<p>Prestígio.</p><p>Reconhecimento.</p><p>Acesso.</p><p>Elogio.</p><p>A sensação de ser respeitado por homens poderosos.</p>
+<p>E talvez nenhuma dessas coisas funcione se o alvo perceber que está a ser manipulado.</p>
+<p>Pelo contrário.</p>
+<p>A influência perfeita exige que continue absolutamente convencido da sua independência.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Putin entra em cena</h2>
+<p>É aqui que a personalidade de Trump se torna particularmente interessante.</p>
+<p>Ao longo dos anos, Trump demonstrou publicamente uma admiração invulgar por Vladimir Putin e por outros dirigentes que projectam a imagem do <em>strongman</em>: o homem que decide, domina as instituições e não parece condicionado pelas limitações normais das democracias liberais.</p>
+<p>Isto não demonstra que Putin controle Trump.</p>
+<p>Pode simplesmente revelar uma afinidade psicológica e política genuína.</p>
+<p>Mas, para um profissional de informações, uma afinidade genuína pode ser precisamente aquilo que torna alguém interessante.</p>
+<p>Porque talvez não seja necessário mudar as convicções de uma pessoa.</p>
+<p>Pode bastar <strong>reforçar aquelas que ela já possui</strong>.</p>
+<p>Não é necessário ordenar.</p>
+<p>É necessário compreender.</p>
+
+<div style="background:#151515; border-left:4px solid #d6a542; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+  <p style="margin-top:0;"><strong style="color:#d6a542;">Uma formulação pública particularmente significativa</strong></p>
+  <p>Em 27 de Agosto de 2025, Marcelo Rebelo de Sousa, então Presidente da República Portuguesa, utilizou publicamente uma expressão invulgarmente forte para caracterizar a actuação de Donald Trump no contexto da guerra da Ucrânia:</p>
+  <p style="margin:18px 0;"><strong>«o líder máximo da maior superpotência do mundo, objectivamente, é um activo soviético, ou russo. Funciona como activo».</strong></p>
+  <p>Marcelo esclareceu imediatamente o sentido da afirmação: não estava a alegar recrutamento por um serviço de informações, mas a sustentar que, <em>«em termos objectivos»</em>, a nova liderança norte-americana tinha favorecido estrategicamente a Federação Russa.</p>
+  <p style="margin-bottom:0;">A distinção é essencial para esta crónica. <strong>Ser tecnicamente um activo de um serviço de informações e produzir, objectivamente, efeitos favoráveis aos interesses estratégicos de uma potência estrangeira são afirmações diferentes.</strong> A declaração de Marcelo não prova a hipótese aqui examinada; mostra, porém, que esta distinção entre intenção, recrutamento e efeito político entrou também no debate público ao mais alto nível institucional.</p>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Depois chegou 2016</h2>
+<p>A partir daqui abandonamos novamente a hipótese e regressamos aos factos estabelecidos pelas investigações americanas.</p>
+<p>A Rússia interferiu nas eleições presidenciais americanas de 2016.</p>
+<p>A investigação Mueller concluiu que o governo russo considerava que beneficiaria de uma Presidência Trump e trabalhou para produzir esse resultado.</p>
+<p>E concluiu também algo extraordinariamente importante: a campanha Trump esperava beneficiar eleitoralmente da informação roubada e posteriormente divulgada através das operações russas.</p>
+<p>Mas Mueller estabeleceu igualmente o outro lado da história:</p>
+<p><strong>a investigação não demonstrou que membros da campanha Trump tivessem conspirado ou coordenado com o governo russo na operação de interferência eleitoral.</strong></p>
+<p>As duas afirmações são simultaneamente verdadeiras.</p>
+<p>E é exactamente isso que torna esta história tão fascinante.</p>
+<p>As investigações americanas concluíram que o governo russo procurou favorecer a candidatura de Trump.</p>
+<p>A campanha percebeu que poderia beneficiar daquilo que a Rússia estava a fazer.</p>
+<p>Mas não foi demonstrado um acordo entre ambos para executar a operação.</p>
+<p>Daí nasce apenas a hipótese desta crónica: talvez a análise de operações de influência não deva limitar-se à procura de um acordo ou recrutamento formal. Isso não significa que uma operação pessoal desse género sobre Trump tenha sido demonstrada.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Manafort e Kilimnik</h2>
+<p>Há ainda um episódio particularmente inquietante.</p>
+<p>Paul Manafort, que chegou a dirigir a campanha presidencial de Trump, manteve relações com Konstantin Kilimnik.</p>
+<p>O relatório bipartidário do Comité de Inteligência do Senado foi bastante mais longe do que simples especulações jornalísticas: considerou que Kilimnik provavelmente serviu como canal para os serviços de informações russos e que o acesso de Manafort à campanha criou oportunidades para esses serviços obterem informação e exercerem influência.</p>
+<p>A conclusão do Senado é contundente: o elevado nível de acesso de Manafort e a sua disposição para partilhar informação com pessoas estreitamente ligadas aos serviços russos constituíram uma <strong>«grave counterintelligence threat»</strong> — uma grave ameaça de contra-inteligência.</p>
+<p>Mais uma vez: isto não demonstra que Trump fosse agente russo.</p>
+<p>Demonstra que existiam em torno da sua campanha vulnerabilidades que os próprios serviços de contra-inteligência americanos consideraram extremamente sérias.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">E se a pergunta estiver errada?</h2>
+<p>Durante anos a discussão pública ficou presa a uma pergunta:</p>
+<p><strong>«Trump é ou não é um agente russo?»</strong></p>
+<p>Talvez seja uma pergunta demasiado estreita para uma análise de contra-inteligência — embora continue a ser essencial responder-lhe com rigor: <strong>não existe prova pública de que Trump tenha sido um agente russo.</strong></p>
+<p>Um serviço de informações sofisticado não necessita de transformar toda a pessoa útil num agente.</p>
+<p>Pode simplesmente estudá-la.</p>
+<p>Conhecer aquilo que deseja.</p><p>Conhecer aquilo que teme.</p><p>Saber aquilo que alimenta o seu ego.</p><p>Descobrir quem consegue aproximar-se dela.</p><p>Compreender quais os argumentos aos quais reage.</p>
+<p>E esperar.</p>
+<p>Não é controlo remoto.</p>
+<p>É psicologia aplicada ao poder.</p>
+<p>Não é necessário dizer:</p>
+<p><strong>«Faça isto.»</strong></p>
+<p>Pode bastar saber:</p>
+<p><strong>«Se criarmos estas circunstâncias, provavelmente fará isto por iniciativa própria.»</strong></p>
+<p>Num cenário hipotético desse tipo, o alvo poderia continuar convencido de que ninguém o influencia.</p>
+<p>Essa convicção poderia, em abstracto, constituir uma vulnerabilidade explorável.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O homem diante do espelho</h2>
+<p>É por isso que, <strong>como metáfora — e não como descrição de um facto demonstrado</strong>, a imagem mais adequada talvez não seja Trump recebendo secretamente ordens de Putin.</p>
+<p>Essa caricatura seria demasiado fácil.</p>
+<p>A imagem mais interessante é outra.</p>
+<p>Na metáfora, Putin aparece atrás.</p>
+<p>Trump está diante de um espelho.</p>
+<p>E Trump não olha para Putin.</p>
+<p>Olha para si próprio.</p>
+<p>Vê o negociador extraordinário.</p>
+<p>O homem que ninguém consegue manipular.</p>
+<p>O génio que percebe aquilo que todos os outros são incapazes de perceber.</p>
+<p>A imagem pretende formular uma pergunta, não responder-lhe: uma personalidade profundamente confiante na própria autonomia reconheceria sempre uma tentativa externa de influência?</p>
+<p>Não sabemos se foi isso que aconteceu.</p>
+<p>Não sabemos se alguma operação deste género existiu.</p>
+<p>Mas sabemos que serviços de informações procuram vulnerabilidades humanas, que a União Soviética desenvolveu durante décadas sofisticadas operações de influência, que Trump manteve contactos e interesses empresariais relacionados com a Rússia durante décadas, que compradores russos tiveram presença relevante em imóveis e projectos associados à marca Trump, que a Rússia interferiu nas eleições de 2016 procurando favorecer a sua vitória e que o relatório do Senado identificou graves riscos de contra-inteligência ligados a pessoas próximas da campanha.</p>
+<p>Esses são os factos.</p>
+<p>A hipótese começa depois deles.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O alvo que talvez nunca saiba</h2>
+<p>E talvez seja esta a questão verdadeiramente perturbadora.</p>
+<p>Imaginemos, apenas como exercício de contra-inteligência, que um serviço estrangeiro conseguiu compreender profundamente um homem poderoso.</p>
+<p>Nunca o recrutou.</p><p>Nunca lhe pagou para tomar uma decisão.</p><p>Nunca lhe entregou instruções.</p><p>Nunca precisou de ameaçá-lo.</p>
+<p>Limitou-se a compreender aquilo que ele já queria.</p>
+<p>A alimentar algumas das suas convicções.</p>
+<p>A reforçar algumas das suas vaidades.</p>
+<p>A proporcionar determinadas oportunidades.</p>
+<p>E, quando os interesses coincidiram, deixou-o actuar.</p>
+<p>O homem continuaria absolutamente convencido de estar no comando.</p>
+<p>Talvez até dissesse repetidamente ao mundo:</p>
+<p><strong>«Ninguém me controla.»</strong></p>
+<p>E acreditaria sinceramente nisso.</p>
+<p>Num exercício hipotético, esse seria talvez o maior triunfo de uma operação de influência.</p>
+<p>Porque o velho agente secreto sabia que trabalhava para alguém.</p>
+<p>O <strong>alvo de influência</strong> perfeito não precisaria de receber ordens.</p>
+<p>Não precisaria de esconder encontros.</p>
+<p>Não necessitaria de códigos.</p>
+<p>Poderia até nunca cometer um crime — precisamente porque influência política e responsabilidade criminal são questões distintas.</p>
+<p><strong>Nesse cenário teórico, bastaria que continuasse a acreditar que todas as decisões foram exclusivamente suas.</strong></p>
+<p>E poderia nunca saber se alguém aprendera a antecipar, explorar ou reforçar algumas dessas decisões. <strong>Esta é a hipótese analítica da crónica; não uma afirmação de que isso tenha sido demonstrado no caso de Donald Trump.</strong></p>
+
+    <div style="background:#111; border:1px solid #333; padding:20px; margin:35px 0;">
+      <p style="margin-top:0;"><strong style="color:#d6a542;">O QUE DEVE SER RETIDO</strong></p>
+      <ul style="padding-left:22px; margin-bottom:0;">
+        <li>Trump manteve contactos e interesses empresariais relacionados com a União Soviética e a Rússia ao longo de décadas.</li>
+        <li>Donald Trump Jr. afirmou publicamente em 2008 que os russos representavam uma parcela desproporcionada dos activos e que «we see a lot of money pouring in from Russia».</li>
+        <li>Essa afirmação não prova financiamento secreto do Kremlin, mas documenta a importância de compradores russos em parte do universo imobiliário associado a Trump.</li>
+        <li>A interferência russa nas eleições americanas de 2016 foi estabelecida por investigações oficiais dos Estados Unidos.</li>
+        <li>Mueller não estabeleceu conspiração ou coordenação entre a campanha Trump e o governo russo nas operações de interferência eleitoral.</li>
+        <li>O Senado classificou as relações de Paul Manafort e Konstantin Kilimnik como uma séria vulnerabilidade de contra-inteligência.</li>
+        <li>A hipótese central da crónica, apresentada como exercício analítico e não como facto atribuído a Trump, é que uma tentativa de influência não exige necessariamente recrutamento formal, ordens explícitas ou consciência do alvo.</li>
+      </ul>
+    </div>
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;"><strong>Esta crónica não afirma que Donald Trump tenha sido agente da KGB, da Rússia ou de qualquer serviço estrangeiro, nem que tenha conscientemente executado ordens ou instruções de Moscovo.</strong> Não existe prova pública que permita sustentar essas conclusões. O título interrogativo é deliberado: formula uma hipótese para discussão e não uma imputação factual.</p>
+      <p style="text-align:left;">O texto parte de factos documentados — contactos soviéticos e russos, projectos empresariais, declarações públicas de Donald Trump Jr., a interferência russa em 2016 e as conclusões das investigações Mueller e do Senado — para discutir um conceito mais amplo de contra-inteligência e influência: a possibilidade teórica de tentar explorar predisposições, interesses, vaidades e percepções de uma pessoa sem recrutamento formal. A existência dessa possibilidade geral não demonstra que tenha ocorrido, no caso concreto, da forma imaginada nesta crónica.</p>
+      <p style="text-align:left; margin-bottom:0;">A fronteira entre influência, afinidade espontânea, coincidência de interesses e manipulação deliberada é frequentemente difícil de estabelecer. É precisamente por isso que o texto separa o que está documentado daquilo que permanece hipótese analítica. A pergunta central não é criminal, mas política e psicológica: quanto poder pode exercer quem conhece suficientemente bem a forma como outro ser humano decide?</p>
+    </div>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+    <ul style="padding-left:22px;"><li><a href="https://www.justice.gov/archives/sco-mueller" target="_blank" rel="noopener" style="color:#ffcc66;">U.S. Department of Justice — Special Counsel Robert S. Mueller III: Report on the Investigation into Russian Interference in the 2016 Presidential Election</a></li>
+<li><a href="https://www.intelligence.senate.gov/2020/08/18/publications-report-select-committee-intelligence-united-states-senate-russian-active-measures/" target="_blank" rel="noopener" style="color:#ffcc66;">U.S. Senate Select Committee on Intelligence — Russian Active Measures Campaigns and Interference in the 2016 U.S. Election</a></li>
+<li><a href="https://www.intelligence.senate.gov/sites/default/files/documents/report_volume5.pdf" target="_blank" rel="noopener" style="color:#ffcc66;">U.S. Senate Select Committee on Intelligence — Volume 5: Counterintelligence Threats and Vulnerabilities</a></li>
+<li><a href="https://www.washingtonpost.com/archive/lifestyle/1988/12/03/trump-and-the-gorby-connection/90def16e-147b-4581-8ac5-56fb6fbdf44f/" target="_blank" rel="noopener" style="color:#ffcc66;">The Washington Post — Trump and the Gorby Connection (1988)</a></li>
+<li><a href="https://eturbonews.com/donald-trump-jr-told-etn-russia-emerging-market-worth-investing/" target="_blank" rel="noopener" style="color:#ffcc66;">eTurboNews — Donald Trump Jr. on Russian buyers and emerging markets (2008)</a></li>
+<li><a href="https://opensourcemuellerreport.com/mueller-report.html" target="_blank" rel="noopener" style="color:#ffcc66;">Open Source Mueller Report — searchable text of the Mueller Report</a></li>
+<li><a href="https://www.cia.gov/readingroom/document/cia-rdp88t00706r000500420004-0" target="_blank" rel="noopener" style="color:#ffcc66;">CIA Reading Room — Soviet Active Measures and Propaganda material</a></li>
+<li><a href="https://www.rand.org/pubs/research_reports/RR2237.html" target="_blank" rel="noopener" style="color:#ffcc66;">RAND Corporation — Russian Social Media Influence: Understanding Russian Propaganda in Eastern Europe</a></li>
+<li><a href="https://stratcomcoe.org/publications/virtual-manipulation-brief-2025-from-war-and-fear-to-confusion-and-uncertainty/320" target="_blank" rel="noopener" style="color:#ffcc66;">NATO Strategic Communications Centre of Excellence — Virtual Manipulation Brief 2025</a></li>
+<li><a href="https://www.rtp.pt/noticias/mundo/marcelo-diz-que-donald-trump-e-um-ativo-russo_v1679637" target="_blank" rel="noopener" style="color:#ffcc66;">RTP / Lusa — Marcelo diz que Donald Trump «é um ativo russo» (27 de Agosto de 2025)</a></li></ul>
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;"><strong style="color:#d6a542;">Francisco Gonçalves</strong><br>Fragmentos do Caos<br>FC-Chronic-News</p>
+    </div>
+  </div>
+</div>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Memórias da Linha de Comando</title>
+<meta name="description" content="Memórias da Linha de Comando">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Memórias da Linha de Comando</h1>
+      <p class="meta">Publicado em 2026-09-12 12:15:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000c98c821187f5cea5ec9f1761_ea4a4088.jpg" alt=""></figure>
+      <div class="post-content">
+        <article class="fc-chronic-news" itemscope itemtype="https://schema.org/Article">
+<meta itemprop="datePublished" content="2026-08-28"><meta itemprop="dateModified" content="2026-08-28">
+<link itemprop="mainEntityOfPage" href="https://www.fragmentoscaos.eu/memorias-da-linha-de-comando-drs20/">
+<header>
+<div class="fc-kicker">Fragmentos do Caos · Memória Tecnológica</div>
+<h1 itemprop="headline">Memórias da Linha de Comando</h1>
+<p class="fc-subtitle"><strong>Quando uma geração de engenheiros ajudava a construir o futuro digital</strong></p>
+</header>
+<div itemprop="articleBody">
+<p>Há épocas da nossa vida profissional cuja importância só compreendemos verdadeiramente muitos anos depois.</p>
+<p>Enquanto as vivemos, não pensamos que estamos a participar na História. Pensamos no programa que não compila, numa rotina de Assembler que ocupa memória a mais, numa comunicação entre duas máquinas que falha quando não devia, num terminal que fica inexplicavelmente silencioso.</p>
+<p>E pensamos naquela pergunta ancestral de qualquer programador:</p>
+<blockquote><strong>"Porque raio isto não funciona?"</strong></blockquote>
+<p>No início da década de 1980, entre os Estados Unidos e o Reino Unido, tive o privilégio de trabalhar num desses períodos extraordinários.</p>
+<p>Uma parte importante dessa experiência aconteceu no desenvolvimento do <strong>ICL DRS20</strong>, entre <strong>Utica</strong>, no estado de Nova Iorque, e os centros de engenharia da ICL em <strong>Feltham</strong> e <strong>Bracknell</strong>, no Reino Unido.</p>
+<p>Olhando hoje para trás, percebo que nós, programadores e engenheiros de software daquela geração, estávamos a construir algumas das primeiras peças de um mundo que hoje consideramos completamente normal.</p>
+<p>Na altura, porém, estávamos apenas a tentar fazer as máquinas funcionar.</p>
+
+<h2>Utica: quando o futuro ainda cheirava a eletrónica</h2>
+<p>A história começa na região de <strong>Utica-Rome</strong>, no estado de Nova Iorque.</p>
+<p>Ali existia uma fábrica com uma história tecnológica interessante, ligada sucessivamente à Cogar Corporation, à Singer Business Machines e depois à britânica <strong>ICL, International Computers Limited</strong>.</p>
+<p>Era um mundo bastante diferente dos atuais centros de desenvolvimento tecnológico.</p>
+<p>Não havia campus futuristas, paredes de vidro, mesas de matraquilhos ou departamentos dedicados a descobrir nomes novos para coisas que já existiam.</p>
+<p>Havia placas eletrónicas. Osciloscópios. Terminais. Impressoras. Discos e disquetes. Diagramas de circuitos. Manuais técnicos. E enormes pilhas de listagens em papel contínuo.</p>
+<p>Acima de tudo, havia <strong>engenheiros</strong>.</p>
+<p>Engenheiros de hardware. Engenheiros de software. Programadores de sistemas. Especialistas em comunicações. Programadores de aplicações. Técnicos de teste.</p>
+<p>Cada grupo trabalhava numa parte diferente do problema, mas todos tínhamos uma missão comum:</p>
+<p class="fc-highlight"><strong>transformar hardware novo num sistema informático utilizável.</strong></p>
+
+<h2>Uma geração que programava perto da máquina</h2>
+<p>Desenvolver software naquela época significava conhecer intimamente o computador.</p>
+<p>Não havia camadas intermináveis de abstração a separar o programador da eletrónica.</p>
+<p>Quem trabalhava em sistemas precisava de compreender processadores, registos, endereçamento, interrupções, buffers, dispositivos e estruturas de memória.</p>
+<p>O <strong>Intel 8085</strong> não era uma abstração escondida atrás de dezenas de frameworks. Estava praticamente diante de nós.</p>
+<p>Cada rotina tinha consequências. Cada byte interessava. Cada acesso à memória tinha um custo. Cada estrutura precisava de justificar a sua existência.</p>
+<p>E se algo corresse mal, a máquina não preparava um relatório de diagnóstico com sugestões amáveis.</p>
+<p>Muitas vezes simplesmente parava. Ou produzia lixo. Ou fazia exatamente aquilo que lhe tínhamos mandado fazer, que era frequentemente diferente daquilo que julgávamos ter mandado fazer.</p>
+<p>Os computadores possuem esse desagradável hábito de interpretar literalmente as instruções humanas.</p>
+
+<h2>Construir um sistema operativo distribuído</h2>
+<p>O <strong>DRS20</strong> representava uma abordagem particularmente interessante à computação empresarial.</p>
+<p>A ideia de distribuir recursos por várias estações ligadas em rede era, naquele princípio dos anos 80, muito mais ousada do que hoje conseguimos imaginar.</p>
+<p>Atualmente vivemos dentro de sistemas distribuídos: cloud, microserviços, clusters, storage distribuído e aplicações que recorrem simultaneamente a serviços espalhados por diferentes centros de dados.</p>
+<p>Mas nessa altura ainda estávamos a descobrir como ligar pequenas máquinas inteligentes e fazê-las colaborar.</p>
+<p>Era necessário desenvolver gestão de dispositivos, sistemas de ficheiros, comunicações, protocolos de rede, interfaces de operação, linguagens, ferramentas de desenvolvimento, software de escritório e aplicações comerciais.</p>
+<p>Nenhuma dessas peças podia existir isoladamente.</p>
+<p>O sistema operativo precisava de conversar com o hardware. As aplicações precisavam de conversar com o sistema operativo. As máquinas precisavam de conversar entre si.</p>
+<p>E os utilizadores precisavam de conseguir conversar com tudo aquilo sem possuir um doutoramento em arquitetura de computadores.</p>
+<p>Essa última parte parecia pequena. <strong>Não era.</strong></p>
+
+<h2>Quando foi preciso ensinar o computador a falar com o operador</h2>
+<p>Um dos problemas que surgiu na passagem para o novo ambiente era simples de formular:</p>
+<blockquote><strong>como deveria o utilizador comandar o sistema?</strong></blockquote>
+<p>Era necessária uma interface de linha de comandos. Uma <strong>CLI, Command Line Interface</strong>.</p>
+<p>Hoje parece óbvio que um sistema operativo possua comandos para copiar ficheiros, consultar dispositivos, executar programas ou manipular informação.</p>
+<p>Naquele momento, essas convenções ainda estavam longe de estar totalmente estabilizadas.</p>
+<p>Alguém tinha de decidir a sintaxe. Como identificar um dispositivo? Como referenciar um ficheiro? Como distinguir a origem do destino? Como tratar comandos inválidos? Como fazer tudo isso utilizando o mínimo possível de memória?</p>
+<p>Foi aí que surgiu uma das componentes em que trabalhei pessoalmente: a <strong>CLI do Native Mode do DRS20</strong>.</p>
+<p>E tive a felicidade profissional, hoje provavelmente considerada uma atividade ligeiramente subversiva, de poder avançar com bastante iniciativa técnica.</p>
+
+<h2><code>copy #1.file1 #2.file2</code></h2>
+<p>Uma instrução como</p>
+<pre><code>copy #1.file1 #2.file2</code></pre>
+<p>resume muito bem a filosofia daquela época.</p>
+<p>O cardinal seguido de um número, como <code>#1</code> ou <code>#2</code>, permitia identificar diretamente um dispositivo. Depois vinha o nome do ficheiro.</p>
+<p>Simples. Curto. Determinístico. Poucos caracteres para interpretar. Pouca memória necessária. Pouca ambiguidade.</p>
+<p>Não estávamos a tentar criar poesia computacional. Estávamos a tentar construir uma interface rápida e eficiente para máquinas com recursos extremamente limitados.</p>
+<p>A elegância estava precisamente na ausência de desperdício.</p>
+<p>Quando uma instrução estava errada, também não havia motivo para escrever uma dissertação. A resposta podia ser simplesmente:</p>
+<pre><code>invalid command</code></pre>
+<p>Problema perfeitamente descrito. O comando era inválido. Corrigia-se. Continuava-se.</p>
+<p>Nenhum psicólogo de interfaces teria aprovado semelhante brutalidade textual, mas a memória agradecia profundamente.</p>
+
+<h2>A engenharia do pouco</h2>
+<p>Existe algo que aquela geração aprendeu talvez melhor do que qualquer outra:</p>
+<blockquote><strong>escassez obriga a pensar.</strong></blockquote>
+<p>Quando existe memória praticamente ilimitada, é fácil resolver problemas acrescentando mais camadas.</p>
+<p>Na nossa época, muitas vezes não podíamos acrescentar. Tínhamos de simplificar.</p>
+<p>Um algoritmo ligeiramente mais eficiente fazia diferença. Uma estrutura mais compacta fazia diferença. Algumas dezenas de bytes podiam fazer diferença.</p>
+<p>Não porque estivéssemos apaixonados por minimalismo. Porque não havia alternativa.</p>
+<p>Programar significava constantemente negociar com a máquina.</p>
+<p>Eu quero esta funcionalidade.</p>
+<p>A máquina responde:</p>
+<p class="fc-highlight"><strong>não tens memória.</strong></p>
+<p>Então fazemos de outra maneira.</p>
+<p>Foi uma escola extraordinária de engenharia.</p>
+
+<h2>Mas ninguém construía aquilo sozinho</h2>
+<p>Com o passar dos anos, às vezes a História tecnológica fica perigosamente simplificada.</p>
+<p>Escolhe-se uma pessoa. Um nome. Uma fotografia. E conta-se a história como se grandes sistemas tivessem aparecido da cabeça de um único génio solitário.</p>
+<p>Não era assim.</p>
+<p>O desenvolvimento do DRS20 envolvia <strong>muitos engenheiros de software e hardware</strong>.</p>
+<p>Uns trabalhavam no kernel e nos componentes internos do sistema. Outros nas comunicações. Outros nos controladores. Outros nas linguagens. Outros nas aplicações. Outros nos testes.</p>
+<p>Outros passavam dias a descobrir por que motivo o trabalho produzido pelos anteriores não fazia exatamente aquilo que estava escrito na especificação.</p>
+<p>Cada um conhecia profundamente a sua parcela. E depois era necessário juntar tudo.</p>
+<p>É precisamente aí que começam os verdadeiros problemas interessantes da engenharia.</p>
+
+<h2>Atravessar o Atlântico</h2>
+<p>O desenvolvimento do DRS20 rapidamente ultrapassou os limites de Utica.</p>
+<p>A ICL era uma empresa britânica e grande parte da engenharia estava naturalmente concentrada no Reino Unido.</p>
+<p>A minha experiência acabaria por levar-me até dois locais particularmente importantes: <strong>Feltham</strong>, em Middlesex, e <strong>Bracknell</strong>, em Berkshire.</p>
+<p>De repente, aquele projeto transformava-se numa experiência transatlântica.</p>
+<p>Equipas americanas. Equipas britânicas. Engenheiros com diferentes formações. Diferentes hábitos de desenvolvimento. Diferentes maneiras de olhar para problemas semelhantes.</p>
+<p>Isso era uma riqueza.</p>
+<p>E por vezes, naturalmente, uma excelente forma de produzir discussões técnicas suficientemente longas para competir com qualquer sessão parlamentar.</p>
+<p>Mas no final havia código para entregar. E isso costuma ser um excelente mecanismo de aproximação diplomática.</p>
+
+<h2>Feltham: colocar COBOL dentro do novo mundo</h2>
+<p>Em <strong>Feltham</strong>, uma das áreas em que participei esteve relacionada com a implementação do <strong>CIS COBOL da Micro Focus</strong> no ambiente do DRS20.</p>
+<p>É fácil rir hoje do COBOL.</p>
+<p>Tem mais de meio século. Tem uma sintaxe que parece ter sido concebida por alguém particularmente apaixonado pela língua inglesa.</p>
+<p>E continua vivo, precisamente para irritar sucessivas gerações que anunciam solenemente a sua morte.</p>
+<p>Nos anos 80, porém, COBOL era absolutamente fundamental.</p>
+<p>Grande parte do software empresarial era escrita nessa linguagem: banca, contabilidade, faturação, gestão de stocks, seguros e administração.</p>
+<p>Um computador destinado ao mercado empresarial precisava de executar software COBOL. Não havia discussão.</p>
+<p>Por isso, colocar aquele ambiente de desenvolvimento no DRS20 significava muito mais do que simplesmente adicionar outra linguagem.</p>
+<p>Significava tornar possível migrar e desenvolver <strong>aplicações comerciais reais</strong>.</p>
+<p>Era a ponte entre a engenharia do novo sistema e as necessidades económicas das empresas.</p>
+
+<h2>Bracknell: onde as peças tinham de encaixar</h2>
+<p>Depois havia <strong>Bracknell</strong>.</p>
+<p>Bracknell representava para mim uma outra dimensão do projeto.</p>
+<p>Ali sentia-se claramente a escala da engenharia de software da ICL.</p>
+<p>Um computador empresarial não era apenas o sistema operativo. Era um ecossistema.</p>
+<p>Havia ferramentas de programação, aplicações, utilitários, comunicações, software de escritório, sistemas de ficheiros, drivers, compiladores, editores e gestão de dispositivos.</p>
+<p>Tudo precisava de coexistir.</p>
+<p>E os engenheiros responsáveis por cada componente precisavam de compreender aquilo que os outros estavam a fazer.</p>
+<p>Um sistema informático é uma criatura curiosa. Pode ter vinte componentes excelentes. Se dois deles não comunicarem corretamente, o utilizador conclui simplesmente:</p>
+<blockquote><strong>"Isto não funciona."</strong></blockquote>
+<p>E tem razão.</p>
+<p>Da perspetiva dele, não funciona.</p>
+<p>Por isso, uma parte enorme do trabalho de engenharia acontecia precisamente nas fronteiras entre componentes. Onde um módulo terminava. E outro começava.</p>
+<p>Essas fronteiras continuam hoje a ser alguns dos lugares mais perigosos de qualquer arquitetura informática.</p>
+
+<h2>Os engenheiros invisíveis</h2>
+<p>Recordo aquela época também por uma razão que considero importante.</p>
+<p>A maioria dos engenheiros que construiu aqueles sistemas nunca aparecerá em livros de História.</p>
+<p>Alguns nomes talvez sobrevivam em documentos técnicos. Outros em antigas listagens. Outros em manuais. Muitos desaparecerão completamente do registo público.</p>
+<p>Mas estiveram lá.</p>
+<p>Engenheiros que escreveram drivers. Engenheiros que desenvolveram protocolos. Engenheiros que criaram sistemas de ficheiros. Engenheiros que implementaram compiladores.</p>
+<p>Programadores que construíram aplicações. Técnicos que passaram noites a testar software. Pessoas que descobriram erros poucas horas antes de uma versão ser entregue.</p>
+<p>É assim que a tecnologia normalmente nasce.</p>
+<p>Não através de um momento cinematográfico de inspiração.</p>
+<p>Mas através de milhares de pequenas decisões corretas tomadas por muitas pessoas.</p>
+
+<h2>Antes da Internet, já estávamos a construir redes</h2>
+<p>Uma das coisas mais fascinantes do DRS20 era precisamente a ideia de rede.</p>
+<p>Várias estações. Recursos partilhados. Comunicações através de uma LAN. Processamento distribuído.</p>
+<p>Hoje qualquer adolescente vive constantemente ligado a sistemas milhares de vezes mais complexos.</p>
+<p>Mas naquela altura estávamos a trabalhar praticamente na pré-história dessa realidade.</p>
+<p>Era preciso pensar como os recursos seriam identificados. Como os nós comunicariam. O que aconteceria quando uma estação desaparecesse. Como coordenar informação. Como garantir desempenho aceitável.</p>
+<p>Tudo com processadores lentos e quantidades de memória que hoje seriam insuficientes para carregar o logótipo de muitas aplicações modernas.</p>
+<p>E funcionava.</p>
+<p>É talvez isso que ainda hoje me fascina.</p>
+
+<h2>A liberdade para resolver problemas</h2>
+<p>Havia também uma cultura profissional que recordo com saudade.</p>
+<p>Quando aparecia um problema técnico, muitas vezes era dada ao engenheiro liberdade para encontrar a solução.</p>
+<p>Naturalmente existiam hierarquias. Prazos. Reuniões. Documentação. Gestão.</p>
+<p>Mas havia espaço para uma coisa fundamental:</p>
+<p class="fc-highlight"><strong>iniciativa.</strong></p>
+<p>Se alguém identificava uma maneira melhor de fazer algo, podia experimentar. Construir um protótipo. Demonstrar. Medir. Convencer.</p>
+<p>Era uma cultura muito ligada ao resultado.</p>
+<p>A pergunta central era:</p>
+<blockquote><strong>funciona?</strong></blockquote>
+<p>Se funcionava e resolvia o problema, tínhamos algo interessante.</p>
+
+<h2>Não havia inteligência artificial para perguntar</h2>
+<p>Quando penso hoje naquela época, existe uma diferença particularmente divertida.</p>
+<p>Se tínhamos uma dúvida, não podíamos perguntar a uma IA.</p>
+<p>Não existia Google. Não existia Stack Overflow. Não havia fóruns globais com respostas para praticamente qualquer erro imaginável.</p>
+<p>Havia <strong>manuais</strong>. Colegas. Documentação interna. Listagens. Experiência. E muitas horas de investigação.</p>
+<p>Talvez por isso aprendêssemos determinadas coisas profundamente.</p>
+<p>Quando alguém passa seis horas a descobrir por que razão um bit está errado num registo, tende a recordar durante bastante tempo para que serve aquele bit.</p>
+<p>A pedagogia do sofrimento técnico é incrivelmente eficiente.</p>
+<p>Pouco confortável.</p>
+<p>Mas eficiente.</p>
+
+<h2>Não sabíamos que era uma revolução</h2>
+<p>Hoje chamamos àquele período <strong>revolução digital</strong>.</p>
+<p>Na altura ninguém entrava no escritório de manhã dizendo:</p>
+<blockquote>"Hoje vou trabalhar um pouco na revolução digital."</blockquote>
+<p>Íamos trabalhar.</p>
+<p>Havia versões para entregar. Bugs para resolver. Clientes à espera. Equipamento para testar. Programas para otimizar. E colegas de diferentes especialidades tentando manter tudo coerente.</p>
+<p>Só muitos anos depois percebi que aquela soma de trabalhos aparentemente quotidianos estava a contribuir para uma mudança gigantesca.</p>
+<p>O computador deixava progressivamente de ser apenas uma máquina centralizada reservada a especialistas.</p>
+<p>Estava a entrar no escritório. Estava a aproximar-se do utilizador. Estava a ligar-se a outras máquinas. Estava a transformar-se numa ferramenta quotidiana.</p>
+
+<h2>Quarenta anos depois</h2>
+<p>Hoje posso ter sobre uma secretária uma máquina com capacidade computacional inimaginável naquela época.</p>
+<p>Posso virtualizar dezenas de sistemas. Posso criar redes inteiras por software. Posso executar bancos de dados gigantescos. Posso falar com sistemas de inteligência artificial em linguagem natural.</p>
+<p>E tudo isso parece normal.</p>
+<p>Mas quando olho para a tecnologia atual, continuo a reconhecer princípios que aprendemos naquela época.</p>
+<p><strong>Compreender o problema antes de escrever código. Conhecer a arquitetura. Evitar complexidade desnecessária. Pensar nos recursos. Testar. Medir. Corrigir. Integrar.</strong></p>
+<p>E sobretudo compreender uma verdade que nenhuma revolução tecnológica tornou obsoleta:</p>
+<p class="fc-highlight"><strong>software é trabalho coletivo.</strong></p>
+
+<h2>O verdadeiro legado daquela geração</h2>
+<p>Não fomos nós que inventámos a computação moderna.</p>
+<p>Seria uma afirmação absurda.</p>
+<p>Antes de nós existiram gerações extraordinárias de matemáticos, engenheiros e cientistas. Depois de nós vieram outras gerações igualmente extraordinárias.</p>
+<p>A tecnologia é uma enorme construção coletiva.</p>
+<p>Mas tivemos a felicidade de trabalhar numa ponte particularmente interessante da História.</p>
+<p>Entre o grande computador central e sistemas mais distribuídos.</p>
+<p>Entre o terminal passivo e a estação inteligente.</p>
+<p>Entre a máquina isolada e a rede.</p>
+<p>Entre o especialista informático e o utilizador de escritório.</p>
+<p>Entre a programação reservada a poucos e o mundo digital que acabaria por chegar a praticamente todos.</p>
+
+<h2>E ainda me lembro daquela linha</h2>
+<p>No meio de toda esta evolução tecnológica, uma coisa permaneceu curiosamente gravada na minha memória:</p>
+<pre><code>copy #1.file1 #2.file2</code></pre>
+<p>Hoje parece quase nada.</p>
+<p>Uma pequena instrução.</p>
+<p>Alguns caracteres.</p>
+<p>Mas nela consigo ver uma época inteira.</p>
+<p>Uma época em que cada byte precisava de ser pensado.</p>
+<p>Em que tínhamos recursos reduzidos e problemas enormes.</p>
+<p>Em que dezenas de engenheiros espalhados entre <strong>Utica, Feltham e Bracknell</strong> iam construindo, componente após componente, uma nova forma de trabalhar com computadores.</p>
+<p>Não havia cloud. Não havia Internet comercial. Não havia inteligência artificial. Não havia milhões de bibliotecas disponíveis à distância de um comando.</p>
+<p>Havia conhecimento.</p>
+<p>Havia curiosidade.</p>
+<p>Havia engenheiros.</p>
+<p>Havia liberdade para tentar.</p>
+<p>E havia aquela extraordinária sensação de que as máquinas ainda escondiam territórios por explorar.</p>
+<p>Nós não sabíamos exatamente onde tudo aquilo iria chegar.</p>
+<p>Provavelmente ninguém sabia.</p>
+<p>Mas continuávamos a escrever código.</p>
+<p>A testar.</p>
+<p>A discutir arquiteturas.</p>
+<p>A corrigir erros.</p>
+<p>A melhorar sistemas.</p>
+<p><strong>Linha após linha.</strong></p>
+<p><strong>Byte após byte.</strong></p>
+<p><strong>Engenheiro após engenheiro.</strong></p>
+<blockquote class="fc-final"><strong>Até que, quase sem darmos por isso, o futuro começou a arrancar.</strong></blockquote>
+</div>
+<footer><p><strong>Francisco Gonçalves</strong></p><p>Fragmentos do Caos · 28 de agosto de 2026</p></footer>
+</article>
+
+<section class="fc-chronic-news fc-editorial">
+<h2>Nota editorial</h2>
+<p>Esta crónica é, antes de mais, um <strong>testemunho pessoal de memória profissional</strong>. As passagens relativas à participação direta do autor no desenvolvimento da interface de linha de comandos do Native Mode do DRS20, à sintaxe recordada, ao trabalho realizado em Feltham e Bracknell e à dinâmica quotidiana das equipas são apresentadas como memória de quem viveu essa época, e não como reconstrução historiográfica independente.</p>
+<p>As fontes abaixo documentam o contexto técnico e industrial mais amplo: a aquisição pela ICL dos ativos da Singer Business Machines e da operação de Utica; a evolução do DRS20 e do sistema operativo DRX; a utilização de processadores Intel 8080/8085 e de redes locais; a disponibilidade de CIS COBOL no ecossistema DRS20; a importância histórica de Bracknell para o desenvolvimento de software da ICL; e o papel duradouro do COBOL no software empresarial. Algumas memórias específicas do autor poderão não estar preservadas em documentação pública acessível, uma limitação normal na reconstrução da história quotidiana da engenharia de software das décadas de 1970 e 1980.</p>
+<h3>Referências internacionais e leitura complementar</h3>
+<ol>
+<li><a href="https://www.computerconservationsociety.org/resurrection/res47.htm" target="_blank" rel="noopener noreferrer">Computer Conservation Society — <em>The Seizing of Singer</em>, Michael Knight</a>. História da aquisição da Singer Business Machines pela ICL, incluindo a unidade de Utica e a herança Cogar/Singer.</li>
+<li><a href="https://www.computerconservationsociety.org/resurrection/res49.htm" target="_blank" rel="noopener noreferrer">Computer Conservation Society — <em>Computer Resurrection</em>, Issue 49</a>. Contexto histórico da transição da linha Singer/System Ten para a estratégia DRS20 da ICL no início da década de 1980.</li>
+<li><a href="https://bitsavers.org/pdf/icl/ICL_minicomputers_Final_V3.pdf" target="_blank" rel="noopener noreferrer">Bitsavers / Computer History Museum — <em>ICL Minicomputers: The Small Systems Story</em>, Version 3</a>. Documento histórico detalhado sobre arquitetura DRS20, DRX, processadores Intel, networking, Native Mode, R-Mode e software, incluindo CIS COBOL.</li>
+<li><a href="https://archive.computerhistory.org/resources/access/text/2024/05/102734481-05-0018-acc.pdf" target="_blank" rel="noopener noreferrer">Computer History Museum — documentação histórica da Micro Focus</a>. Material de época que lista o ICL DRS20/DRX entre as plataformas suportadas pelo software COBOL da Micro Focus.</li>
+<li><a href="https://collection.sciencemuseumgroup.org.uk/people/ap28239/international-computers-limited" target="_blank" rel="noopener noreferrer">Science Museum Group — International Computers Limited</a>. Enquadramento institucional da ICL, incluindo a presença histórica em Lovelace Road, Bracknell, e a evolução posterior da empresa.</li>
+<li><a href="https://www.cs.man.ac.uk/CCS/res/res21.htm" target="_blank" rel="noopener noreferrer">Computer Conservation Society — <em>Computer Resurrection</em>, Issue 21</a>. Testemunho histórico sobre a consolidação em Bracknell de uma das maiores instalações europeias de produção de software da época.</li>
+<li><a href="https://download.microfocus.com/about/press-room/article/2019/micro-focus-celebrates-cobols-60th-anniversary-and-its-enduring-value-with-cobol60/" target="_blank" rel="noopener noreferrer">Micro Focus — COBOL 60th Anniversary</a>. História e continuidade do COBOL enquanto linguagem de software empresarial e referência ao trabalho da Micro Focus desde 1976.</li>
+<li><a href="https://www.computinghistory.org.uk/det/7044/ICL-A-Business-and-Technical-History/" target="_blank" rel="noopener noreferrer">Centre for Computing History — Martin Campbell-Kelly, <em>ICL: A Business and Technical History</em></a>. Referência bibliográfica sobre a evolução empresarial e tecnológica da ICL, baseada em acesso aos arquivos da empresa.</li>
+</ol>
+</section>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
