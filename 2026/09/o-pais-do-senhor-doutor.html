@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O País do Senhor Doutor</title>
+<meta name="description" content="O País do Senhor Doutor">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O País do Senhor Doutor</h1>
+      <p class="meta">Publicado em 2026-09-15 13:16:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000371c81f49c65300519545116_baa60e75.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+<div style="display:none;">
+<span itemscope itemtype="https://schema.org/NewsArticle">
+<meta itemprop="headline" content="O País do Senhor Doutor">
+<meta itemprop="description" content="Uma crónica sobre o credencialismo português: a cultura que confunde diplomas com competência, cargos com mérito e estatuto com realização.">
+<meta itemprop="datePublished" content="2026-08-31">
+<meta itemprop="dateModified" content="2026-08-31">
+<meta itemprop="author" content="Francisco Gonçalves">
+<meta itemprop="publisher" content="Fragmentos do Caos">
+<meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_00000000371c81f49c65300519545116.png">
+</span>
+</div>
+
+<div style="max-width:900px; margin:auto; padding:10px;">
+
+<h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">O País do Senhor Doutor</h1>
+
+<p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">Quando o título vale mais do que aquilo que alguém fez</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+<p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>
+Há sociedades que perguntam primeiro o que alguém sabe fazer. Outras perguntam primeiro que título possui, que cargo ocupa e quem reconheceu formalmente a sua autoridade. O problema não está nos diplomas, indispensáveis em muitas profissões. Começa quando a credencial deixa de ser evidência de preparação e passa a funcionar como substituto automático da competência, da experiência e dos resultados.</p>
+</div>
+
+<p>Portugal tem uma velha doença cultural.</p>
+<p>Não mata.</p>
+<p>Mas atrasa.</p>
+<p>Em inglês existe uma palavra particularmente útil para a descrever:</p>
+<p><strong>credentialism.</strong></p>
+<p>É a tendência para confiar excessivamente em diplomas, títulos, certificados e posições formais como prova de competência ou de autoridade.</p>
+<p>Por cá, porém, a doença ganhou características próprias.</p>
+<p>Tem tratamento honorífico.</p>
+<p>Chama-se:</p>
+<p><strong>«Senhor Doutor.»</strong></p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Primeiro o título. Depois, talvez, a pessoa.</h2>
+
+<p>Durante décadas aprendemos a perguntar:</p>
+<p>Que curso tem?</p>
+<p>Que cargo ocupa?</p>
+<p>Onde trabalha?</p>
+<p>É director de quê?</p>
+<p>Foi presidente de quê?</p>
+<p>Só muito depois, quando alguém se lembra, aparece a pergunta verdadeiramente incómoda:</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Mas o que é que essa pessoa fez?</p>
+</div>
+
+<p>E aí começam alguns silêncios interessantes.</p>
+<p>Porque existem currículos magníficos que, depois de retirados os títulos, deixam pouco mais do que cargos sucessivos.</p>
+<p>Administrador.</p>
+<p>Consultor.</p>
+<p>Professor convidado.</p>
+<p>Assessor.</p>
+<p>Presidente.</p>
+<p>Conselheiro.</p>
+<p>Membro disto.</p>
+<p>Coordenador daquilo.</p>
+<p>Uma verdadeira árvore de Natal institucional.</p>
+<p>Falta apenas descobrir onde estão as realizações.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O título como certificado automático de competência</h2>
+
+<p>A sociedade portuguesa continua demasiadas vezes a funcionar assim:</p>
+<p>Se é professor universitário, deve perceber.</p>
+<p>Se é administrador, deve saber gerir.</p>
+<p>Se foi ministro, deve conhecer o Estado.</p>
+<p>Se aparece na televisão, deve ser especialista.</p>
+<p>Se tem três títulos antes do nome, talvez nem seja necessário ouvir aquilo que diz.</p>
+<p>É extraordinariamente cómodo.</p>
+<p>Avaliar resultados exige trabalho.</p>
+<p>Avaliar títulos demora três segundos.</p>
+<p>A humanidade sempre revelou particular eficiência quando a preguiça intelectual está em causa.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Depois aparece alguém que sabe fazer</h2>
+
+<p>E aqui começa o problema.</p>
+<p>Surge um técnico.</p>
+<p>Um mecânico.</p>
+<p>Um programador.</p>
+<p>Um engenheiro sem cargo pomposo.</p>
+<p>Um empresário que construiu alguma coisa.</p>
+<p>Um investigador que resolveu um problema.</p>
+<p>Uma pessoa que durante trinta anos acumulou conhecimento através da prática.</p>
+<p>Talvez não possua a etiqueta social adequada.</p>
+<p>Mas sabe fazer.</p>
+<p>E isso perturba uma cultura habituada a reconhecer autoridade através do título.</p>
+<p>Porque competência real tem um defeito terrível:</p>
+<p><strong>precisa de ser demonstrada.</strong></p>
+<p>O título basta ser apresentado.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">What have you actually done?</h2>
+
+<p>Nas culturas profissionais mais orientadas para resultados existe uma pergunta brutalmente simples:</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">What have you actually done?</p>
+</div>
+
+<p>O que construíste?</p>
+<p>Que problema resolveste?</p>
+<p>Que resultados produziste?</p>
+<p>Que coisa existe hoje porque foste capaz de a fazer?</p>
+<p>Esta pergunta não se impressiona muito com cartões de visita.</p>
+<p>É profundamente injusta para quem construiu uma carreira inteira à volta do cartão de visita.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Portugal prefere saber quem és</h2>
+
+<p>A pergunta portuguesa é frequentemente outra:</p>
+<p><strong>What are you?</strong></p>
+<p>Doutor?</p>
+<p>Engenheiro?</p>
+<p>Director?</p>
+<p>Professor?</p>
+<p>Administrador?</p>
+<p>Presidente?</p>
+<p>É uma cultura de validação de estatuto.</p>
+<p>O indivíduo parece precisar de uma certificação institucional antes de a sociedade lhe reconhecer valor.</p>
+<p>Não interessa apenas possuir conhecimento.</p>
+<p>Convém que exista uma entidade respeitável a certificar que o possui.</p>
+<p>De preferência com carimbo.</p>
+<p>Portugal mantém uma relação histórica e afectuosa com carimbos.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O problema não são os títulos</h2>
+
+<p>Importa dizer isto com clareza.</p>
+<p>Diplomas são importantes.</p>
+<p>Formação académica é importante.</p>
+<p>Especialização é importante.</p>
+<p>Um cirurgião precisa de formação médica.</p>
+<p>Um engenheiro precisa de conhecimentos técnicos.</p>
+<p>Um investigador necessita de método científico.</p>
+<p>O problema começa quando o diploma deixa de ser <strong>evidência de preparação</strong> e passa a funcionar como <strong>substituto da prova de competência</strong>.</p>
+<p>São coisas diferentes.</p>
+<p>Uma licenciatura demonstra que alguém completou determinado percurso académico.</p>
+<p>Não demonstra que será competente durante os quarenta anos seguintes.</p>
+<p>Muito menos que terá sempre razão.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O mundo começa a desconfiar do currículo ornamental</h2>
+
+<p>Esta discussão não é apenas portuguesa.</p>
+<p>Durante anos, empresas em vários países aumentaram requisitos académicos para funções que anteriormente não exigiam licenciatura, mesmo quando o conteúdo do trabalho pouco tinha mudado.</p>
+<p>A literatura internacional chamou a esse fenómeno <strong>degree inflation</strong>.</p>
+<p>Investigação associada a Harvard e ao Burning Glass Institute encontrou depois um movimento inverso: entre 2017 e 2019, 46% das ocupações de competências intermédias analisadas e 31% das de competências elevadas registaram reduções relevantes nos requisitos de diploma.</p>
+<p>A OCDE descreve agora esta tendência através do conceito <strong>skills-first</strong>: avaliar candidatos pelas competências que conseguem demonstrar, independentemente de terem sido adquiridas através de universidade, formação profissional, aprendizagem informal ou experiência.</p>
+<p>É uma pequena revolução conceptual.</p>
+<p>Deixar de perguntar apenas:</p>
+<p><strong>«Que certificado possui?»</strong></p>
+<p>E perguntar também:</p>
+<p><strong>«Consegue fazer?»</strong></p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A cadeira pode sobreviver ao talento</h2>
+
+<p>Existe ainda uma consequência particularmente portuguesa.</p>
+<p>Quando uma pessoa chega a determinada posição, o próprio cargo passa a fornecer-lhe autoridade.</p>
+<p>Já não é preciso perguntar se continua a produzir resultados.</p>
+<p>É director.</p>
+<p>Logo, dirige.</p>
+<p>É administrador.</p>
+<p>Logo, administra.</p>
+<p>É especialista.</p>
+<p>Logo, especializa.</p>
+<p>A cadeira legitima o ocupante.</p>
+<p>E, se os resultados forem maus, talvez seja necessária uma cadeira ainda maior.</p>
+<p>Temos algum talento institucional para promover problemas.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A sociedade que desperdiça talento</h2>
+
+<p>Esta cultura tem um custo económico.</p>
+<p>Porque pode deixar gente competente invisível.</p>
+<p>Desvaloriza experiência prática.</p>
+<p>Empurra técnicos para posições inferiores.</p>
+<p>Premia conformidade institucional.</p>
+<p>E ensina aos jovens uma mensagem perigosa:</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Não basta aprender a fazer; é preciso aprender a parecer alguém.</p>
+</div>
+
+<p>Quando isso acontece, o currículo começa a ser construído para produzir estatuto, não capacidade.</p>
+<p>E uma sociedade que faz isto durante décadas acaba por descobrir que possui imensos especialistas em apresentação e uma estranha escassez de pessoas capazes de reparar aquilo que deixou de funcionar.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Portugal: mais escolaridade não resolve tudo</h2>
+
+<p>Portugal realizou uma transformação educativa profunda.</p>
+<p>Entre 2019 e 2024, a proporção de jovens dos 25 aos 34 anos com formação superior subiu de 38% para 43%, segundo a OCDE.</p>
+<p>Isso é progresso.</p>
+<p>Mas a mesma OCDE mostra por que razão diploma e competência não podem ser tratados como sinónimos.</p>
+<p>Em Portugal, <strong>46% dos adultos dos 25 aos 64 anos apresentam competências de literacia no nível 1 ou abaixo</strong>, contra 27% na média da OCDE.</p>
+<p>E cerca de <strong>37% dos trabalhadores</strong> encontram-se em empregos que não correspondem ao seu nível educativo, ligeiramente acima da média regional da OCDE.</p>
+<p>O <em>Economic Survey of Portugal 2026</em> continua a identificar desajustamentos significativos entre educação e necessidades do mercado de trabalho.</p>
+<p>Talvez o problema não seja termos diplomas a mais.</p>
+<p>É acreditarmos demasiadas vezes que possuir o diploma encerra a discussão sobre aquilo que alguém efectivamente sabe fazer.</p>
+
+<div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+<h3 style="color:#d6a542; margin-top:0; text-align:left;">CREDENCIAL OU COMPETÊNCIA?</h3>
+<ul style="padding-left:22px; margin:0;">
+<li>A investigação sociológica distingue credenciais formais das competências efectivamente possuídas e documenta fenómenos de inflação e desvalorização de diplomas.</li>
+<li>Harvard e Burning Glass identificaram uma redução dos requisitos de licenciatura em numerosas profissões, associada ao crescimento da contratação baseada em competências.</li>
+<li>A OCDE define uma abordagem <em>skills-first</em> como aquela que avalia competências demonstráveis, independentemente da forma como foram adquiridas.</li>
+<li>Em 2024, 43% dos portugueses dos 25 aos 34 anos tinham formação superior, ainda abaixo dos 48% da média da OCDE.</li>
+<li>Apesar da expansão educativa, 46% dos adultos portugueses avaliados apresentavam literacia no nível 1 ou inferior, contra 27% na média da OCDE.</li>
+<li>Cerca de 37% dos trabalhadores portugueses estavam em situações de desajustamento entre nível educativo e emprego, segundo indicadores regionais da OCDE.</li>
+</ul>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Credenciais não são realizações</h2>
+
+<p>Talvez devêssemos voltar a uma ideia muito simples:</p>
+<p><strong>um título merece respeito.</strong></p>
+<p><strong>Uma realização merece reconhecimento.</strong></p>
+<p>Não são a mesma coisa.</p>
+<p>O primeiro diz-nos onde alguém esteve.</p>
+<p>O segundo diz-nos o que conseguiu fazer enquanto lá esteve.</p>
+<p>E se Portugal quiser tornar-se uma sociedade verdadeiramente meritocrática, talvez tenha de abandonar finalmente uma das suas perguntas favoritas:</p>
+<p><strong>«Quem é o senhor?»</strong></p>
+<p>E começar por outra muito mais incómoda:</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">O que fez que demonstre aquilo que diz saber?</p>
+</div>
+
+<p>Porque uma sociedade que confunde <strong>credenciais com competência e estatuto com realização</strong> acaba inevitavelmente governada, administrada e comentada por pessoas com títulos extraordinários.</p>
+<p>E resultados surpreendentemente modestos.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+
+<div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+<p style="text-align:left;">Esta crónica é uma peça de opinião sobre uma característica cultural percebida em Portugal. Não existe um indicador internacional que permita afirmar que Portugal é, objectivamente, «o país mais credencialista» ou que valoriza títulos mais do que qualquer outra sociedade. A expressão «O País do Senhor Doutor» é literária e satírica, não uma classificação estatística.</p>
+<p style="text-align:left;">«Credentialism» e «degree inflation» são conceitos reais utilizados na sociologia da educação e do trabalho. A investigação internacional mostra que credenciais académicas podem funcionar como sinais úteis de preparação, mas também podem tornar-se filtros excessivos quando são exigidas para funções cujo conteúdo não mudou ou quando substituem avaliações directas de competências.</p>
+<p style="text-align:left;">A crítica não pretende desvalorizar universidade, conhecimento científico ou profissões regulamentadas. Em medicina, engenharia, Direito e numerosas outras áreas, formação formal, certificação e responsabilidade profissional são indispensáveis. A questão é evitar a inferência automática de que grau académico elevado equivale sempre a competência elevada, ou que ausência de determinado título equivale a ausência de conhecimento.</p>
+<p style="text-align:left;">O estudo «The Emerging Degree Reset», associado ao Harvard Project on Workforce e ao Burning Glass Institute, documentou um movimento de redução de requisitos académicos em várias ocupações e maior especificação das competências realmente necessárias. A OCDE aprofundou esta abordagem em 2026 no relatório «A Skills-First Labour Market», definindo contratação baseada em competências como avaliação do que o candidato consegue demonstrar, independentemente de onde ou como aprendeu.</p>
+<p style="text-align:left;">Os dados portugueses também exigem cautela. A expansão da formação superior é uma conquista relevante: entre 2019 e 2024, a percentagem dos 25 aos 34 anos com qualificação terciária aumentou de 38% para 43%. Ao mesmo tempo, os resultados de literacia de adultos e os níveis de desajustamento entre educação e emprego mostram que escolaridade formal, competências e utilização produtiva dessas competências são dimensões relacionadas, mas não idênticas.</p>
+<p style="text-align:left; margin-bottom:0;">A tese central é simples: uma sociedade deve respeitar títulos sem os transformar em aristocracia. O diploma deve abrir a porta à avaliação, não encerrar a avaliação. No final, competência continua a precisar de uma prova que nenhum cartão profissional consegue substituir: resultados.</p>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências internacionais</h2>
+
+<ul style="padding-left:22px;">
+<li><a href="https://www.oecd.org/en/publications/a-skills-first-labour-market_2e1b85f0-en/full-report/promoting-skills-first-hiring-and-talent-management_81392a48.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — A Skills-First Labour Market: Promoting skills-first hiring and talent management, 2026</a></li>
+<li><a href="https://pw.hks.harvard.edu/post/the-emerging-degree-reset-the-shift-to-skills-based-hiring" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Harvard Project on Workforce — The Emerging Degree Reset: The Shift to Skills-Based Hiring</a></li>
+<li><a href="https://hbr.org/2022/02/skills-based-hiring-is-on-the-rise" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Harvard Business Review — Skills-Based Hiring Is on the Rise</a></li>
+<li><a href="https://academic.oup.com/esr/article/38/6/904/6523878" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">European Sociological Review / Oxford Academic — Credential Inflation and Decredentialization</a></li>
+<li><a href="https://www.oecd.org/en/publications/education-at-a-glance-2025_1a3543e2-en/portugal_4692d9a6-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Education at a Glance 2025: Portugal</a></li>
+<li><a href="https://www.oecd.org/en/publications/job-creation-and-local-economic-development-2024-country-notes_ad2806c1-en/portugal_a3e55c7a-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Job Creation and Local Economic Development 2024: Portugal</a></li>
+<li><a href="https://www.oecd.org/en/publications/oecd-economic-surveys-portugal-2026_025b3445-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Economic Surveys: Portugal 2026</a></li>
+</ul>
+
+<div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+<p style="color:#cfcfcf; text-align:left;"><strong style="color:#d6a542;">Francisco Gonçalves</strong><br>Fragmentos do Caos<br>FC-Chronic-News</p>
+</div>
+
+</div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

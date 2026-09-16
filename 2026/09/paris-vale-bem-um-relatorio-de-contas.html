@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Paris vale bem um relatório de contas</title>
+<meta name="description" content="Paris vale bem um relatório de contas">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Paris vale bem um relatório de contas</h1>
+      <p class="meta">Publicado em 2026-09-15 09:17:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000d34c8210b5226e242c7fd103_a639435b.jpg" alt=""></figure>
+      <div class="post-content">
+        
+
+<style>
+.fc-chronic-news{
+  --fc-panel:#151b23;--fc-panel-soft:#111720;--fc-text:#e6edf3;--fc-muted:#a8b3bf;
+  --fc-gold:#d59a2a;--fc-gold-soft:#f0bd57;--fc-line:rgba(213,154,42,.34);--fc-link:#f0bd57;
+  box-sizing:border-box;width:min(calc(100% - 20px),920px);margin:24px auto 44px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);border-radius:22px;background:#0d1117;color:var(--fc-text);
+  box-shadow:0 26px 80px rgba(0,0,0,.38);font-family:Georgia,'Times New Roman',serif;line-height:1.78;
+}
+.fc-chronic-news *{box-sizing:border-box}
+.fc-chronic-news a{color:var(--fc-link);text-underline-offset:.2em;overflow-wrap:anywhere}
+.fc-chronic-news a:hover{color:#ffd47d}
+.fc-chronic-news .fc-hero{padding:clamp(34px,7vw,76px) clamp(22px,7vw,72px) 42px;border-bottom:1px solid var(--fc-line);
+background:radial-gradient(circle at 84% 14%,rgba(213,154,42,.15),transparent 30%),linear-gradient(145deg,rgba(213,154,42,.11),transparent 56%)}
+.fc-chronic-news .fc-kicker{color:var(--fc-gold-soft);font:700 .76rem/1.4 system-ui,sans-serif;letter-spacing:.16em}
+.fc-chronic-news h1,.fc-chronic-news h2{font-family:Georgia,'Times New Roman',serif}
+.fc-chronic-news h1{max-width:850px;margin:16px 0 18px;color:var(--fc-gold);font-size:clamp(2.3rem,7vw,5.05rem);line-height:1.01;letter-spacing:-.045em}
+.fc-chronic-news .fc-deck{max-width:800px;margin:0;color:#d8dee6;font-size:clamp(1.08rem,2.4vw,1.35rem);line-height:1.55}
+.fc-chronic-news .fc-meta{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:25px;color:var(--fc-muted);font:500 .88rem/1.5 system-ui,sans-serif}
+.fc-chronic-news .fc-opening-note,.fc-chronic-news .fc-editorial-note,.fc-chronic-news .fc-references{margin:34px clamp(18px,6vw,64px);padding:clamp(20px,4vw,34px);background:var(--fc-panel);border:1px solid rgba(255,255,255,.08);border-left:4px solid var(--fc-gold);border-radius:14px}
+.fc-chronic-news .fc-opening-note .fc-label{display:block;color:var(--fc-gold-soft);font:800 .72rem/1 system-ui,sans-serif;letter-spacing:.15em}
+.fc-chronic-news .fc-opening-note p{margin:12px 0 0;font-size:1.12rem}
+.fc-chronic-news .fc-content{padding:5px clamp(22px,7vw,76px) 18px}
+.fc-chronic-news .fc-content h2{margin:2.05em 0 .75em;padding-left:.55em;border-left:4px solid var(--fc-gold);color:var(--fc-gold);font-size:clamp(1.55rem,4vw,2.25rem);line-height:1.18}
+.fc-chronic-news .fc-content p{margin:0 0 1.25em;font-size:clamp(1.04rem,2.2vw,1.18rem)}
+.fc-chronic-news .fc-content>p:first-child::first-letter{float:left;margin:.08em .12em 0 0;color:var(--fc-gold);font-size:4.6em;font-weight:700;line-height:.78}
+.fc-chronic-news .fc-emphasis{margin:2rem 0!important;padding:1.15rem 1.3rem;border:1px solid var(--fc-line);border-radius:12px;background:rgba(213,154,42,.08);color:#fff0c2;font-size:1.23rem!important;font-style:italic}
+.fc-chronic-news blockquote{margin:1.7rem 0;padding:1.15rem 1.35rem;background:var(--fc-panel-soft);border:1px solid rgba(255,255,255,.07);border-left:5px solid var(--fc-gold);border-radius:10px;color:#f4ead1;font-size:1.14rem;font-style:italic}
+.fc-chronic-news blockquote p{margin:0}
+.fc-chronic-news .fc-process{margin:2rem 0;padding:1.2rem 1.25rem;background:var(--fc-panel);border:1px solid var(--fc-line);border-radius:14px}
+.fc-chronic-news .fc-process strong{display:block;margin-bottom:.6rem;color:var(--fc-gold-soft);font:800 .78rem/1.3 system-ui,sans-serif;letter-spacing:.12em}
+.fc-chronic-news .fc-process p{margin:.35rem 0!important;font:600 .98rem/1.55 system-ui,sans-serif!important;color:#d8dee6}
+.fc-chronic-news .fc-pullquote{margin:44px 0;padding:36px clamp(22px,8vw,88px);border-top:1px solid var(--fc-line);border-bottom:1px solid var(--fc-line);background:rgba(213,154,42,.07);text-align:center}
+.fc-chronic-news .fc-pullquote p{margin:0;color:var(--fc-gold-soft);font-size:clamp(1.45rem,4vw,2.35rem);font-style:italic;line-height:1.35}
+.fc-chronic-news .fc-editorial-note h2,.fc-chronic-news .fc-references h2{margin:0 0 18px;color:var(--fc-gold);font-size:clamp(1.45rem,3.5vw,2rem)}
+.fc-chronic-news .fc-editorial-note p{margin:0 0 1em}
+.fc-chronic-news .fc-signature{margin-top:30px!important;padding-top:20px;border-top:1px solid var(--fc-line);color:var(--fc-gold-soft)}
+.fc-chronic-news .fc-reference-intro{color:var(--fc-muted)}
+.fc-chronic-news .fc-references ol{margin:22px 0 0;padding-left:1.4rem}
+.fc-chronic-news .fc-references li{margin:0 0 1.15rem;padding-left:.35rem}
+.fc-chronic-news .fc-references li>a{font-size:1.04rem}
+.fc-chronic-news .fc-references li>span{display:block;margin-top:2px;color:var(--fc-muted);font:700 .82rem/1.5 system-ui,sans-serif}
+.fc-chronic-news .fc-references li p{margin:4px 0 0;color:#c8d0d9;font-size:.94rem}
+.fc-chronic-news .fc-article-footer{padding:28px clamp(22px,6vw,64px) 38px;border-top:1px solid rgba(255,255,255,.08);color:var(--fc-muted);text-align:center;font:.88rem/1.6 system-ui,sans-serif}
+.fc-chronic-news .fc-article-footer p{margin:4px 0}
+.fc-chronic-news .fc-canonical{overflow-wrap:anywhere}
+@media(max-width:640px){.fc-chronic-news{width:min(calc(100% - 10px),920px);margin-top:10px;border-radius:14px}.fc-chronic-news .fc-hero{padding-left:22px;padding-right:22px}.fc-chronic-news .fc-opening-note,.fc-chronic-news .fc-editorial-note,.fc-chronic-news .fc-references{margin-left:14px;margin-right:14px}.fc-chronic-news .fc-content{padding-left:22px;padding-right:22px}.fc-chronic-news .fc-meta{display:grid;gap:3px}.fc-chronic-news h1{font-size:clamp(2.15rem,12vw,3.35rem)}.fc-chronic-news .fc-content h2{margin-top:1.65em}}
+@media print{.fc-chronic-news{max-width:none;margin:0;border:0;box-shadow:none;background:#fff;color:#111}.fc-chronic-news p,.fc-chronic-news li,.fc-chronic-news .fc-deck{color:#111}.fc-chronic-news h1,.fc-chronic-news h2,.fc-chronic-news strong,.fc-chronic-news a{color:#111!important}.fc-chronic-news .fc-opening-note,.fc-chronic-news blockquote,.fc-chronic-news .fc-editorial-note,.fc-chronic-news .fc-references{background:#fff;color:#111}}
+</style>
+
+<article class="fc-chronic-news fc-chronic-news--canonical" itemscope itemtype="https://schema.org/NewsArticle" data-fc-version="canonical-2026">
+  <meta itemprop="mainEntityOfPage" content="https://fragmentoscaos.eu/2026/09/14/paris-vale-bem-um-relatorio-de-contas/">
+  <meta itemprop="datePublished" content="2026-09-14T09:17:00+01:00">
+  <meta itemprop="dateModified" content="2026-09-14T09:17:00+01:00">
+  <meta itemprop="inLanguage" content="pt-PT">
+
+  <header class="fc-hero">
+    <div class="fc-kicker">CRÓNICA · DINHEIRO PÚBLICO · TRANSPARÊNCIA · GOVERNAÇÃO</div>
+    <h1 itemprop="headline">Paris vale bem um relatório de contas</h1>
+    <p class="fc-deck" itemprop="description">Uma deslocação institucional a Paris pode ser perfeitamente legítima. O problema começa quando uma instituição pública considera que os contribuintes podem conhecer o custo apenas depois de a conta estar paga.</p>
+    <div class="fc-meta">
+      <span>Por <strong itemprop="author">Francisco Gonçalves</strong></span>
+      <span>14 de Setembro de 2026</span>
+      <span>Leitura: 9 min</span>
+    </div>
+  </header>
+
+  <aside class="fc-opening-note" aria-label="Ideia central">
+    <span class="fc-label">IDEIA CENTRAL</span>
+    <p>Uma deslocação internacional de um banco público pode ser útil e inteiramente legítima. A exigência democrática é mais simples: antes da despesa, explicar quem vai, porquê, com que orçamento e com que resultados esperados; depois, prestar contas do que efetivamente aconteceu.</p>
+  </aside>
+
+  <section class="fc-content" itemprop="articleBody">
+    
+<p>Há coisas em Portugal que parecem ter sido concebidas por um departamento especializado em produzir caricaturas da Administração Pública.</p>
+
+<p>O Banco Português de Fomento prepara uma deslocação a Paris do seu Conselho Consultivo Estratégico, composto por vinte membros, para uma reunião prevista para 19 de setembro com a Bpifrance, o banco promocional francês. A deslocação pode incluir ainda contactos institucionais e empresariais.</p>
+
+<p>Até aqui, nada de particularmente extraordinário.</p>
+
+<p>Um banco público de fomento deve relacionar-se com instituições congéneres europeias. Deve procurar financiamento, parcerias, conhecimento, oportunidades para as empresas portuguesas e mecanismos conjuntos de investimento.</p>
+
+<p>Aliás, BPF e Bpifrance assinaram em março um memorando de entendimento precisamente destinado a promover cooperação económica, internacionalização empresarial e cofinanciamento de projetos estratégicos.</p>
+
+<p>Portanto, ir a Paris pode ser perfeitamente razoável.</p>
+
+<p>O problema começa quando alguém pergunta uma coisa quase revolucionária:</p>
+
+<blockquote><p><strong>Quanto vai custar?</strong></p></blockquote>
+
+<p>E outra ainda mais subversiva:</p>
+
+<blockquote><p><strong>Quantas pessoas vão?</strong></p></blockquote>
+
+<p>É aqui que entra aquela extraordinária tradição administrativa portuguesa segundo a qual o dinheiro público pertence evidentemente aos contribuintes, mas a informação sobre a forma como é gasto parece pertencer à instituição que o administra.</p>
+
+<p>O Conselho Consultivo do Banco Português de Fomento tem vinte membros. O Diário da República confirma a sua composição e determina expressamente que os cargos não são remunerados, embora possam ser pagas despesas de deslocação.</p>
+
+<p>Nada de errado nisso.</p>
+
+<p>Se alguém presta gratuitamente aconselhamento estratégico a uma instituição pública e precisa de se deslocar no exercício dessas funções, é razoável que não tenha de pagar a viagem do próprio bolso.</p>
+
+<p>Mas entre <strong>pagar uma deslocação necessária</strong> e entregar um cheque conceptual em branco existe uma pequena coisa chamada transparência.</p>
+
+<p>Seria extraordinariamente simples dizer:</p>
+
+<div class="fc-process">
+<strong>TRANSPARÊNCIA ELEMENTAR</strong>
+<p>"Participam X pessoas."</p>
+<p>"As viagens custam aproximadamente Y."</p>
+<p>"A estadia custa Z."</p>
+<p>"O programa é este."</p>
+<p>"Esperamos obter estes resultados."</p>
+</div>
+
+<p>Fim.</p>
+
+<p>Provavelmente caberia tudo numa página A4.</p>
+
+<p>Mas em Portugal desenvolvemos uma estranha capacidade institucional para transformar coisas simples em questões filosóficas.</p>
+
+<p>Parece que perguntar previamente quanto custa uma viagem financiada por uma instituição pública é quase uma indiscrição.</p>
+
+<p>Como perguntar a alguém quanto ganha ao jantar.</p>
+
+<p class="fc-emphasis"><strong>Só que existe uma diferença importante: quem paga o jantar somos nós.</strong></p>
+
+<h2>O luxo ainda está por demonstrar</h2>
+
+<p>O <em>Correio da Manhã</em> escolheu para título a expressão "viagens de luxo".</p>
+
+<p>É uma expressão jornalisticamente eficaz.</p>
+
+<p>Mas convém separar indignação de factos.</p>
+
+<p>Até ao momento, a informação pública disponível não permite concluir que existam propriamente viagens "de luxo". Não conhecemos, pelo menos de forma suficientemente documentada, hotéis, classes de transporte, restaurantes ou custo global.</p>
+
+<p>Portanto, não precisamos sequer do luxo para encontrar o problema.</p>
+
+<p>A questão é anterior.</p>
+
+<p>É a facilidade com que instituições que administram dinheiro público continuam a considerar perfeitamente normal explicar a despesa <strong>depois de ela acontecer</strong>.</p>
+
+<div class="fc-process">
+<strong>O MÉTODO ADMINISTRATIVO</strong>
+<p>Primeiro gastamos.</p>
+<p>Depois fazemos contas.</p>
+<p>Finalmente publicamos um relatório.</p>
+</div>
+
+<p>E o cidadão, algum tempo mais tarde, poderá descobrir quanto custou aquilo que já pagou.</p>
+
+<p>É uma conceção curiosa de transparência.</p>
+
+<p>Seria como entrar num restaurante sem preços, jantar, pagar com débito direto e receber a ementa seis meses depois.</p>
+
+<h2>Um conselho para aconselhar</h2>
+
+<p>Há ainda uma deliciosa ironia institucional.</p>
+
+<p>Estamos perante um <strong>Conselho Consultivo Estratégico</strong>.</p>
+
+<p>Um órgão destinado precisamente a aconselhar o Banco Português de Fomento sobre estratégia, sustentabilidade e boa gestão.</p>
+
+<p>O próprio presidente do conselho, Nuno Amado, explicou que a missão passa por apoiar a definição da visão de longo prazo do banco e acrescentar valor através de pensamento estratégico. O conselho deverá reunir normalmente duas a quatro vezes por ano.</p>
+
+<p>Excelente.</p>
+
+<p>Talvez pudesse começar por aconselhar uma inovação verdadeiramente disruptiva na Administração Pública portuguesa:</p>
+
+<blockquote><p><strong>publicar previamente o orçamento das próprias deslocações.</strong></p></blockquote>
+
+<p>Não exige inteligência artificial.</p>
+
+<p>Não exige blockchain.</p>
+
+<p>Não exige uma plataforma digital financiada pelo PRR.</p>
+
+<p>Uma folha de cálculo chega.</p>
+
+<h2>O dinheiro público tem uma característica desagradável</h2>
+
+<p>Existe uma diferença fundamental entre gerir dinheiro privado e dinheiro público.</p>
+
+<p>Quando uma empresa privada decide enviar vinte administradores para Paris, pode escolher o Ritz, champanhe ao pequeno-almoço e um concerto privado na Ópera.</p>
+
+<p>Os acionistas que resolvam o assunto.</p>
+
+<p>Mas quando estamos perante uma instituição pública, aparece um elemento incómodo chamado <strong>prestação de contas</strong>.</p>
+
+<p>Não basta uma despesa ser legal.</p>
+
+<p>Tem de ser proporcional.</p>
+
+<p>Tem de ser justificável.</p>
+
+<p>E, sobretudo, deve ser transparente.</p>
+
+<p>Essa distinção entre <strong>legalidade e boa governação</strong> é frequentemente esquecida em Portugal.</p>
+
+<p>Uma decisão pode cumprir escrupulosamente todos os regulamentos e continuar a ser financeiramente disparatada.</p>
+
+<p>Da mesma forma, uma decisão pode ser perfeitamente razoável e transformar-se numa suspeita pública simplesmente porque quem a tomou decidiu não explicar antecipadamente quanto iria gastar.</p>
+
+<p>É um talento administrativo peculiar: pegar numa coisa potencialmente normal e torná-la suspeita por falta de transparência.</p>
+
+<h2>Talvez a viagem seja excelente</h2>
+
+<p>Quero deixar isto absolutamente claro.</p>
+
+<p>Talvez esta deslocação seja extraordinariamente útil.</p>
+
+<p>Talvez dela resulte financiamento para empresas portuguesas.</p>
+
+<p>Talvez surjam novos mecanismos de investimento.</p>
+
+<p>Talvez sejam abertas portas para PME portuguesas no mercado francês.</p>
+
+<p>Talvez o retorno económico seja centenas de vezes superior ao custo da viagem.</p>
+
+<p>Oxalá.</p>
+
+<p>É precisamente por isso que deveria existir informação suficiente para podermos avaliá-la.</p>
+
+<p>Transparência não serve apenas para descobrir abusos.</p>
+
+<p>Serve também para <strong>demonstrar que não existem abusos</strong>.</p>
+
+<p>Esse pequeno detalhe parece escapar frequentemente às instituições portuguesas.</p>
+
+<p>Quando uma organização pública responde a perguntas simples com silêncio, adiamentos ou promessas de esclarecimento futuro, cria exatamente aquilo que depois diz lamentar:</p>
+
+<p class="fc-emphasis"><strong>desconfiança.</strong></p>
+
+<h2>Paris continuará lá</h2>
+
+<p>Paris é uma cidade magnífica.</p>
+
+<p>A Bpifrance é uma instituição relevante.</p>
+
+<p>A cooperação europeia é importante.</p>
+
+<p>E o Banco Português de Fomento precisa efetivamente de pensar além das fronteiras portuguesas.</p>
+
+<p>Portanto, vão a Paris.</p>
+
+<p>Reúnam.</p>
+
+<p>Negociem.</p>
+
+<p>Criem instrumentos financeiros.</p>
+
+<p>Tragam investimento.</p>
+
+<p>Abram mercados às empresas portuguesas.</p>
+
+<p>Se for preciso, comam até um croissant.</p>
+
+<p>Mas antes de embarcarem seria simpático informar aqueles que pagam a conta:</p>
+
+<blockquote><p><strong>quantos vão e quanto vai custar.</strong></p></blockquote>
+
+<p>Não porque todos os funcionários públicos sejam suspeitos.</p>
+
+<p>Não porque todas as viagens sejam desperdício.</p>
+
+<p>Não porque Paris seja um pecado orçamental.</p>
+
+<p>Mas porque existe uma regra muito simples numa democracia adulta:</p>
+
+<p class="fc-emphasis"><strong>quem administra dinheiro público não deveria considerar um favor explicar previamente como pretende gastá-lo.</strong></p>
+
+<p>O Banco Português de Fomento foi criado para ajudar Portugal a investir melhor.</p>
+
+<p>Talvez possa começar por dar o exemplo.</p>
+
+<p>Porque Paris pode valer uma missa.</p>
+
+<p>Mas dinheiro público deveria valer, pelo menos, <strong>um orçamento antes da viagem e um relatório depois dela</strong>.</p>
+
+<p class="fc-signature">
+  <strong>Autoria de Francisco Gonçalves</strong><br>
+  <strong>Co-autoria editorial e investigação por Augustus Veritas um Assistente de OpenAI</strong>
+</p>
+
+  </section>
+
+  <aside class="fc-pullquote" aria-label="Citação em destaque">
+    <p>"Quem administra dinheiro público não deveria considerar um favor explicar previamente como pretende gastá-lo."</p>
+  </aside>
+
+  <section class="fc-editorial-note" aria-labelledby="nota-editorial">
+    <h2 id="nota-editorial">Nota editorial</h2>
+    <p>Esta crónica distingue deliberadamente dois planos. O primeiro é factual: o Conselho Consultivo do Banco Português de Fomento tem 20 membros, as funções não são remuneradas e o quadro legal admite o pagamento de despesas de deslocação. Existe também uma relação institucional efetiva entre o BPF e a Bpifrance, formalizada por protocolo de cooperação assinado em Paris em março de 2026.</p>
+    <p>O segundo plano é crítico: transparência, proporcionalidade e prestação de contas na utilização de recursos públicos. A expressão "viagens de luxo" pertence ao título da notícia que esteve na origem desta reflexão. Não é aqui apresentada como facto autonomamente comprovado, pois os elementos públicos consultados não permitem, por si só, estabelecer classe de viagem, categoria de alojamento, despesas de representação ou custo total.</p>
+    <p>A posição editorial desta crónica é, portanto, mais exigente e menos sensacionalista: uma despesa pode ser legal e útil e, ainda assim, merecer divulgação prévia do seu orçamento, participantes, objetivos e resultados esperados. A OCDE tem reiterado que a transparência proativa da informação pública é um elemento central da integridade, da responsabilização e da confiança nas instituições.</p>
+  </section>
+
+  <section class="fc-references" aria-labelledby="referencias">
+    <h2 id="referencias">Referências e documentação</h2>
+    <p class="fc-reference-intro">Fontes institucionais, imprensa portuguesa e referências internacionais utilizadas para enquadramento factual e editorial.</p>
+    <ol>
+      <li><a href="https://www.cmjornal.pt/economia/detalhe/banco-publico-paga-viagens-de-luxo-a-paris" target="_blank" rel="noopener">Correio da Manhã — Banco público paga viagens de luxo a Paris</a>
+    <p>Notícia que motivou a crónica. O qualificativo «de luxo» é tratado editorialmente como alegação jornalística, não como facto autonomamente demonstrado.</p></li>
+<li><a href="https://diariodarepublica.pt/dr/detalhe/despacho/3782-b-2026-1076046498" target="_blank" rel="noopener">Diário da República — Despacho n.º 3782-B/2026, de 23 de março</a>
+    <p>Designa os 20 membros do Conselho Consultivo do BPF e estabelece que as funções não são remuneradas, sem prejuízo do pagamento de despesas de deslocação.</p></li>
+<li><a href="https://presse.bpifrance.fr/bpifrance-et-banco-portugues-de-fomento-signent-un-protocole-daccord-pour-renforcer-la-cooperation-economique-entre-le-portugal-et-la-france/" target="_blank" rel="noopener">Bpifrance — Bpifrance et Banco Português de Fomento signent un protocole d&#x27;accord</a>
+    <p>Fonte institucional francesa sobre o protocolo assinado em Paris em 18 de março de 2026 para cooperação, cofinanciamento, internacionalização e inovação.</p></li>
+<li><a href="https://jornaleconomico.sapo.pt/noticias/conselho-estrategico-do-banco-de-fomento-vai-reunir-duas-a-quatro-vezes-por-ano/" target="_blank" rel="noopener">Jornal Económico — Conselho estratégico do Banco de Fomento vai reunir duas a quatro vezes por ano</a>
+    <p>Contextualiza a missão, composição e periodicidade prevista do Conselho Consultivo Estratégico.</p></li>
+<li><a href="https://www.oecd.org/en/publications/anti-corruption-and-integrity-outlook-2026_16708b78-en/full-report/component-9.html" target="_blank" rel="noopener">OECD — Anti-Corruption and Integrity Outlook 2026: Transparency of public information</a>
+    <p>A OCDE identifica a divulgação proativa de informação pública como elemento central da integridade, responsabilização e confiança.</p></li>
+<li><a href="https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report/transparency-of-public-information_60a963c4.html" target="_blank" rel="noopener">OECD — Government at a Glance 2025: Transparency of public information</a>
+    <p>Defende informação pública clara, completa, atempada, fiável e relevante, incluindo registos de receitas e despesas.</p></li>
+<li><a href="https://www.oecd.org/en/topics/performance-budgeting.html" target="_blank" rel="noopener">OECD — Performance budgeting</a>
+    <p>Sublinha a necessidade de demonstrar valor pelo dinheiro e resultados mensuráveis da despesa pública.</p></li>
+    </ol>
+  </section>
+
+  <footer class="fc-article-footer">
+    <p><strong>Fragmentos do Caos · FC-Chronic-News</strong></p>
+    <p class="fc-canonical">Canonical: <a href="https://fasgoncalves.github.io/fragmentoscaos-html/2026/09/paris-vale-bem-um-relatorio-de-contas.html">https://fasgoncalves.github.io/fragmentoscaos-html/2026/09/paris-vale-bem-um-relatorio-de-contas.html</a></p>
+    <p>Formato editorial: FC-Chronic-News canonical-2026</p>
+  </footer>
+</article>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
