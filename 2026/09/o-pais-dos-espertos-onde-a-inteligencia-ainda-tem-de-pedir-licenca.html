@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O País dos Espertos</title>
+<meta name="description" content="O País dos Espertos">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O País dos Espertos</h1>
+      <p class="meta">Publicado em 2026-09-17 16:49:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000398c81f49d5f24380c2d946f_0dfca761.jpg" alt=""></figure>
+      <div class="post-content">
+        <!--
+FC-CHRONIC-NEWS CANONICAL 1.0
+Título: O País dos Espertos
+Subtítulo: Onde a inteligência ainda tem de pedir licença
+Autor: Francisco Gonçalves
+Data: 9 de Agosto de 2026
+Slug: o-pais-dos-espertos-onde-a-inteligencia-ainda-tem-de-pedir-licenca
+Estado editorial sugerido: draft
+Imagem Schema.org: substituir INSERIR_URL_DA_IMAGEM_AQUI
+-->
+
+<!-- SCHEMA.ORG INVISÍVEL -->
+<div itemscope itemtype="https://schema.org/NewsArticle" style="display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;">
+  <meta itemprop="headline" content="O País dos Espertos">
+  <meta itemprop="alternativeHeadline" content="Onde a inteligência ainda tem de pedir licença">
+  <meta itemprop="datePublished" content="2026-08-09T16:49:00+01:00">
+  <meta itemprop="dateModified" content="2026-08-09T16:49:00+01:00">
+  <meta itemprop="description" content="Portugal não sofre de falta de inteligência. O problema é outro: demasiadas vezes, a esperteza social, a proximidade e o conformismo conseguem ser mais recompensados do que a competência, o pensamento crítico e o mérito.">
+  <meta itemprop="inLanguage" content="pt-PT">
+  <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/09/file_00000000398c81f49d5f24380c2d946f.png">
+  <span itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Francisco Gonçalves"></span>
+  <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+    <meta itemprop="name" content="Fragmentos do Caos">
+    <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="INSERIR_URL_DO_LOGOTIPO_AQUI"></span>
+  </span>
+</div>
+
+<!-- FC-CHRONIC-NEWS CANONICAL CONTAINER 1 -->
+<div data-fc-format="fc-chronic-news" data-fc-version="1.0" style="max-width:980px;margin:0 auto;background:#0b0b0b;color:#e8e8e8;font-family:Georgia,'Times New Roman',serif;padding:10px;box-sizing:border-box;">
+  <article style="background:#0b0b0b;border:1px solid #262626;padding:clamp(18px,4vw,42px);box-sizing:border-box;">
+
+    <header style="text-align:center;margin:0 0 34px 0;">
+      <div style="display:inline-block;margin:0 0 14px 0;padding:7px 13px;border:1px solid #ffcc66;color:#ffcc66;font-family:Arial,sans-serif;font-size:0.78em;letter-spacing:0.16em;text-transform:uppercase;">FC · Chronic · News</div>
+      <h1 style="margin:0;color:#ffcc66;font-size:clamp(2.0em,6vw,3.6em);line-height:1.08;font-weight:700;">O País dos Espertos</h1>
+      <p style="margin:16px auto 0 auto;max-width:760px;color:#d6d6d6;font-size:clamp(1.12em,2.4vw,1.45em);line-height:1.5;font-style:italic;">Onde a inteligência ainda tem de pedir licença</p>
+      <p style="margin:18px 0 0 0;color:#999;font-family:Arial,sans-serif;font-size:0.88em;">Crónica · Sociedade · Portugal · 9 de Agosto de 2026</p>
+    </header>
+
+    <div style="margin:28px 0;padding:20px 22px;background:#141414;border-top:2px solid #ffcc66;border-bottom:1px solid #333;">
+      <div style="color:#ffcc66;font-family:Arial,sans-serif;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;">BOX DE FACTOS</div>
+      <ul style="margin:0;padding-left:22px;color:#dedede;line-height:1.8;">
+        <li><strong>Género:</strong> crónica de opinião e sátira social.</li>
+        <li><strong>Tema:</strong> inteligência, esperteza, mérito, competência e cultura organizacional.</li>
+        <li><strong>Âmbito:</strong> Portugal, usado como espaço cultural e institucional da reflexão.</li>
+        <li><strong>Critério editorial:</strong> as generalizações e hipérboles pertencem ao registo satírico e não constituem uma caracterização científica dos portugueses.</li>
+      </ul>
+    </div>
+
+    <blockquote style="margin:30px 0;padding:22px 24px;border-left:5px solid #ffcc66;background:#151515;color:#f4e6b5;font-size:1.18em;line-height:1.85;font-style:italic;">
+      "A esperteza pode ganhar uma oportunidade. A inteligência constrói possibilidades. A esperteza encontra atalhos. A inteligência constrói estradas."
+    </blockquote>
+
+    <!-- FC-CHRONIC-NEWS CANONICAL CONTAINER 2 -->
+    <div data-fc-section="articleBody" itemprop="articleBody" style="margin:0;padding:0;">
+      <p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Portugal sempre teve uma relação complicada com a inteligência.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Admira-a à distância, sobretudo quando já morreu, emigrou ou recebeu um prémio internacional. Aí transforma-se imediatamente em património nacional.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Enquanto está viva, porém, a inteligência dá trabalho.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Faz perguntas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Duvida.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Contraria.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Apresenta números.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Descobre erros.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E, pecado gravíssimo numa sociedade onde tantas hierarquias sobrevivem precisamente porque ninguém pergunta demasiado, pode demonstrar que quem manda não sabe exactamente o que está a fazer.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A esperteza é muito mais simpática.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A esperteza não ameaça o sistema.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Adapta-se a ele.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Descobre por onde entrar, quem conhecer, a quem telefonar, em que porta bater e, se necessário, qual a porta que nunca deveria existir mas que misteriosamente se abre para alguns.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O inteligente pergunta:</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">— Porque fazemos isto desta maneira?</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O esperto pergunta:</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">— Quem é que eu conheço para resolver isto?</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E assim começa uma pequena diferença linguística que, multiplicada por algumas décadas, pode transformar-se numa diferença civilizacional.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Porque a inteligência procura compreender o mundo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A esperteza procura sobreviver-lhe.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A inteligência pensa nas consequências.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A esperteza pensa no próximo passo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A inteligência pergunta se uma decisão é correcta.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A esperteza pergunta se alguém vai descobrir.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E convenhamos: entre uma e outra, construímos durante demasiado tempo uma cultura de enorme tolerância para com a segunda.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não existe talvez expressão mais portuguesa do que:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #ffcc66;background:#161616;color:#f7e7b0;font-size:1.10em;line-height:1.8;">"Ele sabe mexer-se."</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É uma frase extraordinária.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Pode significar competência.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Mas frequentemente significa outra coisa.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Significa que conhece pessoas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Que sabe com quem falar.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Que sabe evitar obstáculos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Que conhece os corredores invisíveis das instituições.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Que sabe quando deve telefonar, quando deve calar-se e quando deve elogiar alguém cuja genialidade ainda não foi detectada pela ciência.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Curiosamente, raramente ouvimos:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #ffcc66;background:#161616;color:#f7e7b0;font-size:1.10em;line-height:1.8;">"Ele sabe muito."</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Isso já é território perigoso.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Porque quem sabe muito pode começar a fazer perguntas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E perguntas são uma ameaça séria para qualquer organização construída em torno da sagrada estabilidade do cargo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Há empresas onde um trabalhador incompetente pode permanecer décadas sem causar grande perturbação.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Mas basta entrar alguém competente para começar o caos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">De repente descobre-se que determinados procedimentos não fazem sentido.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Que certos relatórios não servem para nada.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Que existem três departamentos a fazer aquilo que poderia ser feito por uma pessoa e uma folha de cálculo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Que determinada reunião semanal poderia ser substituída por um email de quatro linhas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Isto é intolerável.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Há pessoas que construíram carreiras inteiras precisamente em torno dessas reuniões.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;"><strong>A inteligência possui, portanto, um defeito terrível:</strong></p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">torna visível aquilo que muitos preferiam manter invisível.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A mediocridade organizada desenvolveu ao longo dos séculos excelentes mecanismos de defesa.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Um dos mais eficazes chama-se hierarquia.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Outro chama-se burocracia.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E existe ainda um terceiro, particularmente sofisticado:</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">"sempre fizemos assim".</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Esta frase deveria estar gravada à entrada de muitas instituições.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não como lema.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Como aviso.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Porque existem países onde a tradição é preservar aquilo que funciona.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Por cá, demasiadas vezes, tradição significa preservar aquilo que ninguém teve coragem de questionar.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Mas há ainda uma coisa que a inteligência faz particularmente mal.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não sabe vender-se.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A verdadeira competência tende a carregar consigo uma certa consciência da complexidade.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quem sabe muito sabe também tudo aquilo que ainda não sabe.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Por isso hesita.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Explica.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Contextualiza.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Admite dúvidas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O ignorante, pelo contrário, possui uma vantagem competitiva extraordinária:</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">tem certezas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Nenhuma dúvida atrapalha a sua apresentação em PowerPoint.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Nenhuma nuance interfere com o entusiasmo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Nenhum conhecimento inconveniente limita a promessa.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É assim que frequentemente alguém que estudou um problema durante vinte anos fala durante vinte minutos, enquanto outro que o descobriu ontem explica durante duas horas como vai resolvê-lo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E, misteriosamente, o segundo parece mais convincente.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A humanidade é assim.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Inventámos telescópios capazes de observar galáxias a milhares de milhões de anos-luz, mas continuamos facilmente impressionados por alguém que fala alto numa reunião.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Portugal apenas aperfeiçoou a técnica.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A esperteza tornou-se uma espécie de inteligência social paralela.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não interessa necessariamente saber fazer.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Interessa saber parecer.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não interessa construir.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Interessa posicionar.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não interessa resolver o problema.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Interessa garantir que, quando o problema explodir, a responsabilidade pertença a outro departamento.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Existe uma enorme ciência nacional na arte de circular responsabilidades.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Talvez um dia seja estudada nas universidades.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Curso superior de Desresponsabilização Aplicada.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Com mestrado em Transferência Estratégica de Culpa.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E doutoramento em Comissão de Inquérito.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O problema seria apenas cómico se não tivesse consequências.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Porque sociedades que premiam sistematicamente a esperteza acabam por enviar uma mensagem muito clara às gerações seguintes.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não precisas necessariamente de ser excelente.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Precisas de saber chegar.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não precisas de dominar profundamente uma profissão.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Precisas de dominar os mecanismos que decidem quem sobe nessa profissão.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não precisas de produzir valor excepcional.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Precisas de garantir que o teu valor seja percebido como excepcional.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E pouco a pouco acontece uma transformação profunda.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A pergunta deixa de ser:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #ffcc66;background:#161616;color:#f7e7b0;font-size:1.10em;line-height:1.8;">"Como posso tornar-me realmente bom?"</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E passa a ser:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #ffcc66;background:#161616;color:#f7e7b0;font-size:1.10em;line-height:1.8;">"Como consigo chegar lá?"</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Parecem perguntas semelhantes.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não são.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A primeira constrói competência.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A segunda constrói estratégias.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A primeira produz conhecimento.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A segunda produz carreiras.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A primeira cria instituições sólidas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A segunda cria excelentes cartões de visita.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Depois perguntamo-nos por que razão tantos portugueses altamente qualificados encontram reconhecimento no estrangeiro.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Talvez porque, em determinados ambientes, competência seja considerada um recurso.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Enquanto noutros ainda é vista como uma ameaça hierárquica.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Existe uma velha tentação nacional de desconfiar de quem se destaca.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Se alguém demonstra demasiado conhecimento, rapidamente surgem perguntas fundamentais:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #ffcc66;background:#161616;color:#f7e7b0;font-size:1.10em;line-height:1.8;">"Quem é que ele pensa que é?"</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não perguntamos:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #ffcc66;background:#161616;color:#f7e7b0;font-size:1.10em;line-height:1.8;">"Será que tem razão?"</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Perguntamos:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #ffcc66;background:#161616;color:#f7e7b0;font-size:1.10em;line-height:1.8;">"Quem é ele para dizer isso?"</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É uma diferença extraordinariamente reveladora.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Porque uma cultura de mérito avalia ideias.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Uma cultura de estatuto avalia pessoas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O resultado é previsível.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quem pensa demasiado torna-se incómodo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quem concorda muito torna-se confiável.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quem questiona é difícil.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quem obedece é "uma pessoa de equipa".</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E assim alguns dos melhores aprendem uma lição amarga:</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">para sobreviver profissionalmente talvez seja necessário parecer menos inteligente do que realmente são.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É difícil imaginar desperdício maior.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Um país pequeno como Portugal não pode dar-se ao luxo de desperdiçar inteligência.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não temos centenas de milhões de habitantes.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não temos recursos naturais inesgotáveis.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não podemos compensar incompetência institucional com escala.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O nosso principal recurso sempre será aquilo que existe entre as orelhas de cada cidadão.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Conhecimento.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Criatividade.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Capacidade técnica.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Imaginação.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Pensamento crítico.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Tudo coisas ligeiramente perigosas para quem prefere ambientes previsíveis.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;"><strong>Portugal não sofre de falta de inteligência.</strong></p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Seria até absurdo afirmá-lo.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Temos cientistas extraordinários, engenheiros brilhantes, médicos excepcionais, empresários criativos, técnicos altamente competentes, investigadores reconhecidos internacionalmente e pessoas capazes de construir praticamente tudo quando lhes dão condições.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;"><strong>O problema é outro.</strong></p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;"><strong>A inteligência portuguesa frequentemente precisa de vencer primeiro Portugal para depois poder vencer o mundo.</strong></p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É uma corrida com obstáculos desnecessários.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Talvez por isso exista uma relação tão curiosa com aqueles que triunfam fora.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quando partem, eram apenas mais uns.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Quando regressam com reconhecimento internacional, tornaram-se "um orgulho nacional".</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">É fascinante.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">O país consegue exportar talento e importar prestígio.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Uma espécie de balança comercial intelectual.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Mas talvez esteja lentamente a mudar.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">As novas gerações têm acesso directo ao conhecimento mundial.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Trabalham remotamente.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Criam empresas fora das estruturas tradicionais.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Colaboram internacionalmente.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Aprendem sem pedir autorização.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E, sobretudo, começam a perceber uma coisa profundamente libertadora:</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">não é necessário esperar que uma hierarquia reconheça o nosso valor para que ele exista.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Isso pode ser revolucionário.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Porque a inteligência floresce quando encontra liberdade.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E sociedades inteligentes não são aquelas onde todos têm diplomas.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;"><strong>São aquelas onde ninguém precisa de pedir licença para pensar.</strong></p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Portugal precisa menos da cultura do "desenrascanço" e mais da cultura da competência.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Menos da pergunta:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #ffcc66;background:#161616;color:#f7e7b0;font-size:1.10em;line-height:1.8;">"Conheces alguém?"</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E mais da pergunta:</p>
+<blockquote style="margin:26px 0;padding:16px 20px;border-left:4px solid #ffcc66;background:#161616;color:#f7e7b0;font-size:1.10em;line-height:1.8;">"Sabes fazer?"</blockquote>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Menos reverência pelo estatuto.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Mais respeito pelo conhecimento.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Menos promoção da obediência.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Mais espaço para a dúvida.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Porque a esperteza pode ganhar uma oportunidade.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">A inteligência constrói possibilidades.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;"><strong>A esperteza encontra atalhos.</strong></p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;"><strong>A inteligência constrói estradas.</strong></p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E um país que passa demasiado tempo à procura de atalhos acaba inevitavelmente por descobrir uma coisa desagradável:</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">os outros já chegaram.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Talvez um dia Portugal deixe finalmente de desconfiar daqueles que pensam demasiado.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Talvez perceba que inteligência não é arrogância.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Que competência não é ameaça.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Que discordância não é deslealdade.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E que alguém capaz de demonstrar que estamos errados pode ser precisamente a pessoa de que mais precisamos.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Nesse dia talvez deixemos de celebrar tanto o esperto.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">E comecemos finalmente a respeitar o inteligente antes de ele emigrar, morrer ou aparecer numa fotografia a receber um prémio.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Seria progresso.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Não tão espectacular como inaugurar uma rotunda.</p>
+<p style="margin:0 0 18px 0;color:#e8e8e8;font-size:1.08em;line-height:1.95;">Mas provavelmente muito mais útil.</p>
+
+      <div style="margin:42px 0 0 0;padding:24px;background:#121212;border:1px solid #333;border-left:5px solid #ffcc66;">
+        <h2 style="margin:0 0 14px 0;color:#ffcc66;font-size:1.45em;line-height:1.3;">Nota Editorial</h2>
+        <p style="margin:0 0 14px 0;color:#dedede;font-size:1em;line-height:1.85;">
+          Esta crónica é um ensaio satírico sobre mérito, competência, estatuto e comportamento organizacional. 
+          A oposição entre "inteligência" e "esperteza" funciona aqui como recurso literário: não pretende estabelecer 
+          uma medida científica da cultura portuguesa nem atribuir características psicológicas uniformes a uma população.
+        </p>
+        <p style="margin:0 0 14px 0;color:#dedede;font-size:1em;line-height:1.85;">
+          Existe, contudo, investigação internacional que dá contexto a vários mecanismos abordados no texto. 
+          Benson, Li e Shue encontraram, em dados de 131 empresas norte-americanas, evidência consistente com o chamado 
+          "Princípio de Peter": organizações podem promover trabalhadores pelo desempenho no cargo actual mesmo quando 
+          outras características predizem melhor o desempenho de gestão. A investigação clássica de Amy Edmondson sobre 
+          segurança psicológica mostrou também a importância de ambientes onde as pessoas podem questionar, admitir erros, 
+          procurar feedback e aprender sem receio de punição interpessoal.
+        </p>
+        <p style="margin:0;color:#dedede;font-size:1em;line-height:1.85;">
+          No caso português, a OCDE voltou a colocar em 2026 a produtividade, a qualidade da gestão, a inovação e a simplificação 
+          administrativa entre os desafios estruturais do país. A OCDE assinalou que a produtividade do trabalho permanecia 
+          cerca de 17% abaixo da média da organização e que uma fatia relevante do emprego empresarial se concentra em microempresas, 
+          frequentemente com limitações de gestão profissional, tecnologia e inovação. Estes dados não "provam" a sátira; 
+          apenas mostram que discutir competência, organização, produtividade e capacidade institucional está longe de ser um luxo retórico.
+        </p>
+      </div>
+
+      <div style="margin:34px 0 0 0;padding:22px;background:#101010;border:1px solid #2c2c2c;">
+        <h2 style="margin:0 0 16px 0;color:#ffcc66;font-size:1.4em;">Referências e enquadramento internacional</h2>
+        <ol style="margin:0;padding-left:24px;color:#ddd;font-size:0.98em;line-height:1.75;">
+          <li style="margin:0 0 12px 0;"><a href="https://academic.oup.com/qje/article/134/4/2085/5550760" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;text-decoration:none;">Alan Benson, Danielle Li &amp; Kelly Shue — "Promotions and the Peter Principle", The Quarterly Journal of Economics, 134(4), 2019, pp. 2085–2134.</a></li>
+<li style="margin:0 0 12px 0;"><a href="https://journals.sagepub.com/doi/10.2307/2666999" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;text-decoration:none;">Amy C. Edmondson — "Psychological Safety and Learning Behavior in Work Teams", Administrative Science Quarterly, 44(2), 1999, pp. 350–383.</a></li>
+<li style="margin:0 0 12px 0;"><a href="https://www.oecd.org/en/publications/oecd-economic-surveys-portugal-2026_025b3445-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;text-decoration:none;">OECD — OECD Economic Surveys: Portugal 2026.</a></li>
+<li style="margin:0 0 12px 0;"><a href="https://www.oecd.org/en/publications/measuring-and-assessing-talent-attractiveness-in-oecd-countries-second-edition_133b6085-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;text-decoration:none;">Lina Andersson — "Measuring and assessing talent attractiveness in OECD countries, second edition", OECD Social, Employment and Migration Working Papers, No. 318, 2025.</a></li>
+<li style="margin:0 0 12px 0;"><a href="https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;text-decoration:none;">OECD — Government at a Glance 2025, OECD Publishing.</a></li>
+        </ol>
+      </div>
+
+      <footer style="margin:40px 0 0 0;padding-top:24px;border-top:1px solid #333;text-align:right;">
+        <p style="margin:0;color:#ffcc66;font-size:1.12em;font-weight:700;">Francisco Gonçalves</p>
+        <p style="margin:5px 0 0 0;color:#888;font-family:Arial,sans-serif;font-size:0.86em;">Fragmentos do Caos · 9 de Agosto de 2026</p>
+      </footer>
+    </div>
+<blockquote style="color:#ffcc67;">
+Um país pode sobreviver durante muito tempo graças aos espertos, mas só progride verdadeiramente graças aos inteligentes.
+</blockquote>
+- Francisco Gonçalves (2026)
+  </article>
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

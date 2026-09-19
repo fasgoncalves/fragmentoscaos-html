@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Alta velocidade: construir hoje a bitola que amanhã queremos abandonar?</title>
+<meta name="description" content="Alta velocidade: construir hoje a bitola que amanhã queremos abandonar?">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Alta velocidade: construir hoje a bitola que amanhã queremos abandonar?</h1>
+      <p class="meta">Publicado em 2026-09-18 14:55:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_0000000084cc81f4b7096a0aa57da6b8_99ce0cd1.jpg" alt=""></figure>
+      <div class="post-content">
+        <article class="fc-chronic-news">
+<header>
+<h1>Alta velocidade: construir hoje a bitola que amanhã queremos abandonar?</h1>
+<p><strong>Crónica técnico-política</strong></p>
+</header>
+
+<p>Portugal prepara-se para fazer um dos maiores investimentos ferroviários das últimas décadas. A nova Linha de Alta Velocidade Lisboa–Porto não é apenas uma obra para reduzir tempos de viagem: é infraestrutura que poderá condicionar a arquitetura ferroviária portuguesa durante muitas décadas.</p>
+
+<p>É por isso difícil compreender que o debate sobre a bitola continue tantas vezes preso a uma falsa alternativa: ou Portugal converte imediatamente toda a rede ferroviária para 1.435 mm, com custos e perturbações enormes, ou constrói também as novas linhas em 1.668 mm.</p>
+
+<p>As duas coisas não são equivalentes.</p>
+
+<h2>Uma rede antiga não é uma linha que ainda não existe</h2>
+
+<p>Converter milhares de quilómetros de ferrovia existente é uma operação gigantesca. Implica via, aparelhos de mudança, terminais, oficinas, material circulante, interfaces e anos de exploração condicionada. Os estudos divulgados sobre uma migração generalizada mostram precisamente essa dificuldade.</p>
+
+<p>Mas Lisboa–Porto é outra pergunta de engenharia: <strong>que padrão deve ser escolhido para centenas de quilómetros de infraestrutura que estamos agora a construir?</strong></p>
+
+<p>Usar o custo exorbitante da transformação de toda a rede histórica como argumento para justificar automaticamente a bitola de uma linha nova é misturar dois problemas distintos.</p>
+
+<h2>A Europa já escolheu uma referência</h2>
+
+<p>A rede ferroviária europeia procura progressivamente eliminar barreiras técnicas. O Regulamento RTE-T estabelece a bitola nominal de 1.435 mm como referência para a interoperabilidade das novas infraestruturas abrangidas, prevendo mecanismos de transição para redes que utilizam outras bitolas.</p>
+
+<p>Portugal sabe, portanto, qual é o sentido tecnológico de longo prazo. A própria estratégia para as ligações internacionais contempla a futura interoperabilidade em 1.435 mm.</p>
+
+<p>Surge então o paradoxo: <strong>construímos hoje em 1.668 mm uma infraestrutura preparada para amanhã poder passar a 1.435 mm.</strong></p>
+
+<p>É uma solução possível. Mas ser possível não significa que seja necessariamente a melhor estratégia de ciclo de vida.</p>
+
+<h2>O argumento espanhol não resolve a questão portuguesa</h2>
+
+<p>A coordenação com Espanha é indispensável. Uma ferrovia internacional não termina administrativamente na fronteira e a rede convencional espanhola continua extensamente baseada na bitola ibérica.</p>
+
+<p>Mas Espanha possui também uma vasta rede de alta velocidade em 1.435 mm e ligações nessa bitola à restante Europa. Logo, afirmar que Portugal tem simplesmente de esperar pela decisão espanhola simplifica excessivamente o problema.</p>
+
+<p>A pergunta deveria ser outra: <strong>qual deve ser a arquitetura portuguesa de transição para uma rede europeia interoperável?</strong></p>
+
+<p>Coordenação não deve significar imobilismo tecnológico.</p>
+
+<h2>A própria análise da IP contém o paradoxo</h2>
+
+<p>A Infraestruturas de Portugal estudou diferentes cenários para Lisboa–Porto. A solução em bitola ibérica permite integrar imediatamente a nova linha na rede existente, aproveitar acessos e estações e utilizar material circulante compatível. Esse é um argumento técnico real e deve ser reconhecido.</p>
+
+<p>A IP estimou também que construir de imediato todo o sistema em bitola europeia implicaria investimento inicial significativamente superior, devido precisamente às interfaces adicionais necessárias com a rede existente.</p>
+
+<p>Mas a mesma estratégia prevê que a nova LAV fique preparada para uma futura alteração de bitola. Segundo documentação técnica apresentada pela IP, a mudança da própria infraestrutura de alta velocidade poderá representar uma parcela relativamente pequena do investimento global da linha.</p>
+
+<p>Ou seja, a decisão atual contém implicitamente esta mensagem:</p>
+
+<blockquote>
+<p>Construamos primeiro num padrão e, quando as condições estiverem reunidas, mudemos para o outro.</p>
+</blockquote>
+
+<p>Pode ser operacionalmente conveniente. Falta demonstrar que seja economicamente ótimo quando analisado durante 40, 50 ou 100 anos.</p>
+
+<h2>Os 233 milímetros que isolam um mercado</h2>
+
+<p>A diferença entre 1.668 e 1.435 mm não é apenas geométrica. Tem consequências económicas.</p>
+
+<p>Material circulante, locomotivas, comboios de passageiros, aluguer, manutenção e mercado secundário beneficiam de escala quando existe compatibilidade entre redes. A Autoridade da Concorrência alertou em 2026 que a especificidade da bitola ibérica pode constituir uma barreira à entrada de operadores e limitar o acesso ao mercado europeu de material circulante.</p>
+
+<p>Portanto, a bitola não deve ser analisada apenas como custo de construção civil.</p>
+
+<p>É também uma decisão sobre <strong>concorrência, mercado, interoperabilidade e dependência tecnológica</strong>.</p>
+
+<h2>O perigo do ótimo local</h2>
+
+<p>Em engenharia de sistemas existe um erro clássico: otimizar uma componente e degradar o sistema global.</p>
+
+<p>A opção de 1.668 mm pode ser excelente quando a função objetivo é minimizar o investimento inicial e maximizar a compatibilidade imediata com a atual Rede Ferroviária Nacional.</p>
+
+<p>Mas essa não é necessariamente a função objetivo adequada para uma infraestrutura destinada a atravessar gerações.</p>
+
+<p>Uma análise de ciclo de vida deveria incluir o investimento inicial, exploração, material circulante, futuras interfaces, custo e perturbação da migração, concorrência entre operadores, transporte internacional e valor económico da integração plena no mercado ferroviário europeu.</p>
+
+<p>Só depois poderíamos afirmar qual solução é realmente mais barata.</p>
+
+<h2>Há mais soluções do que "mudar tudo" ou "não mudar nada"</h2>
+
+<p>Existe ainda outra simplificação recorrente: apresentar a escolha como sendo entre converter toda a rede portuguesa ou permanecer indefinidamente na bitola ibérica.</p>
+
+<p>A engenharia ferroviária conhece estratégias intermédias: travessas preparadas para conversão, terceiro carril onde tecnicamente adequado, material de bitola variável, corredores progressivamente convertidos e interfaces temporárias.</p>
+
+<p>Nenhuma é gratuita. Nenhuma resolve todos os problemas.</p>
+
+<p>Mas demonstram que uma migração pode ser tratada como aquilo que realmente é: <strong>um problema de arquitetura e transição de sistemas</strong>.</p>
+
+<h2>Portugal precisa de decidir onde quer estar, não apenas onde está</h2>
+
+<p>Durante demasiado tempo, a política ferroviária portuguesa foi obrigada a administrar uma infraestrutura herdada. Agora temos uma oportunidade diferente: estamos a construir de raiz.</p>
+
+<p>Novas pontes. Novos túneis. Novas plataformas. Nova sinalização. Novos sistemas de controlo. Centenas de quilómetros de nova via.</p>
+
+<p>É precisamente quando se constrói de novo que se deve olhar para o destino tecnológico, e não apenas para a compatibilidade com o passado.</p>
+
+<p>Portugal não precisa de acordar amanhã com toda a rede convertida para 1.435 mm. Seria técnica, financeira e operacionalmente imprudente.</p>
+
+<p>Mas também não deve esconder a discussão sobre infraestrutura nova atrás dos custos astronómicos de converter a infraestrutura antiga.</p>
+
+<p><strong>São problemas diferentes e exigem contas diferentes.</strong></p>
+
+<h2>A conta que ainda interessa conhecer</h2>
+
+<p>O país merece uma comparação transparente entre estratégias ao longo de todo o ciclo de vida da nova rede.</p>
+
+<p>Não basta perguntar quanto custa Lisboa–Porto em 2026.</p>
+
+<p>É necessário perguntar quanto custará Lisboa–Porto ao longo das próximas décadas até atingir a interoperabilidade europeia que o próprio planeamento admite.</p>
+
+<p>Se a conclusão continuar a ser 1.668 mm agora e 1.435 mm depois, ótimo: que os números o demonstrem.</p>
+
+<p>Mas não se deve transformar uma escolha transitória numa inevitabilidade técnica nem utilizar Espanha como explicação universal para uma decisão que Portugal também tem de assumir.</p>
+
+<h2>Conclusão</h2>
+
+<p>Uma ferrovia de alta velocidade não se constrói para um governo, uma legislatura ou uma década.</p>
+
+<p>Constrói-se para gerações.</p>
+
+<p>Por isso, talvez a pergunta mais importante não seja quanto custa adaptar o futuro à rede que herdámos.</p>
+
+<p>É exatamente a inversa:</p>
+
+<blockquote>
+<p><strong>quanto nos poderá custar continuar a construir o futuro à medida do passado?</strong></p>
+</blockquote>
+
+<hr />
+
+<section class="fc-editorial-note">
+<h3>Nota editorial</h3>
+<p>Este texto é uma crónica de análise e opinião técnica. Distingue a conversão generalizada da rede ferroviária existente da escolha de bitola para infraestrutura nova. As apreciações estratégicas pertencem ao autor; os elementos factuais devem ser lidos à luz da documentação oficial citada.</p>
+</section>
+
+<section class="fc-references">
+<h3>Referências</h3>
+<ol>
+<li>Regulamento (UE) 2024/1679 — orientações da União para o desenvolvimento da rede transeuropeia de transportes (RTE-T).</li>
+<li>Infraestruturas de Portugal — documentação e questões frequentes sobre a Rede de Alta Velocidade e a escolha/migração de bitola.</li>
+<li>Infraestruturas de Portugal — apresentação técnica de 27 de março de 2024 sobre cenários de bitola para a Alta Velocidade.</li>
+<li>Comissão Europeia — documentação de acompanhamento da implementação da RTE-T e interoperabilidade ferroviária.</li>
+<li>Autoridade da Concorrência — estudo de 2026 sobre concorrência no transporte ferroviário de passageiros e mercadorias em Portugal.</li>
+<li>Decisão de Execução (UE) 2025/2198 — desenvolvimento da ligação ferroviária de alta velocidade Lisboa–Madrid.</li>
+</ol>
+</section>
+</article><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
