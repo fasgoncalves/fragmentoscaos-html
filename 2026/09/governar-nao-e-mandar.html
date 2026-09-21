@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Governar não é mandar</title>
+<meta name="description" content="Governar não é mandar">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Governar não é mandar</h1>
+      <p class="meta">Publicado em 2026-09-20 21:20:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_0000000075148210a34d0a906e1b5e86_3717c49d.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+<div style="display:none;"><span itemscope itemtype="https://schema.org/NewsArticle"><meta itemprop="headline" content="Governar não é mandar"><meta itemprop="description" content="Uma reflexão crítica sobre comunicação governamental, escrutínio jornalístico, concertação social e autoridade democrática."><meta itemprop="datePublished" content="2026-09-20"><meta itemprop="dateModified" content="2026-09-20"><meta itemprop="author" content="Francisco Gonçalves"><meta itemprop="publisher" content="Fragmentos do Caos"><meta itemprop="image" content="INSERIR_URL_DA_IMAGEM_AQUI"></span></div>
+<div style="max-width:900px; margin:auto; padding:10px;">
+<h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">Governar não é mandar</h1>
+<p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">Quando a autoridade democrática começa a confundir-se com a recusa do contraditório</p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;"><p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>Esta crónica analisa episódios públicos documentados na relação do Governo de Luís Montenegro com jornalistas, parceiros sociais e outras instituições. «Arrogância» é uma avaliação política; o texto separa factos verificáveis, posições das partes e interpretação editorial.</p></div>
+<p>Há uma diferença substancial entre <strong>governar com autoridade</strong> e governar como se a autoridade dispensasse explicações.</p>
+<p>A primeira é indispensável numa democracia. Um Governo legitimado eleitoralmente tem de decidir, executar políticas e assumir responsabilidades. A segunda atitude é mais problemática: surge quando o escrutínio começa a ser tratado como incómodo, a discordância como ruído e as perguntas como obstáculos à governação.</p>
+<p>É neste território que merece ser analisada a comunicação política do Governo de Luís Montenegro.</p>
+<p>Chamar-lhe simplesmente «arrogância» seria demasiado fácil. Arrogância é uma interpretação. Mais interessante é observar os comportamentos que levam cidadãos, jornalistas, sindicatos e adversários políticos a formular essa crítica — e confrontá-los com a posição do próprio Governo.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Falar ao País sem ouvir o País</h2>
+<p>No dia 17 de Setembro de 2026, Luís Montenegro dirigiu-se novamente ao País depois de uma reunião do Conselho de Ministros. Apresentou medidas e explicou aquilo que o Governo decidira, mas a intervenção não incluiu perguntas dos jornalistas.</p>
+<p>No dia seguinte, o Sindicato dos Jornalistas apelou às redacções e direcções de informação para não enviarem jornalistas a declarações do primeiro-ministro quando não fosse possível colocar perguntas. O Sindicato afirmou que este formato se tinha tornado recorrente.</p>
+<p>Não estamos perante uma divergência sobre impostos, saúde ou legislação laboral. Estamos perante algo anterior: a relação entre o poder e quem o interroga.</p>
+<p>Um primeiro-ministro tem todo o direito de fazer uma declaração ao País. Mas comunicação governamental não deve transformar jornalistas em simples suportes de transmissão. O jornalismo começa precisamente onde termina o comunicado: começa na pergunta.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O incómodo das perguntas</h2>
+<p>Este conflito não nasceu esta semana. Em Outubro de 2024, Luís Montenegro defendeu um jornalismo mais «tranquilo» e menos «ofegante» e criticou o recurso a auriculares, sugerindo que por eles poderiam ser «sopradas» perguntas.</p>
+<p>O Conselho de Redacção da RTP reagiu, pedindo ao primeiro-ministro que se retratasse e defendendo a importância de um jornalismo livre, independente, rigoroso e crítico. Explicou ainda que os auriculares são instrumentos técnicos normais de coordenação.</p>
+<p>O primeiro-ministro tem, evidentemente, direito a criticar a comunicação social. Os jornalistas não são infalíveis. Mas existe uma assimetria fundamental: o jornalista não governa o primeiro-ministro. O primeiro-ministro governa o País.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quando discordar passa a ser não compreender</h2>
+<p>Durante as negociações da reforma laboral, o Governo apresentou a sua proposta como necessária ao crescimento económico, ao emprego e aos salários. É uma posição política legítima.</p>
+<p>Segundo o próprio Governo, o processo permitiu consensualizar 138 alterações. Ainda assim, em Abril de 2026, Luís Montenegro afirmou que apenas razões «de natureza mais política» poderiam impedir um acordo e colocou a questão em termos de «estagnar» ou «avançar».</p>
+<p>Depois do fim das negociações sem entendimento, a UGT apelou à valorização da Concertação Social e ao respeito pela diferença. A central sindical reagia a declarações públicas, depois de Montenegro ter criticado os «sindicatos do século XX» e defendido «sindicalistas com arrojo».</p>
+<p>Negociar significa admitir que o outro pode compreender perfeitamente aquilo que propomos e, ainda assim, discordar. A discordância não é necessariamente atraso ou imobilismo. Às vezes é simplesmente discordância.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Nós avançamos. Os outros bloqueiam.</h2>
+<p>Existe uma construção retórica frequente na política: de um lado ficam a ambição, a coragem e a capacidade de avançar; do outro, o imobilismo e os interesses que bloqueiam.</p>
+<p>É uma formulação politicamente eficaz, mas democraticamente merece reflexão. Quando a discordância é enquadrada sobretudo como obstáculo ao progresso, corre-se o risco de reduzir uma realidade plural a uma escolha demasiado conveniente.</p>
+<p>Uma democracia parlamentar funciona com oposição, sindicatos, jornalistas, autarquias, associações e cidadãos capazes de contestar o poder. Não são defeitos do sistema. São parte do sistema.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A Beira Baixa como pequena parábola</h2>
+<p>Veja-se o caso da Linha da Beira Baixa. Dois deslizamentos numa extensão aproximada de 120 metros exigiram uma intervenção geotécnica complexa. A segurança ferroviária tinha de prevalecer.</p>
+<p>Mas permanece uma questão distinta: enquanto se preparava a solução definitiva, que alternativas foram consideradas para manter a maior quantidade possível de serviço ferroviário? O Município de Gavião apresentou uma solução concreta: prolongar provisoriamente os comboios até Belver e realizar aí o transbordo rodoviário.</p>
+<p>Na documentação pública anteriormente consultada não encontrámos uma explicação técnica detalhada para a não adopção dessa solução. Isso não demonstra que a alternativa fosse tecnicamente viável; demonstra que continua a ser legítimo pedir que a decisão seja explicada.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Governar não é comunicar decisões</h2>
+<p>Os Governos possuem enormes máquinas de comunicação: assessores, gabinetes, redes sociais, vídeos, infografias e declarações ao País. Nunca houve tanta comunicação política e, paradoxalmente, pode haver menos diálogo político.</p>
+<p>Comunicar significa: «Isto é aquilo que decidimos.» Dialogar acrescenta: «Agora perguntem-nos porquê.» E governar democraticamente exige ambas.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A força não está em evitar a pergunta</h2>
+<p>Um Governo seguro das suas decisões não perde autoridade por responder a perguntas difíceis. Uma política pública bem fundamentada torna-se mais escrutinável quando consegue sobreviver ao contraditório.</p>
+<p>Um ministro demonstra responsabilidade pública explicando por que decidiu, que alternativas estudou, quais rejeitou, que riscos avaliou e que resultados espera obter.</p>
+<p>E quando um Governo erra — porque todos os Governos erram — reconhecer o erro não provoca o colapso do Estado. A prestação de contas é parte da legitimidade democrática.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O cidadão não é administrado</h2>
+<p>Portugal não é propriedade temporária do Governo que ganhou as últimas eleições. O Governo exerce temporariamente o poder que os cidadãos lhe confiaram nos termos da Constituição.</p>
+<p>O cidadão não é apenas alguém a quem se comunica uma decisão; é aquele perante quem a decisão deve poder ser justificada. O jornalista integra o mecanismo de escrutínio. O sindicato é um interlocutor social que pode dizer não. A oposição é constitucionalmente necessária.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Autoridade democrática</h2>
+<p>Luís Montenegro e o seu Governo têm legitimidade democrática para governar. Têm também direito a defender energicamente as suas políticas, contestar adversários, criticar sindicatos e discordar dos jornalistas. O contraditório funciona para todos.</p>
+<p>Mas a legitimidade eleitoral não elimina a obrigação de prestar contas. Pelo contrário: cria-a.</p>
+<p>Aquilo que alguns cidadãos e organizações descrevem como «arrogância» deve ser analisado através de comportamentos concretos, e não convertido automaticamente num facto objectivo sobre as intenções dos governantes.</p>
+<p>Uma democracia madura precisa de uma frase simples: «Nós decidimos; agora respondemos.»</p>
+<p>Porque governar exige autoridade. Mas autoridade democrática não significa mandar sem contraditório. Significa possuir legitimidade para decidir e responsabilidade suficiente para explicar.</p>
+<p>Governar não é mandar. E muito menos é falar ao País enquanto se desliga, metaforicamente, o microfone das perguntas.</p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Comunicar significa: «Isto é aquilo que decidimos.» Dialogar acrescenta: «Agora perguntem-nos porquê.»</p></div>
+<h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+<div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;"><p style="text-align:left;">Esta é uma crónica de opinião e contém interpretação editorial. Os factos que sustentam essa interpretação são separados das qualificações políticas. Não se atribuem intenções psicológicas ao primeiro-ministro ou aos ministros, nem se apresenta «arrogância» como facto demonstrado.</p><p style="text-align:left;">A posição do Governo também é relevante: no processo laboral, o Executivo sustenta ter conduzido meses de negociação e alcançado 138 alterações consensualizadas; Luís Montenegro tem igualmente afirmado defender um jornalismo livre. O Sindicato dos Jornalistas, o Conselho de Redacção da RTP e a UGT contestaram aspectos concretos da actuação ou linguagem governamental.</p><p style="text-align:left; margin-bottom:0;">A tese editorial é institucional: a autoridade democrática não se mede apenas pela capacidade de decidir. Mede-se também pela disponibilidade para explicar decisões, aceitar perguntas, reconhecer a legitimidade da discordância e submeter o exercício do poder a contraditório.</p></div>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2><ul style="padding-left:22px;">
+<li><a href="https://jornalistas.eu/se-montenegro-nao-aceita-perguntas-boicotem-as-declaracoes/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Sindicato dos Jornalistas — Se Montenegro não aceita perguntas, boicotem as declarações</a></li>
+<li><a href="https://www.rtp.pt/noticias/politica/menos-ofegante-conselho-de-redacao-da-rtp-pede-a-montenegro-que-se-retrate-por-declaracoes-sobre-jornalistas_n1606237" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">RTP — Conselho de Redacção pede a Montenegro que se retrate</a></li>
+<li><a href="https://portugal.gov.pt/pt/gc25/comunicacao/noticias/primeiro-ministro-diz-que-so-razoes-politicas-podem-impedir-acordo-laboral" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Governo de Portugal — Só razões políticas podem impedir acordo laboral</a></li>
+<li><a href="https://www.rtp.pt/noticias/economia/ugt-apela-a-valorizacao-da-concertacao-social-e-condena-ataques-sem-respeito-pela-diferenca_n1740520" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">RTP/Lusa — UGT apela à valorização da Concertação Social</a></li>
+<li><a href="https://observador.pt/2026/09/19/sindicato-dos-jornalistas-apela-a-boicote-a-declaracoes-de-montenegro-sem-perguntas/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Observador/Lusa — Sindicato dos Jornalistas apela a boicote a declarações sem perguntas</a></li>
+</ul>
+<div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;"><p style="color:#cfcfcf; text-align:left;"><strong style="color:#d6a542;">Francisco Gonçalves</strong><br>Fragmentos do Caos<br>FC-Chronic-News</p></div>
+</div>
+</div>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
