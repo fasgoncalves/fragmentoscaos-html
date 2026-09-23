@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Os vendedores de propaganda e o espírito tribal</title>
+<meta name="description" content="Os vendedores de propaganda e o espírito tribal">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Os vendedores de propaganda e o espírito tribal</h1>
+      <p class="meta">Publicado em 2026-09-21 12:23:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000d61481f6a17a3576d3c3053b_03a3e14a.jpg" alt=""></figure>
+      <div class="post-content">
+        <div itemscope itemtype="https://schema.org/NewsArticle" style="max-width:920px;margin:28px auto;padding:0 18px;font-family:Arial,Helvetica,sans-serif;">
+<meta itemprop="mainEntityOfPage" content="https://www.fragmentoscaos.eu/os-vendedores-de-propaganda-e-o-espirito-tribal/">
+<meta itemprop="datePublished" content="2026-08-06T12:23:00+01:00">
+<meta itemprop="dateModified" content="2026-08-06T12:23:00+01:00">
+<meta itemprop="author" content="Francisco Gonçalves">
+<header style="background:#111318;border:1px solid #30343b;border-radius:18px;padding:34px 32px 30px 32px;box-shadow:0 18px 55px rgba(0,0,0,.32);">
+<div style="display:inline-block;margin:0 0 18px 0;padding:7px 11px;border-radius:999px;background:#2a2414;color:#f2c45e;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;">FC · Chronic News · Opinião</div>
+<h1 itemprop="headline" style="margin:0 0 16px 0;font-size:46px;line-height:1.06;color:#f4f4f4;font-weight:900;letter-spacing:-.035em;">Os vendedores de propaganda e o espírito tribal</h1>
+<p itemprop="alternativeHeadline" style="margin:0 0 22px 0;font-size:21px;line-height:1.5;color:#c9c9c9;font-weight:500;">Quando a análise televisiva troca princípios por bandeiras, a neutralidade torna-se apenas propaganda de gravata.</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px 18px;color:#9fa4ad;font-size:14px;"><span>Por <strong style="color:#f4f4f4;">Francisco Gonçalves</strong></span><span>6 de agosto de 2026</span><span>Crónica de opinião</span></div>
+</header>
+<section style="margin:22px 0 0 0;background:#17191f;border-left:5px solid #d6a536;border-radius:12px;padding:25px 27px;color:#f1f1f1;box-shadow:0 12px 34px rgba(0,0,0,.22);">
+<p style="margin:0;font-size:22px;line-height:1.62;font-weight:700;color:#f5f5f5;">Há uma espécie particularmente resistente de comentador televisivo que não analisa guerras: <span style="color:#f0bd4f;">torce por elas</span>.</p>
+</section>
+<article itemprop="articleBody" style="margin:22px 0 0 0;background:#111318;border:1px solid #30343b;border-radius:18px;padding:34px 32px;box-shadow:0 18px 55px rgba(0,0,0,.30);">
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Não usa cachecol, não pinta a cara nem salta das bancadas, porque isso seria demasiado honesto. Prefere sentar-se diante de uma câmara, adotar uma expressão grave, cruzar as mãos com solenidade episcopal e apresentar a sua preferência tribal como se fosse ciência política.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">É o <strong style="color:#ffffff;font-weight:800;">vendedor moderno de propaganda</strong>.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Não grita slogans. Fala pausadamente.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Não agita bandeiras. Exibe mapas.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Não admite simpatias. Invoca "realismo".</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Quando a Rússia ocupa mais um quilómetro quadrado de território ucraniano, a voz ganha entusiasmo, os olhos brilham discretamente e surge logo a previsão inevitável: a Ucrânia está perdida, o Ocidente deve ter cuidado, a resistência é inútil e talvez seja prudente aceitar a amputação do país antes que o invasor fique aborrecido.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Mas quando a Ucrânia ataca uma instalação militar em território russo, o mesmo comentador descobre subitamente a existência dos civis, do Direito Internacional, da proporcionalidade, da prudência e, provavelmente, dos direitos humanos em fascículos.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">A bússola moral destes especialistas não aponta para norte. <strong style="color:#ffffff;font-weight:800;">Aponta para Moscovo.</strong></p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Naturalmente, qualquer morte civil é condenável. Russa, ucraniana, palestiniana, israelita ou de qualquer outra nacionalidade. Uma vida humana não muda de valor conforme a bandeira colocada no rodapé da televisão.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Mas há uma diferença essencial entre defender os civis e usar os civis como instrumento retórico.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Quando os mortos ucranianos são tratados como dano colateral inevitável e os mortos russos como prova da barbárie do agredido, já não estamos perante compaixão. Estamos perante contabilidade ideológica.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">É uma moral de feira: dois pesos, duas medidas e uma balança já inclinada antes de começar o debate.</p>
+<h2 style="margin:2.15em 0 .75em 0;font-size:28px;line-height:1.22;color:#e3b341;font-weight:800;letter-spacing:-.02em;">A neutralidade com camisola por baixo</h2>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Estes comentadores apresentam-se como observadores frios, independentes e intelectualmente superiores às emoções do público.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">É uma representação razoável, embora pouco convincente.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Por baixo do fato da neutralidade está quase sempre uma <strong style="color:#ffffff;font-weight:800;">camisola tribal</strong>.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Uns torcem pelo império porque confundem brutalidade com força. Outros admiram regimes autoritários porque acreditam que a democracia é decadente, lenta e excessivamente barulhenta. Há ainda os que construíram uma carreira inteira a odiar os Estados Unidos e, por reflexo de trincheira, concluem que qualquer adversário de Washington deve representar o progresso da humanidade.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">É uma forma curiosa de pensamento político: se o inimigo do meu inimigo bombardear hospitais, talvez exista uma explicação geoestratégica bastante sofisticada.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">A tribo vem primeiro.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Os factos vêm depois.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">E, quando os factos incomodam, reorganizam-se os factos.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Uma invasão passa a ser "operação militar".</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Uma ocupação transforma-se em "realidade no terreno".</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">A resistência torna-se "provocação".</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">A rendição recebe o nome elegante de "solução pragmática".</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">E o agressor, depois de destruir cidades, deportar populações e anexar território, é apresentado como um interlocutor incompreendido, provavelmente vítima de falta de carinho diplomático.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">É extraordinário aquilo que um vocabulário universitário consegue fazer quando colocado ao serviço da <strong style="color:#ffffff;font-weight:800;">cobardia moral</strong>.</p>
+<h2 style="margin:2.15em 0 .75em 0;font-size:28px;line-height:1.22;color:#e3b341;font-weight:800;letter-spacing:-.02em;">Professores de certezas absolutas</h2>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">O problema torna-se ainda mais grave quando estes vendedores de propaganda são também professores universitários.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Um professor deveria ensinar a pensar.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Deveria mostrar a complexidade, testar hipóteses, questionar narrativas e desconfiar das próprias conclusões. Deveria ensinar os alunos a perguntar: quem afirma, com que provas, com que interesses e segundo que critérios?</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Mas alguns preferem ensinar certezas.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Certezas compactas, prontas a consumir, embaladas para caber num segmento televisivo entre a publicidade a detergentes e a previsão do tempo.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">A televisão agradece.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">O pensamento crítico, nem tanto.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Há qualquer coisa de profundamente inquietante num professor que passa os dias a representar objetividade enquanto oferece aos jovens uma interpretação do mundo previamente filtrada pela sua tribo ideológica.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Não está a abrir mentes. <strong style="color:#ffffff;font-weight:800;">Está a instalar software proprietário.</strong></p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">E, como frequentemente acontece com software mal concebido, o utilizador deixa de pensar e passa apenas a repetir mensagens de erro.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Esses alunos aprendem que liberdade significa concordar com o professor, que espírito crítico significa criticar apenas o campo adversário e que a democracia é admirável desde que produza os resultados autorizados pelo catecismo político da casa.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">É a pedagogia da liberdade encenada.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Pode-se pensar livremente, desde que se pense corretamente.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Pode-se discordar, desde que a discordância não incomode.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Pode-se questionar tudo, menos o professor, a narrativa e a tribo.</p>
+<h2 style="margin:2.15em 0 .75em 0;font-size:28px;line-height:1.22;color:#e3b341;font-weight:800;letter-spacing:-.02em;">A guerra como campeonato</h2>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">O espírito tribal transforma a guerra numa competição desportiva.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Conta-se território conquistado como quem acompanha a classificação de um campeonato. Celebra-se o avanço de tropas, anuncia-se a queda iminente do adversário e comentam-se milhares de mortos com a serenidade de quem analisa posse de bola.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Um quilómetro quadrado muda de mãos e o comentador fica radiante.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Uma aldeia é destruída e ele explica que se trata de uma evolução estratégica.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Uma cidade é bombardeada e surge a inevitável contextualização histórica, porque há cadáveres que, aparentemente, precisam de enquadramento académico antes de merecerem indignação.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Depois, quando a guerra atravessa a fronteira do invasor, descobre-se que o conflito tem consequências.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Que surpresa monumental.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Durante anos, a Rússia pôde lançar mísseis, drones e artilharia contra território ucraniano. Mas, para certos sacerdotes televisivos, a guerra deveria respeitar uma regra muito conveniente: o agressor pode atacar a partir de casa, enquanto o agredido deve defender-se apenas no próprio quintal.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">É uma doutrina militar extraordinária.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Talvez venha a ser ensinada nas academias como "estratégia da vítima educada": receber o golpe, agradecer a análise e evitar perturbar o agressor.</p>
+<h2 style="margin:2.15em 0 .75em 0;font-size:28px;line-height:1.22;color:#e3b341;font-weight:800;letter-spacing:-.02em;">O mercado da rendição</h2>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Há também um negócio intelectual em torno da inevitabilidade.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Os propagandistas adoram declarar que a vitória russa é certa, que a resistência ucraniana é inútil e que o apoio ocidental apenas prolonga o sofrimento.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">A fórmula é antiga.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Primeiro, o agressor destrói.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Depois, os comentadores culpam a vítima por não se render suficientemente depressa.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Chamam-lhe realismo.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Mas o realismo que só reconhece o poder das armas e ignora o direito, a soberania e a vontade dos povos não é realismo.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">É <strong style="color:#ffffff;font-weight:800;">servidão com bibliografia</strong>.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">É a filosofia do ladrão bem armado: já que entrou em casa e possui uma pistola, talvez seja sensato entregar-lhe também a escritura.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Naturalmente, estes especialistas nunca aplicam a mesma doutrina a si próprios.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Não entregariam a casa, a família ou a liberdade ao primeiro homem que aparecesse com um tanque. Mas aconselham povos inteiros a fazê-lo, com grande serenidade, a partir de estúdios confortáveis onde o maior perigo é o café estar demasiado frio.</p>
+<h2 style="margin:2.15em 0 .75em 0;font-size:28px;line-height:1.22;color:#e3b341;font-weight:800;letter-spacing:-.02em;">O dever de desconfiar</h2>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Uma democracia saudável não exige comentadores neutros. A neutralidade absoluta é uma ficção e, muitas vezes, uma máscara.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">O que se exige é honestidade.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Que assumam os seus critérios.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Que condenem crimes segundo os mesmos princípios.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Que distingam factos de preferências.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Que admitam quando não sabem.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">E que não transformem a autoridade académica numa licença para vender propaganda com gravata.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">O público também tem responsabilidades.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Deve aprender a reconhecer os sinais: o entusiasmo seletivo, a indignação intermitente, a linguagem higienizada para o agressor e a severidade moral reservada ao agredido.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Sempre que um comentador muda de princípios conforme muda a bandeira, <strong style="color:#ffffff;font-weight:800;">não está a analisar. Está a recrutar.</strong></p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Sempre que uma vítima precisa de justificar a própria defesa, enquanto o invasor recebe infinitas explicações históricas, não estamos perante equilíbrio.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Estamos perante cumplicidade intelectual.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">E sempre que um professor troca a dúvida pelo dogma e a investigação pelo espírito tribal, deixa de formar cidadãos livres.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Passa a produzir seguidores.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">A propaganda moderna raramente usa uniforme.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Prefere títulos académicos, mapas digitais, palavras estrangeiras e uma expressão profundamente preocupada.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;">Mas continua a ser propaganda.</p>
+<p style="margin:0 0 1.28em 0;line-height:1.82;font-size:18px;color:#e8e8e8;"><strong style="color:#ffffff;font-weight:800;">Apenas aprendeu a usar microfone.</strong></p>
+<blockquote style="margin:38px 0 8px 0;padding:26px 28px;border-left:6px solid #e1ad37;background:#1a1d24;border-radius:10px;color:#ffffff;font-size:25px;line-height:1.5;font-weight:800;">"Sempre que um comentador muda de princípios conforme muda a bandeira, não está a analisar. Está a recrutar."</blockquote>
+</article>
+<aside style="margin:22px 0 0 0;background:#121820;border:1px solid #344250;border-radius:16px;padding:28px 30px;box-shadow:0 14px 38px rgba(0,0,0,.24);">
+<h2 style="margin:0 0 16px 0;font-size:25px;color:#7fc7ff;font-weight:850;">Caixa factual</h2>
+<ul style="margin:0;padding-left:22px;color:#dfe8ef;font-size:16px;line-height:1.75;"><li style="margin:0 0 10px 0;">A Assembleia-Geral das Nações Unidas qualificou formalmente a invasão como <em>agressão contra a Ucrânia</em> e exigiu a retirada das forças russas.</li><li style="margin:0 0 10px 0;">O Direito Internacional Humanitário obriga todas as partes a distinguir civis de combatentes e a respeitar os princípios de proporcionalidade e precaução.</li><li style="margin:0 0 10px 0;">A OHCHR registou 1.396 civis mortos e 7.978 feridos na Ucrânia durante o primeiro semestre de 2026, um aumento de 37% face ao mesmo período de 2025.</li><li>Condenar ataques contra civis russos não exige apagar a origem da guerra, a ocupação de território ucraniano ou a assimetria documentada dos danos.</li></ul>
+</aside>
+<section style="margin:22px 0 0 0;background:#211b10;border:1px solid #5a4821;border-radius:16px;padding:29px 30px;box-shadow:0 14px 38px rgba(0,0,0,.24);">
+<h2 style="margin:0 0 15px 0;font-size:25px;color:#f0bd4f;font-weight:850;">Nota editorial</h2>
+<p style="margin:0 0 14px 0;line-height:1.75;font-size:16px;color:#eee5d1;">Esta crónica é um texto de opinião e crítica dos mecanismos retóricos usados no comentário televisivo. Não imputa a qualquer pessoa concreta a prática de crimes, coordenação com governos estrangeiros ou recebimento de instruções propagandísticas. Critica, isso sim, a incoerência de critérios, a linguagem que normaliza a agressão e a transformação da autoridade académica em certificado automático de objetividade.</p>
+<p style="margin:0 0 14px 0;line-height:1.75;font-size:16px;color:#eee5d1;">O princípio editorial é simples: todos os civis merecem proteção, independentemente da nacionalidade; todos os alegados ataques ilegais devem ser investigados; e nenhuma análise séria pode apagar que a guerra em grande escala começou com a invasão russa de 24 de fevereiro de 2022. A equivalência moral automática entre agressor e agredido não é equilíbrio. É amnésia com iluminação de estúdio.</p>
+<p style="margin:18px 0 0 0;font-size:15px;color:#f0bd4f;font-weight:800;">Francisco Gonçalves · Fragmentos do Caos · 6 de agosto de 2026</p>
+</section>
+<section style="margin:22px 0 0 0;background:#111318;border:1px solid #30343b;border-radius:16px;padding:29px 30px;box-shadow:0 14px 38px rgba(0,0,0,.24);">
+<h2 style="margin:0 0 16px 0;font-size:25px;color:#e3b341;font-weight:850;">Referências internacionais</h2>
+<ol style="margin:0;padding-left:23px;color:#cfd2d7;font-size:15px;line-height:1.72;">
+<li style="margin:0 0 13px 0;"><strong style="color:#f1f1f1;">Assembleia-Geral das Nações Unidas</strong> — <a href="https://digitallibrary.un.org/record/3965290" target="_blank" rel="noopener noreferrer" style="color:#78bfff;text-decoration:none;">A/RES/ES-11/1 — Aggression against Ukraine</a> <span style="color:#8f96a0;">(2 de março de 2022)</span>.</li>
+<li style="margin:0 0 13px 0;"><strong style="color:#f1f1f1;">OHCHR — Missão de Monitorização dos Direitos Humanos na Ucrânia</strong> — <a href="https://ukraine.ohchr.org/en/Civilian-Casualties-Soar-in-Ukraine-in-the-First-Half-of-2026-Amid-Escalating-Attacks-and-Intensifying-Use-of-Deadly-Weapons-UN-Human-Rights-Monitors-Say" target="_blank" rel="noopener noreferrer" style="color:#78bfff;text-decoration:none;">Civilian Casualties Soar in Ukraine in the First Half of 2026</a> <span style="color:#8f96a0;">(14 de julho de 2026)</span>.</li>
+<li style="margin:0 0 13px 0;"><strong style="color:#f1f1f1;">Comité Internacional da Cruz Vermelha</strong> — <a href="https://casebook.icrc.org/a_to_z/glossary/fundamental-principles-ihl" target="_blank" rel="noopener noreferrer" style="color:#78bfff;text-decoration:none;">Fundamental principles of international humanitarian law</a> <span style="color:#8f96a0;">(consulta em 6 de agosto de 2026)</span>.</li>
+<li style="margin:0 0 13px 0;"><strong style="color:#f1f1f1;">Reuters</strong> — <a href="https://www.reuters.com/world/europe/ukraines-zaporizhzhia-russia-tries-sow-panic-with-safari-strikes-civilians-2026-08-06/" target="_blank" rel="noopener noreferrer" style="color:#78bfff;text-decoration:none;">In Ukraine&#x27;s Zaporizhzhia, Russia tries to sow panic with &#x27;safari&#x27; strikes on civilians</a> <span style="color:#8f96a0;">(6 de agosto de 2026)</span>.</li>
+<li style="margin:0 0 13px 0;"><strong style="color:#f1f1f1;">Reuters Institute for the Study of Journalism</strong> — <a href="https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2026/can-public-demand-impartial-news-survive-platforms-and-polarisation" target="_blank" rel="noopener noreferrer" style="color:#78bfff;text-decoration:none;">Can public demand for impartial news survive platforms and polarisation?</a> <span style="color:#8f96a0;">(Digital News Report 2026)</span>.</li>
+<li style="margin:0 0 13px 0;"><strong style="color:#f1f1f1;">Reporters Without Borders</strong> — <a href="https://rsf.org/en/propaganda-monitor-rsf-releases-new-report-geopolitics-kremlin-propaganda" target="_blank" rel="noopener noreferrer" style="color:#78bfff;text-decoration:none;">The Propaganda Monitor: report on the geopolitics of Kremlin propaganda</a> <span style="color:#8f96a0;">(2025)</span>.</li>
+<li style="margin:0 0 13px 0;"><strong style="color:#f1f1f1;">Foreign Affairs</strong> — <a href="https://www.foreignaffairs.com/articles/russian-federation/2022-06-14/ukraine-war-russia-why-fails" target="_blank" rel="noopener noreferrer" style="color:#78bfff;text-decoration:none;">Why War Fails: Russia's Invasion of Ukraine and the Limits of Military Power</a> <span style="color:#8f96a0;">(14 de junho de 2022)</span>.</li>
+</ol>
+<p style="margin:18px 0 0 0;color:#8f96a0;font-size:13px;line-height:1.6;">Referências consultadas para enquadramento factual e editorial. A seleção não substitui a leitura integral das fontes nem transforma a opinião do autor em posição das entidades citadas.</p>
+</section>
+<footer style="margin:22px 0 0 0;background:#0d0f13;border-top:1px solid #343840;border-radius:14px;padding:24px 28px;text-align:center;color:#aeb3bc;"><p style="margin:0 0 7px 0;font-size:16px;color:#f2f2f2;font-weight:800;">Francisco Gonçalves</p><p style="margin:0;font-size:13px;">Fragmentos do Caos · Pensamento crítico sem licença para adormecer</p></footer>
+</div>
+<div style="max-width:920px;margin:18px auto 0 auto;padding:0 18px;">
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+</div>
+<div style="max-width:920px;margin:10px auto 28px auto;padding:0 18px;"><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div></div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
