@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SNS — Quando a Ineficiência se Torna um Sistema</title>
+<meta name="description" content="SNS — Quando a Ineficiência se Torna um Sistema">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">SNS — Quando a Ineficiência se Torna um Sistema</h1>
+      <p class="meta">Publicado em 2026-09-24 10:55:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000413081f4a415b9656ab0864d_7ec9d35d.jpg" alt=""></figure>
+      <div class="post-content">
+        <article class="fc-chronic-news" lang="pt-PT">
+<header>
+  <p class="fc-kicker">CRÓNICA · SAÚDE · PORTUGAL · ECONOMIA POLÍTICA</p>
+  <h1>SNS — Quando a Ineficiência se Torna um Sistema</h1>
+  <p class="fc-lead">Portugal não está apenas perante uma crise da saúde. Está perante uma crise do modelo.</p>
+  <p class="fc-byline"><strong>Autor:</strong> Francisco António dos Santos Gonçalves · <strong>Co-autoria e investigação:</strong> Augustus Veritas</p>
+</header>
+
+<section>
+<p>Há frases que incomodam porque obrigam a olhar para um problema por um ângulo diferente.</p>
+<p>Francisco Goiana da Silva lançou recentemente uma dessas provocações: há setores que beneficiam da ineficiência do SNS e poderes instalados que não desejam que ele funcione.</p>
+<p>A primeira parte da afirmação pode ser investigada através dos números. A segunda exige muito mais cuidado, porque pressupõe intenção.</p>
+<p>E quando se investigam os dados disponíveis sobre o Serviço Nacional de Saúde, aquilo que aparece é talvez ainda mais preocupante do que uma teoria conspirativa.</p>
+<p><strong>Não precisamos de imaginar uma reunião secreta onde alguém decide destruir o SNS.</strong></p>
+<p>Basta construir um sistema económico no qual demasiados agentes consigam viver — e alguns prosperar — com as suas insuficiências.</p>
+</section>
+
+<section>
+<h2>Um SNS que produz mais e continua atrasado</h2>
+<p>Existe uma narrativa recorrente segundo a qual os problemas do SNS resultam simplesmente de produzir pouco. Os números contam uma história mais complicada.</p>
+<p>Segundo o perfil de saúde de Portugal da OCDE e do Observatório Europeu, os hospitais portugueses realizaram cerca de <strong>23,1 milhões de consultas externas em 2023</strong>, aproximadamente 32% mais do que em 2013. Foram igualmente realizadas cerca de <strong>1,2 milhões de cirurgias</strong>, mais 7% do que dez anos antes.</p>
+<p>Produzimos mais. E, no entanto, as listas e os tempos de espera continuam a constituir uma das maiores fragilidades do sistema. A OCDE assinalava, no final de 2024, cerca de 925 mil pessoas à espera de primeira consulta de especialidade, com 55% acima do tempo máximo garantido.</p>
+<p>Este paradoxo deveria ocupar o centro do debate. Aumentar simplesmente a produção não resolveu o problema. Temos envelhecimento populacional, doença crónica, procura crescente, assimetrias regionais, dificuldades na medicina geral e familiar e problemas de organização e gestão dos recursos.</p>
+<p>O SNS trabalha cada vez mais para conseguir permanecer aproximadamente no mesmo lugar. É uma passadeira rolante que acelera enquanto quem nela corre tenta desesperadamente não cair.</p>
+</section>
+
+<section>
+<h2>Quando o SNS não responde, o doente não deixa de estar doente</h2>
+<p>Esta talvez seja a característica económica mais importante da saúde: a procura não desaparece porque existe uma lista de espera.</p>
+<p>Uma catarata continua a dificultar a visão. Uma anca continua a doer. Uma ressonância continua a ser necessária. Um doente preocupado continua a querer consultar um médico.</p>
+<p>Quando o SNS não consegue responder, uma parte dessas pessoas procura outra porta: hospitais privados, seguros, planos de saúde, consultórios, clínicas, prestadores convencionados, meios complementares de diagnóstico e cirurgias financiadas pelo Estado fora das unidades públicas.</p>
+<p>Nada disto é ilegítimo. Muitos destes serviços são excelentes e essenciais para milhares de portugueses. O problema começa quando perguntamos por que razão este mercado cresceu tanto e em que medida esse crescimento se tornou funcionalmente ligado às insuficiências do SNS.</p>
+</section>
+
+<section>
+<h2>Quatro milhões de portugueses compraram uma segunda porta</h2>
+<p>Em 2025, <strong>mais de quatro milhões de pessoas estavam cobertas por seguros de saúde</strong>. Os prémios brutos emitidos atingiram <strong>1,9 mil milhões de euros</strong>, mais 11,9% do que no ano anterior.</p>
+<p>É preciso evitar uma conclusão simplista: nem todo o seguro existe por causa das falhas do SNS. Há seguros empresariais, benefícios laborais, preferência individual e procura de conforto ou liberdade de escolha.</p>
+<p>Mas é difícil ignorar a coexistência entre um mercado privado em forte expansão e dificuldades persistentes de acesso ao sistema público. Estamos progressivamente perante uma sociedade onde quem pode pagar compra uma segunda porta para entrar no sistema de saúde. Quem não pode continua dependente da primeira.</p>
+</section>
+
+<section>
+<h2>O paradoxo português: pagar duas vezes</h2>
+<p>O cidadão financia o SNS através dos impostos. Depois pode pagar um seguro para ter uma alternativa quando receia que o SNS não responda a tempo. E muitas vezes ainda suporta franquias, copagamentos ou diretamente consultas, exames e tratamentos.</p>
+<p>Não significa que toda essa despesa resulte de falhas do SNS. Mas uma parte da procura privada é claramente compatível com uma estratégia familiar de proteção contra tempos de espera e dificuldades de acesso.</p>
+<p>Criámos assim uma espécie de imposto informal sobre a ansiedade: quanto vale não esperar meses por uma consulta? Quanto vale saber rapidamente o resultado de um exame? Quanto vale operar dentro de semanas em vez de meses?</p>
+<p>Para quem tem dinheiro existe uma resposta. Para quem não tem existe uma lista.</p>
+</section>
+
+<section>
+<h2>Entretanto, o setor privado tornou-se estrutural</h2>
+<p>A ERS concluiu em 2025 que o setor hospitalar privado representava <strong>11% da despesa corrente em saúde em 2023</strong>, tendo essa despesa aumentado cerca de <strong>1.050 milhões de euros desde 2015</strong>.</p>
+<p>Mais importante para a economia política do sistema: <strong>quatro grandes grupos privados detêm aproximadamente dois terços da capacidade hospitalar não pública instalada</strong>. A ERS voltou a assinalar em 2026 níveis elevados de concentração em grande parte dos mercados regionais.</p>
+<p>Isto não constitui, por si só, qualquer irregularidade. Empresas existem para prestar serviços, investir e obter retorno. Mas existe uma diferença importante entre vender automóveis e vender cuidados médicos: quando alguém precisa de tratamento, a procura não é facilmente adiável ou dispensável.</p>
+<p>E quando o próprio Estado necessita dessa capacidade externa, a questão deixa de ser exclusivamente empresarial. Passa a ser política pública.</p>
+</section>
+
+<section>
+<h2>O SNS tornou-se simultaneamente concorrente e cliente do privado</h2>
+<p>Aqui surge uma das maiores contradições do sistema português.</p>
+<p>O SNS compete com hospitais e prestadores privados por médicos, enfermeiros e outros profissionais. Mas quando não consegue produzir determinados serviços, compra capacidade ao setor não público através de convenções, contratos e mecanismos de referenciação.</p>
+<p>Seria intelectualmente desonesto chamar a toda essa despesa desperdício. Há áreas em que a prestação convencionada constitui há muito uma componente estrutural do sistema e pode ser clinicamente e economicamente racional.</p>
+<p>A pergunta importante é outra: <strong>quando estamos a complementar o SNS e quando estamos a substituir capacidade que o próprio SNS deixou de possuir?</strong></p>
+<p>São coisas profundamente diferentes.</p>
+</section>
+
+<section>
+<h2>A armadilha da solução rápida</h2>
+<p>Imagine-se um Governo perante dezenas de milhares de pessoas à espera de determinada cirurgia. Pode aumentar estruturalmente a capacidade pública: contratar profissionais, criar equipas, comprar equipamentos, melhorar carreiras, reorganizar hospitais e utilizar melhor os blocos operatórios.</p>
+<p>Tudo isso demora.</p>
+<p>Ou pode comprar imediatamente atividade onde existe capacidade disponível. Para o doente que espera, esta pode ser a melhor solução. Politicamente, também produz resultados mais depressa.</p>
+<p>O problema surge quando a solução de emergência se transforma no modelo permanente. Cada expansão da capacidade externa precisa de profissionais — frequentemente recrutados no mesmo universo em que o SNS tenta contratar e reter os seus.</p>
+</section>
+
+<section>
+<h2>O círculo vicioso</h2>
+<p><strong>O SNS perde profissionais ou capacidade → as listas aumentam → os cidadãos procuram alternativas → cresce a procura privada → os prestadores privados expandem-se → precisam de profissionais → competem com o SNS → o Estado compra serviços externos para compensar → a capacidade externa torna-se ainda mais importante.</strong></p>
+<p>E o ciclo pode reiniciar-se.</p>
+<p>Não é necessária conspiração alguma. É dinâmica de sistemas.</p>
+<p>Em engenharia chamaríamos a isto uma realimentação positiva. Em economia institucional podemos falar de <em>path dependence</em> e, se a dependência se consolidar, de <em>lock-in</em>: decisões inicialmente pragmáticas alteram gradualmente os incentivos e tornam progressivamente mais difícil regressar a outra configuração.</p>
+</section>
+
+<section>
+<h2>O médico que trabalha dos dois lados</h2>
+<p>Uma característica central deste sistema é que público e privado não dispõem de mercados de trabalho separados. Disputam, em grande medida, os mesmos profissionais.</p>
+<p>O exercício simultâneo em diferentes setores não é, por si só, censurável. Mas para o sistema existe uma limitação objetiva: a mesma hora de um especialista não pode ser utilizada simultaneamente num hospital público e num hospital privado.</p>
+<p>A questão estratégica é inevitável: <strong>é possível expandir indefinidamente a capacidade privada sem afetar a capacidade pública quando ambas recrutam essencialmente no mesmo universo profissional?</strong></p>
+</section>
+
+<section>
+<h2>E depois aparecem os tarefeiros</h2>
+<p>O SNS enfrenta ainda outro paradoxo. Quando não consegue contratar ou reter determinados médicos mas necessita deles para manter serviços em funcionamento, compra horas médicas através de prestação de serviços, por vezes através de empresas intermediárias.</p>
+<p>Em situações concretas isto pode ser indispensável. Uma urgência não pode simplesmente fechar enquanto se espera pela solução estrutural.</p>
+<p>Mas quando uma solução excecional se torna permanente surge outra pergunta: <strong>quanto estamos a pagar para não resolver definitivamente aquilo que nos obriga a pagar?</strong></p>
+</section>
+
+<section>
+<h2>Conflitos de interesses: prevenir antes de acusar</h2>
+<p>Quanto mais interligados estiverem público e privado, maior é a necessidade de regras transparentes sobre referenciação, acumulação de funções, contratação e gestão das listas de espera.</p>
+<p>Isto não demonstra corrupção, favorecimento ou qualquer plano destinado a enfraquecer o SNS. Demonstra algo mais simples: sistemas híbridos exigem mecanismos particularmente fortes de transparência e prevenção de conflitos de interesses.</p>
+<p>A suspeita não pode substituir a prova. Mas a ausência de prova também não justifica desenhar instituições como se os incentivos económicos não existissem.</p>
+</section>
+
+<section>
+<h2>Então existem "poderes instalados"?</h2>
+<p>Podemos afirmar que existem setores que beneficiam economicamente das insuficiências do SNS? <strong>Sim, no sentido económico descritivo:</strong> uma procura que o sistema público não satisfaz pode transformar-se em receita para outros prestadores.</p>
+<p>Podemos afirmar, com os dados aqui analisados, que hospitais privados, seguradoras, empresas médicas ou outros agentes provocam deliberadamente essas insuficiências? <strong>Não.</strong></p>
+<p>Confundir as duas afirmações seria transformar investigação em propaganda.</p>
+<p>Mas existe uma terceira hipótese, mais importante: talvez ninguém precise de destruir deliberadamente o SNS. Basta que se desenvolva um ecossistema no qual demasiados agentes se adaptam economicamente à sua fragilidade e no qual soluções temporárias criam dependências permanentes.</p>
+<p>Nesse momento, o problema deixa de ser apenas administrativo. Torna-se um problema de economia política.</p>
+</section>
+
+<section>
+<h2>O verdadeiro escândalo pode estar numa conta que Portugal nunca fez</h2>
+<p>Uma parte da despesa é pública. Outra vem diretamente das famílias. Outra passa por seguros. Outra financia convenções. Outra compra prestação externa. Outra paga horas extraordinárias e mecanismos destinados a compensar incapacidade instalada.</p>
+<p>Mas existe uma conta extraordinariamente importante que deveria ser pública e sistemática:</p>
+<blockquote><p><strong>Quanto custa manter o SNS estruturalmente incapaz de responder a toda a procura que lhe é atribuída — e quanto custaria dotá-lo da capacidade necessária?</strong></p></blockquote>
+<p>Se determinada atividade custa 100 milhões de euros por ano fora do SNS, a pergunta racional não é "público ou privado?". É quanto custaria produzir resultados equivalentes dentro do SNS, com a mesma qualidade, segurança e prazo.</p>
+<p>Se a compra externa for mais eficiente, deve poder demonstrar-se. Se a capacidade interna for mais eficiente, também.</p>
+<p>Sem essa contabilidade comparativa, a ideologia ocupa o espaço que deveria pertencer à evidência.</p>
+</section>
+
+<section>
+<h2>Não precisamos apenas de um SNS maior. Precisamos de um SNS inteligente.</h2>
+<p>Defender o SNS não deveria significar defender tudo aquilo que atualmente existe. Um monopólio público ineficiente não se torna virtuoso apenas porque é público.</p>
+<p>Precisamos de contabilidade analítica por procedimento; comparação transparente entre custos públicos e externos; indicadores de produtividade ajustados à complexidade clínica; gestão profissionalizada; interoperabilidade informática real; planeamento plurianual de recursos humanos; auditoria independente das listas de espera; transparência das convenções; prevenção efetiva de conflitos de interesses; e publicação sistemática do custo total de cada mecanismo de externalização.</p>
+<p>A discussão ideológica "público contra privado" é demasiado pobre para um problema desta dimensão.</p>
+<p>O privado deve existir. Pode complementar o SNS. Pode introduzir capacidade, inovação e pressão competitiva saudável.</p>
+<p>Mas uma coisa é um setor privado que complementa um serviço público forte. Outra é um serviço público progressivamente dependente da capacidade privada para cumprir aquilo que continua a prometer aos cidadãos.</p>
+</section>
+
+<section>
+<h2>A saúde não pode transformar-se numa sociedade de duas velocidades</h2>
+<p>Há finalmente uma questão que não aparece nos balanços: a igualdade.</p>
+<p>O princípio fundador do SNS contém uma ideia poderosa: quando adoecemos deixamos de ser ricos e pobres, importantes e desconhecidos. Somos seres humanos vulneráveis que precisam de cuidados.</p>
+<p>Esse princípio não exige que cada consulta seja realizada pelo Estado. Exige que o acesso aos cuidados necessários não dependa decisivamente da dimensão da conta bancária.</p>
+<p>Quando milhões de cidadãos sentem necessidade de comprar uma segunda porta porque receiam que a primeira não abra a tempo, alguma coisa estrutural mudou.</p>
+</section>
+
+<section>
+<h2>O SNS não está a morrer. Está a transformar-se.</h2>
+<p>Continuamos a discutir o SNS como se estivéssemos apenas perante dificuldades temporárias: faltam médicos aqui, uma urgência fecha ali, uma lista aumenta acolá, contratam-se tarefeiros, compram-se cirurgias, abre-se uma convenção.</p>
+<p>E seguimos.</p>
+<p>Mas décadas de pequenas decisões podem transformar silenciosamente um modelo.</p>
+<p>O perigo não é acordarmos uma manhã e descobrirmos que alguém acabou com o SNS.</p>
+<p>O perigo é acordarmos daqui a dez anos e percebermos que o SNS continua formalmente a existir, mas se tornou essencialmente <strong>financiador, regulador e prestador de último recurso de um sistema cada vez mais fragmentado</strong>.</p>
+<p>E então ninguém terá destruído coisa alguma. Cada decisão terá sido racional. Cada contrato terá resolvido uma emergência. Cada convenção terá reduzido uma lista. Cada seguro terá protegido uma família. Cada hospital privado terá respondido a uma procura real. Cada médico terá procurado melhores condições. Cada Governo terá resolvido o problema daquele ano.</p>
+<p>E, no entanto, o sistema terá mudado.</p>
+<p>É assim que muitas instituições se transformam: não através de uma grande decisão que todos conseguem ver, mas através de milhares de pequenas decisões perfeitamente justificáveis quando observadas isoladamente.</p>
+<p>A pergunta decisiva não é apenas "quem beneficia quando o SNS funciona mal?". É esta:</p>
+<blockquote><p><strong>Construímos um sistema no qual o mau funcionamento do SNS começou a produzir os incentivos económicos que ajudam a perpetuá-lo?</strong></p></blockquote>
+<p>Se a resposta for afirmativa, Portugal não necessita de encontrar culpados. Necessita de redesenhar o sistema.</p>
+<p>Porque um Serviço Nacional de Saúde não se preserva através da nostalgia. Preserva-se garantindo que continua a fazer aquilo para que foi criado:</p>
+<p><strong>estar lá quando alguém precisa dele.</strong></p>
+<p>Não quando houver vaga. Não quando chegar a sua vez. Não quando puder pagar uma alternativa.</p>
+<p><strong>Quando precisar.</strong></p>
+<p>Essa pequena diferença contém toda a ideia do SNS.</p>
+</section>
+
+<aside class="fc-editorial-note">
+<h2>Nota editorial</h2>
+<p>Esta crónica distingue deliberadamente três planos: factos documentados, mecanismos económicos plausíveis e hipóteses sobre intenção. Os dados demonstram dificuldades persistentes de acesso ao SNS, crescimento da oferta e financiamento privados e elevada concentração em segmentos do mercado hospitalar não público. Não demonstram, por si mesmos, uma estratégia coordenada destinada a enfraquecer o SNS. A hipótese defendida é sistémica: determinadas respostas às insuficiências públicas podem criar dependências e incentivos que dificultam a recuperação estrutural da capacidade pública.</p>
+<p><strong>Investigação e co-autoria:</strong> Augustus Veritas.</p>
+</aside>
+
+<section class="fc-references">
+<h2>Referências e leitura internacional</h2>
+<ol>
+<li>OECD / European Observatory on Health Systems and Policies / European Commission — <em>Country Health Profile 2025: Portugal</em>. https://www.oecd.org/en/publications/country-health-profile-2025-country-notes_c0e8b8be-en/portugal_56041c8e-en.html</li>
+<li>OECD / European Commission — <em>EU Country Cancer Profile: Portugal 2025</em>. https://www.oecd.org/en/publications/2025/02/eu-country-cancer-profile-portugal-2025_699bde59.html</li>
+<li>Entidade Reguladora da Saúde — <em>Estudo sobre a concorrência no setor hospitalar não público – 2025</em>. https://www.ers.pt/pt/atividade/regulacao-economica/selecionar/estudos/lista-de-estudos/estudo-sobre-a-concorrencia-no-setor-hospitalar-nao-publico-2025/</li>
+<li>Entidade Reguladora da Saúde — <em>Informação de Monitorização sobre concorrência no setor hospitalar não público</em>, julho de 2026. https://www.ers.pt/pt/atividade/supervisao/selecionar/informacao-de-monitorizacao/informacoes/informacao-de-monitorizacao-sobre-concorrencia-no-setor-hospitalar-nao-publico/</li>
+<li>Autoridade de Supervisão de Seguros e Fundos de Pensões — <em>Indicadores do Mercado de Seguros de Saúde 2025</em>. https://www.asf.com.pt/w/indicadores-do-mercado-de-seguros-de-saude-2025-ni</li>
+<li>Entidade Reguladora da Saúde — <em>Informação de Monitorização sobre Setor convencionado de Radiologia | 2026</em>. https://www.ers.pt/pt/atividade/supervisao/selecionar/informacao-de-monitorizacao/informacoes/informacao-de-monitorizacao-sobre-setor-convencionado-de-radiologia-2026/</li>
+</ol>
+</section>
+
+<footer>
+<p><strong>FC-Chronic-News</strong> · Crónica de análise · Portugal · 22 de setembro de 2026</p>
+<p>© 2026 Francisco António dos Santos Gonçalves. Co-autoria e investigação: Augustus Veritas.</p>
+</footer>
+</article><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

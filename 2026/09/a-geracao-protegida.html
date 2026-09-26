@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Geração Protegida</title>
+<meta name="description" content="A Geração Protegida">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Geração Protegida</h1>
+      <p class="meta">Publicado em 2026-09-25 14:30:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_0000000098808211b945b5bf848bd6da_b545eb74.jpg" alt=""></figure>
+      <div class="post-content">
+        
+<article class="fc-chronic-news" itemscope itemtype="https://schema.org/Article">
+<header class="fc-header">
+<p class="fc-kicker">FC · CHRONIC · NEWS | PSICOLOGIA · FILOSOFIA · SOCIEDADE</p>
+<h1 itemprop="headline">A Geração Protegida</h1>
+<p class="fc-subtitle">Quando proteger do perigo começa a proteger da própria vida</p>
+<p class="fc-byline">Por <span itemprop="author">Francisco Gonçalves & Augustus Veritas - An OpenAI Assistant</span> · 2026-09-23</p>
+</header>
+<div class="fc-content" itemprop="articleBody">
+<p>Há uma pergunta desconfortável que começa a atravessar pais, professores, psicólogos e sociólogos: porque parecem tantos jovens cansados antes mesmo de terem começado verdadeiramente a vida adulta?</p>
+<p>A pergunta é perigosa se for transformada numa acusação geracional. Cada geração desenvolveu a tentação de considerar a seguinte menos resistente, menos disciplinada ou menos preparada. Seria intelectualmente preguiçoso repetir esse ritual.</p>
+<p>Mas seria igualmente ingénuo ignorar que mudámos profundamente o ambiente em que uma criança aprende a ser pessoa. E talvez esteja aí uma parte da resposta.</p><h2>A infância que desapareceu da rua</h2>
+<p>Durante grande parte da história humana, crescer significava conquistar progressivamente território. Primeiro o quintal. Depois a rua. Mais tarde o bairro. A bicicleta alargava subitamente as fronteiras do universo.</p>
+<p>As crianças encontravam outras crianças sem marcação prévia. Inventavam jogos cujas regras eram negociadas entre elas. Discutiam. Faziam alianças. Perdiam. Ganhavam. Caíam. Algumas vezes chegavam a casa a chorar.</p>
+<p>Não devemos romantizar essa infância. Existiam acidentes evitáveis, violência tolerada, bullying ignorado e sofrimentos que hoje, felizmente, reconhecemos. Mas havia nela um ingrediente precioso: autonomia não supervisionada.</p>
+<p>A cidade contemporânea retirou progressivamente esse território à infância. O trânsito aumentou. Os espaços públicos tornaram-se menos apropriáveis pelas crianças. As distâncias cresceram. A percepção de insegurança alterou os comportamentos parentais.</p>
+<p>E surgiu uma infância extraordinariamente organizada: escola, explicação, futebol, natação, música, inglês, regresso a casa. Tudo útil. Tudo bem-intencionado. Mas quase tudo organizado por adultos.</p>
+<p>A criança deixou progressivamente de administrar uma das coisas mais importantes para o desenvolvimento humano: o seu próprio tempo.</p><h2>O extraordinário valor de não ter nada para fazer</h2>
+<p>Havia uma frase que aterrorizava qualquer pai: «Não tenho nada para fazer.» A resposta costumava ser pouco sofisticada: «Então arranja alguma coisa.»</p>
+<p>Sem sabermos, talvez estivéssemos a proporcionar um exercício cognitivo extraordinário. Porque depois do tédio vinha a invenção. Uma caixa transformava-se numa nave espacial. Um terreno abandonado tornava-se uma fortaleza. Duas pedras delimitavam uma baliza. Uma bicicleta permitia uma expedição.</p>
+<p>O cérebro tinha de produzir aquilo que o ambiente não fornecia.</p>
+<p>Hoje, frequentemente, antes de o tédio conseguir amadurecer, aparece um ecrã. Vídeo. Mensagem. Jogo. Notificação. Outro vídeo. Outra mensagem.</p>
+<p>O problema não é simplesmente «os telemóveis fazem mal». A questão mais interessante é outra: o que acontece a uma mente quando praticamente deixa de experimentar ausência de estimulação?</p>
+<p>O tédio pode ser desagradável. Mas também pode constituir o espaço psicológico onde surgem imaginação, introspecção, planeamento e criatividade. Talvez tenhamos começado a confundir estimulação permanente com enriquecimento. Não são necessariamente a mesma coisa.</p><h2>A criança que nunca perde</h2>
+<p>Existe ainda uma transformação mais subtil. Os pais modernos conhecem muito mais sobre os perigos que rodeiam os filhos. A parentalidade tornou-se intensamente consciente, vigilante e emocionalmente investida. Isso trouxe enormes benefícios.</p>
+<p>Mas o amor contém uma armadilha. Quando vemos sofrer alguém que amamos, queremos eliminar a causa do sofrimento.</p>
+<p>O pai telefona ao professor. A mãe resolve o conflito. O adulto reclama da classificação. O treinador é confrontado. O problema desaparece.</p>
+<p>E a criança pode aprender inadvertidamente uma coisa diferente daquela que os pais pretendiam ensinar: quando surge uma dificuldade, alguém deve removê-la.</p>
+<p>Só que a vida adulta não funciona assim. O emprego não funciona assim. O amor não funciona assim. A amizade não funciona assim. A doença, a perda e o envelhecimento seguramente não funcionam assim. A existência humana contém inevitavelmente resistência.</p><h2>A importância psicológica do «não»</h2>
+<p>Uma criança necessita de amor. Mas necessita também de fronteiras.</p>
+<p>O «não» desempenha uma função psicológica importante porque introduz uma das primeiras verdades fundamentais da existência: o desejo não cria automaticamente o direito à satisfação.</p>
+<p>Quero. Mas não posso. Quero agora. Mas tenho de esperar. Quero ganhar. Mas perdi. Quero que alguém goste de mim. Mas essa pessoa é livre para não gostar.</p>
+<p>São experiências pequenas, mas cognitivamente profundas. É através delas que se desenvolvem progressivamente tolerância à frustração, autocontrolo e capacidade de adiar recompensas.</p>
+<p>O objetivo não deveria ser provocar sofrimento às crianças para as «endurecer». Isso seria confundir resiliência com brutalidade. A questão é permitir que encontrem dificuldades proporcionais à sua capacidade de as enfrentar.</p><h2>As pequenas derrotas que nos constroem</h2>
+<p>Existe uma espécie de paradoxo psicológico: para alguém descobrir que consegue ultrapassar dificuldades, primeiro precisa de experimentar dificuldades.</p>
+<p>Não podemos ensinar coragem exclusivamente através de explicações. A coragem necessita de alguma coisa que provoque medo. Não podemos ensinar persistência eliminando todos os obstáculos. A persistência necessita de resistência. Não podemos ensinar recuperação sem permitir pequenos fracassos.</p>
+<p>É assim que uma criança que cai da bicicleta e volta a subir aprende algo que nenhuma palestra motivacional poderá verdadeiramente ensinar: «Eu caí. Doeu. Mas consegui continuar.»</p>
+<p>Essas experiências ajudam a construir uma narrativa interior de competência. Na psicologia, a autoeficácia descreve a crença de que somos capazes de organizar e executar ações perante desafios; experiências de domínio e superação são uma das suas fontes centrais.</p>
+<p>Não significa acreditar que conseguimos tudo. Significa algo mais maduro: acreditar que conseguimos fazer alguma coisa perante aquilo que nos acontece. Essa diferença é gigantesca.</p><h2>Uma geração fisicamente protegida e digitalmente exposta</h2>
+<p>Aqui surge talvez uma das maiores contradições da infância contemporânea. Nunca protegemos tanto fisicamente as crianças e, ao mesmo tempo, abrimos muito cedo uma porta para um universo digital global.</p>
+<p>Uma criança pode não ter autorização para atravessar a rua sozinha e, minutos depois, entrar através do telefone num espaço social sem fronteiras. Pode estar protegida da queda de uma árvore enquanto é submetida à comparação social permanente. Pode nunca ter de enfrentar sozinha o conflito com três colegas do bairro, mas enfrentar diariamente a avaliação silenciosa de centenas de pessoas numa rede social.</p>
+<p>O adolescente deixa de se comparar apenas com meia dúzia de pessoas à sua volta. Compara-se potencialmente com o planeta.</p>
+<p>A evidência científica aconselha prudência: as redes sociais também oferecem ligação, expressão e comunidades de apoio, e os efeitos variam entre jovens. Ao mesmo tempo, autoridades de saúde pública assinalam riscos relevantes associados a determinados padrões de utilização, conteúdos, cyberbullying, sono e imagem corporal.</p><h2>Quando a vida real parece demasiado lenta</h2>
+<p>A realidade é lenta.</p>
+<p>Aprender guitarra demora anos. Construir uma carreira demora décadas. Compreender profundamente um livro demora horas. Criar uma relação humana demora tempo. Recuperar de uma derrota demora.</p>
+<p>As plataformas digitais habituaram-nos, porém, a ciclos de recompensa extremamente curtos. Deslizamos o dedo e algo acontece. Outra vez. E novamente.</p>
+<p>A vida não possui scroll.</p>
+<p>Talvez uma parte da frustração contemporânea resulte desse choque entre a velocidade da recompensa digital e a lentidão estrutural da existência humana. A realidade começa a parecer defeituosa porque demora demasiado.</p>
+<p>Mas nunca foi a realidade que mudou nesse aspecto. Fomos nós que alterámos o relógio psicológico.</p><h2>Não confundamos sofrimento com fragilidade</h2>
+<p>Há, contudo, que resistir a uma conclusão demasiado simples.</p>
+<p>Nem todo o sofrimento psicológico dos jovens resulta de sobreproteção. As novas gerações enfrentam dificuldades reais: pressão académica, desigualdades socioeconómicas, insegurança quanto ao futuro, hiperconectividade, alterações nas relações sociais e uma avalanche informacional sem precedente histórico.</p>
+<p>A Organização Mundial da Saúde estima que cerca de um em cada sete adolescentes entre os 10 e os 19 anos vive com uma perturbação mental. A própria OMS sublinha que a saúde mental juvenil é determinada por múltiplos factores — familiares, sociais, económicos, relacionais e digitais — e não por uma causa única.</p>
+<p>Portanto, seria injusto olhar para um jovem angustiado e concluir: «É fraco.»</p>
+<p>A questão interessante não é saber se esta geração é pior ou melhor. É perguntar: que competências humanas necessita uma criança para atravessar este novo mundo?</p><h2>Educar não é remover o caminho</h2>
+<p>Talvez tenhamos confundido duas coisas profundamente diferentes: dar segurança e eliminar dificuldade.</p>
+<p>Uma criança precisa de saber que existe um porto seguro. Mas precisa igualmente de navegar.</p>
+<p>O papel dos pais não deveria ser caminhar permanentemente à frente dos filhos retirando pedras do caminho. Talvez seja caminhar progressivamente atrás deles.</p>
+<p>Primeiro seguramos-lhes a mão. Depois caminhamos ao lado. Depois observamos à distância. Até chegar o extraordinário e doloroso momento em que eles seguem sozinhos.</p>
+<p>Essa é provavelmente uma das tarefas mais difíceis do amor: tornar-se progressivamente menos necessário.</p><h2>A pedagogia da dificuldade possível</h2>
+<p>Talvez precisemos então de recuperar uma coisa que poderíamos chamar dificuldade possível.</p>
+<p>Não sofrimento deliberado. Não abandono. Não aquela velha pedagogia brutal segundo a qual «a vida é dura e portanto tens de sofrer».</p>
+<p>Precisamente o contrário: uma dificuldade suficientemente pequena para poder ser vencida e suficientemente grande para exigir esforço.</p>
+<p>Arrumar o próprio quarto. Gerir algum dinheiro. Ir comprar pão. Preparar uma refeição. Resolver primeiro o conflito com um amigo. Viajar progressivamente sozinho. Perder num jogo sem alterar as regras. Esperar. Poupar para comprar. Ouvir um «não». Assumir as consequências de uma escolha.</p>
+<p>A investigação sobre brincadeira exterior com risco razoável não autoriza receitas universais, mas revisões científicas encontram associações positivas com actividade física e dimensões sociais e desenvolvimentais; trabalhos recentes destacam autonomia, agência, confiança e resiliência, embora a literatura tenha limitações metodológicas.</p>
+<p>Cada pequena experiência de autonomia pode dizer silenciosamente à criança: «confio que és capaz». E talvez poucas mensagens educativas sejam tão poderosas.</p><h2>A estranha missão dos pais</h2>
+<p>Há uma ironia belíssima na parentalidade.</p>
+<p>Durante anos fazemos tudo para proteger uma criança. Mas o objetivo final dessa proteção é produzir alguém que já não precise de ser protegido por nós.</p>
+<p>Criamos raízes para depois ensinar asas.</p>
+<p>Talvez o grande desafio educativo do século XXI seja encontrar novamente esse equilíbrio: proteger sem aprisionar; orientar sem controlar; ajudar sem substituir; amar sem impedir toda a queda.</p>
+<p>Estar suficientemente perto para que uma criança saiba que pode regressar — e suficientemente longe para que descubra que consegue avançar.</p>
+<p>Porque chegará inevitavelmente um dia em que perderá alguma coisa que ama. Falhará. Será rejeitada. Tomará uma decisão errada. Descobrirá que o mundo não é justo.</p>
+<p>Nenhum pai conseguirá impedir tudo isso. Nem deveria.</p>
+<p>O melhor legado talvez não seja construir para os filhos uma estrada sem pedras. É ajudá-los a construir dentro de si alguma coisa muito mais duradoura: a certeza tranquila de que, quando encontrarem uma pedra, saberão o que fazer com ela.</p>
+<p>E talvez seja precisamente aí que uma criança deixa lentamente de ser criança. Não quando deixa de precisar de amor, mas quando descobre que o amor que recebeu se transformou, dentro dela, em capacidade para enfrentar o mundo.</p>
+<aside class="fc-editorial-note"><h2>Nota editorial</h2><p>Esta crónica é um ensaio psicológico e filosófico, não um diagnóstico de uma geração. Distingue deliberadamente hipótese interpretativa de evidência científica: sobreproteção, autonomia, ambiente urbano e tecnologia interagem com factores familiares, económicos, sociais e individuais. As referências abaixo servem de enquadramento empírico; não demonstram, isoladamente, que a sobreproteção cause o sofrimento psicológico contemporâneo.</p></aside>
+<section class="fc-references"><h2>Referências e leituras internacionais</h2><ol><li><strong>World Health Organization</strong> (2025). <a href="https://www.who.int/news-room/fact-sheets/detail/adolescent-mental-health" target="_blank" rel="noopener">Mental health of adolescents</a>.</li>
+<li><strong>WHO European Observatory on Health Systems and Policies</strong> (2025). <a href="https://eurohealthobservatory.who.int/publications/i/promoting-and-protecting-youth-mental-health-a-cross-sectoral-imperative" target="_blank" rel="noopener">Promoting and protecting youth mental health: a cross-sectoral imperative</a>.</li>
+<li><strong>U.S. Surgeon General / HHS</strong> (2023). <a href="https://www.hhs.gov/surgeongeneral/reports-and-publications/youth-mental-health/social-media/index.html" target="_blank" rel="noopener">Social Media and Youth Mental Health: Advisory</a>.</li>
+<li><strong>Brussoni et al., International Journal of Environmental Research and Public Health</strong> (2015). <a href="https://doi.org/10.3390/ijerph120606423" target="_blank" rel="noopener">What is the Relationship between Risky Outdoor Play and Health in Children? A Systematic Review</a>.</li>
+<li><strong>Risky Outdoor Play and Adventure Education in Nature for Child and Adolescent Wellbeing</strong> (2026). <a href="https://pubmed.ncbi.nlm.nih.gov/41594946/" target="_blank" rel="noopener">Scoping review of empirical studies, 2015–2025</a>.</li></ol></section>
+</div>
+<footer class="fc-footer"><p>© 2026 · Fragmentos do Caos · FC-Chronic-News</p></footer>
+
+<a class="fc-ebook-button"
+   href="https://fasgoncalves.github.io/hugo.fragmentoscaos/livros/mais-sentido-menos-prozac/"
+   target="_blank"
+   rel="noopener noreferrer">
+  Ler o e-Book : Mais Sentido, Menos Prozac
+</a>
+
+<style>
+.fc-ebook-button {
+  display: inline-block;
+  padding: 14px 28px;
+  margin: 24px 0;
+  background: linear-gradient(135deg, #c9932f, #f0c36a);
+  color: #0b0b0b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 12px;
+  border: 1px solid #f3d28a;
+  box-shadow: 0 6px 18px rgba(201, 147, 47, 0.35);
+  transition: all 0.25s ease;
+}
+
+.fc-ebook-button:hover {
+  background: linear-gradient(135deg, #f0c36a, #c9932f);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(201, 147, 47, 0.45);
+}
+
+.fc-ebook-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(201, 147, 47, 0.3);
+}
+</style>
+
+</article>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O proprietário pode nascer da pertença</title>
+<meta name="description" content="O proprietário pode nascer da pertença">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O proprietário pode nascer da pertença</h1>
+      <p class="meta">Publicado em 2026-09-25 17:06:14</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_000000005b5c81f49d39a422046cf5d2_4be27c2b.jpg" alt=""></figure>
+      <div class="post-content">
+        
+<style>
+.fc-chronic-news{font-family:Georgia,'Times New Roman',serif;max-width:980px;margin:0 auto;padding:clamp(14px,2.4vw,28px);color:#202124;line-height:1.64;background:#fff}
+.fc-chronic-news .fc-kicker{font:700 .78rem/1.2 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#667085;margin-bottom:12px}
+.fc-chronic-news h1{font-size:clamp(2rem,5vw,3.65rem);line-height:1.02;letter-spacing:-.035em;margin:.1em 0 .22em;color:#111827}
+.fc-chronic-news .fc-subtitle{font-size:clamp(1.08rem,2.2vw,1.42rem);line-height:1.4;color:#475467;margin:0 0 14px}
+.fc-chronic-news .fc-byline{font:600 .9rem/1.5 Arial,sans-serif;color:#667085;border-bottom:1px solid #d0d5dd;padding-bottom:14px;margin-bottom:20px}
+.fc-chronic-news .fc-opening,.fc-chronic-news .fc-editorial{background:#f4f6f8;border-left:4px solid #344054;padding:15px 18px;margin:20px 0}
+.fc-chronic-news h2{font-size:clamp(1.35rem,3vw,1.85rem);line-height:1.18;margin:1.55em 0 .45em;color:#101828}
+.fc-chronic-news p{margin:.58em 0}
+.fc-chronic-news blockquote{font-size:1.12em;font-style:italic;border-left:4px solid #98a2b3;margin:1.15em 0;padding:.35em 0 .35em 1.05em;color:#344054}
+.fc-chronic-news .fc-eq{font-family:'Courier New',monospace;text-align:center;background:#f8fafc;border:1px solid #e4e7ec;border-radius:6px;padding:12px 8px;margin:13px 0;overflow-wrap:anywhere}
+.fc-chronic-news .fc-key{font-weight:700;background:#eef4f8}
+.fc-chronic-news .fc-refs{font-size:.9rem;border-top:1px solid #d0d5dd;margin-top:28px;padding-top:14px}
+.fc-chronic-news .fc-refs li{margin:.55em 0}
+.fc-chronic-news a{color:#175cd3;text-decoration:underline;text-underline-offset:2px}
+.fc-chronic-news .fc-footer{font:400 .78rem/1.5 Arial,sans-serif;color:#667085;border-top:1px solid #e4e7ec;margin-top:25px;padding-top:12px}
+@media(max-width:600px){.fc-chronic-news{padding:12px}.fc-chronic-news .fc-eq{font-size:.88rem}}
+</style>
+
+<div class="fc-chronic-news" itemscope itemtype="https://schema.org/Article">
+<meta itemprop="datePublished" content="2026-09-25T19:00:00+01:00">
+<meta itemprop="dateModified" content="2026-09-25T19:00:00+01:00">
+<meta itemprop="inLanguage" content="pt-PT">
+<meta itemprop="mainEntityOfPage" content="https://fragmentoscaos.eu/2026/09/25/o-proprietario-pode-nascer-da-pertença-mbrs-self/">
+<div class="fc-kicker">Ciência · Consciência · Neurociência · MBRS</div>
+<h1 itemprop="headline">O proprietário pode nascer da pertença</h1>
+<div class="fc-subtitle" itemprop="description">Modelo de Biofeedback Recursivo do Self: uma hipótese mecanística para a emergência do Eu</div>
+<div class="fc-byline">Por <span itemprop="author">Francisco António dos Santos Gonçalves</span> · investigação e coautoria conceptual: Augustus Veritas — Assistente de OpenAI · 25 de setembro de 2026</div>
+<div class="fc-opening"><strong>Nota de abertura.</strong> Este artigo apresenta, em linguagem de divulgação científica, o Modelo de Biofeedback Recursivo do Self (MBRS), uma hipótese teórica e computacional em desenvolvimento. A proposta central é que o Self pode não preceder a relação de pertença: poderá emergir da apropriação recorrente de corpo, experiência, memória e ação em torno do mesmo organismo, preservada através de continuidade referencial.</div>
+<p><strong>Todos temos a impressão imediata de que existe um «Eu» no centro da experiência.</strong> O meu corpo, os meus pensamentos, as minhas memórias, as minhas ações. Parece tão natural que raramente interrogamos a ordem causal escondida nesta frase: será que existe primeiro um Eu que depois se apropria das experiências, ou poderá o próprio Eu emergir da apropriação recorrente dessas experiências?</p>
+<p>O <strong>Modelo de Biofeedback Recursivo do Self — MBRS</strong> explora a segunda possibilidade.</p>
+<div class="fc-eq fc-key">Experiência + Apropriação recorrente + Continuidade referencial → Self</div>
+<p>Depois de emergir, porém, o Self deixa de ser apenas resultado. Passa a participar no sistema que o produziu, influenciando atenção, valoração, previsão, memória e ação. É precisamente esta recursividade que constitui o núcleo do MBRS.</p>
+
+<h2>1. Talvez tenhamos começado a pergunta pelo lado errado</h2>
+Habitualmente imaginamos algo semelhante a isto:<div class="fc-eq">SELF → «esta experiência é minha»</div>
+<p>Primeiro existiria o sujeito; depois o sujeito reconheceria a experiência como sua. O MBRS propõe inverter esta relação:</p>
+<div class="fc-eq fc-key">«isto acontece neste ser» + recorrência + continuidade → SELF</div>
+<p>Isto significa que <strong>o proprietário não teria necessariamente de existir antes da relação de pertença</strong>. Poderá ser a repetição extraordinariamente persistente dessa relação que acaba por construir o proprietário.</p>
+<p>O organismo recebe continuamente informação do corpo e do mundo. Vê através destes olhos. Ouve a partir desta posição. A dor surge neste corpo. Esta mão move-se quando determinados comandos motores são produzidos. As consequências dessa ação regressam ao mesmo sistema. As memórias formadas por essas experiências alteram o modo como experiências futuras serão processadas.</p>
+<blockquote>Durante toda a vida, milhares de milhões de acontecimentos diferentes possuem uma regularidade notável: acontecem sempre a partir do mesmo centro biológico de referência.</blockquote>
+<p>É essa invariância através da mudança que pode estar na origem do Eu.</p>
+
+<h2>2. O cérebro não parece possuir um maestro</h2>
+<p>A arquitetura cerebral conhecida não se parece com uma sequência simples do tipo:</p>
+<div class="fc-eq">INPUT → CPU → SELF → OUTPUT</div>
+<p>Existem inúmeros processos distribuídos que operam simultaneamente: visão, audição, proprioceção, interoceção, equilíbrio, memória, nociceção, previsão, valoração, linguagem e controlo motor. É uma espécie de <strong>orquestra sem maestro</strong>.</p>
+<p>A investigação sobre consciência corporal aponta igualmente para uma arquitetura distribuída. Uma meta-análise publicada em 2025, reunindo 56 estudos de neuroimagem, encontrou padrões parcialmente distintos para <em>body ownership</em> e <em>sense of agency</em>, juntamente com regiões de sobreposição associadas à integração multissensorial e à autoatribuição.</p>
+<div class="fc-eq">G(t) = 𝒢[P₁(t), P₂(t), …, Pₙ(t), W(t)]</div>
+<p>Não introduzimos um <em>P<sub>maestro</sub></em>, porque isso seria apenas esconder o problema dentro de outro nome.</p>
+
+<h2>3. O rio que nunca pára</h2>
+<p>Um dos elementos fundamentais do modelo é aquilo a que chamámos <strong>o rio</strong>: a corrente incessante de informação interna e externa que atravessa o organismo.</p>
+<div class="fc-eq">R(t) ≠ N(t) ≠ G(t) ≠ C(t) ≠ F(t) ≠ S(t)</div>
+<p><strong>R</strong> representa o fluxo informacional; <strong>N</strong>, o processamento distribuído não consciente; <strong>G</strong>, uma configuração transitoriamente integrada; <strong>C</strong>, a corrente consciente; <strong>F</strong>, o foco; e <strong>S</strong>, o Self.</p>
+<p>Grande parte da informação é processada sem chegar ao foco consciente. E aquilo que chega à consciência já foi transformado: características foram extraídas, objetos reconhecidos, localizações calculadas, relevância avaliada, previsões comparadas e relações com o próprio organismo estabelecidas.</p>
+<blockquote>O Self não é o rio, não é a consciência inteira e não é o foco da atenção. É algo que pode emergir dentro desta dinâmica.</blockquote>
+
+<h2>4. Antes do Eu pode existir apenas «este organismo»</h2>
+<p>Muito antes de uma criança poder pensar «Eu sou eu», o sistema nervoso necessita de distinguir informação proveniente do próprio organismo da informação proveniente do exterior. Chamamos a esta infraestrutura <strong>proto-Eu</strong> ou <strong>proto-Self</strong>.</p>
+<p>Não significa um pequeno Eu escondido no cérebro. Significa um referencial biológico dinâmico:</p>
+<div class="fc-eq">P(t) = P[B(t), interoceção, proprioceção, equilíbrio, nociceção, consequências da ação]</div>
+<p>Em termos intuitivos: <strong>AQUI — NESTE CORPO — AGORA.</strong> Nada disto exige ainda um Self autobiográfico.</p>
+
+<h2>5. A apropriação entra em cena</h2>
+<p>Chegamos ao elemento central do MBRS. Chamemos <strong>Ω(t)</strong> à relação de apropriação. A palavra não é utilizada no sentido jurídico de propriedade; significa a relação pela qual determinada coisa é representada como pertencendo, acontecendo ou sendo causada pelo mesmo organismo.</p>
+<div class="fc-eq">Ω(t) = [Ω<sub>B</sub>, Ω<sub>X</sub>, Ω<sub>M</sub>, Ω<sub>A</sub>, Ω<sub>O</sub>, …]</div>
+<p>Estas dimensões correspondem, respetivamente, à pertença do corpo, da experiência, da memória, da autoria da ação e da origem dos conteúdos mentais.</p>
+<p>A hipótese importante é esta: <strong>a apropriação pode existir em formas elementares antes de existir um Eu autobiográfico capaz de dizer «isto é meu».</strong></p>
+<p>Uma dor não precisa de aparecer primeiro como informação neutra para depois um Eu declarar «esta dor pertence-me». A própria experiência pode chegar já corporalmente situada: <strong>dói aqui</strong>.</p>
+
+<h2>6. A inversão fundamental do modelo</h2>
+<div class="fc-eq fc-key">Ω → SELF</div>
+<p>em vez de assumir simplesmente:</p>
+<div class="fc-eq">SELF → Ω</div>
+<p>Imagine-se uma sucessão gigantesca de experiências E₁, E₂, E₃ … Eₙ. Mudam imagens, sons, pensamentos, estados emocionais e estados corporais. Mas permanece uma regularidade: todas continuam referenciadas ao mesmo ser.</p>
+<div class="fc-eq">Ω(E₁) ~ Ω(E₂) ~ Ω(E₃) ~ … ~ Ω(Eₙ)</div>
+<p>Chamamos a essa propriedade <strong>Γ<sub>R</sub> — continuidade referencial</strong>.</p>
+<blockquote>O Self poderá não ser aquilo que permanece igual, mas aquilo que estabelece continuamente: «o que mudou continua a acontecer ao mesmo ser».</blockquote>
+
+<h2>7. O Self como invariância através da mudança</h2>
+<div class="fc-eq">S(t) ≈ Invariant[Ω(t−Δ:t), Γ<sub>R</sub>]</div>
+<p>O Self não é a soma das memórias, nem a soma das emoções, nem o corpo, nem uma fotografia instantânea da atividade cerebral. É uma <strong>organização relacional temporalmente persistente</strong>.</p>
+<div class="fc-eq">S(t) ≠ S(t+1) &nbsp;&nbsp; e, simultaneamente, &nbsp;&nbsp; S(t) ~ S(t+1)</div>
+<p>O conteúdo muda. A referência persiste.</p>
+
+<h2>8. A memória não é o Self</h2>
+<p>A perda de memória não implica necessariamente a perda completa do Eu. Rathbone, Moulin e Conway descreveram um caso de amnésia retrógrada em que se mantinha um sentido coerente e contínuo de Self apesar da perda de memórias episódicas de um período de 18 meses. O conhecimento autobiográfico conceptual contribuía para essa continuidade.</p>
+<div class="fc-eq">SELF<sub>mínimo</sub> ≠ SELF<sub>autobiográfico</sub> ≠ SELF<sub>reflexivo</sub></div>
+<p>Outros casos mostram, porém, que factos autobiográficos e conhecimento sobre traços pessoais também podem ser afetados. A relação memória–Self é, portanto, heterogénea, não uma divisão modular perfeita.</p>
+<blockquote>O livro da vida pode perder capítulos sem que desapareça necessariamente o leitor presente.</blockquote>
+
+<h2>9. Também somos aquilo que fazemos</h2>
+<div class="fc-eq">ação do organismo ≠ controlo voluntário ≠ sentimento de autoria</div>
+<p>A investigação distingue propriedade corporal e autoria da ação como componentes relacionados mas parcialmente dissociáveis. À relação «isto acontece neste ser» junta-se outra: <strong>«este ser fez isto acontecer»</strong>.</p>
+<div class="fc-eq">S(t) → A(t) → Mundo(t+1) → Experiência(t+1) → S(t+1)</div>
+<p>Aqui aparece uma propriedade fundamental do MBRS: <strong>o Self é simultaneamente produto e participante da dinâmica que o produz.</strong></p>
+
+<h2>10. Depois de nascer, o proprietário aumenta a propriedade</h2>
+<p>Inicialmente, a apropriação poderá contribuir para construir o Self. Depois de constituído, o domínio de pertença expande-se.</p>
+<div class="fc-eq fc-key">Apropriação constitutiva → SELF → Apropriação extensiva</div>
+<p>Já não temos apenas «o meu corpo». Temos a minha memória, a minha casa, os meus projetos, a minha família, o meu país, as minhas ideias. Nada disso faz biologicamente parte do organismo, mas pode passar a integrar a <strong>esfera representacional do Self</strong>.</p>
+<div class="fc-eq">V(Δx) = f[Δx, Ω<sub>E</sub>(x), M, contexto]</div>
+<p>Quanto maior for a integração de algo na história e no domínio do Self, maior poderá ser a alteração produzida pela sua perda ou ameaça.</p>
+
+<h2>11. O «meu», o apego e o sofrimento</h2>
+<p>O mesmo princípio pode aplicar-se a relações humanas, com uma distinção essencial: <strong>uma pessoa não se torna propriedade de outra porque foi incorporada no seu Self</strong>. O modelo descreve uma representação psicológica de pertença; não a legitima moral ou juridicamente.</p>
+<p>Existe aqui uma aproximação interessante às tradições contemplativas que relacionam Eu, apego e sofrimento. O MBRS não pretende transformar o budismo numa teoria neurocientífica, mas permite formular uma hipótese: quanto mais rígida for a incorporação de determinado elemento no domínio do Self, maior poderá ser o impacto da sua perda.</p>
+
+<h2>12. Quando as peças do Eu se separam</h2>
+<p>Uma teoria do Self torna-se mais interessante quando explica não apenas a unidade, mas também as dissociações. Há perturbações da pertença de partes do corpo, alterações da autoria da ação e dissociações entre memória e identidade.</p>
+<p>Na perturbação dissociativa da identidade, uma revisão sistemática e meta-análise de 2024 encontrou um quadro heterogéneo: parte das análises foi compatível com transferência de memória entre estados identitários, enquanto outras mostraram padrões mais próximos de amnésia interidentitária. Os autores salientaram limitações metodológicas importantes. Em 2025 foi publicado um corrigendum ao artigo, que deve acompanhar a leitura da revisão.</p>
+<div class="fc-eq">SELF ≠ Ω<sub>B</sub> + Ω<sub>M</sub> + Ω<sub>A</sub> + Ω<sub>O</sub></div>
+<p>O Self não parece ser uma soma simples de interruptores. O MBRS propõe uma organização distribuída capaz de sobreviver à alteração de alguns componentes.</p>
+
+<h2>13. Colocámos a hipótese dentro do computador</h2>
+<p>Para evitar que o MBRS permanecesse apenas uma narrativa filosófica, construímos sucessivas simulações conceptuais. <strong>Não simulámos consciência.</strong> Construímos agentes com sensores, integração, modelo do mundo, referência ao organismo, memória, previsão, valoração, distinção próprio/outro, ação, autoria e continuidade.</p>
+<div class="fc-eq fc-key">SELF<sub>funcional</sub> ⇏ SENTIR</div>
+<p>Foi possível produzir uma arquitetura com muitas das funções associadas ao Self sem introduzir uma variável de experiência subjetiva. O resultado não prova que a experiência seja independente da função; impede-nos, isso sim, de declarar consciência apenas porque um sistema apresenta complexidade funcional.</p>
+
+<h2>14. A experiência K: não esconder a consciência numa variável</h2>
+<p>Numa experiência conceptual introduzimos uma variável hipotética K. Quando K existia mas estava causalmente desligada, não surgia qualquer diferença de comportamento ou relatório. Quando passava a influenciar o relatório metacognitivo, tornava-se simplesmente parte da arquitetura funcional.</p>
+<div class="fc-eq">K sem efeitos causais → empiricamente invisível</div>
+<p>O exercício expõe um limite epistemológico: não resolvemos o problema fenomenal acrescentando ao diagrama uma caixa chamada «consciência».</p>
+
+<h2>15. Biofeedback com história</h2>
+<p>Noutra experiência introduzimos memória plástica num ciclo fechado:</p>
+<div class="fc-eq">B(t) → P(t) → V(t) → A(t) → B(t+1)</div>
+<div class="fc-eq">P(t), V(t) → M(t+1) → P(t+1)</div>
+<p>O organismo ganhou passado. A mesma perturbação deixou de produzir necessariamente a mesma resposta porque experiências anteriores tinham modificado o sistema. O presente passou a depender da história.</p>
+
+<h2>16. Tentámos depois desmontar o Self</h2>
+<p>Em vez de tentar produzir o Self, começámos a retirar seletivamente componentes de apropriação: corpo, experiência, memória, autoria e fonte. O modelo produziu perfis diferenciais.</p>
+<p>Retirar a memória prejudicou sobretudo a continuidade autobiográfica, preservando muito mais o referencial presente. Retirar simultaneamente pertença corporal e experiencial produziu degradação muito maior do Self presente.</p>
+<p>Os números são consequências das equações e pesos escolhidos; <strong>não são estimativas do cérebro humano</strong>. O valor científico está nas dissociações previstas, que podem ser confrontadas com neuropsicologia real.</p>
+
+<h2>17. É aqui que a hipótese começa a tornar-se científica</h2>
+<p>O MBRS não deve ser avaliado pela sua elegância, mas pela capacidade de sobreviver a testes que poderiam contradizê-lo. Entre as previsões encontram-se a preservação relativa do Self presente em certas amnésias, a dissociação entre autoria e propriedade corporal, a dissociação entre conteúdo consciente e atribuição da sua fonte, e a possibilidade de perturbações locais do corpo sem colapso global do Self.</p>
+<p>A previsão talvez mais específica é que a persistência do Self acompanhe melhor a <strong>continuidade do referencial</strong> do que a semelhança dos conteúdos mentais.</p>
+
+<h2>18. Como destruir o MBRS</h2>
+<p>Se encontrarmos um Self presente, estável e integrado na ausência sistemática de relações de pertença corporal, experiencial, causal e temporal, a hipótese constitutiva ficará seriamente enfraquecida.</p>
+<p>Se manipulações seletivas das dimensões de Ω não produzirem as dissociações previstas, a decomposição estará errada. Se o desenvolvimento mostrar que o Self surge consistentemente antes de qualquer forma relevante de pertença pré-reflexiva, a direção <strong>Ω → S</strong> ficará comprometida.</p>
+<p>E se uma teoria mais simples explicar os mesmos fenómenos, fizer previsões melhores e tornar Ω desnecessário, o MBRS deverá ser reformulado ou abandonado.</p>
+<blockquote>Esse é o risco que transforma uma ideia interessante numa hipótese científica.</blockquote>
+
+<h2>19. E a consciência?</h2>
+<p>Aqui é necessário manter uma fronteira rigorosa. O MBRS procura responder a uma pergunta: <strong>como pode surgir o Eu numa corrente de experiência?</strong> Não resolveu a pergunta anterior: <strong>por que existe experiência subjetiva?</strong></p>
+<p>O teste adversarial publicado na <em>Nature</em> em 2025 confrontou diretamente previsões da Global Neuronal Workspace Theory e da Integrated Information Theory, encontrando resultados que apoiaram alguns aspetos e desafiaram outros. A própria investigação contemporânea da consciência continua, portanto, sem uma explicação única consensual.</p>
+<div class="fc-eq fc-key">MBRS = hipótese sobre a formação do Self ≠ solução do problema fenomenal da consciência</div>
+
+<h2>20. O Eu talvez seja um verbo</h2>
+<p>Talvez a pergunta «onde está o Self?» esteja mal formulada. Seria semelhante a perguntar onde está exatamente uma onda no oceano. A onda existe, pode ser medida, tem efeitos físicos e possui continuidade, mas não é uma coisa separável da dinâmica que a produz.</p>
+<p>O organismo mantém incessantemente mapas do corpo e do mundo. A experiência corre como um rio. A memória introduz o passado. A previsão projeta futuros. A ação transforma o mundo. As consequências regressam ao organismo. E uma enorme diversidade de acontecimentos continua a ser referenciada ao mesmo centro.</p>
+<p>Da repetição emerge continuidade. Da continuidade emerge uma história. E da persistência da relação «isto acontece neste ser» pode acabar por emergir:</p>
+<div class="fc-eq fc-key">EU</div>
+<blockquote>O proprietário não precisa de preceder a pertença; pode emergir da continuidade recorrente da própria relação de pertença.</blockquote>
+<p>Se esta hipótese resistir às experiências destinadas a destruí-la, teremos avançado um pouco na compreensão de uma das construções mais extraordinárias da biologia: um organismo que não apenas existe, mas que se reconhece, através do tempo, como sendo aquele a quem a existência está a acontecer.</p>
+
+<div class="fc-editorial"><strong>Nota editorial.</strong> O Modelo de Biofeedback Recursivo do Self (MBRS) é uma hipótese teórica e computacional em desenvolvimento. As simulações descritas são experiências conceptuais e não constituem dados clínicos ou neurobiológicos. A literatura científica aqui referida fornece restrições empíricas e fenómenos compatíveis com partes da arquitetura proposta, mas não valida atualmente o MBRS nem demonstra a sua hipótese causal central. A questão fenomenal — por que existe experiência subjetiva — permanece explicitamente em aberto. A etapa científica seguinte consiste em comparar previsões pré-registadas do MBRS com explicações concorrentes e dados independentes.</div>
+<h2>Referências científicas internacionais</h2>
+<ol class="fc-refs">
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41093259/" target="_blank" rel="noopener noreferrer">Brunello N. et al. (2025), Neuroscience &amp; Biobehavioral Reviews — A systematic review and meta-analysis on the neural correlates of bodily self-consciousness.</a></li>
+<li><a href="https://www.nature.com/articles/s41586-025-08888-1" target="_blank" rel="noopener noreferrer">Cogitate Consortium, Ferrante O. et al. (2025), Nature — Adversarial testing of global neuronal workspace and integrated information theories of consciousness.</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/19382038/" target="_blank" rel="noopener noreferrer">Rathbone C.J., Moulin C.J.A., Conway M.A. (2009), Neurocase — Autobiographical memory and amnesia: using conceptual knowledge to ground the self.</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/39541721/" target="_blank" rel="noopener noreferrer">Beker J.C., Dorahy M.J., Moir J., Cording J. (2024), Clinical Psychology Review — Inter-identity amnesia and memory transfer in dissociative identity disorder: a systematic review with a meta-analysis.</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/40436655/" target="_blank" rel="noopener noreferrer">Beker J.C. et al. (2025), Clinical Psychology Review — Corrigendum to the 2024 inter-identity amnesia meta-analysis.</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/31629195/" target="_blank" rel="noopener noreferrer">Neurofunctional correlates of body-ownership and sense of agency: a meta-analytical account of self-consciousness (2019).</a></li>
+</ol>
+<div class="fc-footer">FC-Chronic-News · Fragmentos do Caos · Artigo científico de divulgação · © 2026 Francisco António dos Santos Gonçalves.<br>
+</div>
+<!-- DOWNLOAD WHITEPAPER MBRS -->
+<div class="fc-mbrs-download">
+    <div class="fc-mbrs-download-title">
+        Whitepaper Científico — MBRS v3.0
+    </div>
+
+    <div class="fc-mbrs-download-text">
+        Modelo de Biofeedback Recursivo do Self<br>
+        <em>Recursive Biofeedback Model of the Self</em>
+    </div>
+
+    <a class="fc-mbrs-download-button"
+       href="https://fasgoncalves.github.io/fragmentoscaos-html/Files/Store/MBRS_Whitepaper_Cientifico_v3_0_2026-09-25.pdf"
+       download="MBRS-Whitepaper-Cientifico-v3.pdf"
+       aria-label="Descarregar o Whitepaper Científico MBRS v3.0 em formato PDF">
+        ↓ &nbsp; Descarregar Whitepaper Científico (PDF)
+    </a>
+</div>
+
+<style>
+.fc-mbrs-download {
+    max-width: 720px;
+    margin: 32px auto;
+    padding: 24px 28px;
+    text-align: center;
+    background: #f5f7f9;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+.fc-mbrs-download-title {
+    margin-bottom: 7px;
+    color: #17324d;
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.fc-mbrs-download-text {
+    margin-bottom: 20px;
+    color: #475467;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.fc-mbrs-download-button {
+    display: inline-block;
+    padding: 13px 24px;
+    background: #17324d;
+    color: #ffffff !important;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none !important;
+    transition: transform .15s ease, background .15s ease;
+}
+
+.fc-mbrs-download-button:hover {
+    background: #2d5f8b;
+    transform: translateY(-1px);
+}
+
+.fc-mbrs-download-button:focus {
+    outline: 3px solid #98a2b3;
+    outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+    .fc-mbrs-download {
+        padding: 20px 15px;
+    }
+
+    .fc-mbrs-download-button {
+        display: block;
+        width: auto;
+    }
+}
+</style>
+</div>
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

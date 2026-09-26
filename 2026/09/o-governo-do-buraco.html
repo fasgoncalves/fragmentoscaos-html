@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Governo do Buraco</title>
+<meta name="description" content="O Governo do Buraco">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Governo do Buraco</h1>
+      <p class="meta">Publicado em 2026-09-24 11:20:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000b42481f4b87af846748659e8_155f5507.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- wp:html -->
+<style>
+:root{
+  color-scheme:dark;
+  --fc-bg:#0a0e13;
+  --fc-panel:#111821;
+  --fc-panel2:#18212c;
+  --fc-text:#f4f6f8;
+  --fc-muted:#aeb8c4;
+  --fc-line:rgba(255,255,255,.12);
+  --fc-gold:#e2b84f;
+  --fc-red:#bf4444;
+  --fc-green:#417b59;
+  --fc-shadow:0 32px 100px rgba(0,0,0,.42);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:24px 12px;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(65,123,89,.13),transparent 28%),
+    radial-gradient(circle at 90% 5%,rgba(191,68,68,.12),transparent 26%),
+    #0a0e13;
+  color:var(--fc-text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  line-height:1.76;
+}
+.fc-chronic-news{
+  width:min(100%,1000px);
+  margin:0 auto;
+  overflow:hidden;
+  border:1px solid var(--fc-line);
+  border-radius:26px;
+  background:linear-gradient(180deg,rgba(255,255,255,.025),transparent 280px),var(--fc-panel);
+  box-shadow:var(--fc-shadow);
+}
+.fc-chronic-news__hero{
+  padding:clamp(38px,7vw,82px) clamp(22px,6vw,72px);
+  text-align:center;
+  border-bottom:1px solid var(--fc-line);
+  background:
+    linear-gradient(135deg,rgba(65,123,89,.13),transparent 42%),
+    linear-gradient(315deg,rgba(191,68,68,.11),transparent 38%);
+}
+.fc-kicker{
+  display:inline-block;
+  margin-bottom:14px;
+  color:var(--fc-gold);
+  font-size:.8rem;
+  font-weight:800;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+}
+h1{
+  max-width:900px;
+  margin:0 auto;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(2.8rem,8vw,6rem);
+  line-height:.95;
+  letter-spacing:-.05em;
+}
+.fc-subtitle{
+  max-width:780px;
+  margin:22px auto 0;
+  color:var(--fc-muted);
+  font-size:clamp(1rem,2vw,1.2rem);
+}
+.fc-meta{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px 18px;
+  margin-top:20px;
+  color:var(--fc-muted);
+  font-size:.9rem;
+}
+.fc-content{
+  padding:clamp(26px,5vw,66px);
+}
+.fc-content p{
+  margin:0 0 1.25em;
+  color:#edf1f4;
+  font-size:clamp(1rem,1.7vw,1.13rem);
+}
+.fc-content h2{
+  margin:2.25em 0 .8em;
+  color:var(--fc-gold);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(1.6rem,3.5vw,2.45rem);
+  line-height:1.12;
+}
+.fc-content blockquote{
+  margin:1.25em 0;
+  padding:14px 20px;
+  border-left:4px solid var(--fc-gold);
+  background:rgba(255,255,255,.035);
+  border-radius:0 12px 12px 0;
+}
+.fc-content blockquote p{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  font-style:italic;
+  color:#fff;
+}
+.fc-placard{
+  margin:1.5em auto;
+  padding:20px;
+  border:2px solid rgba(226,184,79,.55);
+  border-radius:12px;
+  background:linear-gradient(180deg,#202935,#141b24);
+  color:#fff3c8;
+  font-weight:800;
+  text-align:center;
+  letter-spacing:.055em;
+  text-transform:uppercase;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
+}
+.fc-editorial-note,
+.fc-references{
+  margin:0 clamp(22px,5vw,66px) clamp(28px,5vw,64px);
+  padding:clamp(22px,4vw,36px);
+  border-radius:18px;
+}
+.fc-editorial-note{
+  border:1px solid rgba(226,184,79,.3);
+  background:linear-gradient(135deg,rgba(226,184,79,.08),transparent 46%),var(--fc-panel2);
+}
+.fc-references{
+  border:1px solid var(--fc-line);
+  background:#0d131a;
+}
+.fc-editorial-note h2,
+.fc-references h2{
+  margin:0 0 14px;
+  color:var(--fc-gold);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(1.5rem,3vw,2.1rem);
+}
+.fc-editorial-note p{
+  margin:0 0 1em;
+  color:var(--fc-muted);
+}
+.fc-editorial-note p:last-child{margin-bottom:0}
+.fc-references ol{
+  margin:0;
+  padding-left:1.3rem;
+}
+.fc-references li{
+  margin:.75em 0;
+  color:var(--fc-muted);
+}
+.fc-references a{
+  color:#f0cf7c;
+  text-decoration-thickness:.08em;
+  text-underline-offset:.15em;
+}
+.fc-signature{
+  padding:18px 24px;
+  border-top:1px solid var(--fc-line);
+  color:var(--fc-muted);
+  background:#0d1218;
+  text-align:center;
+  font-size:.9rem;
+}
+@media(max-width:640px){
+  body{padding:8px}
+  .fc-chronic-news{border-radius:18px}
+  .fc-chronic-news__hero{padding:34px 18px}
+  .fc-content{padding:24px 18px 34px}
+  .fc-editorial-note,.fc-references{margin:0 18px 24px;padding:20px}
+  .fc-placard{padding:16px 12px;font-size:.92rem}
+}
+</style>
+<article class="fc-chronic-news">
+  <header class="fc-chronic-news__hero">
+    <div class="fc-kicker">Crónica satírica · Governação e Democracia</div>
+    <h1>O Governo do Buraco</h1>
+    <p class="fc-subtitle">Tragicomédia em vários ministérios, com Montenegro ao comando da escavadora</p>
+    <div class="fc-meta">
+      <span>Por Francisco Gonçalves</span>
+      <span>4 de agosto de 2026</span>
+      <span>Fragmentos do Caos</span>
+    </div>
+  </header>
+
+  <div class="fc-content">
+    <p>Portugal acordou certa manhã com um enorme buraco em frente ao Palácio de São Bento.</p>
+<p>Não era uma cratera provocada por um meteorito, uma obra do Metro ou mais uma intervenção urgente numa conduta que tinha sido reparada na semana anterior.</p>
+<p>Era o programa do Governo.</p>
+<p>À entrada, uma placa anunciava:</p>
+<div class="fc-placard">GRANDE OBRA NACIONAL<br>Aprofundamento do País<br>Prazo de conclusão: depende da oposição</div>
+<p>Luís Montenegro surgiu de capacete branco, colete refletor e expressão confiante. Trazia debaixo do braço um dossier intitulado Portugal Pode Mais, embora ninguém tivesse ainda esclarecido se podia mais alguma coisa além de cavar.</p>
+<p>Atrás dele, alinhava-se o Conselho de Ministros, cada governante munido da respetiva pá.</p>
+<p>O primeiro-ministro ergueu a mão e declarou:</p>
+<blockquote><p>"Temos de continuar a arriscar, mesmo que aqui ou ali as coisas corram menos bem."</p></blockquote>
+<p>Os portugueses olharam para a cratera.</p>
+<p>As coisas já tinham ultrapassado há muito o "aqui ou ali" e entrado firmemente no "por todo o lado".</p>
+<p>Mas Montenegro manteve-se sereno. Há governantes que veem problemas. Outros veem oportunidades. E há ainda os que, perante um buraco, mandam buscar uma máquina maior.</p>
+<h2>O encarregado da obra</h2>
+<p>Montenegro governa como um chefe de obra que chega ao estaleiro depois de o muro ter caído e pergunta quem deixou ali aqueles tijolos.</p>
+<p>Nunca há propriamente uma crise.</p>
+<p>Há ocorrências.</p>
+<p>Nunca existe descontrolo.</p>
+<p>Há desafios de coordenação.</p>
+<p>Nunca se verifica incompetência.</p>
+<p>Há apenas processos de aprendizagem, que é uma forma delicada de dizer que o país está a pagar propinas por erros cometidos por ministros adultos.</p>
+<p>O chefe do Governo percorre o estaleiro, observa o caos e transmite tranquilidade.</p>
+<p>A tranquilidade tornou-se, aliás, a principal matéria-prima do Executivo.</p>
+<p>Quando alguma coisa desaparece, falha, arde, prescreve ou aparece no sítio errado, Montenegro está tranquilo.</p>
+<p>Quando um ministro se enrola nas próprias explicações, o primeiro-ministro está confiante.</p>
+<p>Quando a oposição pede responsabilidades, Montenegro considera que existe uma campanha política.</p>
+<p>Se um dia o edifício do Governo desabar completamente, é provável que surja entre os escombros a declarar:</p>
+<blockquote><p>"Não há qualquer colapso. O edifício está apenas numa posição horizontal não prevista."</p></blockquote>
+<h2>O Ministério do Atrelado</h2>
+<p>No setor da Administração Interna, a obra ganhou características de romance policial escrito por uma comissão de inquérito.</p>
+<p>Um atrelado apreendido numa operação contra o tráfico de droga acabou nas instalações de uma empresa pertencente a um amigo do ministro Luís Neves. Também foram encontrados nessa empresa bidões com substâncias químicas apreendidas, e as autoridades abriram inquéritos. A movimentação do veículo levantou ainda dúvidas sobre a cadeia de custódia da prova.</p>
+<p>Não se trata apenas de um elefante na sala.</p>
+<p>É um atrelado no parque.</p>
+<p>E, ao contrário do elefante, o atrelado teve a delicadeza de desaparecer durante algum tempo.</p>
+<p>O ministro assegurou estar disponível para prestar esclarecimentos. Montenegro respondeu com a serenidade habitual, afirmando estar "muito tranquilo" e confiante no ministro, enquanto aguardava as explicações e o trabalho das autoridades.</p>
+<p>Em Portugal, os esclarecimentos têm um ciclo de vida próprio.</p>
+<p>Primeiro são anunciados.</p>
+<p>Depois são preparados.</p>
+<p>Em seguida são considerados prematuros.</p>
+<p>Mais tarde tornam-se inoportunos porque existe uma investigação.</p>
+<p>Finalmente deixam de ser necessários porque entretanto apareceu outro escândalo.</p>
+<p>É a economia circular aplicada à responsabilidade política.</p>
+<p>Nada se perde.</p>
+<p>Tudo se adia.</p>
+<p>O Governo observou o atrelado no fundo do buraco e concluiu que o mais prudente seria continuar a escavar em redor.</p>
+<p>Talvez apareça uma explicação.</p>
+<p>Ou petróleo.</p>
+<h2>O Ministério da Educação Sentimental</h2>
+<p>No setor da Educação, decidiu-se digitalizar a correção dos exames nacionais.</p>
+<p>A intenção era moderna.</p>
+<p>O resultado foi português.</p>
+<p>Surgiram atrasos, problemas técnicos, dúvidas sobre prazos e críticas de professores e oposição. Montenegro rejeitou que existisse "caos", mesmo perante incertezas sobre a publicação das classificações.</p>
+<p>Esta é uma técnica governativa importante.</p>
+<p>Quando o caos é negado com suficiente convicção, deixa de ser caos e passa a ser perceção mediática.</p>
+<p>Um sistema falha?</p>
+<p>É resistência à mudança.</p>
+<p>Os profissionais alertam?</p>
+<p>São conservadores.</p>
+<p>Os alunos esperam?</p>
+<p>É inovação em curso.</p>
+<p>As famílias desesperam?</p>
+<p>Falta-lhes literacia digital.</p>
+<p>No futuro, os exames poderão ser corrigidos por inteligência artificial, enviados por drones e validados por blockchain.</p>
+<p>Os resultados continuarão atrasados, naturalmente, porque a tradição também é património nacional.</p>
+<p>O ministro da Educação foi colocado junto à borda da cratera com uma pá eletrónica.</p>
+<p>Tentou iniciar sessão.</p>
+<p>A palavra-passe expirara.</p>
+<h2>A reforma laboral que foi trabalhar para casa</h2>
+<p>O Governo apresentou uma reforma laboral ambiciosa.</p>
+<p>O Parlamento rejeitou-a em junho de 2026, num revés relevante para um Executivo minoritário. Montenegro acusou os extremos políticos de se terem unido para bloquear a proposta e prometeu insistir.</p>
+<p>É uma das maravilhas da democracia governativa contemporânea.</p>
+<p>Quando uma proposta é aprovada, trata-se da vontade popular.</p>
+<p>Quando é rejeitada, trata-se de irresponsabilidade da oposição.</p>
+<p>O Parlamento existe para fiscalizar, debater e decidir, desde que decida corretamente.</p>
+<p>Corretamente significa, neste contexto, aquilo que o Governo já tinha decidido antes do debate.</p>
+<p>Montenegro apontou para o buraco e explicou:</p>
+<blockquote><p>"Queríamos flexibilizar o mercado de trabalho."</p></blockquote>
+<p>Um operário perguntou:</p>
+<blockquote><p>"Flexibilizar como?"</p></blockquote>
+<blockquote><p>"De forma equilibrada."</p></blockquote>
+<blockquote><p>"Equilibrada para quem?"</p></blockquote>
+<p>Nesse momento, chegou uma retroescavadora e o diálogo democrático teve de ser interrompido por razões de segurança.</p>
+<h2>As férias do capitão</h2>
+<p>Perante a sucessão de crises políticas, Montenegro anunciou que prescindiria das férias de verão para coordenar o Governo.</p>
+<p>Analistas interpretaram a decisão como uma tentativa de transmitir controlo e dedicação num período marcado pelas polémicas na Educação e na Administração Interna. Também observaram que a presença física do primeiro-ministro pouco alteraria o funcionamento de um Executivo já fortemente centralizado na sua figura.</p>
+<p>O gesto foi apresentado como sacrifício.</p>
+<p>O país comoveu-se.</p>
+<p>Milhões de portugueses, habituados a trabalhar sem conseguir pagar uma semana de férias, descobriram finalmente alguém capaz de compreender o seu sofrimento: o primeiro-ministro, que decidiu permanecer no gabinete durante o verão.</p>
+<p>Montenegro ficou ao leme.</p>
+<p>O problema é que o navio estava em terra firme, dentro do buraco.</p>
+<p>Ainda assim, a tripulação recebeu ordens para remar.</p>
+<h2>Contabilidade no rés-do-chão, governação na cave</h2>
+<p>Seria injusto afirmar que tudo corre mal.</p>
+<p>As contas públicas continuam a beneficiar de uma trajetória de redução da dívida, e o Orçamento para 2026 foi aprovado com a abstenção socialista, prevendo crescimento económico e excedente orçamental.</p>
+<p>Portugal tornou-se, assim, um país singular.</p>
+<p>A contabilidade pode estar arrumada enquanto a governação tropeça nos móveis.</p>
+<p>O Excel sorri.</p>
+<p>O cidadão espera no hospital.</p>
+<p>A dívida pública desce.</p>
+<p>O comboio não passa.</p>
+<p>O saldo orçamental melhora.</p>
+<p>Os exames não chegam.</p>
+<p>As instituições anunciam estabilidade.</p>
+<p>O atrelado muda de estacionamento.</p>
+<p>É possível que, num futuro próximo, o Governo apresente um relatório demonstrando que o buraco possui uma execução financeira exemplar.</p>
+<p>A profundidade ultrapassou as metas.</p>
+<p>A despesa ficou dentro do previsto.</p>
+<p>A escavação foi cofinanciada pela União Europeia.</p>
+<p>Falta apenas encontrar uma saída.</p>
+<h2>A oposição, essa retroescavadora auxiliar</h2>
+<p>A oposição observa a obra com indignação.</p>
+<p>Não por estar contra o buraco.</p>
+<p>Cada partido tem o seu.</p>
+<p>O problema é não ter sido convidada a escolher a profundidade.</p>
+<p>O PS apresenta uma pá social-democrata, mais inclusiva e com cabo ergonómico.</p>
+<p>O Chega exige uma escavadora maior, com buzina, bandeiras e transmissão em direto.</p>
+<p>A Iniciativa Liberal propõe privatizar o buraco e cobrar entrada.</p>
+<p>A esquerda recomenda uma comissão pública para determinar quem tem direito a cair primeiro.</p>
+<p>Todos criticam a escavação.</p>
+<p>Todos gostariam de dirigir a máquina.</p>
+<p>A política portuguesa não discute verdadeiramente se o país deve sair do buraco.</p>
+<p>Discute quem terá o direito histórico de continuar a cavá-lo.</p>
+<h2>A teoria da conspiração hidráulica</h2>
+<p>Sempre que a água começa a entrar na cratera, o Governo procura o responsável.</p>
+<p>Pode ser a oposição.</p>
+<p>Pode ser a comunicação social.</p>
+<p>Pode ser um funcionário intermédio.</p>
+<p>Pode ser um técnico que não compreendeu a reforma.</p>
+<p>Pode ser a herança recebida.</p>
+<p>Pode até ser a chuva, essa força radical que insiste em cair sem autorização do Conselho de Ministros.</p>
+<p>O que nunca pode ser é o projeto.</p>
+<p>O projeto está certo.</p>
+<p>A execução foi apenas surpreendida pela realidade.</p>
+<p>A realidade portuguesa tem este hábito desagradável de não respeitar apresentações em PowerPoint.</p>
+<p>Nos gráficos, tudo cresce.</p>
+<p>Nos comunicados, tudo melhora.</p>
+<p>Nos vídeos institucionais, as pessoas sorriem enquanto atravessam corredores luminosos.</p>
+<p>Depois abre-se a porta e está lá o buraco.</p>
+<h2>O país em modo de obra</h2>
+<p>O cidadão comum aproxima-se da vedação e pergunta:</p>
+<blockquote><p>"Quando fica pronto?"</p></blockquote>
+<p>Um assessor consulta o calendário político.</p>
+<blockquote><p>"Depois da próxima reforma."</p></blockquote>
+<blockquote><p>"E quando será a próxima reforma?"</p></blockquote>
+<blockquote><p>"Assim que avaliarmos esta."</p></blockquote>
+<blockquote><p>"E esta está a funcionar?"</p></blockquote>
+<blockquote><p>"É cedo para avaliar."</p></blockquote>
+<blockquote><p>"Mas já falhou."</p></blockquote>
+<blockquote><p>"Isso é uma interpretação."</p></blockquote>
+<blockquote><p>"E o buraco?"</p></blockquote>
+<blockquote><p>"Está dentro dos parâmetros."</p></blockquote>
+<blockquote><p>"Quais parâmetros?"</p></blockquote>
+<blockquote><p>"Os que definimos depois de medir o buraco."</p></blockquote>
+<p>A ciência governativa atingiu um nível admirável.</p>
+<p>Primeiro escava-se.</p>
+<p>Depois mede-se.</p>
+<p>Finalmente estabelece-se que aquela era precisamente a profundidade desejada.</p>
+<h2>Montenegro, o homem que não recua</h2>
+<p>Há que reconhecer coragem ao primeiro-ministro.</p>
+<p>Montenegro não recua.</p>
+<p>Avança sempre.</p>
+<p>Mesmo quando a direção é vertical.</p>
+<p>Cada polémica é enfrentada com outra declaração de confiança.</p>
+<p>Cada falhanço produz uma reafirmação estratégica.</p>
+<p>Cada ministro cercado por dúvidas recebe um abraço institucional e mais alguns dias para explicar aquilo que já deveria ter sido explicado.</p>
+<p>Não é teimosia.</p>
+<p>É estabilidade.</p>
+<p>Não é fuga à responsabilidade.</p>
+<p>É respeito pelas instituições.</p>
+<p>Não é um buraco.</p>
+<p>É uma infraestrutura subterrânea de governação.</p>
+<p>Quando o Governo caiu em 2025, depois de perder uma moção de confiança, Montenegro regressou às eleições e voltou a formar um Executivo minoritário.</p>
+<p>Aprendeu com a experiência.</p>
+<p>Desta vez, em vez de perguntar ao Parlamento se confiava nele, decidiu confiar por todos.</p>
+<h2>A inauguração</h2>
+<p>Chegou finalmente o dia da cerimónia.</p>
+<p>Ministros, secretários de Estado, assessores e consultores reuniram-se em redor da cratera.</p>
+<p>Uma banda tocou o hino.</p>
+<p>Descobriu-se uma placa:</p>
+<div class="fc-placard">BURACO NACIONAL MONTENEGRO<br>Iniciado com confiança<br>Aprofundado com estabilidade<br>Concluído por falta de alternativa</div>
+<p>O primeiro-ministro cortou a fita e pronunciou um discurso:</p>
+<blockquote><p>"Portugal é hoje um país mais profundo."</p></blockquote>
+<p>Os ministros aplaudiram.</p>
+<p>Os assessores publicaram fotografias.</p>
+<p>A televisão transmitiu imagens aéreas.</p>
+<p>Um comentador salientou a dimensão histórica da obra.</p>
+<p>Outro explicou que o buraco era inevitável devido à conjuntura internacional.</p>
+<p>Um terceiro garantiu que outros países tinham crateras maiores.</p>
+<p>No fundo, ouviu-se a voz de um cidadão:</p>
+<blockquote><p>"Podem mandar uma escada?"</p></blockquote>
+<p>Montenegro inclinou-se sobre a borda.</p>
+<blockquote><p>"Não dramatizemos."</p></blockquote>
+<p>Depois virou-se para as câmaras e concluiu:</p>
+<blockquote><p>"Estamos no caminho certo."</p></blockquote>
+<p>E o Governo retomou os trabalhos.</p>
+<p>Porque há países que constroem pontes.</p>
+<p>Há países que abrem caminhos.</p>
+<p>E há Portugal, onde cada nova crise é tratada como prova de que ainda não se cavou o suficiente.</p>
+  </div>
+
+  <aside class="fc-editorial-note">
+    <h2>Nota editorial</h2>
+    <p>Esta crónica é uma obra de sátira política e tragicomédia. Parte de episódios públicos e de notícias divulgadas por órgãos de comunicação social, mas recorre deliberadamente ao exagero, à caricatura e à metáfora.</p>
+<p>As referências a investigações, processos ou averiguações em curso não constituem afirmações de culpa. A responsabilidade criminal ou disciplinar só pode ser estabelecida pelas entidades competentes, de acordo com a lei e com o princípio da presunção de inocência.</p>
+<p>O alvo da sátira é a cultura política da normalização, do adiamento e da responsabilidade difusa. Quando cada falha é transformada numa oportunidade de comunicação, a governação corre o risco de confundir estabilidade com imobilidade e confiança com ausência de consequências.</p>
+<p>Portugal não precisa de mais profundidade retórica. Precisa de instituições que expliquem, decidam e respondam antes de o cidadão descobrir que a escada também foi enviada para uma comissão.</p>
+  </aside>
+
+  <section class="fc-references">
+    <h2>Referências</h2>
+    <ol>
+      <li><strong>RTP Notícias.</strong> <a href="https://www.rtp.pt/noticias/pais/atrelado-desaparecido-quimicos-para-droga-apreendidos-em-empresa-de-amigo-de-luis-neves_n1754312" target="_blank" rel="noopener noreferrer">Atrelado desaparecido e substâncias apreendidas em empresa ligada a amigo de Luís Neves</a></li>
+<li><strong>RTP Notícias.</strong> <a href="https://www.rtp.pt/noticias/politica/estou-muito-tranquilo-montenegro-mantem-a-confianca-em-luis-neves_n1756288" target="_blank" rel="noopener noreferrer">Montenegro mantém confiança em Luís Neves e afirma estar tranquilo</a></li>
+<li><strong>RTP Notícias.</strong> <a href="https://www.rtp.pt/noticias/politica/exames-nacionais-luis-montenegro-rejeita-cenario-de-caos_v1753908" target="_blank" rel="noopener noreferrer">Montenegro rejeita cenário de caos nos exames nacionais</a></li>
+<li><strong>Reuters.</strong> <a href="https://www.reuters.com/business/world-at-work/portugals-parliament-rejects-labour-reform-blow-minority-government-2026-06-19/" target="_blank" rel="noopener noreferrer">Parlamento rejeita reforma laboral do Governo minoritário</a></li>
+<li><strong>RTP Notícias.</strong> <a href="https://www.rtp.pt/noticias/politica/decisao-de-montenegro-sobre-ferias-e-resposta-a-crise-e-sinal-de-controlo-dizem-especialistas_n1755765" target="_blank" rel="noopener noreferrer">Especialistas comentam decisão de Montenegro de prescindir de férias</a></li>
+<li><strong>Reuters.</strong> <a href="https://www.reuters.com/world/portugals-centre-right-government-passes-2026-budget-with-socialists-abstention-2025-11-27/" target="_blank" rel="noopener noreferrer">Orçamento para 2026 aprovado com abstenção socialista</a></li>
+<li><strong>Reuters.</strong> <a href="https://www.reuters.com/world/europe/portugals-president-invites-caretaker-pm-lead-new-government-2025-05-29/" target="_blank" rel="noopener noreferrer">Presidente convida Montenegro a formar novo Governo em 2025</a></li>
+    </ol>
+  </section>
+
+  <footer class="fc-signature">
+    Fragmentos do Caos · Crónicas do País Adiado
+  </footer>
+</article>
+<!-- /wp:html --><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
