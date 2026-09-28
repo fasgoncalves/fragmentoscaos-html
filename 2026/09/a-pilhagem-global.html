@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Pilhagem Global</title>
+<meta name="description" content="A Pilhagem Global">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Pilhagem Global</h1>
+      <p class="meta">Publicado em 2026-09-26 20:00:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000446081f4b6f450cfa4b8d76c_aa773e6f.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- FC-CHRONIC-NEWS CANONICAL | Fragmentos do Caos | 2026-09-26 -->
+<div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+  <span style="display:none;" itemscope itemtype="https://schema.org/NewsArticle">
+    <meta itemprop="headline" content="A Pilhagem Global — Quando o lucro perdeu a pátria e os impostos ficaram para os cidadãos">
+    <meta itemprop="description" content="Uma crónica crítica sobre erosão da base tributável, transferência internacional de lucros, concorrência fiscal e a assimetria entre multinacionais globais e cidadãos fiscalmente territoriais.">
+    <meta itemprop="datePublished" content="2026-09-26T20:00:00+01:00">
+    <meta itemprop="dateModified" content="2026-09-26T20:00:00+01:00">
+    <meta itemprop="author" content="Francisco Gonçalves">
+    <meta itemprop="publisher" content="Fragmentos do Caos">
+    <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/09/file_00000000446081f4b6f450cfa4b8d76c.png">
+    <meta itemprop="mainEntityOfPage" content="https://fasgoncalves.github.io/fragmentoscaos-html/2026/09/a-pilhagem-global.html">
+    <meta itemprop="inLanguage" content="pt-PT">
+  </span>
+  <div style="max-width:900px; margin:auto; padding:10px;">
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">A Pilhagem Global</h1>
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">Quando o lucro perdeu a pátria e os impostos ficaram para os cidadãos</p>
+
+    <aside style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>
+      Esta crónica usa a expressão «pilhagem global» como crítica político-económica a uma arquitectura fiscal internacional que pode permitir a separação entre o território onde ocorre actividade económica e aquele onde parte do lucro é tributado. Não afirma que todas as multinacionais pratiquem fraude nem que toda a estrutura fiscal internacional seja ilícita. Distingue deliberadamente evasão fiscal ilegal, elisão fiscal e planeamento fiscal agressivo.</p>
+    </aside>
+    <p>Houve um tempo em que uma multinacional era, antes de tudo, uma empresa que operava em muitos países. Parece uma banalidade. Hoje já não é.</p>
+    <p>Trabalhei, na década de 1980, numa dessas empresas: a ICL Computers, multinacional britânica então presente em numerosos mercados internacionais. Vendia computadores, software e serviços em Portugal. Tinha trabalhadores em Portugal. Tinha clientes portugueses. Utilizava infra-estruturas portuguesas. Cumpria as regras portuguesas. E pagava impostos em Portugal sobre a actividade que aqui desenvolvia.</p>
+    <p>Naturalmente, pretendia ter lucro. Não era uma instituição de beneficência.</p>
+    <p>Mas existia uma ideia aparentemente elementar: <strong>quem beneficia economicamente de uma sociedade contribui também para financiar essa sociedade.</strong></p>
+    <p>Não era socialismo. Não era caridade. Era capitalismo com residência fiscal e alguma memória de cidadania.</p>
+    <p>Depois chegou a globalização.</p>
+    <p>E, juntamente com ela, uma extraordinária invenção intelectual: a possibilidade de uma empresa estar economicamente num país sem que uma parte correspondente dos seus lucros tenha necessariamente de permanecer fiscalmente nesse país.</p>
+    <p>Nasceu assim uma das grandes maravilhas contabilísticas da civilização contemporânea: <strong>o lucro sem território.</strong></p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A empresa está aqui. O lucro, curiosamente, não</h2>
+    <p>O mecanismo tornou-se extraordinariamente sofisticado, embora a ideia fundamental seja antiga.</p>
+    <p>Uma multinacional vende num país. Tem clientes nesse país. Os consumidores desse país pagam-lhe. Os trabalhadores desse país produzem ou apoiam parte da sua actividade. As telecomunicações, tribunais, universidades, estradas, polícia, energia e restantes infra-estruturas desse Estado ajudam a tornar possível a actividade económica.</p>
+    <p>Chega então a contabilidade internacional. A subsidiária num determinado país paga direitos de propriedade intelectual a outra empresa do grupo. Paga serviços à sede. Paga juros a outra subsidiária. Paga royalties. Compra licenças. Utiliza marcas. Contrata serviços intragrupo.</p>
+    <p>E, depois desta prodigiosa circulação contabilística, pode acontecer algo fascinante: <strong>o país onde existe actividade económica descobre que uma parcela do lucro que intuitivamente associaria a essa actividade apareceu contabilizada noutro lugar.</strong></p>
+    <p>Não se trata de imaginação de um velho desconfiado da globalização. A própria OCDE chama ao fenómeno <strong>Base Erosion and Profit Shifting — BEPS</strong> e descreve estratégias através das quais multinacionais exploram diferenças e lacunas entre sistemas fiscais para deslocar artificialmente lucros para jurisdições de tributação baixa ou nula.</p>
+    <p>A OCDE estima perdas mundiais de receita fiscal da ordem dos <strong>100 a 240 mil milhões de dólares por ano</strong>, equivalentes a aproximadamente 4% a 10% das receitas mundiais do imposto sobre sociedades. E acrescenta algo particularmente revelador: embora alguns destes esquemas sejam ilegais, muitos não o são.</p>
+    <p>Eis talvez o aspecto mais extraordinário desta história. Construímos sistemas onde aquilo que seria socialmente considerado abuso pode, em determinadas estruturas, ser juridicamente admissível.</p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quando a engenharia substituiu a fraude</h2>
+    <p>É importante distinguir conceitos. <strong>Fraude fiscal é crime. Planeamento fiscal é legal.</strong> Entre ambos nasceu uma gigantesca indústria internacional denominada, com admirável elegância, <strong>planeamento fiscal agressivo</strong>.</p>
+    <p>Advogados. Fiscalistas. Auditores. Consultores. Bancos. Especialistas em propriedade intelectual. Especialistas em preços de transferência. Sociedades instrumentais. Tratados fiscais. Holdings. Subsidiárias. Tudo perfeitamente sofisticado. Tudo apresentado em milhares de páginas de legislação.</p>
+    <p>O resultado económico, porém, pode ser muito mais simples: <strong>reduzir o lucro tributável onde os impostos seriam maiores e aumentá-lo onde serão menores.</strong></p>
+    <p>A investigação económica encontrou evidência robusta de que diferenças de tributação influenciam a localização contabilística dos lucros das multinacionais. Os mecanismos podem incluir pagamentos intragrupo, juros, royalties e estruturas de propriedade intelectual.</p>
+    <p>Chamemos-lhe aquilo que juridicamente for adequado. Economicamente, o efeito permanece: <strong>o dinheiro desloca-se para onde é fiscalmente conveniente.</strong></p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Um milhão de milhões</h2>
+    <p>Quando os números atingem determinada dimensão deixam quase de significar alguma coisa. Um milhão conseguimos imaginar. Mil milhões já exigem esforço. Um milhão de milhões torna-se praticamente abstracto.</p>
+    <p>Pois o <em>Global Tax Evasion Report 2024</em>, coordenado pelo EU Tax Observatory, estimou que cerca de <strong>35% dos lucros estrangeiros das multinacionais foram deslocados para paraísos fiscais em 2022</strong>, num montante aproximado de <strong>996 mil milhões de dólares</strong>.</p>
+    <p>Enquanto isso, governos discutem décimas nas pensões. Hospitais discutem horas extraordinárias. Escolas discutem professores. Municípios discutem transportes. Cidadãos discutem IRS. Pequenos empresários discutem IRC, IVA e Segurança Social.</p>
+    <p>E a economia global discute onde deve colocar juridicamente a propriedade intelectual de uma multinacional. Há qualquer coisa profundamente obscena nesta diferença de escala.</p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O pequeno empresário não possui uma Irlanda particular</h2>
+    <p>Há ainda outro problema: a desigualdade competitiva.</p>
+    <p>Uma pequena empresa portuguesa vende em Portugal, paga salários em Portugal e apresenta as suas contas em Portugal. O café da esquina não possui uma subsidiária no Luxemburgo. A oficina não tem propriedade intelectual nas Bermudas. A pequena software house de Almada dificilmente possui cinquenta sociedades distribuídas pelo planeta para optimizar fiscalmente cada fluxo financeiro.</p>
+    <p>A multinacional possui escala para construir uma arquitectura fiscal internacional. A empresa nacional não.</p>
+    <p>A própria OCDE reconhece que o BEPS prejudica a equidade e integridade dos sistemas fiscais e pode proporcionar às empresas multinacionais vantagens competitivas relativamente às empresas que operam apenas internamente.</p>
+    <p>Portanto, não estamos apenas perante uma questão de impostos. Estamos perante <strong>concorrência</strong>. Uma empresa que consegue reduzir estruturalmente a sua tributação dispõe de recursos adicionais para investir, comprar concorrentes, reduzir preços, contratar talento ou simplesmente remunerar accionistas.</p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Privatizámos o lucro. Nacionalizámos a infra-estrutura.</h2>
+    <p>E aqui chegamos ao coração político do problema.</p>
+    <p>Uma multinacional necessita de sociedades funcionais. Precisa de trabalhadores formados. Precisa de tribunais que façam cumprir contratos. Precisa de redes eléctricas, telecomunicações, segurança, estabilidade institucional, sistemas financeiros, aeroportos, portos e estradas.</p>
+    <p>Tudo isso existe dentro de Estados. Mas criámos progressivamente uma economia onde <strong>a actividade continua territorial enquanto uma parte do lucro se tornou extraordinariamente móvel</strong>.</p>
+    <p>É uma arquitectura brilhante. Só tem um pequeno defeito: <strong>alguém continua a ter de pagar o Estado.</strong></p>
+    <p>E se uma parcela da base tributável mais móvel consegue escapar ou deslocar-se, a conta não desaparece magicamente. Trabalho. Consumo. Imóveis. Pequenas empresas. Empresas menos móveis. Cidadãos.</p>
+    <p>A globalização não eliminou a conta. <strong>Mudou apenas quem tem maior dificuldade em fugir dela.</strong></p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A pilhagem global</h2>
+    <p>É neste sentido que utilizo deliberadamente a expressão <strong>pilhagem global</strong>.</p>
+    <p>Não afirmo que toda multinacional pratique fraude. Seria falso. Não afirmo sequer que toda utilização de estruturas fiscais internacionais seja abusiva. Também seria falso.</p>
+    <p>A pilhagem está num nível mais profundo. Está num sistema internacional que durante décadas permitiu uma assimetria extraordinária: <strong>os capitais tornaram-se globais; os cidadãos permaneceram nacionais.</strong></p>
+    <p>O capital escolhe jurisdição. O cidadão paga impostos onde vive. O capital desloca propriedade intelectual. O trabalhador não desloca contabilisticamente o salário para as Ilhas Caimão. O capital reorganiza sociedades. O pensionista continua inscrito na repartição de Finanças da sua residência.</p>
+    <p>Criámos, portanto, duas geografias. A geografia física onde vivemos. E a geografia jurídica onde o dinheiro prefere viver. Curiosamente, elas raramente coincidem.</p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">E finalmente descobriram o problema</h2>
+    <p>Depois de décadas desta extraordinária experiência, os governos perceberam que talvez alguma coisa estivesse errada. Nasceu o projecto BEPS. Vieram regras anti-abuso. Relatórios <em>country-by-country</em>. Maior transparência. Regras sobre preços de transferência. E finalmente um imposto mínimo global de 15% para grandes grupos multinacionais.</p>
+    <p>Na União Europeia, o Pilar Dois aplica-se a grandes grupos com receitas financeiras combinadas superiores a 750 milhões de euros e prevê uma tributação efectiva mínima de 15% por jurisdição, através de mecanismos de imposto complementar quando necessário.</p>
+    <p>Em 2026, a OCDE publicou resultados preliminares do primeiro ano de aplicação do imposto mínimo global. Encontrou aumentos das taxas efectivas de imposto das multinacionais abrangidas relativamente às não abrangidas e, nesse primeiro ano, não encontrou evidência estatisticamente significativa de redução do investimento ou emprego nas empresas abrangidas.</p>
+    <p>São resultados iniciais e devem ser tratados como tal. Mas são relevantes. Curiosamente, aquilo que durante décadas nos disseram ser praticamente impossível começa afinal a ser feito.</p>
+    <p>Porque Estados soberanos continuam a possuir uma coisa que às vezes parecem esquecer: <strong>poder político.</strong></p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A questão nunca foi impedir as empresas de ganhar dinheiro</h2>
+    <p>Não tenho qualquer problema com empresas que tenham lucros. Espero mesmo que os tenham.</p>
+    <p>Sem lucro não existe investimento sustentável, inovação, emprego nem capacidade empresarial. Uma multinacional pode trazer conhecimento, tecnologia, capital, organização, produtividade e acesso aos mercados internacionais. Vi isso pessoalmente.</p>
+    <p>O problema começa quando confundimos <strong>liberdade económica com extraterritorialidade moral</strong>.</p>
+    <p>Se uma empresa beneficia significativamente de uma sociedade, deve contribuir para a manutenção dessa sociedade segundo regras transparentes, proporcionais e aplicadas de forma coerente.</p>
+    <p>Não é uma punição pelo sucesso. <strong>É o preço da civilização que tornou esse sucesso possível.</strong></p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O capitalismo sem cidadania</h2>
+    <p>Talvez esta seja afinal a verdadeira transformação ocorrida desde os anos 1980. Não foi simplesmente a globalização das empresas. Foi a progressiva separação entre <strong>poder económico e responsabilidade territorial</strong>.</p>
+    <p>A velha multinacional tinha filiais. A multinacional contemporânea tem uma arquitectura.</p>
+    <p>A primeira perguntava: <strong>"Quanto ganhámos neste país?"</strong> A segunda pode ser incentivada a perguntar: <strong>"Em que país é fiscalmente mais eficiente declarar este lucro?"</strong></p>
+    <p>Parece uma pequena alteração semântica. É uma revolução política.</p>
+    <p>Porque uma democracia depende de algo extraordinariamente simples: todos beneficiamos da comunidade e todos contribuímos, segundo regras democraticamente estabelecidas, para a sustentar.</p>
+    <p>Quando os mais poderosos conseguem tornar essa obrigação opcional, tecnicamente negociável ou geograficamente móvel, não estamos apenas perante um problema fiscal. Estamos perante um problema democrático.</p>
+    <p>Os hospitais continuam nacionais. As escolas continuam nacionais. Os tribunais continuam nacionais. As pensões continuam nacionais. Os desempregados continuam nacionais. Os contribuintes continuam nacionais.</p>
+    <p><strong>Só o lucro recebeu um passaporte diplomático.</strong></p>
+    <p>E talvez seja esta uma das grandes ironias da globalização. Prometeram-nos um mundo sem fronteiras. Conseguiram-no. Mas, durante demasiado tempo, sobretudo para quem tinha dinheiro suficiente para escolher de que lado da fronteira queria colocar os lucros.</p>
+
+    <aside style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">ELEMENTOS CENTRAIS</h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>A OCDE estima que o BEPS custa aos países 100–240 mil milhões de dólares anuais, cerca de 4%–10% da receita mundial de imposto sobre sociedades.</li>
+        <li>O EU Tax Observatory estimou que 35% dos lucros estrangeiros das multinacionais foram deslocados para paraísos fiscais em 2022, cerca de 996 mil milhões de dólares.</li>
+        <li>As estratégias podem explorar juros, royalties, propriedade intelectual, preços de transferência e outras operações intragrupo.</li>
+        <li>O Pilar Dois estabelece uma taxa efectiva mínima de 15% para grandes grupos abrangidos, calculada por jurisdição.</li>
+        <li>A evidência preliminar da OCDE para 2024, publicada em 2026, encontrou aumento das taxas efectivas nos grupos abrangidos sem redução estatisticamente significativa do investimento ou emprego no primeiro ano.</li>
+      </ul>
+    </aside>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+    <aside style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">Esta crónica é um texto de opinião e interpretação crítica sustentado por dados e investigação internacional. A expressão «pilhagem global» caracteriza o efeito político e distributivo que o autor atribui à erosão das bases tributáveis e à deslocação de lucros; não constitui uma imputação genérica de crime às empresas multinacionais.</p>
+      <p style="text-align:left;">A experiência profissional do autor na ICL Computers na década de 1980 é apresentada como testemunho pessoal de uma cultura empresarial concreta e não como prova de que todas as multinacionais dessa época seguiam o mesmo modelo fiscal ou ético.</p>
+      <p style="text-align:left;">Os dados quantitativos citados provêm principalmente da OCDE, Comissão Europeia e EU Tax Observatory. As estimativas de transferência de lucros dependem de metodologias e dados disponíveis e devem ser interpretadas dentro dessas limitações.</p>
+    </aside>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Referências e documentação internacional</h2>
+    <ol style="padding-left:24px;">
+      <li><a href="https://www.oecd.org/en/topics/base-erosion-and-profit-shifting-beps.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Base erosion and profit shifting (BEPS)</a></li>
+      <li><a href="https://www.oecd.org/en/publications/measuring-and-monitoring-beps-action-11-2015-final-report_9789264241343-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Measuring and Monitoring BEPS, Action 11 — 2015 Final Report</a></li>
+      <li><a href="https://www.oecd.org/content/dam/oecd/en/publications/reports/2024/01/the-global-minimum-tax-and-the-taxation-of-mne-profit_2c3d9f9d/9a815d6b-en.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — The Global Minimum Tax and the taxation of MNE profit</a></li>
+      <li><a href="https://www.oecd.org/en/publications/mne-responses-to-the-global-minimum-tax_0bc9aac9-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — MNE Responses to the Global Minimum Tax (2026)</a></li>
+      <li><a href="https://www.oecd.org/en/events/2026/07/economic-impact-assessment-of-the-global-minimum-tax-2026.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Economic Impact Assessment of the Global Minimum Tax, 2026</a></li>
+      <li><a href="https://taxation-customs.ec.europa.eu/taxation/business-taxation/minimum-corporate-taxation_en" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">European Commission — Minimum Corporate Taxation</a></li>
+      <li><a href="https://taxobservatory.eu/eutax-publication/global-tax-evasion-report-2024/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">EU Tax Observatory — Global Tax Evasion Report 2024</a></li>
+      <li><a href="https://www.taxobservatory.eu/www-site/uploads/2023/10/report.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">EU Tax Observatory — Global Tax Evasion Report 2024 (PDF)</a></li>
+      <li><a href="https://taxobservatory.eu/repository/multinationals-sales-and-profit-shifting-in-tax-havens/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">EU Tax Observatory — Multinationals' Sales and Profit Shifting in Tax Havens</a></li>
+      <li><a href="https://www.oecd.org/en/topics/beps-multilateral-instrument.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — BEPS Multilateral Instrument</a></li>
+
+    </ol>
+
+    <footer style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Co-autoria editorial: <strong style="color:#d6a542;">Augustus Veritas — OpenAI Assistant</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+      <p style="color:#cfcfcf; text-align:left;">
+        URL canónica: <a href="https://fasgoncalves.github.io/fragmentoscaos-html/2026/09/a-pilhagem-global.html" target="_blank" rel="noopener noreferrer" style="color:#d6a542;">https://fasgoncalves.github.io/fragmentoscaos-html/2026/09/a-pilhagem-global.html</a>
+      </p>
+    </footer>
+  </div>
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
