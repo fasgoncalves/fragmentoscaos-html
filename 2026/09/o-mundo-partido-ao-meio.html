@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Mundo Partido ao Meio</title>
+<meta name="description" content="O Mundo Partido ao Meio">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Mundo Partido ao Meio</h1>
+      <p class="meta">Publicado em 2026-09-29 20:55:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_000000009940821085bbceab9a4539a1_52494571.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+<div style="display:none;"><span itemscope itemtype="https://schema.org/NewsArticle">
+<meta itemprop="headline" content="O Mundo Partido ao Meio">
+<meta itemprop="description" content="Uma crónica sobre as grandes dicotomias do mundo contemporâneo: progresso tecnológico e regressão política, hiperligação e tribalismo, democracia e autoritarismo, diplomacia e rearmamento, riqueza e insegurança.">
+<meta itemprop="datePublished" content="2026-08-24">
+<meta itemprop="dateModified" content="2026-08-24">
+<meta itemprop="author" content="Francisco Gonçalves">
+<meta itemprop="publisher" content="Fragmentos do Caos">
+<meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_000000009940821085bbceab9a4539a1.png">
+</span></div>
+<div style="max-width:900px; margin:auto; padding:10px;">
+<h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">O Mundo Partido ao Meio</h1>
+<p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">As dicotomias de uma civilização que nunca soube tanto e parece compreender cada vez menos.</p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+<p style="margin:0;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>
+O mundo contemporâneo não cabe facilmente numa narrativa de progresso ou decadência. As duas coisas acontecem ao mesmo tempo. Nunca tivemos tanto conhecimento, capacidade tecnológica e riqueza acumulada; simultaneamente, assistimos a erosão democrática, rearmamento, tribalização política, desinformação e crescente insegurança. É precisamente essa coexistência de contrários que define o nosso tempo.</p>
+</div>
+<p>Talvez seja esta uma das grandes ironias do nosso tempo.</p>
+<p>Nunca a humanidade soube tanto.</p>
+<p>Nunca teve tanta capacidade científica.</p>
+<p>Nunca comunicou tão depressa.</p>
+<p>Nunca produziu tanta riqueza.</p>
+<p>Nunca dispôs de instrumentos tão poderosos para combater doenças, prever catástrofes, distribuir conhecimento e aproximar povos.</p>
+<p>E, no entanto, entrámos em 2026 com uma sensação crescente de insegurança, fragmentação e desorientação.</p>
+<p>É como se tivéssemos construído uma civilização extraordinariamente sofisticada sem termos desenvolvido, na mesma proporção, a sabedoria necessária para a utilizar.</p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Temos máquinas do século XXI e comportamentos políticos que por vezes parecem pertencer ao século XIX.</p></div>
+<p>Esta talvez seja a principal dicotomia do mundo contemporâneo.</p>
+<p>Avançámos enormemente.</p>
+<p>E não sabemos muito bem para onde.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Mais ligados, cada vez mais separados</h2>
+<p>Criámos a Internet para ligar o planeta.</p>
+<p>Funcionou.</p>
+<p>Hoje alguém numa pequena aldeia portuguesa pode conversar instantaneamente com alguém em Tóquio, Buenos Aires ou Nairobi.</p>
+<p>Temos acesso a bibliotecas inteiras.</p>
+<p>Museus.</p>
+<p>Universidades.</p>
+<p>Investigação científica.</p>
+<p>Imagens de satélite.</p>
+<p>Cursos.</p>
+<p>Debates.</p>
+<p>Conhecimento acumulado durante milhares de anos.</p>
+<p>A humanidade construiu a maior infraestrutura de comunicação da sua história.</p>
+<p>E depois utilizou uma parte considerável dela para discutir furiosamente com desconhecidos.</p>
+<p>Criámos a aldeia global.</p>
+<p>Depois dividimo-la em tribos.</p>
+<p>Cada uma com os seus factos.</p>
+<p>Os seus líderes.</p>
+<p>Os seus inimigos.</p>
+<p>Os seus canais.</p>
+<p>Os seus algoritmos.</p>
+<p>E naturalmente a sua absoluta convicção de possuir razão.</p>
+<p>Nunca estivemos tão ligados.</p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Nunca foi tão fácil deixarmos de ouvir quem pensa diferente.</p></div>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Mais informação, menos conhecimento</h2>
+<p>Outra grande contradição.</p>
+<p>Durante séculos, o problema humano foi a escassez de informação.</p>
+<p>Hoje é o excesso.</p>
+<p>Todos os dias somos atingidos por milhares de notícias, comentários, vídeos, notificações, opiniões e indignações.</p>
+<p>O cérebro humano não evoluiu para isto.</p>
+<p>Por isso adapta-se.</p>
+<p>Simplifica.</p>
+<p>Escolhe.</p>
+<p>Filtra.</p>
+<p>E sobretudo procura aquilo que confirma aquilo em que já acredita.</p>
+<p>O resultado é extraordinário.</p>
+<p>Possuímos acesso praticamente ilimitado à informação e podemos terminar intelectualmente fechados dentro de uma pequena sala construída pelo algoritmo.</p>
+<p>Confundimos informação com conhecimento.</p>
+<p>Conhecimento com compreensão.</p>
+<p>E opinião com competência.</p>
+<p>Há milhões de pessoas que nunca estudaram determinado assunto e que, depois de três vídeos de dois minutos, estão perfeitamente preparadas para corrigir especialistas que dedicaram vinte anos da vida à matéria.</p>
+<p>A democratização do conhecimento foi uma conquista extraordinária.</p>
+<p>A democratização da certeza talvez tenha sido menos feliz.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Democracias com saudades do homem forte</h2>
+<p>A democracia venceu muitas batalhas históricas.</p>
+<p>Mas está a perder confiança em si própria.</p>
+<p>Os números são suficientemente desconfortáveis para dispensarem dramatização: o V-Dem contabilizava no final de 2025 92 autocracias e 87 democracias, estimando que cerca de 74% da população mundial vivia em regimes autocráticos. A Freedom House registou em 2025 o vigésimo ano consecutivo de declínio da liberdade global.</p>
+<p>Mas a ameaça mais interessante não vem apenas das ditaduras clássicas.</p>
+<p>Vem de dentro das próprias democracias.</p>
+<p>Cidadãos cansados.</p>
+<p>Instituições lentas.</p>
+<p>Governos incapazes de executar.</p>
+<p>Burocracias incompreensíveis.</p>
+<p>Partidos fechados sobre si próprios.</p>
+<p>Promessas repetidamente incumpridas.</p>
+<p>E então surge a velha tentação:</p>
+<p>"Talvez fosse preciso alguém que mandasse nisto."</p>
+<p>O homem forte aparece sempre oferecendo aquilo que a democracia parece ter perdido.</p>
+<p>Rapidez.</p>
+<p>Ordem.</p>
+<p>Decisão.</p>
+<p>Simplicidade.</p>
+<p>Não explica imediatamente que o preço será normalmente pago em liberdade, fiscalização e direito de discordar.</p>
+<p>Esse detalhe vem mais tarde.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Liberdade e desejo de autoridade</h2>
+<p>Esta é talvez uma das dicotomias mais perigosas.</p>
+<p>Queremos liberdade.</p>
+<p>Mas também queremos segurança absoluta.</p>
+<p>Queremos governos limitados.</p>
+<p>Mas exigimos que resolvam todos os problemas.</p>
+<p>Queremos privacidade.</p>
+<p>Mas entregamos voluntariamente detalhes íntimos das nossas vidas a plataformas tecnológicas.</p>
+<p>Queremos liberdade de expressão.</p>
+<p>Desde que ninguém diga coisas que nos incomodem.</p>
+<p>Queremos pluralismo.</p>
+<p>Desde que os outros tenham opiniões razoavelmente próximas das nossas.</p>
+<p>Queremos democracia.</p>
+<p>Mas ficamos profundamente irritados quando ela produz resultados de que não gostamos.</p>
+<p>A liberdade é extraordinariamente popular enquanto não exige tolerar a liberdade dos outros.</p>
+<p>Depois torna-se mais complicada.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Diplomacia e rearmamento</h2>
+<p>Durante décadas, o mundo ocidental cultivou a ideia de que comércio, instituições internacionais e diplomacia tornariam a guerra progressivamente menos provável.</p>
+<p>Era uma esperança racional.</p>
+<p>Não completamente ingénua.</p>
+<p>Mas a história voltou a lembrar-nos que não assinou nenhum contrato comprometendo-se a terminar.</p>
+<p>Em 2025, a despesa militar mundial atingiu cerca de 2,9 biliões de dólares, o nível mais elevado registado pelo SIPRI, depois de onze anos consecutivos de crescimento. Só a Europa aumentou a despesa militar cerca de 14% nesse ano.</p>
+<p>Enquanto isso, continuamos a realizar cimeiras pela paz.</p>
+<p>Não há necessariamente contradição.</p>
+<p>A diplomacia precisa de poder.</p>
+<p>A dissuasão pode impedir guerras.</p>
+<p>Mas existe um sinal inquietante quando o vocabulário internacional começa novamente a ser dominado por:</p>
+<p>armamento;</p>
+<p>fronteiras;</p>
+<p>dissuasão;</p>
+<p>sanções;</p>
+<p>ultimatos;</p>
+<p>blocos;</p>
+<p>zonas de influência;</p>
+<p>ameaças.</p>
+<p>Pensávamos ter deixado algumas dessas palavras nos livros de história.</p>
+<p>Os livros devolveram-nas.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O mundo global regressou às fronteiras</h2>
+<p>Passámos décadas a construir globalização.</p>
+<p>Capital circulava.</p>
+<p>Mercadorias circulavam.</p>
+<p>Tecnologia circulava.</p>
+<p>Empresas produziam em vários continentes.</p>
+<p>Cadeias de abastecimento atravessavam oceanos.</p>
+<p>Falava-se de um mundo pós-nacional.</p>
+<p>Depois descobrimos semicondutores.</p>
+<p>Energia.</p>
+<p>Terras raras.</p>
+<p>Medicamentos.</p>
+<p>Baterias.</p>
+<p>Cabos submarinos.</p>
+<p>Inteligência artificial.</p>
+<p>De repente, tudo voltou a ser estratégico.</p>
+<p>Aquilo que ontem era eficiência económica hoje pode ser dependência geopolítica.</p>
+<p>Aquilo que era parceiro comercial amanhã pode ser rival.</p>
+<p>Estamos simultaneamente a construir uma economia global e a preparar-nos para a fragmentação dessa mesma economia.</p>
+<p>Outra dicotomia.</p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Precisamos uns dos outros e desconfiamos cada vez mais uns dos outros.</p></div>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A tecnologia avança mais depressa do que a política pensa</h2>
+<p>Talvez nunca tenha existido um desfasamento tão grande entre velocidade tecnológica e velocidade institucional.</p>
+<p>IA.</p>
+<p>Robótica.</p>
+<p>Biotecnologia.</p>
+<p>Computação quântica.</p>
+<p>Drones.</p>
+<p>Sistemas autónomos.</p>
+<p>Genómica.</p>
+<p>Fusão experimental.</p>
+<p>Novos materiais.</p>
+<p>A ciência avança a uma velocidade extraordinária.</p>
+<p>A política continua frequentemente organizada em calendários eleitorais de quatro anos.</p>
+<p>A burocracia trabalha com regulamentos concebidos para tecnologias que entretanto mudaram.</p>
+<p>Os parlamentos tentam compreender sistemas que milhões de cidadãos já utilizam diariamente.</p>
+<p>E os dirigentes reúnem-se para discutir a transformação enquanto a transformação acontece sem esperar por eles.</p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Estamos a criar máquinas que aprendem enquanto mantemos instituições que muitas vezes recusam aprender.</p></div>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Inteligência artificial e estupidez natural</h2>
+<p>Esta talvez seja a dicotomia mais divertida e simultaneamente mais preocupante.</p>
+<p>Nunca tivemos ferramentas intelectuais tão poderosas.</p>
+<p>Um estudante pode conversar com uma IA sobre física quântica.</p>
+<p>Um médico pode analisar literatura científica em segundos.</p>
+<p>Um programador pode explorar uma tecnologia desconhecida.</p>
+<p>Um investigador pode cruzar enormes volumes de informação.</p>
+<p>Uma pequena empresa pode utilizar capacidades que há dez anos pertenciam apenas a grandes corporações.</p>
+<p>É extraordinário.</p>
+<p>E depois utilizamos essas mesmas ferramentas para produzir propaganda mais rapidamente.</p>
+<p>Fraudes melhores.</p>
+<p>Imagens falsas.</p>
+<p>Spam.</p>
+<p>Desinformação.</p>
+<p>Manipulação.</p>
+<p>Conteúdo industrial sem substância.</p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Estamos a construir inteligência artificial antes de termos resolvido completamente a estupidez natural.</p></div>
+<p>Era ambicioso.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Mais riqueza, mais insegurança</h2>
+<p>O mundo contemporâneo é muito mais rico do que o mundo dos nossos avós.</p>
+<p>A tecnologia aumentou produtividade.</p>
+<p>Milhões saíram da pobreza extrema ao longo das últimas décadas.</p>
+<p>A medicina prolongou vidas.</p>
+<p>A educação expandiu-se.</p>
+<p>Mas uma enorme quantidade de pessoas nas sociedades desenvolvidas sente que vive pior.</p>
+<p>Habitação inacessível.</p>
+<p>Emprego precário.</p>
+<p>Salários incapazes de acompanhar determinados custos.</p>
+<p>Jovens que adiam família.</p>
+<p>Classes médias desconfiadas do futuro.</p>
+<p>A estatística diz:</p>
+<p>"O país cresceu."</p>
+<p>O cidadão responde:</p>
+<p>"Curioso. Eu não notei."</p>
+<p>As duas afirmações podem ser verdadeiras.</p>
+<p>E quando a prosperidade macroeconómica deixa de ser sentida no quotidiano, abre-se uma fissura política enorme.</p>
+<p>É nessa fissura que prosperam populismos, radicalizações e homens providenciais.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Estados cada vez maiores, cidadãos cada vez mais impotentes</h2>
+<p>Outro paradoxo fascinante.</p>
+<p>Os Estados contemporâneos possuem capacidades que reis absolutos nem imaginariam.</p>
+<p>Conhecem rendimentos.</p>
+<p>Movimentos financeiros.</p>
+<p>Propriedades.</p>
+<p>Veículos.</p>
+<p>Emprego.</p>
+<p>Consumos.</p>
+<p>Podem cruzar bases de dados.</p>
+<p>Monitorizar fronteiras.</p>
+<p>Cobrar impostos automaticamente.</p>
+<p>Utilizar satélites.</p>
+<p>Empregar inteligência artificial.</p>
+<p>Nunca o Estado teve tanta capacidade administrativa.</p>
+<p>E, no entanto, o cidadão pode esperar meses por uma autorização simples.</p>
+<p>A complexidade cresceu juntamente com a capacidade.</p>
+<p>Criámos Estados digitalmente poderosos que por vezes ainda exigem ao cidadão um documento para provar aquilo que outra repartição do mesmo Estado já sabe.</p>
+<p>É uma façanha conceptual.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Europa: valores sem poder?</h2>
+<p>A Europa representa outra grande dicotomia contemporânea.</p>
+<p>É uma das regiões mais livres, prósperas, educadas e socialmente protegidas do planeta.</p>
+<p>Tem ciência extraordinária.</p>
+<p>Indústria sofisticada.</p>
+<p>Universidades.</p>
+<p>Direitos.</p>
+<p>Cultura.</p>
+<p>Mas mostra crescente dificuldade em transformar tudo isso em poder estratégico.</p>
+<p>Regula plataformas americanas.</p>
+<p>Compra tecnologia americana.</p>
+<p>Depende de cadeias asiáticas.</p>
+<p>Discute soberania tecnológica.</p>
+<p>Produz excelentes documentos sobre competitividade.</p>
+<p>E procura finalmente reaprender a escalar empresas.</p>
+<p>A Europa representa talvez o dilema central do Ocidente:</p>
+<p>como defender valores sem possuir suficiente capacidade para os sustentar?</p>
+<p>Valores sem força podem tornar-se declarações.</p>
+<p>Força sem valores torna-se brutalidade.</p>
+<p>A civilização precisa das duas coisas.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Tolerância e intolerância</h2>
+<p>O Ocidente tornou-se provavelmente a civilização mais tolerante da história moderna em muitos domínios.</p>
+<p>E simultaneamente desenvolveu novas formas de intolerância.</p>
+<p>Temos uma extraordinária sensibilidade ao respeito por diferenças.</p>
+<p>Mas muitas vezes pouquíssima tolerância perante divergência intelectual.</p>
+<p>As palavras tornaram-se identificadores tribais.</p>
+<p>Uma opinião coloca imediatamente alguém numa caixa.</p>
+<p>Esquerda.</p>
+<p>Direita.</p>
+<p>Progressista.</p>
+<p>Conservador.</p>
+<p>Globalista.</p>
+<p>Populista.</p>
+<p>Elitista.</p>
+<p>Fascista.</p>
+<p>Comunista.</p>
+<p>Depois de etiquetada a pessoa, já não é necessário analisar o argumento.</p>
+<p>A etiqueta fez o trabalho.</p>
+<p>É muito eficiente.</p>
+<p>E intelectualmente miserável.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Progresso e barbárie</h2>
+<p>A maior dicotomia talvez seja finalmente esta.</p>
+<p>O progresso tecnológico não implica progresso moral.</p>
+<p>Nunca implicou.</p>
+<p>Podemos construir melhores hospitais e melhores armas no mesmo laboratório.</p>
+<p>Criar IA para descobrir medicamentos e IA para identificar alvos.</p>
+<p>Desenvolver drones para transportar sangue e drones para transportar explosivos.</p>
+<p>A ciência oferece poder.</p>
+<p>Não fornece automaticamente valores para decidir como utilizá-lo.</p>
+<p>Essa responsabilidade continua connosco.</p>
+<p>O ser humano moderno pode possuir um smartphone ligado a satélites, inteligência artificial e todo o conhecimento acumulado da humanidade.</p>
+<p>E continuar perfeitamente capaz de odiar o vizinho porque pertence à tribo errada.</p>
+<p>A tecnologia mudou.</p>
+<p>O animal permanece reconhecível.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A barbárie já não vem a cavalo</h2>
+<p>Talvez aqui esteja o erro quando imaginamos o colapso civilizacional.</p>
+<p>Esperamos bárbaros às portas.</p>
+<p>Não funciona necessariamente assim.</p>
+<p>A barbárie moderna pode utilizar gravata.</p>
+<p>Ter departamento de comunicação.</p>
+<p>Publicar vídeos impecavelmente produzidos.</p>
+<p>Ganhar eleições.</p>
+<p>Prometer eficiência.</p>
+<p>Falar de segurança.</p>
+<p>Acusar instituições de atrapalharem a vontade popular.</p>
+<p>Desacreditar tribunais.</p>
+<p>Transformar jornalistas em inimigos.</p>
+<p>Reduzir adversários a traidores.</p>
+<p>E fazer tudo lentamente.</p>
+<p>O autoritarismo contemporâneo aprendeu uma lição importante:</p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">não é necessário derrubar a democracia de uma só vez.</p></div>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Pode desmontá-la peça por peça.</p></div>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Mas a história ainda não terminou</h2>
+<p>Seria demasiado fácil concluir que a civilização ocidental está condenada.</p>
+<p>Não sabemos isso.</p>
+<p>E há razões para não aceitar o fatalismo.</p>
+<p>Apesar de vinte anos de retrocesso global, a Freedom House continua a classificar 88 dos 195 países avaliados como livres e observa que 76 países classificados como livres em 2005 permaneciam livres em 2025.</p>
+<p>A democracia possui uma característica que frequentemente parece fraqueza.</p>
+<p>Permite mostrar os próprios defeitos.</p>
+<p>As ditaduras escondem-nos.</p>
+<p>Por isso uma democracia parece constantemente caótica.</p>
+<p>Discussão.</p>
+<p>Manifestações.</p>
+<p>Críticas.</p>
+<p>Escândalos.</p>
+<p>Eleições.</p>
+<p>Conflitos.</p>
+<p>Uma autocracia pode parecer extraordinariamente organizada.</p>
+<p>Até ao dia em que descobrimos que ninguém se atrevia a informar o líder de que a realidade não correspondia ao relatório.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A verdadeira batalha</h2>
+<p>Talvez a grande batalha do século XXI não seja simplesmente entre países.</p>
+<p>Nem sequer entre esquerda e direita.</p>
+<p>Pode ser entre duas maneiras de organizar a sociedade.</p>
+<p>Uma baseada em:</p>
+<p>dúvida;</p>
+<p>discussão;</p>
+<p>liberdade;</p>
+<p>ciência;</p>
+<p>instituições;</p>
+<p>limitação do poder;</p>
+<p>capacidade de corrigir erros.</p>
+<p>Outra baseada em:</p>
+<p>certeza;</p>
+<p>tribo;</p>
+<p>obediência;</p>
+<p>força;</p>
+<p>propaganda;</p>
+<p>personalização do poder;</p>
+<p>eliminação da discordância.</p>
+<p>A primeira é lenta.</p>
+<p>Irritante.</p>
+<p>Barulhenta.</p>
+<p>Frequentemente incompetente.</p>
+<p>A segunda parece muito mais simples.</p>
+<p>É precisamente por isso que é perigosa.</p>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O mundo partido ao meio</h2>
+<p>Vivemos portanto num mundo de enormes dicotomias.</p>
+<p>Mais conhecimento e mais ignorância.</p>
+<p>Mais comunicação e menos diálogo.</p>
+<p>Mais riqueza e mais insegurança.</p>
+<p>Mais tecnologia e menos controlo sobre as consequências.</p>
+<p>Mais liberdade e maior desejo de autoridade.</p>
+<p>Mais globalização e mais nacionalismo.</p>
+<p>Mais diplomacia e mais armamento.</p>
+<p>Mais informação e menos verdade partilhada.</p>
+<p>Mais capacidade humana e menos confiança no futuro.</p>
+<p>Talvez não estejamos perante o fim da civilização.</p>
+<p>Talvez estejamos perante algo mais desconfortável.</p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Uma civilização obrigada a decidir novamente aquilo que julgava já ter decidido.</p></div>
+<p>Se liberdade vale o incómodo da divergência.</p>
+<p>Se democracia vale a lentidão do compromisso.</p>
+<p>Se conhecimento vale mais do que propaganda.</p>
+<p>Se cooperação vale mais do que domínio.</p>
+<p>Se poder deve ter limites.</p>
+<p>Se o adversário continua a ser um cidadão e não um inimigo.</p>
+<p>Nenhuma destas respostas está garantida para sempre.</p>
+<p>Cada geração recebe-as temporariamente.</p>
+<p>E depois tem de voltar a escolhê-las.</p>
+<p>A barbárie não vence necessariamente quando derruba os portões.</p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Vence quando quem está dentro deles deixa de acreditar que vale a pena defendê-los.</p></div>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;"><p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Talvez essa seja a grande dicotomia do nosso tempo: nunca tivemos tantos instrumentos para construir uma civilização melhor e nunca foi tão evidente que nenhum deles nos dispensa de continuar a ser civilizados.</p></div>
+<div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+<h3 style="color:#d6a542; margin-top:0; text-align:left;">O QUE OS DADOS MOSTRAM</h3>
+<ul style="padding-left:22px; margin:0;">
+<li>O V-Dem contabilizava 92 autocracias e 87 democracias no final de 2025; cerca de 74% da população mundial vivia em autocracias segundo a sua metodologia.</li>
+<li>A Freedom House registou em 2025 o vigésimo ano consecutivo de declínio global da liberdade: 54 países pioraram e 35 melhoraram; 21% da população mundial vivia em países classificados como livres.</li>
+<li>Apesar do retrocesso, a Freedom House continua a classificar 88 dos 195 países avaliados como livres e assinala que 76 países que eram livres em 2005 permaneciam nessa categoria em 2025.</li>
+<li>O SIPRI estima que a despesa militar mundial atingiu 2,887 biliões de dólares em 2025, o décimo primeiro aumento anual consecutivo; na Europa, a despesa subiu 14% para cerca de 864 mil milhões de dólares.</li>
+<li>Na sondagem de confiança da OCDE, realizada em 30 países, 44% declaravam confiança baixa ou inexistente no governo nacional, contra 39% com confiança elevada ou moderadamente elevada.</li>
+<li>O Relatório do Desenvolvimento Humano 2025 do PNUD sublinha que o impacto da inteligência artificial dependerá menos daquilo que a tecnologia consegue fazer e mais das escolhas humanas e institucionais sobre a forma de a utilizar.</li>
+</ul></div>
+<h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+<div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+<p>Esta crónica é um ensaio de opinião. Expressões como "barbárie", "homem forte", "civilização ocidental" ou "mundo partido ao meio" são utilizadas como categorias retóricas e não como classificações científicas. O texto procura identificar tensões simultâneas do presente, não declarar um colapso inevitável da democracia ou do Ocidente.</p>
+<p>Os indicadores internacionais confirmam, contudo, um recuo democrático significativo. O <em>Democracy Report 2026</em> do V-Dem contabiliza 92 autocracias e 87 democracias no final de 2025 e estima que 74% da população mundial viva em autocracias. A Freedom House, utilizando uma metodologia diferente baseada em direitos políticos e liberdades civis, registou o vigésimo ano consecutivo de declínio global da liberdade. As duas organizações não medem exactamente a mesma coisa, pelo que os seus números não devem ser tratados como estatísticas intercambiáveis.</p>
+<p>Também é importante evitar fatalismo. A própria Freedom House salienta que 88 países continuam classificados como livres e que 76 países que pertenciam a essa categoria em 2005 permaneciam livres em 2025. Democracias podem deteriorar-se, mas também possuem mecanismos de autocorrecção, alternância e resistência institucional que regimes autoritários não oferecem da mesma forma.</p>
+<p>O aumento da despesa militar é igualmente factual, mas a sua interpretação exige prudência. Segundo o SIPRI, a despesa militar mundial chegou a 2,887 biliões de dólares em 2025, o nível mais elevado da série, com aumento de 14% na Europa. Isto evidencia maior insegurança e rearmamento; não demonstra, por si só, que a diplomacia tenha desaparecido. Dissuasão, alianças, negociação e capacidade militar sempre coexistiram de formas complexas na política internacional.</p>
+<p>A erosão da confiança nas instituições fornece outro elemento do quadro. A OCDE encontrou, na sua sondagem comparativa, mais pessoas com baixa ou nenhuma confiança no governo nacional do que com confiança elevada ou moderadamente elevada. O mesmo trabalho associa confiança à percepção de capacidade de resposta, fiabilidade, justiça, integridade, abertura e possibilidade de participação política. A insatisfação democrática não nasce apenas de ideologia; nasce também da experiência concreta com instituições que parecem distantes ou incapazes de executar.</p>
+<p>A secção sobre inteligência artificial é igualmente normativa. O <em>Human Development Report 2025</em> do Programa das Nações Unidas para o Desenvolvimento insiste numa ideia próxima: o efeito da IA sobre o desenvolvimento humano dependerá das escolhas sociais, económicas e políticas que forem feitas. A tecnologia amplia possibilidades; não determina automaticamente se serão usadas para aumentar autonomia, produtividade e conhecimento ou para reforçar manipulação, desigualdade e controlo.</p>
+<p>A tese central desta crónica é, portanto, menos apocalíptica do que o seu tom por vezes sugere. O mundo actual contém progressos humanos extraordinários e riscos políticos reais ao mesmo tempo. Ciência não garante sabedoria; prosperidade não garante confiança; eleições não garantem instituições saudáveis; conectividade não garante diálogo; poder militar não substitui diplomacia; e tecnologia não decide quais os valores que uma sociedade pretende defender.</p>
+<p style="margin-bottom:0;">A civilização democrática não é um estado adquirido definitivamente. É uma prática contínua: limitar o poder, tolerar dissidência, exigir evidência, proteger instituições, corrigir erros e aceitar que adversários políticos continuam a possuir direitos. A barbárie utilizada como metáfora neste texto começa precisamente quando uma sociedade deixa de considerar essas práticas dignas do esforço necessário para as preservar.</p>
+</div>
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências internacionais</h2>
+<ul style="padding-left:22px;">
+<li><a href="https://www.v-dem.net/publications/democracy-reports/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">V-Dem Institute — Democracy Report 2026: Unraveling the Democratic Era?</a></li>
+<li><a href="https://freedomhouse.org/report/freedom-world/2026/growing-shadow-autocracy" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Freedom House — Freedom in the World 2026: The Growing Shadow of Autocracy</a></li>
+<li><a href="https://www.sipri.org/publications/2026/sipri-fact-sheets/trends-world-military-expenditure-2025" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">SIPRI — Trends in World Military Expenditure, 2025</a></li>
+<li><a href="https://www.oecd.org/en/publications/oecd-survey-on-drivers-of-trust-in-public-institutions-2024-results_9a20554b-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Survey on Drivers of Trust in Public Institutions: 2024 Results</a></li>
+<li><a href="https://www.oecd.org/en/publications/2025/06/government-at-a-glance-2025_70e14c6c.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Government at a Glance 2025</a></li>
+<li><a href="https://hdr.undp.org/content/human-development-report-2025" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">UNDP — Human Development Report 2025: A Matter of Choice</a></li>
+</ul>
+<div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+<p style="color:#cfcfcf; text-align:left;"><strong style="color:#d6a542;">Francisco Gonçalves</strong><br>Fragmentos do Caos<br>FC-Chronic-News</p>
+</div>
+</div>
+<img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_00000000bf54820c8da56db74f7acf1b_9a4dd970.jpg">
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

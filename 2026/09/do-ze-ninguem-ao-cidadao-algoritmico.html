@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Do Zé Ninguém ao Cidadão Algorítmico</title>
+<meta name="description" content="Do Zé Ninguém ao Cidadão Algorítmico">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Do Zé Ninguém ao Cidadão Algorítmico</h1>
+      <p class="meta">Publicado em 2026-09-29 19:00:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_000000008218820ca57543b853b39cbc_4884ae18.jpg" alt=""></figure>
+      <div class="post-content">
+        <!--
+FC-CHRONIC-NEWS CANONICAL 1.0
+Título: Do Zé Ninguém ao Cidadão Algorítmico
+Subtítulo: O rebanho já não precisa de pastor
+Autor: Francisco Gonçalves
+Data: 9 de Agosto de 2026
+Slug: do-ze-ninguem-ao-cidadao-algoritmico
+Estado editorial sugerido: draft
+Imagem Schema.org: substituir INSERIR_URL_DA_IMAGEM_AQUI
+-->
+
+<!-- SCHEMA.ORG INVISÍVEL -->
+<div itemscope itemtype="https://schema.org/NewsArticle"
+     style="display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;">
+  <meta itemprop="headline" content="Do Zé Ninguém ao Cidadão Algorítmico">
+  <meta itemprop="alternativeHeadline" content="O rebanho já não precisa de pastor">
+  <meta itemprop="datePublished" content="2026-08-09T19:00:00+01:00">
+  <meta itemprop="dateModified" content="2026-08-09T19:00:00+01:00">
+  <meta itemprop="description" content="O velho Zé Ninguém seguia o pastor. O cidadão algorítmico recebe uma realidade personalizada e acredita ter escolhido sozinho o caminho. Uma reflexão sobre informação, pensamento crítico, algoritmos, inteligência artificial e liberdade democrática.">
+  <meta itemprop="inLanguage" content="pt-PT">
+  <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_000000008218820ca57543b853b39cbc.png">
+  <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+    <meta itemprop="name" content="Francisco Gonçalves">
+  </span>
+  <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+    <meta itemprop="name" content="Fragmentos do Caos">
+    <span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+      <meta itemprop="url" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/08/file_000000008218820ca57543b853b39cbc.png">
+    </span>
+  </span>
+</div>
+
+<!-- FC-CHRONIC-NEWS CANONICAL CONTAINER 1 -->
+<div data-fc-format="fc-chronic-news" data-fc-version="1.0"
+     style="max-width:980px;margin:0 auto;background:#090b0e;color:#e7e7e7;font-family:Georgia,'Times New Roman',serif;padding:10px;box-sizing:border-box;">
+  <article style="background:#090b0e;border:1px solid #292d33;padding:clamp(18px,4vw,42px);box-sizing:border-box;">
+
+    <header style="text-align:center;margin:0 0 34px 0;">
+      <div style="display:inline-block;margin:0 0 14px 0;padding:7px 13px;border:1px solid #d7ad4a;color:#d7ad4a;font-family:Arial,sans-serif;font-size:.78em;letter-spacing:.16em;text-transform:uppercase;">
+        FC · Chronic · News
+      </div>
+      <h1 style="margin:0;color:#d7ad4a;font-size:clamp(2em,6vw,3.6em);line-height:1.08;font-weight:700;">Do Zé Ninguém ao Cidadão Algorítmico</h1>
+      <p style="margin:16px auto 0 auto;max-width:800px;color:#d4d4d4;font-size:clamp(1.12em,2.4vw,1.45em);line-height:1.5;font-style:italic;">
+        O rebanho já não precisa de pastor
+      </p>
+      <p style="margin:18px 0 0 0;color:#929292;font-family:Arial,sans-serif;font-size:.88em;">
+        Crónica · Democracia · Algoritmos · Redes Sociais · Inteligência Artificial · 9 de Agosto de 2026
+      </p>
+    </header>
+
+    <div style="margin:28px 0;padding:20px 22px;background:#14171b;border-top:2px solid #d7ad4a;border-bottom:1px solid #34383e;">
+      <div style="color:#d7ad4a;font-family:Arial,sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">
+        BOX DE FACTOS
+      </div>
+      <ul style="margin:0;padding-left:22px;color:#dedede;line-height:1.8;">
+        <li><strong>Género:</strong> crónica de opinião, filosofia política e crítica da cultura digital.</li>
+        <li><strong>Tema:</strong> autonomia intelectual, recomendação algorítmica, pensamento crítico e democracia.</li>
+        <li><strong>Tese:</strong> a influência contemporânea pode ser mais eficaz precisamente quando é personalizada e deixa de parecer influência.</li>
+        <li><strong>Nuance científica:</strong> algoritmos não determinam sozinhos crenças ou polarização; os efeitos variam por plataforma, contexto e utilizador.</li>
+        <li><strong>IA:</strong> pode servir tanto a investigação e a aprendizagem como a procura de confirmação das crenças existentes.</li>
+      </ul>
+    </div>
+
+    <blockquote style="margin:30px 0;padding:22px 24px;border-left:5px solid #d7ad4a;background:#15181d;color:#f3e3af;font-size:1.18em;line-height:1.85;font-style:italic;">
+      "A forma mais eficiente de influência talvez seja aquela que não parece influência."
+    </blockquote>
+
+    <!-- FC-CHRONIC-NEWS CANONICAL CONTAINER 2 -->
+    <div data-fc-section="articleBody" itemprop="articleBody" style="margin:0;padding:0;">
+      <p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Há mais de uma década escrevi sobre o Zé Ninguém.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não exactamente um homem.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma condição.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Aquela criatura social que acredita possuir opiniões próprias, mas passa grande parte da vida a receber opiniões dos outros.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que protesta contra quem lhe dizem para protestar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Admira quem lhe dizem para admirar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Teme aquilo que lhe apresentam como ameaça.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E, perante aquilo que verdadeiramente poderia mudar, encolhe os ombros:</p>
+<blockquote style="margin:26px 0;padding:17px 21px;border-left:4px solid #d7ad4a;background:#151515;color:#f3e5b5;font-size:1.12em;line-height:1.85;">"Que posso eu fazer?"</blockquote>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O Zé Ninguém não desapareceu.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Modernizou-se.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Comprou um smartphone.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Abriu contas nas redes sociais.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Fez talvez uma licenciatura.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Passou a receber milhares de informações por dia.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E ficou profundamente convencido de que finalmente pensa pela sua própria cabeça.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Foi então que o sistema descobriu que já nem sequer precisava de lhe dar um pastor.</p>
+<blockquote style="margin:26px 0;padding:17px 21px;border-left:4px solid #d7ad4a;background:#151515;color:#f3e5b5;font-size:1.12em;line-height:1.85;">Bastava dar-lhe um algoritmo.</blockquote>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Durante séculos, controlar populações exigiu trabalho.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Era necessário possuir jornais.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Controlar rádios.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Dominar púlpitos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Organizar propaganda.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Construir partidos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Colocar cartazes.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Realizar comícios.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Convencer pessoas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Tudo bastante cansativo.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Hoje conseguimos uma coisa tecnologicamente muito mais elegante.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Cada cidadão leva voluntariamente no bolso uma pequena máquina que observa aquilo que vê, aquilo que ignora, aquilo que compra, aquilo que procura, aquilo que partilha, aquilo que o irrita e aquilo que o assusta.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ninguém o obriga.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ele próprio a carrega.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Carrega-a de noite.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Consulta-a de manhã antes de olhar pela janela.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E fica perturbado quando a bateria chega aos dez por cento.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Poucos regimes políticos da história conseguiram semelhante grau de dedicação voluntária ao dispositivo de acompanhamento.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas seria demasiado fácil culpar a tecnologia.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>O algoritmo não inventou a natureza humana.</strong></p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>Apenas aprendeu a explorá-la.</strong></p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Descobriu rapidamente que não gostamos necessariamente da verdade.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Gostamos daquilo que confirma a nossa verdade.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não procuramos sempre informação.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Procuramos confirmação.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não queremos necessariamente compreender o adversário.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Queremos frequentemente derrotá-lo.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E poucas coisas produzem mais satisfação psicológica do que descobrir que aquilo em que já acreditávamos estava certo desde o princípio.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O algoritmo percebeu isto antes de muitos filósofos contemporâneos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E transformou-o num modelo de negócio.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O velho Zé Ninguém seguia o pastor.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O novo cidadão algorítmico segue-se a si próprio.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ou pelo menos assim pensa.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É uma evolução extraordinária.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>O controlo tornou-se personalizado.</strong></p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Já não é necessário dizer a milhões de pessoas exactamente a mesma coisa.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Podemos dizer a cada uma aquilo que mais provavelmente a fará permanecer diante do ecrã.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ao revoltado damos indignação.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ao medroso damos ameaças.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ao conspirativo damos conspirações.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ao vaidoso damos aplausos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ao ressentido damos culpados.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ao fanático damos inimigos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E ao cidadão moderado oferecemos suficientes absurdos dos extremos para que se sinta profundamente razoável.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Tudo personalizado.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Tudo conveniente.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Tudo seleccionado.</p>
+<blockquote style="margin:26px 0;padding:17px 21px;border-left:4px solid #d7ad4a;background:#151515;color:#f3e5b5;font-size:1.12em;line-height:1.85;">A verdade tornou-se uma experiência de utilizador.</blockquote>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É aqui que aparece um paradoxo fascinante.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nunca tivemos acesso a tanta informação.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nunca tivemos tanta facilidade em consultar livros, artigos científicos, jornais internacionais, documentos públicos, arquivos históricos e especialistas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma pessoa sentada num café de uma pequena aldeia portuguesa possui hoje acesso a mais conhecimento do que muitos reis alguma vez tiveram.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E, no entanto, acesso ao conhecimento não significa vontade de conhecer.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Podemos carregar uma biblioteca inteira no bolso e passar três horas a discutir uma frase retirada de contexto.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">A tecnologia democratizou o acesso ao conhecimento.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Também democratizou a capacidade de dizer disparates para uma audiência mundial.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Era inevitável.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">A humanidade não ia receber uma ferramenta extraordinária sem encontrar imediatamente formas criativas de a utilizar mal.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Talvez tenhamos confundido escolaridade com educação.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Diplomas com pensamento.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Informação com conhecimento.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Conhecimento com sabedoria.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não são a mesma coisa.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma sociedade pode ter mais licenciados e continuar intelectualmente vulnerável.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Pode aumentar a escolaridade e diminuir a leitura.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Pode multiplicar universidades e reduzir a curiosidade.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Pode ensinar pessoas a responder correctamente a exames sem nunca lhes ensinar a perguntar:</p>
+<blockquote style="margin:26px 0;padding:17px 21px;border-left:4px solid #d7ad4a;background:#151515;color:#f3e5b5;font-size:1.12em;line-height:1.85;">"Como sabemos que isto é verdade?"</blockquote>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E essa talvez seja uma das perguntas mais importantes da democracia.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Porque democracia não é apenas votar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É possuir cidadãos capazes de duvidar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Dos governantes.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Da oposição.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Dos jornais.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Dos especialistas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Dos influenciadores.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Dos amigos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E sobretudo de si próprios.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Esta última parte é terrivelmente inconveniente.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É relativamente fácil suspeitar dos outros.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Questionar as nossas próprias convicções exige esforço.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Significa aceitar que talvez tenhamos estado errados.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que talvez o político que admiramos tenha mentido.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que talvez a notícia que partilhámos seja falsa.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que talvez o grupo a que pertencemos não tenha sempre razão.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É muito mais confortável encontrar outro culpado.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O Zé Ninguém digital possui, portanto, uma característica profundamente humana:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">é céptico em relação a tudo aquilo de que discorda e extraordinariamente crédulo perante aquilo que confirma as suas convicções.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Exige provas impossíveis ao adversário.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Aceita um meme como prova definitiva do seu lado.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Investiga durante quinze minutos uma afirmação que o incomoda.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Partilha imediatamente aquela que o satisfaz.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Depois chama a isso pensamento crítico.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É uma expressão com excelente reputação.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Todos a querem.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Poucos apreciam realmente aquilo que implica.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Pensar criticamente não significa desconfiar de tudo.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Isso é apenas paranoia com vocabulário académico.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Significa avaliar evidências.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Comparar fontes.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Reconhecer incerteza.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Distinguir factos de opiniões.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Alterar conclusões quando os factos mudam.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E aceitar uma coisa extremamente desagradável:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">por vezes, o nosso adversário tem razão.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Esta talvez seja uma das maiores dificuldades da política contemporânea.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Já não discutimos apenas ideias.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Defendemos identidades.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Se uma ideia pertence ao nosso grupo, atacá-la parece atacar-nos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E quando política se transforma em identidade, a razão torna-se uma traição possível.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O algoritmo adora isto.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Conflito produz atenção.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Indignação produz cliques.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Medo mantém pessoas ligadas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nuance tem um pequeno problema comercial:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">é aborrecida.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">"Este assunto é complexo e existem bons argumentos de ambos os lados" dificilmente conquista milhões de visualizações.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">"ELES ESTÃO A DESTRUIR TUDO" possui melhor desempenho.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">A civilização levou milhares de anos a construir instituições capazes de moderar paixões.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Depois inventámos plataformas que descobriram que paixões são óptimas para publicidade.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Há um certo talento colectivo para complicarmos a nossa própria existência.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas não seria justo colocar toda a responsabilidade nas redes sociais.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Antes delas já existia conformismo.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Já existiam clientelismo, medo, tribalismo, submissão e culto da personalidade.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">A tecnologia apenas aumentou a velocidade.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O velho café da aldeia tinha uma bolha de opinião.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Agora chama-se comunidade digital e pode reunir dois milhões de pessoas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O boato atravessava a rua.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Agora atravessa continentes antes de alguém conseguir verificar se era verdadeiro.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">A diferença não é apenas de escala.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É de velocidade.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E velocidade altera sistemas.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Há outra transformação.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Antigamente o cidadão sabia muitas vezes que estava a seguir alguém.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Um partido.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Um líder.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Um jornal.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma igreja.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma associação.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Hoje pode acreditar que chegou sozinho às suas conclusões.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não vê o editor.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não vê os critérios de selecção.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não conhece o modelo que decidiu aquilo que apareceu primeiro.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Recebe uma sequência personalizada de conteúdos e interpreta essa sequência como realidade.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É um mecanismo extraordinariamente poderoso.</p>
+<blockquote style="margin:26px 0;padding:17px 21px;border-left:4px solid #d7ad4a;background:#151515;color:#f3e5b5;font-size:1.12em;line-height:1.85;">Porque a forma mais eficiente de influência talvez seja aquela que não parece influência.</blockquote>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O rebanho deixou de caminhar atrás de um pastor visível.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Cada ovelha recebe agora um caminho personalizado no ecrã.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Todas sentem que escolheram a direcção.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É progresso.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E depois chegou a inteligência artificial.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Aqui a questão torna-se ainda mais interessante.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Pela primeira vez, milhões de pessoas têm acesso a sistemas capazes de explicar, resumir, comparar, traduzir, analisar e ajudar a explorar praticamente qualquer assunto.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Isto pode ser uma das maiores ferramentas de emancipação intelectual da história.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ou pode tornar-se uma máquina extraordinariamente eficiente para evitar pensar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Depende da pergunta.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Podemos perguntar:</p>
+<blockquote style="margin:26px 0;padding:17px 21px;border-left:4px solid #d7ad4a;background:#151515;color:#f3e5b5;font-size:1.12em;line-height:1.85;">"Ajuda-me a compreender este problema."</blockquote>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Ou podemos perguntar:</p>
+<blockquote style="margin:26px 0;padding:17px 21px;border-left:4px solid #d7ad4a;background:#151515;color:#f3e5b5;font-size:1.12em;line-height:1.85;">"Demonstra que tenho razão."</blockquote>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">São utilizações tecnicamente semelhantes.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Intelectualmente opostas.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Uma inteligência artificial pode ampliar curiosidade.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Pode permitir confrontar argumentos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Procurar contra-exemplos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Descobrir perspectivas diferentes.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Testar hipóteses.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Aprender assuntos difíceis.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas também pode tornar-se um sofisticado fabricante de confirmação.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O velho Zé Ninguém tinha dificuldade em encontrar alguém disposto a validar todos os seus preconceitos às três da manhã.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Agora isso pode ser tecnicamente possível.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O futuro da inteligência humana dependerá também da forma como decidirmos conversar com as máquinas.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Talvez por isso a pergunta mais importante deixe de ser:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">"Temos acesso à informação?"</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Temos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E passe a ser:</p>
+<blockquote style="margin:26px 0;padding:17px 21px;border-left:4px solid #d7ad4a;background:#151515;color:#f3e5b5;font-size:1.12em;line-height:1.85;">"Que fazemos com ela?"</blockquote>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Porque a abundância criou um problema que a escassez nunca teve.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quando existe pouca informação, procuramos obtê-la.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quando existe informação infinita, precisamos de aprender a rejeitá-la.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Seleccionar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Verificar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Contextualizar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Hierarquizar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Pensar tornou-se, em parte, a arte de decidir ao que não devemos prestar atenção.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É aqui que regressamos ao velho Zé Ninguém.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O problema nunca foi apenas falta de instrução.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nem pobreza.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nem origem social.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nem nacionalidade.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Há Zés Ninguém com doutoramento.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Com gabinetes.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Com títulos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Com programas de televisão.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Com milhões de seguidores.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O Zé Ninguém é aquele que abdica da responsabilidade de pensar por si próprio enquanto acredita firmemente que o faz.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Pode ser pobre ou rico.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Analfabeto ou professor universitário.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">De esquerda ou de direita.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Progressista ou conservador.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>O conformismo não tem ideologia.</strong></p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>Adapta-se maravilhosamente a todas.</strong></p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Por isso talvez eu hoje escrevesse de maneira diferente aquilo que escrevi há mais de uma década.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não diria simplesmente:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">"o português é assim".</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Isso seria demasiado confortável.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Porque se o defeito pertence ao povo, cada um de nós fica automaticamente inocente.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É sempre "o português".</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nunca somos nós.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Hoje perguntaria:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">que instituições recompensam a obediência?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que escolas ensinam respostas antes de ensinar perguntas?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que partidos preferem militantes obedientes a cidadãos críticos?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que empresas promovem concordância e castigam dissidência?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que meios de comunicação transformam indignação em audiência?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que plataformas transformam tribalismo em lucro?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E, sobretudo:</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">que fazemos nós próprios para resistir a tudo isto?</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>A liberdade possui uma característica desagradável.</strong></p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>Dá trabalho.</strong></p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">É muito mais simples seguir.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Escolher exige responsabilidade.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Pensar exige esforço.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Questionar pode trazer solidão.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mudar de opinião pode trazer humilhação.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Discordar do nosso próprio grupo pode custar pertença.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Por isso tantas pessoas preferem uma pequena prisão confortável a uma liberdade intelectualmente exigente.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">A porta pode até estar aberta.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas sair implica decidir para onde ir.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Talvez seja esse o verdadeiro Zé Ninguém.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não aquele que não possui poder.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas aquele que desistiu de exercer o pequeno poder que ainda possui sobre si próprio.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O poder de perguntar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">De aprender.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">De dizer não.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">De mudar de opinião.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">De não partilhar imediatamente.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">De desligar o ecrã.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">De ler o argumento contrário.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">De admitir:</p>
+<blockquote style="margin:26px 0;padding:17px 21px;border-left:4px solid #d7ad4a;background:#151515;color:#f3e5b5;font-size:1.12em;line-height:1.85;">"Não sei."</blockquote>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Duas palavras extraordinárias.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Provavelmente entre as mais inteligentes que alguém pode pronunciar.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E talvez também entre as menos populares nas redes sociais.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">A democracia necessita precisamente deste cidadão.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não de alguém que saiba tudo.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas de alguém que saiba que pode estar errado.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não de pessoas sem convicções.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas de pessoas cujas convicções sobrevivam ao confronto com os factos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Não de cidadãos permanentemente revoltados.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas de cidadãos permanentemente atentos.</p>
+<blockquote style="margin:26px 0;padding:17px 21px;border-left:4px solid #d7ad4a;background:#151515;color:#f3e5b5;font-size:1.12em;line-height:1.85;">Porque o contrário da submissão não é gritar.</blockquote>
+<blockquote style="margin:26px 0;padding:17px 21px;border-left:4px solid #d7ad4a;background:#151515;color:#f3e5b5;font-size:1.12em;line-height:1.85;">É pensar.</blockquote>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Wilhelm Reich escreveu para o pequeno homem dominado pelos seus medos, ressentimentos e necessidade de submissão.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O nosso século acrescentou uma dimensão nova.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Hoje esse pequeno homem possui tecnologia suficiente para projectar esses medos sobre milhões de pessoas.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Pode também, pela primeira vez, possuir ferramentas suficientes para os compreender.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Essa talvez seja a grande bifurcação.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nunca tivemos instrumentos tão poderosos para aprender.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nunca tivemos instrumentos tão poderosos para evitar aprender.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nunca tivemos tanto acesso à diversidade de pensamento.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Nunca foi tão fácil viver dentro de uma bolha construída à nossa medida.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>Nunca fomos tão potencialmente livres.</strong></p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>Nunca fomos tão facilmente conduzidos.</strong></p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O velho Zé Ninguém perguntava:</p>
+<blockquote style="margin:26px 0;padding:17px 21px;border-left:4px solid #d7ad4a;background:#151515;color:#f3e5b5;font-size:1.12em;line-height:1.85;">"Que posso eu fazer?"</blockquote>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O cidadão algorítmico talvez devesse começar por uma coisa aparentemente pequena.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Perguntar:</p>
+<blockquote style="margin:26px 0;padding:17px 21px;border-left:4px solid #d7ad4a;background:#151515;color:#f3e5b5;font-size:1.12em;line-height:1.85;">"Porque acredito nisto?"</blockquote>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quem me disse?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que provas existem?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O que me faria mudar de opinião?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Que argumento contrário ainda não ouvi?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E quem ganha se eu continuar furioso?</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Pode parecer pouco.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Mas revoluções intelectuais começam frequentemente com perguntas pequenas.</p>
+<hr style="border:0;border-top:1px solid #343434;margin:34px 0;">
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;"><strong>O rebanho já não precisa de pastor.</strong></p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Essa é a má notícia.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">A boa é que também já não precisamos de esperar pelo pastor para descobrir outro caminho.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">O conhecimento está diante de nós.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">As ferramentas existem.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">A escolha continua nossa.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Desde que ainda sejamos capazes de distinguir uma escolha daquilo que alguém escolheu cuidadosamente mostrar-nos.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">E talvez seja aí, finalmente, que o Zé Ninguém deixa de ser ninguém.</p>
+<p style="margin:0 0 18px 0;color:#e7e7e7;font-size:1.08em;line-height:1.95;">Quando começa a pensar antes de seguir.</p>
+
+      <div style="margin:42px 0 0 0;padding:24px;background:#12151a;border:1px solid #34383e;border-left:5px solid #d7ad4a;">
+        <h2 style="margin:0 0 14px 0;color:#d7ad4a;font-size:1.45em;line-height:1.3;">Nota Editorial</h2>
+        <p style="margin:0 0 14px 0;color:#dedede;font-size:1em;line-height:1.85;">Esta crónica retoma, em chave contemporânea, a figura do "Zé Ninguém" como metáfora do indivíduo que abdica de parte da sua autonomia
+intelectual. A expressão não designa uma classe social, nível de escolaridade, nacionalidade ou posição política. O conformismo, a
+credulidade selectiva e o raciocínio motivado podem surgir em qualquer grupo e em qualquer campo ideológico.</p><p style="margin:0 0 14px 0;color:#dedede;font-size:1em;line-height:1.85;">A investigação sobre redes sociais exige também prudência. Não existe evidência séria de que um algoritmo, isoladamente, explique a
+polarização política ou determine mecanicamente aquilo em que uma pessoa acredita. Experiências de grande escala realizadas em
+Facebook e Instagram durante as eleições norte-americanas de 2020 alteraram fortemente a composição dos feeds sem produzir mudanças
+correspondentes em muitas atitudes políticas no curto prazo. Estudos posteriores noutras plataformas, porém, encontraram efeitos
+mensuráveis da recomendação algorítmica sobre exposição e, em alguns casos, sobre atitudes. A relação é, portanto, contingente:
+depende do desenho da plataforma, do contexto político, dos conteúdos, das redes sociais dos utilizadores e das predisposições humanas.</p><p style="margin:0 0 14px 0;color:#dedede;font-size:1em;line-height:1.85;">O alvo da crónica é precisamente essa interacção. Sistemas de recomendação optimizam selecção e atenção; seres humanos possuem
+tendências para confirmação, identidade de grupo, indignação e procura selectiva de informação; actores políticos e económicos
+competem por visibilidade. O resultado pode ser um ambiente em que a influência se torna menos visível porque chega personalizada.</p><p style="margin:0 0 14px 0;color:#dedede;font-size:1em;line-height:1.85;">A inteligência artificial acrescenta uma nova camada. Pode ampliar aprendizagem, comparação de argumentos e acesso ao conhecimento,
+mas também pode ser utilizada como instrumento de confirmação das convicções do utilizador. Por isso, literacia mediática, verificação
+de fontes, disposição para rever crenças e capacidade de perguntar "o que me faria mudar de opinião?" tornam-se competências
+democráticas tão relevantes como o simples acesso à informação.</p>
+      </div>
+
+      <div style="margin:34px 0 0 0;padding:22px;background:#101318;border:1px solid #2c3036;">
+        <h2 style="margin:0 0 16px 0;color:#d7ad4a;font-size:1.4em;">Referências e enquadramento internacional</h2>
+        <ol style="margin:0;padding-left:24px;color:#ddd;font-size:.98em;line-height:1.75;">
+          <li style="margin:0 0 14px 0;"><a href="https://www.science.org/doi/10.1126/science.abp9364" target="_blank" rel="noopener noreferrer" style="color:#d7ad4a;text-decoration:none;">Andrew M. Guess et al. — "How do social media feed algorithms affect attitudes and behavior in an election campaign?", Science, 381, 2023. Uma experiência em Facebook e Instagram durante as eleições norte-americanas de 2020 encontrou mudanças substanciais naquilo a que os utilizadores eram expostos quando o feed era alterado, mas efeitos limitados nas atitudes políticas medidas no curto prazo.</a></li>
+<li style="margin:0 0 14px 0;"><a href="https://www.nature.com/articles/s41586-023-06297-w" target="_blank" rel="noopener noreferrer" style="color:#d7ad4a;text-decoration:none;">Brendan Nyhan et al. — "Like-minded sources on Facebook are prevalent but not polarizing", Nature, 620, 2023. O estudo encontrou exposição significativa a fontes politicamente alinhadas, mas não observou alterações mensuráveis em várias atitudes após reduzir esse conteúdo durante o período experimental.</a></li>
+<li style="margin:0 0 14px 0;"><a href="https://www.nature.com/articles/s41586-026-10098-2" target="_blank" rel="noopener noreferrer" style="color:#d7ad4a;text-decoration:none;">G. Gauthier et al. — "The political effects of X's feed algorithm", Nature, 2026. Investigação experimental mais recente encontrou que o feed algorítmico do X alterou a exposição política e produziu mudanças em algumas atitudes políticas dos participantes, mostrando que os efeitos podem depender da plataforma e do contexto.</a></li>
+<li style="margin:0 0 14px 0;"><a href="https://www.nature.com/articles/s41586-026-10447-1" target="_blank" rel="noopener noreferrer" style="color:#d7ad4a;text-decoration:none;">H. Ibrahim et al. — "Systematic partisan content skews in TikTok during the 2024 U.S. presidential election", Nature, 2026. O estudo documenta assimetrias partidárias na exposição a informação política numa plataforma fortemente dependente de recomendações algorítmicas.</a></li>
+<li style="margin:0 0 14px 0;"><a href="https://www.science.org/doi/10.1126/science.adl2829" target="_blank" rel="noopener noreferrer" style="color:#d7ad4a;text-decoration:none;">K. L. McLoughlin et al. — "Misinformation exploits outrage to spread online", Science, 2024. O trabalho analisa, em múltiplas plataformas e períodos, a relação entre indignação moral, partilha e disseminação de desinformação.</a></li>
+<li style="margin:0 0 14px 0;"><a href="https://www.oecd.org/en/publications/facts-not-fakes-tackling-disinformation-strengthening-information-integrity_d909ff7a-en.html" target="_blank" rel="noopener noreferrer" style="color:#d7ad4a;text-decoration:none;">OECD — "Facts not Fakes: Tackling Disinformation, Strengthening Information Integrity", 2024. A OCDE relaciona desinformação, polarização e erosão da confiança nas instituições democráticas e propõe reforço da integridade dos ecossistemas de informação, transparência e literacia mediática.</a></li>
+<li style="margin:0 0 14px 0;"><a href="https://www.oecd.org/en/publications/oecd-digital-economy-outlook-2024-volume-2_3adf705b-en/full-report/media-consumption-and-privacy_31ab2233.html" target="_blank" rel="noopener noreferrer" style="color:#d7ad4a;text-decoration:none;">OECD — Digital Economy Outlook 2024, Volume 2: Media consumption and privacy. A OCDE destaca a literacia mediática e a capacidade de detectar conteúdos falsos ou enganosos como parte importante da resposta aos riscos digitais.</a></li>
+<li style="margin:0 0 14px 0;"><a href="https://www.unesco.org/en/articles/media-and-information-literacy-and-digital-competencies" target="_blank" rel="noopener noreferrer" style="color:#d7ad4a;text-decoration:none;">UNESCO — Media and Information Literacy and Digital Competencies, 2025. A UNESCO apresenta a literacia mediática e informacional como ferramenta para pensamento crítico, avaliação de informação, uso responsável da inteligência artificial e resistência à desinformação.</a></li>
+<li style="margin:0 0 14px 0;"><a href="https://www.unesco.org/en/articles/ai-can-make-mistakes-why-media-literacy-matters-more-ever" target="_blank" rel="noopener noreferrer" style="color:#d7ad4a;text-decoration:none;">UNESCO — "AI can make mistakes: Why media literacy matters more than ever", 2025. A UNESCO sublinha que sistemas de IA podem produzir informação errada e que o pensamento crítico continua a ser essencial para avaliar conteúdos gerados ou mediados por inteligência artificial.</a></li>
+        </ol>
+      </div>
+
+      <footer style="margin:40px 0 0 0;padding-top:24px;border-top:1px solid #34383e;text-align:right;">
+        <p style="margin:0;color:#d7ad4a;font-size:1.12em;font-weight:700;">Francisco Gonçalves</p>
+        <p style="margin:5px 0 0 0;color:#888;font-family:Arial,sans-serif;font-size:.86em;">
+          Fragmentos do Caos · 9 de Agosto de 2026
+        </p>
+      </footer>
+    </div>
+<blockquote style="color:#ffcc67;">
+A civilização não será salva por máquinas mais inteligentes, mas por humanos suficientemente educados para saberem o que fazer com elas.
+</blockquote>
+- Francisco Gonçalves (2026)
+  </article>
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

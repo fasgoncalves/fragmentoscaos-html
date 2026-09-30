@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Da Escola Seletiva à Escola Facilitada — Quando a Inclusão se Confunde com a Exigência</title>
+<meta name="description" content="Da Escola Seletiva à Escola Facilitada — Quando a Inclusão se Confunde com a Exigência">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Da Escola Seletiva à Escola Facilitada — Quando a Inclusão se Confunde com a Exigência</h1>
+      <p class="meta">Publicado em 2026-09-28 10:45:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_0000000087b081f4943e05b369c299aa_c69725f0.jpg" alt=""></figure>
+      <div class="post-content">
+        <article class="fc-chronic-news">
+<header class="fc-header">
+  <p class="fc-kicker">FC‑CHRONIC‑NEWS · EDUCAÇÃO · SOCIEDADE · INTELIGÊNCIA ARTIFICIAL</p>
+  <h1>Da Escola Seletiva à Escola Facilitada — Quando a Inclusão se Confunde com a Exigência</h1>
+  <p class="fc-subtitle">Quando a inclusão se confunde com a exigência</p>
+  <p class="fc-byline">Por <strong>Francisco António dos Santos Gonçalves</strong> · Coautoria e investigação: <strong>Augustus Veritas — AI Assistant</strong></p>
+</header>
+<section class="fc-content">
+<p>Não reconhecer entre quatro possibilidades aquilo que talvez soubesse. Não eliminar duas respostas absurdas e escolher entre as restantes. Não confiar que uma pergunta particularmente infeliz pudesse desaparecer do cálculo da classificação.</p>
+<p>Tinha de escrever. Tinha de calcular. Tinha de explicar.</p>
+<p>E, em determinados exames, tinha depois de se sentar perante professores e responder oralmente às perguntas que lhe fossem colocadas.</p>
+<p>Quem viveu a escola portuguesa dos anos 50 e 60 conhece este sistema. Mas não precisamos da memória de quem o viveu para demonstrá-lo. Os documentos oficiais estão disponíveis.</p>
+<p>O antigo exame de admissão ao liceu incluía ditado, redação, dez perguntas de Aritmética e Geometria, três problemas e uma prova prática de desenho. Seguiam-se provas orais de Português, História e Geografia de Portugal e Aritmética e Geometria.</p>
+<p>Não havia botão de "pesquisar". Não havia quatro hipóteses à espera de serem reconhecidas. E, evidentemente, não havia inteligência artificial pronta a construir uma resposta impecável para uma pergunta que o aluno não compreendera.</p>
+<p>Havia uma coisa hoje estranhamente revolucionária: <strong>era preciso saber.</strong></p>
+<h2>Não confundamos isto com nostalgia</h2>
+<p>A escola portuguesa desse período tinha um defeito gigantesco que não pode ser branqueado. Era profundamente seletiva.</p>
+<p>Em 1961, a taxa real de escolarização rondava 80% no primeiro ciclo, mas descia para cerca de 7,5% no segundo ciclo, 6,1% no terceiro e apenas 1,3% no ensino secundário.</p>
+<p>Isto significa que comparar simplesmente "os alunos de antigamente" com "os alunos de hoje" seria intelectualmente desonesto. Os alunos que chegavam aos níveis superiores constituíam uma população fortemente selecionada social e academicamente.</p>
+<p>Portugal precisava, portanto, de democratizar o ensino. Precisava desesperadamente.</p>
+<p>Uma democracia moderna não poderia aceitar uma sociedade em que o ensino secundário fosse privilégio de uma minoria. A extraordinária expansão da escolaridade portuguesa foi uma conquista civilizacional.</p>
+<p>Mas daqui não resulta uma conclusão que parece ter-se infiltrado progressivamente no nosso pensamento educativo: <strong>que democratizar o acesso ao conhecimento exige democratizar também a aprovação.</strong></p>
+<p>São coisas completamente diferentes.</p>
+<h2>Inclusão não significa aprovação</h2>
+<p>Uma escola inclusiva deve fazer tudo aquilo que estiver razoavelmente ao seu alcance para permitir que cada criança aprenda.</p>
+<p>Deve compensar desigualdades sociais. Deve apoiar quem tem dificuldades. Deve proporcionar professores competentes, materiais adequados, alimentação, acompanhamento psicológico quando necessário, tecnologia, bibliotecas e oportunidades adicionais de aprendizagem.</p>
+<p>Deve adaptar métodos quando diferentes alunos necessitam de caminhos diferentes para chegar ao conhecimento.</p>
+<p>Mas existe uma fronteira que não deveria atravessar: <strong>não pode transformar a dificuldade do aluno em redução artificial do conhecimento que lhe é exigido.</strong></p>
+<p>Porque nesse momento deixou de combater a desigualdade. Passou simplesmente a certificá-la.</p>
+<p>Se dois alunos recebem o mesmo diploma, esse diploma deveria significar aproximadamente a mesma coisa sobre aquilo que ambos sabem e conseguem fazer. Caso contrário, a inclusão torna-se uma ficção administrativa.</p>
+<h2>Reconhecer não é recordar</h2>
+<p>Existe uma diferença cognitiva importante entre diferentes formas de avaliação.</p>
+<p>Imagine-se uma pergunta: <em>Qual das seguintes opções identifica corretamente a causa de determinado acontecimento histórico?</em></p>
+<p>O aluno recebe quatro possibilidades. Pode conhecer a resposta. Pode reconhecê-la vagamente. Pode eliminar duas alternativas evidentemente erradas. Pode hesitar entre duas. Pode acertar.</p>
+<p>Agora retiremos as opções. <em>Explique as causas desse acontecimento histórico e relacione-as com as suas consequências políticas e económicas.</em></p>
+<p>Mudámos completamente o problema. O aluno tem agora de recuperar informação da memória, selecionar aquilo que é relevante, estabelecer relações, organizar o pensamento e construir uma resposta linguisticamente coerente.</p>
+<p>E acrescentemos uma prova oral. — Por que razão afirma isso? O aluno responde. — Então explique-me como relaciona esse facto com aquilo que aconteceu dez anos depois.</p>
+<p>Subitamente já não estamos apenas a testar memória. Estamos a testar <strong>conhecimento, compreensão, recuperação, raciocínio, linguagem e capacidade argumentativa</strong>.</p>
+<p>É extraordinariamente difícil esconder durante uma oral aquilo que não se sabe.</p>
+<h2>Mas os exames atuais não são apenas cruzinhas</h2>
+<p>É precisamente aqui que uma crítica séria ao sistema educativo deve evitar a caricatura.</p>
+<p>Os exames nacionais portugueses atuais não são simples testes de escolha múltipla. Português continua a exigir interpretação e produção escrita. Matemática inclui itens de construção nos quais o aluno precisa de apresentar raciocínio e resolução. Existem perguntas classificadas pelo próprio IAVE como cognitivamente complexas.</p>
+<p>Também o PISA não consiste exclusivamente em escolha múltipla. O quadro de Matemática do PISA 2022 utiliza resposta construída aberta, resposta construída fechada e resposta selecionada. Portanto, afirmar que "antigamente havia exames e agora há apenas cruzinhas" seria falso.</p>
+<p>A transformação foi mais subtil. E talvez mais importante.</p>
+<p>O que praticamente desapareceu da avaliação externa generalizada foi <strong>a defesa individual do conhecimento perante outro ser humano</strong>.</p>
+<p>A oral. Aquela situação desconfortável em que não existe menu, algoritmo ou alternativa para selecionar. Existe apenas uma pergunta: — Explique. E depois a pergunta mais perigosa de todas: — Porquê?</p>
+<h2>A memória foi transformada em suspeita pedagógica</h2>
+<p>Depois do 25 de Abril houve razões compreensíveis para criticar uma escola excessivamente baseada na memorização.</p>
+<p>Decorar sem compreender é pedagogicamente pobre. Um aluno pode recitar uma definição sem compreender uma única das suas consequências. Pode memorizar uma fórmula sem saber quando aplicá-la. Pode decorar acontecimentos históricos sem perceber as relações causais entre eles.</p>
+<p>Mas dessa constatação correta nasceu, demasiadas vezes, uma conclusão errada: <strong>se memorizar não é compreender, então memorizar é pouco importante.</strong></p>
+<p>Não. Sem memória não existe conhecimento. E sem conhecimento não existe pensamento complexo.</p>
+<p>Para pensar História é necessário conhecer História. Para raciocinar matematicamente é necessário possuir estruturas matemáticas interiorizadas. Para interpretar literatura é necessário possuir vocabulário, referências culturais e domínio linguístico. Para pensar criticamente é necessário ter alguma coisa sobre a qual exercer o pensamento crítico.</p>
+<p>A investigação contemporânea ajuda a separar os conceitos: a OCDE mostra que a memorização, quando usada isoladamente, é insuficiente perante problemas matemáticos complexos; em paralelo, a investigação sobre <em>retrieval practice</em> mostra benefícios consistentes da recuperação ativa de conhecimento previamente aprendido. A oposição útil não é, portanto, memória contra raciocínio, mas memória mecânica contra conhecimento compreendido e recuperável.</p>
+<p>Google não substituiu a memória. A Wikipédia não substituiu o conhecimento. E o ChatGPT também não o fará. Pelo contrário.</p>
+<h2>A inteligência artificial torna o conhecimento humano ainda mais importante</h2>
+<p>Estamos agora a entrar numa época em que praticamente qualquer aluno pode produzir, em segundos, uma resposta aparentemente sofisticada sobre quase qualquer assunto.</p>
+<p>É precisamente agora que recuperar autonomamente conhecimento se torna mais importante. Porque existe uma diferença gigantesca entre produzir uma resposta e compreender uma resposta.</p>
+<p>Um aluno sem conhecimento interiorizado pode perguntar a uma inteligência artificial e receber uma página brilhante. Mas como saberá se está correta? Como identificará uma invenção? Como perceberá uma contradição? Como formulará sequer uma boa pergunta se não possui um modelo mental do problema?</p>
+<p>A ironia é extraordinária. Durante décadas fomos construindo uma sociedade em que parecia cada vez menos necessário memorizar porque a informação estava sempre disponível. Agora construímos máquinas capazes de produzir a própria informação.</p>
+<p>E descobriremos talvez que aquilo de que o ser humano mais necessita não é de acesso à informação. É de <strong>conhecimento interiorizado suficiente para julgá-la</strong>.</p>
+<h2>O PISA deveria preocupar-nos por outra razão</h2>
+<p>Portugal obteve no PISA 2022 resultados próximos da média da OCDE, mas inferiores aos alcançados anteriormente.</p>
+<p>Mais importante do que discutir algumas posições num ranking é observar quantos alunos conseguem atingir os níveis elevados de competência. Em Portugal, 7% atingiram os níveis 5 ou 6 em Matemática e 5% os níveis superiores em Leitura e Ciências.</p>
+<p>O problema não parece ser simplesmente que os alunos "não sabem coisas". É que demasiados alunos têm dificuldade quando precisam de transformar conhecimento em instrumento autónomo de raciocínio.</p>
+<p>E isso deveria levar-nos a recuperar uma ideia antiga sem recuperar a escola antiga. <strong>Exigir.</strong></p>
+<h2>A escola antiga não deve regressar</h2>
+<p>Não quero a escola portuguesa de 1960. Uma escola que deixava grande parte das crianças pelo caminho não constitui modelo para uma democracia do século XXI.</p>
+<p>Quero precisamente o contrário. Quero que todos possam chegar onde antigamente apenas alguns chegavam. Mas quero que, quando lá chegarem, saibam.</p>
+<p>Esta diferença é fundamental. Não precisamos de recuperar a exclusão social. Precisamos de recuperar a <strong>exigência intelectual</strong>.</p>
+<p>Uma escola moderna deveria combinar aquilo que aprendemos durante décadas de pedagogia com aquilo que talvez tenhamos abandonado demasiado depressa: <strong>compreender e memorizar; conhecer e raciocinar; escrever e argumentar; resolver e explicar; aprender e demonstrar que se aprendeu.</strong></p>
+<p>E talvez devêssemos recuperar, pelo menos em momentos fundamentais do percurso escolar, alguma forma de avaliação oral individual.</p>
+<p>Não como instrumento de humilhação. Como instrumento de conhecimento.</p>
+<p>— Explique-me isto. — Porquê? — Demonstre. — E se esta condição mudar?</p>
+<p>Quatro perguntas extraordinariamente simples. E tremendamente difíceis para quem não sabe.</p>
+<h2>O direito de aprender não é o direito de passar</h2>
+<p>Talvez este seja o equívoco fundamental.</p>
+<p>Uma democracia deve garantir a cada criança <strong>o direito de aprender</strong>.</p>
+<p>Não pode garantir que todas aprenderão exatamente o mesmo, no mesmo tempo e com a mesma facilidade. Pode — e deve — proporcionar novas oportunidades a quem não conseguiu. Pode ensinar novamente. Pode apoiar. Pode encontrar outros métodos. Pode combater as desigualdades que entram diariamente pela porta da escola.</p>
+<p>Mas há uma coisa que nenhuma pedagogia pode abolir por decreto: <strong>entre não saber e saber existe trabalho.</strong></p>
+<p>E o diploma deveria continuar a representar o momento em que a sociedade pode dizer: este aluno demonstrou que sabe.</p>
+<p>Não que frequentou. Não que esteve presente. Não que realizou suficientes tarefas. Não que o sistema precisava de melhorar estatísticas. <strong>Que sabe.</strong></p>
+<p>Foi correto abrir a escola a todos. Foi uma das grandes conquistas portuguesas do último meio século.</p>
+<p>O erro seria imaginar que, porque todos devem ter oportunidade de chegar ao topo da montanha, precisamos de baixar a montanha.</p>
+<p>A verdadeira inclusão é muito mais ambiciosa. <strong>É dar a todos os instrumentos para a subir.</strong></p>
+</section>
+<aside class="fc-editorial-note">
+  <h2>Nota editorial</h2>
+  <p>Esta crónica não defende o regresso ao sistema educativo português anterior à democracia, marcado por fortes desigualdades sociais e por uma escolarização muito limitada nos níveis superiores. Distingue deliberadamente <strong>acesso ao ensino</strong>, que deve ser universal, de <strong>exigência académica</strong>, que determina o significado das qualificações atribuídas. Também não sustenta que os atuais exames nacionais ou o PISA sejam constituídos apenas por perguntas de escolha múltipla. Ambos incluem formas de resposta construída e avaliação de competências complexas. A comparação histórica incide sobretudo sobre a alteração dos mecanismos de recuperação autónoma, produção escrita e avaliação oral do conhecimento.</p>
+</aside>
+<section class="fc-references">
+  <h2>Referências e fontes</h2>
+  <ol>
+<li><a href="https://www.oecd.org/en/publications/pisa-2022-results-volume-i-and-ii-country-notes_ed6fbcc5-en/portugal_777942d5-en.html" target="_blank" rel="noopener noreferrer">OECD — PISA 2022 Results, Country Note: Portugal</a></li>
+<li><a href="https://www.oecd.org/en/publications/pisa-2022-assessment-and-analytical-framework_dfe0bf9c-en.html" target="_blank" rel="noopener noreferrer">OECD — PISA 2022 Assessment and Analytical Framework</a></li>
+<li><a href="https://www.oecd.org/en/publications/pisa-2022-assessment-and-analytical-framework_dfe0bf9c-en/full-report/component-3.html" target="_blank" rel="noopener noreferrer">OECD — PISA 2022 Mathematics Framework: item formats</a></li>
+<li><a href="https://www.oecd.org/en/publications/is-memorisation-a-good-strategy-for-learning-mathematics_5jm29kw38mlq-en.html" target="_blank" rel="noopener noreferrer">OECD — Is memorisation a good strategy for learning mathematics?</a></li>
+<li><a href="https://www.oecd.org/en/publications/how-teachers-teach-and-students-learn_5jm29kpt0xxx-en.html" target="_blank" rel="noopener noreferrer">OECD — How teachers teach and students learn</a></li>
+<li><a href="https://educationendowmentfoundation.org.uk/news/does-research-on-retrieval-practice-translate-into-classroom-practice" target="_blank" rel="noopener noreferrer">Education Endowment Foundation — Retrieval practice and classroom evidence</a></li>
+<li><a href="https://diariodarepublica.pt/dr/detalhe/decreto-lei/262-1970-142560" target="_blank" rel="noopener noreferrer">Diário da República — Decreto-Lei n.º 262/70, regime de exames liceais</a></li>
+<li><a href="https://www.pordata.pt/portugal/taxa+real+de+escolarizacao-987" target="_blank" rel="noopener noreferrer">PORDATA — Taxa real de escolarização em Portugal</a></li>
+<li><a href="https://iave.pt/" target="_blank" rel="noopener noreferrer">IAVE — Instituto de Avaliação Educativa</a></li>
+  </ol>
+</section>
+<footer class="fc-footer">
+  <p><strong>Francisco António dos Santos Gonçalves</strong><br>Augustus Veritas — AI Assistant<br><em>Reflexão, investigação e análise</em></p>
+</footer>
+</article><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

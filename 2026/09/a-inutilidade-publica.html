@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Inutilidade Pública</title>
+<meta name="description" content="A Inutilidade Pública">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Inutilidade Pública</h1>
+      <p class="meta">Publicado em 2026-09-29 17:50:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/09/file_0000000071e0821091e3c3a38cda6442_5273300d.jpg" alt=""></figure>
+      <div class="post-content">
+        <article class="fc-chronic-news" data-format="fc-chronic-news-canonical">
+<header><h1>A Inutilidade Pública</h1><p class="fc-subtitle"><em>Quando a máquina funciona perfeitamente — mas já ninguém sabe para quê</em></p><p class="fc-byline"><strong>Francisco Gonçalves & Augustus Veritas — AI Assistant</strong></p></header>
+<p>Portugal conhece bem a expressão <strong>"utilidade pública"</strong>. É uma designação respeitável. Pressupõe que determinada instituição, associação, serviço ou atividade presta à comunidade um benefício que justifica o seu reconhecimento.</p>
+<p>Talvez esteja na altura de introduzirmos o conceito simétrico:</p>
+<p><strong>a Inutilidade Pública.</strong></p>
+<p>Não proponho, evidentemente, a criação de um Instituto Nacional da Inutilidade Pública. Seria começar precisamente pelo problema que pretendemos estudar.</p>
+<p>A inutilidade pública não significa necessariamente incompetência. Também não significa que as pessoas que trabalham numa determinada instituição sejam inúteis. Muitas vezes são profissionais competentes, presos dentro de estruturas concebidas noutra época, submetidos a procedimentos absurdos e obrigados a alimentar uma máquina administrativa cuja finalidade se foi perdendo pelo caminho.</p>
+<p>A questão é outra:</p>
+<p><strong>quanto valor recebe a sociedade por cada euro, cada hora e cada procedimento que essa máquina consome?</strong></p>
+<p>E esta pergunta, aparentemente simples, pode tornar-se profundamente incómoda.</p>
+<h2>A atividade não é utilidade</h2>
+<p>Há uma confusão particularmente perigosa nas organizações públicas: confundir <strong>atividade com resultado</strong>.</p>
+<p>Uma instituição pode realizar centenas de reuniões.</p>
+<p>Produzir milhares de páginas de relatórios.</p>
+<p>Criar comissões.</p>
+<p>Nomear grupos de trabalho.</p>
+<p>Publicar despachos.</p>
+<p>Definir indicadores.</p>
+<p>Elaborar planos estratégicos.</p>
+<p>Contratar consultores.</p>
+<p>Criar observatórios.</p>
+<p>Produzir relatórios sobre os relatórios anteriores.</p>
+<p>E continuar sem resolver o problema que justificou a sua existência.</p>
+<p>A burocracia possui esta propriedade extraordinária: <strong>é capaz de transformar a ausência de resultados numa enorme quantidade de trabalho.</strong></p>
+<p>No final do ano haverá gráficos, apresentações, atas, mapas de execução, indicadores e um relatório de atividades suficientemente pesado para provar que toda a gente esteve ocupadíssima.</p>
+<p>Falta apenas uma pequena pergunta:</p>
+<p><strong>Serviu para quê?</strong></p>
+<h2>O cidadão como combustível administrativo</h2>
+<p>A inutilidade pública tem outra característica curiosa: frequentemente transfere para o cidadão o custo da sua própria ineficiência.</p>
+<p>É o cidadão que procura o documento.</p>
+<p>É o cidadão que preenche o formulário.</p>
+<p>É o cidadão que descobre qual organismo é competente.</p>
+<p>É o cidadão que telefona.</p>
+<p>É o cidadão que espera.</p>
+<p>É o cidadão que volta porque faltava uma declaração que ninguém lhe tinha dito ser necessária.</p>
+<p>E, quando finalmente consegue resolver o problema, considera-se que o serviço público funcionou.</p>
+<p>Não.</p>
+<p><strong>O cidadão é que conseguiu sobreviver ao serviço público.</strong></p>
+<p>Esta diferença é importante.</p>
+<p>Um sistema administrativo moderno deveria partir de um princípio elementar: a informação que o Estado já possui não deveria ter de ser continuamente fornecida pelo cidadão ao próprio Estado.</p>
+<p>Um computador dos anos 70 tinha desculpa para não comunicar com outro computador.</p>
+<p>Em 2026, já começa a ser difícil explicar ao contribuinte por que razão dois organismos públicos continuam a comportar-se como civilizações que ainda não estabeleceram relações diplomáticas.</p>
+<h2>A Lei da Conservação Burocrática</h2>
+<p>Existe depois um fenómeno fascinante.</p>
+<p>As instituições nascem para resolver problemas.</p>
+<p>Algumas resolvem-nos.</p>
+<p>Outras descobrem que o problema mudou.</p>
+<p>Outras ainda verificam que determinadas funções poderiam hoje ser automatizadas, fundidas ou simplesmente eliminadas.</p>
+<p>Seria razoável esperar que, desaparecendo a necessidade, desaparecesse a estrutura.</p>
+<p>Mas as organizações desenvolveram uma extraordinária capacidade de sobrevivência.</p>
+<p>Chamemos-lhe a <strong>Lei da Conservação Burocrática</strong>:</p>
+<blockquote><strong>Uma estrutura administrativa tende a continuar a existir depois de desaparecer a razão que justificou a sua criação.</strong></blockquote>
+<p>Quando a missão enfraquece, surge uma nova missão.</p>
+<p>Depois uma competência complementar.</p>
+<p>Depois uma unidade de acompanhamento dessa competência.</p>
+<p>Depois um observatório.</p>
+<p>Depois uma comissão para avaliar o observatório.</p>
+<p>E, naturalmente, um relatório sobre a necessidade de reforçar os meios.</p>
+<p>A organização que inicialmente existia para resolver um problema passa lentamente a ter outro problema fundamental para resolver:</p>
+<p><strong>garantir a sua própria existência.</strong></p>
+<h2>O Índice de Inutilidade Pública</h2>
+<p>Talvez devêssemos começar a medir esta realidade.</p>
+<p>Proponho, com alguma provocação mas com intenção bastante séria, um <strong>Índice de Inutilidade Pública — IIP</strong>.</p>
+<p>Conceptualmente:</p>
+<p class="fc-formula"><strong>IIP = (C + B + T + D) / V<sub>p</sub></strong></p>
+<p>onde:</p>
+<p><strong>C</strong> = custo público da estrutura;<br><strong>B</strong> = carga burocrática criada;<br><strong>T</strong> = tempo imposto aos cidadãos e empresas;<br><strong>D</strong> = duplicação de funções já realizadas por outras estruturas;<br><strong>V<sub>p</sub></strong> = valor público efetivamente produzido.</p>
+<p>Não pretendo apresentar isto como uma equação científica pronta a aplicar. É um modelo conceptual.</p>
+<p>Mas reparem na consequência.</p>
+<p>Uma instituição cara pode ter um IIP muito baixo se produzir enorme valor social.</p>
+<p>Um hospital custa muito dinheiro. Uma universidade também. Uma rede de emergência, tribunais, escolas, investigação científica, infraestruturas ou proteção civil podem consumir recursos consideráveis e continuar a representar enorme <strong>utilidade pública</strong>.</p>
+<p>Portanto, cortar despesa indiscriminadamente seria uma estupidez simétrica àquela que estamos a criticar.</p>
+<p>A pergunta não é:</p>
+<p><strong>"Quanto custa?"</strong></p>
+<p>É:</p>
+<p><strong>"O que produz em relação ao que custa?"</strong></p>
+<h2>Não confundamos Estado com burocracia</h2>
+<p>É importante estabelecer esta fronteira.</p>
+<p>Criticar a inutilidade pública não significa defender um Estado inexistente.</p>
+<p>Uma sociedade complexa necessita de instituições fortes.</p>
+<p>Precisamos de justiça que funcione.</p>
+<p>Precisamos de saúde pública.</p>
+<p>Precisamos de educação.</p>
+<p>Precisamos de segurança, regulação, fiscalização, ciência, proteção social e infraestruturas.</p>
+<p>Precisamente porque essas funções são essenciais, os recursos públicos não deveriam ser desperdiçados em estruturas que pouco acrescentam.</p>
+<p><strong>Cada euro consumido pela inutilidade é um euro que deixa de estar disponível para a utilidade.</strong></p>
+<p>O combate à inutilidade pública é, portanto, também uma defesa do próprio serviço público.</p>
+<h2>Digitalizar o absurdo continua a produzir absurdo</h2>
+<p>Portugal fez enormes progressos na digitalização da Administração Pública.</p>
+<p>Mas existe uma armadilha tecnológica que conheço bem depois de décadas de informática:</p>
+<p><strong>automatizar um processo absurdo não o torna inteligente.</strong></p>
+<p>Torna-o apenas um absurdo mais rápido.</p>
+<p>Antes de informatizar qualquer procedimento deveriam existir três perguntas:</p>
+<p><strong>Porque existe?</strong></p>
+<p><strong>Continua a ser necessário?</strong></p>
+<p><strong>Pode ser eliminado?</strong></p>
+<p>Só depois deveria surgir a quarta:</p>
+<p><strong>Como o digitalizamos?</strong></p>
+<p>Caso contrário, substituímos seis carimbos físicos por seis botões eletrónicos e anunciamos uma transformação digital.</p>
+<p>O cidadão deixa de estar numa fila diante de um balcão e passa a estar diante de um browser.</p>
+<p>É progresso, certamente.</p>
+<p>Mas talvez não seja ainda inteligência administrativa.</p>
+<h2>A pergunta proibida</h2>
+<p>Há uma pergunta que todas as organizações deveriam ser obrigadas periodicamente a responder:</p>
+<blockquote><strong>Se esta instituição não existisse amanhã, o que deixaria concretamente de funcionar?</strong></blockquote>
+<p>Não vale responder com a própria atividade.</p>
+<p>"Produzimos pareceres" não basta.</p>
+<p>"Realizamos reuniões" não basta.</p>
+<p>"Coordenamos entidades" não basta.</p>
+<p>"Monitorizamos políticas" não basta.</p>
+<p>É necessário identificar <strong>resultados observáveis para a sociedade</strong>.</p>
+<p>E depois uma segunda pergunta, ainda mais perigosa:</p>
+<blockquote><strong>Esses resultados poderiam ser obtidos de forma mais simples, barata e rápida por outra estrutura já existente?</strong></blockquote>
+<p>Se a resposta for sim, temos um candidato interessante à categoria de <strong>Inutilidade Pública</strong>.</p>
+<h2>Certificado de Inutilidade Pública</h2>
+<p>Imagino até, com alguma maldade, uma cerimónia anual.</p>
+<p>No palco, solenemente, seria entregue o:</p>
+<h3>Certificado Nacional de Inutilidade Pública</h3>
+<p>Categorias:</p>
+<ul><li>Maior número de formulários para resolver o problema mais simples;</li><li>Melhor duplicação de competências entre organismos;</li><li>Comissão com maior longevidade sem conclusão conhecida;</li><li>Plataforma digital que exige imprimir um documento;</li><li>Organismo que pede ao cidadão informação que outro organismo do Estado já possui;</li><li>Melhor relatório produzido para justificar a produção do relatório seguinte.</li></ul>
+<p>O problema é que provavelmente precisaríamos de um júri.</p>
+<p>Depois de uma comissão para escolher o júri.</p>
+<p>E de um regulamento para definir a comissão.</p>
+<p>Talvez seja melhor abandonar a ideia antes que alguém a transforme num instituto público.</p>
+<h2>Governar também é eliminar</h2>
+<p>Existe uma conceção infantil da governação segundo a qual reformar significa sempre <strong>criar alguma coisa</strong>.</p>
+<p>Criar um programa.</p>
+<p>Criar um organismo.</p>
+<p>Criar um gabinete.</p>
+<p>Criar um apoio.</p>
+<p>Criar uma comissão.</p>
+<p>Criar uma plataforma.</p>
+<p>Mas governar também deveria significar:</p>
+<p><strong>eliminar.</strong></p>
+<p>Eliminar procedimentos.</p>
+<p>Eliminar redundâncias.</p>
+<p>Eliminar organismos cuja função terminou.</p>
+<p>Eliminar autorizações sem utilidade.</p>
+<p>Eliminar pedidos repetidos de informação.</p>
+<p>Eliminar legislação obsoleta.</p>
+<p>Eliminar etapas que existem apenas porque sempre existiram.</p>
+<p>Há uma enorme diferença entre um Estado forte e um Estado gordo.</p>
+<p><strong>O primeiro consegue fazer. O segundo consegue ocupar espaço.</strong></p>
+<h2>Uma Administração Pública deveria ter memória — mas também esquecimento</h2>
+<p>Os sistemas vivos sobrevivem porque conseguem adaptar-se.</p>
+<p>As empresas que não se adaptam desaparecem.</p>
+<p>A tecnologia que deixa de servir é substituída.</p>
+<p>Mas determinadas estruturas administrativas parecem possuir apenas memória e nenhuma capacidade de esquecimento.</p>
+<p>Acumulam.</p>
+<p>Leis sobre leis.</p>
+<p>Organismos sobre organismos.</p>
+<p>Procedimentos sobre procedimentos.</p>
+<p>Exceções sobre exceções.</p>
+<p>Até chegar o momento em que ninguém consegue explicar racionalmente o sistema inteiro.</p>
+<p>Talvez uma Administração Pública moderna precise de algo semelhante ao que fazemos na engenharia de sistemas:</p>
+<p><strong>refactoring institucional.</strong></p>
+<p>Periodicamente, olhar para a arquitetura completa.</p>
+<p>Identificar redundâncias.</p>
+<p>Eliminar dependências desnecessárias.</p>
+<p>Fundir componentes.</p>
+<p>Simplificar interfaces.</p>
+<p>Automatizar aquilo que faz sentido.</p>
+<p>E apagar aquilo que deixou de fazer sentido.</p>
+<p>Porque também no Estado existe dívida técnica.</p>
+<p>Só que é paga por todos nós.</p>
+<h2>O verdadeiro teste</h2>
+<p>A expressão <strong>Inutilidade Pública</strong> nasceu aqui como provocação.</p>
+<p>Mas talvez a provocação esconda uma ideia bastante séria.</p>
+<p>Durante décadas avaliámos o Estado sobretudo pelo dinheiro que gastava, pelo número de funcionários, pelos organismos existentes ou pela execução dos seus orçamentos.</p>
+<p>Talvez devêssemos avaliá-lo cada vez mais pelo <strong>valor público efetivamente produzido</strong>.</p>
+<p>Não se trata de diminuir cegamente o Estado.</p>
+<p>Trata-se de aumentar brutalmente a sua inteligência.</p>
+<p>Porque uma democracia moderna não pode exigir permanentemente mais impostos, mais recursos e mais sacrifícios aos cidadãos sem aceitar simultaneamente uma obrigação elementar:</p>
+<p><strong>demonstrar que aquilo que lhes retira produz valor para a sociedade.</strong></p>
+<p>Tudo o resto pode ter orçamento.</p>
+<p>Pode ter instalações.</p>
+<p>Pode ter administração.</p>
+<p>Pode ter diretor.</p>
+<p>Pode ter logótipo.</p>
+<p>Pode ter portal institucional.</p>
+<p>Pode até ter uma magnífica missão estratégica escrita em linguagem suficientemente abstrata para ninguém perceber exatamente o que significa.</p>
+<p>Mas utilidade?</p>
+<p>Essa terá de ser demonstrada.</p>
+<p>Caso contrário, talvez tenhamos finalmente encontrado o nome adequado:</p>
+<h2><strong>Inutilidade Pública.</strong></h2>
+<aside class="fc-editorial-note"><h2>Nota editorial</h2><p><strong>"Inutilidade Pública"</strong> é aqui usado como conceito crítico e satírico, não como categoria jurídica ou classificação oficial. O <strong>Índice de Inutilidade Pública (IIP)</strong> apresentado no texto é uma heurística conceptual do autor, não um indicador científico validado. A tese não presume que a Administração Pública seja globalmente inútil nem que os seus trabalhadores o sejam; propõe antes avaliar estruturas, procedimentos e políticas pelo valor público efetivamente produzido, pelos encargos impostos e pela existência de redundâncias.</p><p>O enquadramento internacional dá substância a esta discussão: a OCDE identifica a complexidade administrativa como fonte de encargos para cidadãos e empresas e defende a simplificação; a Comissão Europeia coloca a proporcionalidade, a redução de burocracia e a eliminação de regras desatualizadas, sobrepostas ou redundantes no centro da agenda de "Better Regulation"; e a OCDE tem estudado o SIMPLEX português como programa de simplificação, interoperabilidade, redução de burocracia e governo digital. Assim, a crónica é deliberadamente mordaz, mas o problema de fundo — medir resultados, simplificar e eliminar encargos desnecessários — é objeto de políticas públicas e investigação institucional internacionais.</p></aside>
+<section class="fc-references"><h2>Referências e leitura complementar</h2><ol>
+<li><a href="https://www.oecd.org/en/topics/administrative-simplification.html" target="_blank" rel="noopener noreferrer">OECD — Administrative simplification</a></li>
+<li><a href="https://www.oecd.org/en/publications/digital-government-outlook_0496b2bc-en.html" target="_blank" rel="noopener noreferrer">OECD (2026) — Digital Government Outlook 2026: From Foundations to Transformational Impact</a></li>
+<li><a href="https://www.oecd.org/en/publications/making-life-easy-for-citizens-and-businesses-in-portugal_9789264048263-en.html" target="_blank" rel="noopener noreferrer">OECD — Making Life Easy for Citizens and Businesses in Portugal: Administrative Simplification and e-Government</a></li>
+<li><a href="https://www.oecd.org/en/publications/access-to-public-research-data-toolkit_a12e8998-en/simplex_30d2be81-en.html" target="_blank" rel="noopener noreferrer">OECD (2025) — SIMPLEX (Portugal), case study</a></li>
+<li><a href="https://commission.europa.eu/law/law-making-process/better-regulation_en" target="_blank" rel="noopener noreferrer">European Commission — Better Regulation</a></li>
+<li><a href="https://commission.europa.eu/law/law-making-process/better-regulation/simplification-implementation-and-enforcement/simpler-clearer-and-better-enforced-eu-rulebook_en" target="_blank" rel="noopener noreferrer">European Commission (2026) — A Simpler, Clearer and Better Enforced EU Rulebook</a></li>
+<li><a href="https://commission.europa.eu/law/law-making-process/better-regulation/simplification-implementation-and-enforcement_en" target="_blank" rel="noopener noreferrer">European Commission — Simplification, implementation and enforcement</a></li>
+</ol></section><footer><p><em>Fragmentos do Caos — FC-Chronic-News</em></p><p>Coautoria: Francisco Gonçalves &amp; Augustus Veritas — AI Assistant</p></footer></article><!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
