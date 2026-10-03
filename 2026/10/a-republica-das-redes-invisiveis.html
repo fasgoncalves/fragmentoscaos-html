@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A República das Redes Invisíveis</title>
+<meta name="description" content="A República das Redes Invisíveis">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A República das Redes Invisíveis</h1>
+      <p class="meta">Publicado em 2026-10-01 17:03:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/10/file_00000000b2d08211bde78a654c67371d_3c77b91a.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- FC-CHRONIC-NEWS CANONICAL | Fragmentos do Caos | 2026-09-10 -->
+<div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+  <span style="display:none;" itemscope itemtype="https://schema.org/NewsArticle">
+    <meta itemprop="headline" content="A República das Redes Invisíveis">
+    <meta itemprop="description" content="Uma crónica sobre maçonaria, redes de influência, conflitos de interesses, lobbying e a necessidade de tornar transparente o poder informal numa democracia.">
+    <meta itemprop="datePublished" content="2026-09-10T17:03:00+01:00">
+    <meta itemprop="dateModified" content="2026-09-10T17:03:00+01:00">
+    <meta itemprop="author" content="Francisco Gonçalves">
+    <meta itemprop="publisher" content="Fragmentos do Caos">
+    <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/10/file_00000000b2d08211bde78a654c67371d.png">
+    <meta itemprop="mainEntityOfPage" content="https://fasgoncalves.github.io/fragmentoscaos-html/2026/09/a-republica-das-redes-invisiveis.html">
+    <meta itemprop="inLanguage" content="pt-PT">
+  </span>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">A República das Redes Invisíveis</h1>
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      Maçonaria, influência e o défice de transparência na democracia portuguesa
+    </p>
+
+    <aside style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        Esta crónica não afirma que a maçonaria constitua uma organização criminosa, nem atribui colectivamente aos seus membros práticas de corrupção ou tráfico de influências. A questão é outra, mais simples e mais democrática: que grau de transparência deve ser exigido quando redes associativas discretas intersectam cargos políticos, banca, justiça, regulação, empresas e administração pública?
+      </p>
+    </aside>
+
+    <p>Há poderes que se apresentam a eleições.</p>
+    <p>Há outros que não precisam.</p>
+    <p>Não aparecem num boletim de voto, não possuem um grupo parlamentar e não figuram necessariamente no organigrama de uma instituição. Existem nas relações pessoais, nas fidelidades antigas, nas recomendações, nos círculos profissionais e nas portas que se abrem porque alguém conhece alguém.</p>
+    <p>São as redes invisíveis do poder.</p>
+    <p>E numa democracia o problema começa quando aquilo que é invisível consegue influenciar aquilo que deveria ser público.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A maçonaria não precisa de teorias da conspiração</h2>
+
+    <p>A maçonaria existe em Portugal, possui organizações legalmente constituídas e faz parte da história política e associativa do país. Pertencer a uma obediência maçónica não constitui crime, não demonstra corrupção e não permite concluir que todos os seus membros actuem segundo uma estratégia política comum.</p>
+    <p>Convém afirmar isto logo de início porque a crítica séria perde força quando substitui factos por fantasmas.</p>
+    <p>Mas do facto de não existir uma conspiração demonstrada não decorre que as redes de relacionamento sejam democraticamente irrelevantes.</p>
+    <p>Uma organização que valoriza vínculos entre membros, mantém graus significativos de discrição e pode incluir pessoas colocadas em posições de poder possui, pelo menos potencialmente, capital relacional. A pergunta legítima é saber até onde esse capital permanece privado e a partir de que momento interfere com decisões que pertencem à esfera pública.</p>
+
+    <aside style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        O problema democrático não é o segredo privado. É o poder público que não deixa rasto.
+      </p>
+    </aside>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Liberdade de associação e dever de transparência</h2>
+
+    <p>Uma democracia liberal deve proteger a liberdade de associação. Um cidadão comum não tem de entregar ao Estado um inventário das suas amizades, convicções ou pertenças privadas.</p>
+    <p>Mas quem exerce poder público encontra-se numa posição diferente.</p>
+    <p>Ministros, deputados, altos dirigentes, administradores públicos, reguladores e outros decisores actuam sobre recursos e interesses que não lhes pertencem. Exercem poderes delegados pela comunidade.</p>
+    <p>Por isso, Portugal já exige declarações de interesses a titulares de vários cargos públicos. O próprio modelo oficial contempla dados relativos a filiação, participação ou desempenho de funções em entidades de natureza associativa, com salvaguarda de dados constitucionalmente protegidos.</p>
+    <p>O princípio é saudável: uma pertença associativa não é culpabilidade, mas pode ser relevante quando permite detectar um potencial conflito de interesses.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O problema português está menos na lei do que na prática</h2>
+
+    <p>A comparação internacional introduz aqui um dado especialmente revelador.</p>
+    <p>No <em>Anti-Corruption and Integrity Outlook 2026</em>, a OCDE atribui a Portugal cumprimento integral dos critérios avaliados no quadro regulatório dos conflitos de interesses, mas apenas 44% nos critérios de prática. A média da OCDE indicada no mesmo relatório é de 80% na regulação e 45% na prática.</p>
+    <p>Ou seja: Portugal sabe escrever regras.</p>
+    <p>A dificuldade começa quando é necessário transformá-las em escrutínio efectivo, verificação, prevenção e responsabilização.</p>
+
+    <aside style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">DADOS ESSENCIAIS</h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>OCDE 2026: Portugal cumpre 100% dos critérios avaliados de regulação de conflitos de interesses, mas 44% dos critérios de prática.</li>
+        <li>Em 2024, a OCDE assinalava que Portugal não cumpria critérios avaliados de regulação e prática especificamente no domínio do lobbying.</li>
+        <li>A Lei n.º 5-A/2026 criou finalmente um quadro de transparência para a representação legítima de interesses.</li>
+        <li>O Registo de Transparência da Representação de Interesses entra definitivamente em funcionamento em 1 de Janeiro de 2027.</li>
+        <li>O GRECO continuou em 2025 a pedir a Portugal progressos na prevenção de corrupção, conflitos de interesses e transparência.</li>
+      </ul>
+    </aside>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Durante décadas, quem influenciava quem?</h2>
+
+    <p>O lobbying é normal numa democracia. Empresas, sindicatos, associações, universidades, organizações não governamentais e cidadãos procuram legitimamente convencer decisores.</p>
+    <p>O problema não é a influência.</p>
+    <p>É a influência invisível.</p>
+    <p>A OCDE sublinha que lobbying e outras actividades de influência podem melhorar políticas públicas quando enquadradas por regras de integridade, transparência e equidade. Também alerta para o risco de influência indevida quando poucos actores dispõem de acesso privilegiado aos centros de decisão.</p>
+    <p>Portugal chegou a 2026 sem um quadro geral plenamente operacional para esta matéria. A Lei n.º 5-A/2026 veio finalmente criar regras de transparência e o Registo de Transparência da Representação de Interesses. O Parlamento informa que o RTRI entrará definitivamente em funcionamento em 1 de Janeiro de 2027, embora certas obrigações tenham começado antes e outras entrem em vigor de forma faseada.</p>
+    <p>É difícil encontrar melhor símbolo do atraso português: quase meio século de democracia antes de dispormos de um mecanismo estruturado para permitir ao cidadão saber quem procura influenciar formalmente os decisores públicos.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O organigrama mostra cargos; não mostra relações</h2>
+
+    <p>Uma instituição pode publicar todos os seus administradores, directores e departamentos e continuar a esconder aquilo que realmente importa para compreender determinadas decisões.</p>
+    <p>Quem recomendou quem?</p>
+    <p>Que relações anteriores existem entre decisor e beneficiário?</p>
+    <p>Que interesses profissionais permanecem activos?</p>
+    <p>Que associações reúnem simultaneamente pessoas colocadas em instituições diferentes?</p>
+    <p>Que contactos antecederam uma decisão?</p>
+    <p>Nada disto prova ilegalidade. Precisamente por isso, a transparência é preferível à suspeita.</p>
+    <p>Quando existe um rasto documental, podemos avaliar. Quando não existe, o debate público degrada-se inevitavelmente em rumores, insinuações e teorias de bastidores.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">As portas giratórias</h2>
+
+    <p>Há ainda outro fenómeno que merece escrutínio: a circulação de quadros entre Governo, reguladores, empresas públicas, banca, grandes sociedades profissionais e grupos económicos.</p>
+    <p>Uma passagem entre sectores não é, em si mesma, censurável. Pelo contrário, experiência diversificada pode melhorar instituições.</p>
+    <p>Mas sucessivas portas giratórias podem criar dependências, expectativas futuras e conflitos de lealdade. Por isso o GRECO e a OCDE tratam as restrições pós-emprego, as declarações de interesses e a supervisão de contactos com grupos de influência como componentes da integridade pública.</p>
+    <p>A democracia não deve impedir carreiras. Deve impedir que uma carreira transforme a função pública numa sala de espera para o emprego seguinte.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">E onde entra a maçonaria?</h2>
+
+    <p>Entra exactamente no mesmo ponto onde deveriam entrar todas as redes organizadas capazes de criar deveres de solidariedade, acesso ou influência: na análise dos conflitos de interesses.</p>
+    <p>Não deveria existir uma lei contra maçons. Seria uma aberração democrática.</p>
+    <p>Deveria existir uma regra suficientemente robusta para que uma relação associativa relevante seja conhecida quando interfere, ou pode razoavelmente parecer interferir, com uma decisão pública.</p>
+    <p>E o mesmo princípio deveria valer para associações empresariais, clubes fechados, organizações religiosas, grupos profissionais, fundações, organizações partidárias ou qualquer outra rede.</p>
+    <p>A democracia não tem de saber aquilo em que um governante acredita.</p>
+    <p>Tem de conseguir saber a quem está institucionalmente ligado quando essa ligação pode afectar aquilo que decide.</p>
+
+    <aside style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Transparência não é presumir culpa. É reduzir a necessidade de presumir seja o que for.
+      </p>
+    </aside>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Os organismos internacionais não estão a falar de fantasmas</h2>
+
+    <p>O GRECO, organismo anticorrupção do Conselho da Europa, tem repetidamente acompanhado Portugal em matérias como conflitos de interesses, declarações patrimoniais, integridade de titulares de cargos, lobbying, portas giratórias e fiscalização.</p>
+    <p>Em Julho de 2025 considerava ainda globalmente insatisfatório o cumprimento das recomendações do quarto ciclo relativo a parlamentares, juízes e procuradores: cinco de quinze recomendações tinham sido satisfatoriamente implementadas e as restantes dez permaneciam parcialmente implementadas.</p>
+    <p>Em Setembro do mesmo ano, no acompanhamento das funções executivas superiores e forças policiais, o GRECO continuava a pedir progressos em transparência das declarações, regras pós-emprego, conflitos de interesses e mecanismos de integridade.</p>
+    <p>Em 2026, o relatório geral do GRECO voltou a salientar que legislação e estruturas institucionais não bastam: é necessária aplicação efectiva, supervisão e responsabilização.</p>
+    <p>Não estamos, portanto, perante uma obsessão local com sociedades discretas. Estamos perante uma questão clássica de boa governação: <strong>como impedir que influência privada se transforme em poder público não escrutinado?</strong></p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Portugal não é uma conspiração; é um sistema que precisa de mais luz</h2>
+
+    <p>É tentador explicar todos os fracassos nacionais através de uma organização secreta, de uma família, de um partido ou de meia dúzia de homens que se reuniriam numa sala a decidir o destino do país.</p>
+    <p>Essa explicação é sedutora porque é simples.</p>
+    <p>E provavelmente está errada.</p>
+    <p>Os sistemas de influência modernos são muito mais interessantes — e muito mais difíceis de combater — porque não necessitam de um comando central.</p>
+    <p>Bastam incentivos semelhantes, relações acumuladas, dependências profissionais, círculos sociais sobrepostos, portas giratórias, acesso desigual à decisão e uma cultura em que determinadas perguntas são consideradas inconvenientes.</p>
+    <p>É assim que pode nascer uma elite extremamente coesa sem que exista uma reunião onde alguém tenha desenhado a elite.</p>
+    <p>O problema não é encontrar o grande conspirador.</p>
+    <p>É construir instituições nas quais conspirar seja desnecessário porque favoritismo, conflito de interesses e acesso privilegiado deixam um rasto verificável.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O escrutínio não é perseguição</h2>
+
+    <p>Quando um deputado pergunta a um governante sobre uma pertença associativa potencialmente relevante, a pergunta não deveria ser tratada automaticamente como insulto.</p>
+    <p>Também não deveria bastar uma suspeita para declarar alguém culpado.</p>
+    <p>Estas duas ideias têm de coexistir.</p>
+    <p>Uma democracia adulta protege simultaneamente a reputação individual e o direito colectivo ao escrutínio.</p>
+    <p>Exige provas antes de acusar.</p>
+    <p>E exige transparência antes que a ausência de provas seja produzida pela própria ausência de informação.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Uma República de vidro</h2>
+
+    <p>Não precisamos de proibir organizações discretas.</p>
+    <p>Precisamos de instituições transparentes.</p>
+    <p>Declarações de interesses realmente verificadas.</p>
+    <p>Registos de lobbying consultáveis e completos.</p>
+    <p>Agendas públicas dos decisores.</p>
+    <p>Regras claras para portas giratórias.</p>
+    <p>Identificação dos participantes relevantes na preparação de legislação.</p>
+    <p>Recusa e impedimento em decisões onde existam conflitos.</p>
+    <p>Fiscalização independente e sanções que não existam apenas no papel.</p>
+    <p>E uma cultura pública em que perguntar «quem influencia esta decisão?» seja considerado exercício de cidadania, não falta de educação.</p>
+
+    <aside style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Uma democracia pode respeitar segredos privados. O que não pode aceitar é poder público secreto.
+      </p>
+    </aside>
+
+    <p>Portugal construiu desde 1974 uma democracia constitucional, eleições livres, pluralismo partidário e instituições de fiscalização.</p>
+    <p>O passo seguinte é mais difícil.</p>
+    <p>Construir uma cultura em que o poder aceite ser visto.</p>
+    <p>Porque as democracias não morrem apenas quando alguém fecha o Parlamento.</p>
+    <p>Também adoecem lentamente quando o cidadão deixa de perceber por que razão algumas pessoas chegam sempre às mesmas mesas, algumas portas parecem abrir-se sempre para os mesmos e algumas decisões nunca revelam completamente o caminho que as produziu.</p>
+    <p>A luz não resolve todos os problemas.</p>
+    <p>Mas continua a ser um excelente desinfectante democrático.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+
+    <aside style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        Esta crónica distingue deliberadamente três planos que muitas vezes são confundidos: liberdade de associação, influência política e corrupção. O primeiro é um direito fundamental; o segundo é inerente à vida democrática; o terceiro exige factos e prova. Nenhuma pertença maçónica, empresarial, religiosa, partidária ou associativa constitui por si só indício bastante de prática ilícita.
+      </p>
+      <p style="text-align:left;">
+        A crítica editorial dirige-se à opacidade. Quando uma relação privada pode criar um conflito de interesses numa decisão pública, deve existir um mecanismo proporcional de declaração, impedimento e fiscalização. O objectivo não é publicar a vida privada dos titulares de cargos, mas permitir avaliar relações relevantes para o exercício das suas funções.
+      </p>
+      <p style="text-align:left;">
+        Os dados internacionais mostram precisamente por que razão esta discussão é necessária. A OCDE distingue entre qualidade formal das regras portuguesas e a sua implementação prática; o GRECO tem mantido recomendações sobre conflitos de interesses, lobbying, declarações e portas giratórias; e Portugal só em 2026 aprovou o novo quadro geral para transparência da representação de interesses.
+      </p>
+      <p style="text-align:left; margin-bottom:0;">
+        A tese desta publicação é, portanto, institucional e não conspirativa: <strong style="color:#d6a542;">quanto maior o poder, maior deve ser a capacidade do cidadão para observar as relações que podem condicioná-lo.</strong>
+      </p>
+    </aside>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+    <ul style="padding-left:22px;">
+      <li><a href="https://www.oecd.org/en/publications/anti-corruption-and-integrity-outlook-2026_0c8910f8-en/portugal_ddf7b7ae-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Anti-Corruption and Integrity Outlook 2026: Portugal</a></li>
+      <li><a href="https://www.oecd.org/en/publications/anti-corruption-and-integrity-outlook-2026_16708b78-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Anti-Corruption and Integrity Outlook 2026</a></li>
+      <li><a href="https://www.oecd.org/en/topics/lobbying.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Lobbying and influence</a></li>
+      <li><a href="https://legalinstruments.oecd.org/api/print?ids=256&lang=en" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Recommendation on Transparency and Integrity in Lobbying and Influence</a></li>
+      <li><a href="https://www.coe.int/en/web/greco/evaluations/portugal" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Council of Europe / GRECO — Portugal: evaluations and compliance reports</a></li>
+      <li><a href="https://www.coe.int/en/web/greco/-/portugal-should-step-up-reforms-to-improve-the-prevention-of-corruption-among-parliamentarians-judges-and-prosecutors" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Council of Europe / GRECO — Portugal should step up reforms to improve prevention of corruption</a></li>
+      <li><a href="https://www.coe.int/en/web/cdcj/activities/lobbying" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Council of Europe — Legal regulation of lobbying activities, Recommendation CM/Rec(2017)2</a></li>
+      <li><a href="https://commission.europa.eu/publications/2026-rule-law-report-communication-and-country-chapters_en" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">European Commission — 2026 Rule of Law Report: country chapters</a></li>
+      <li><a href="https://www.transparency.org/en/cpi/2025/index/gtm" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Transparency International — Corruption Perceptions Index 2025</a></li>
+      <li><a href="https://www.parlamento.pt/ActividadeParlamentar/Paginas/DetalheIniciativa.aspx?BID=315315" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Assembleia da República — Lei n.º 5-A/2026: transparência da representação de interesses</a></li>
+      <li><a href="https://www.parlamento.pt/Paginas/2026/agosto/Informacao-sobre-inicio-funcionamento-do-Registo-de-Transparencia-Representacao-Interesses-RTRI.aspx?n=10" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Assembleia da República — Registo de Transparência da Representação de Interesses (RTRI)</a></li>
+      <li><a href="https://files.dre.pt/gratuitos/1s/2022/01/00400.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Diário da República — Modelo de declaração de interesses: filiação e funções em entidades associativas</a></li>
+    </ul>
+
+    <footer style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Co-autoria editorial: <strong style="color:#d6a542;">Augustus Veritas</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+      <p style="color:#cfcfcf; text-align:left;">
+        URL canónica: <a href="https://fasgoncalves.github.io/fragmentoscaos-html/2026/09/a-republica-das-redes-invisiveis.html" target="_blank" rel="noopener noreferrer" style="color:#d6a542;">https://fasgoncalves.github.io/fragmentoscaos-html/2026/09/a-republica-das-redes-invisiveis.html</a>
+      </p>
+    </footer>
+  </div>
+
+<blockquote style="color:#ffcc67;">
+A mesma maçonaria. A velha arte de governar sem ser vista.
+</blockquote>
+</div>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
