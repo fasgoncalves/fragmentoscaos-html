@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A IA e os Moinhos de Vento da Universidade</title>
+<meta name="description" content="A IA e os Moinhos de Vento da Universidade">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A IA e os Moinhos de Vento da Universidade</h1>
+      <p class="meta">Publicado em 2026-10-09 23:32:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/10/file_00000000b21c82438499e9cdb2333379_9035b094.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="A IA e os Moinhos de Vento da Universidade">
+      <meta itemprop="description" content="Uma crónica sobre o impacto da inteligência artificial generativa nas universidades, na avaliação, na ética académica e no próprio significado de aprender.">
+      <meta itemprop="datePublished" content="2026-09-01">
+      <meta itemprop="dateModified" content="2026-09-01">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/09/file_00000000b21c82438499e9cdb2333379.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      A IA e os Moinhos de Vento da Universidade
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      A inteligência artificial está a desafiar o ensino, a avaliação e a ética académica. Quando sopra o vento da mudança, o futuro não pertence a quem ergue muros, mas a quem aprende a construir moinhos.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        A inteligência artificial não está apenas a introduzir uma nova ferramenta na sala de aula. Está a obrigar escolas e universidades a responder a uma pergunta muito mais incómoda: se uma máquina consegue executar em segundos uma parte crescente das tarefas que usamos para ensinar e avaliar, o que significa, afinal, aprender?
+      </p>
+    </div>
+
+    <p>
+      A inteligência artificial está a desafiar o <em>status quo</em> das universidades e do ensino. Está também a colocar diante dos estudantes uma velha questão humana vestida com roupa nova: o que fazemos quando uma ferramenta passa a conseguir executar, em segundos, parte do trabalho que antes nos obrigava a pensar durante horas?
+    </p>
+
+    <p>
+      A resposta mais fácil consiste em transformar a IA no novo inimigo da integridade académica. Bloqueiam-se aplicações, criam-se regulamentos, procuram-se detectores de texto artificial, multiplicam-se declarações de autoria e tenta-se reconstruir à pressa a fronteira entre aquilo que o aluno escreveu e aquilo que uma máquina ajudou a produzir.
+    </p>
+
+    <p>
+      É compreensível. Também é insuficiente.
+    </p>
+
+    <p>
+      Porque o vento já começou a soprar.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Quando sopram os ventos da mudança, alguns constroem muros. Outros constroem moinhos.
+      </p>
+    </div>
+
+    <p>
+      A imagem é antiga. O problema é muito actual.
+    </p>
+
+    <p>
+      A IA generativa não representa apenas mais uma ferramenta digital acrescentada ao quadro, ao projector, ao computador ou à Internet. Pela primeira vez, milhões de estudantes têm diante de si sistemas capazes de conversar sobre quase qualquer matéria, explicar conceitos, gerar hipóteses, escrever código, sintetizar documentos, rever textos, criar exercícios, traduzir argumentos e produzir respostas suficientemente convincentes para atravessarem muitos dos mecanismos tradicionais de avaliação.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O problema ético existe. Mas não nasceu com a IA
+    </h2>
+
+    <p>
+      Um estudante pode pedir a uma IA que escreva um ensaio inteiro e entregá-lo como seu. Pode gerar código que não compreende. Pode resolver um problema matemático sem acompanhar o raciocínio. Pode produzir uma análise elegante sobre um livro que nunca leu.
+    </p>
+
+    <p>
+      Nesse caso, não adquiriu conhecimento. Apenas externalizou o esforço cognitivo.
+    </p>
+
+    <p>
+      Mas convém não cair na confortável ficção de que a desonestidade académica nasceu com a IA generativa. Antes dela já havia trabalhos copiados, exames decorados mecanicamente, explicações compradas, ensaios escritos por terceiros, apontamentos clandestinos, plágio e uma quantidade respeitável de conhecimento despejado numa folha de exame para ser esquecido poucos dias depois.
+    </p>
+
+    <p>
+      A tecnologia alterou a escala, a velocidade e a facilidade do problema. Não inventou a tentação.
+    </p>
+
+    <p>
+      A questão ética, portanto, não pode resumir-se a descobrir se houve IA. Tem de perguntar o que o estudante fez com ela, que parte do raciocínio lhe pertence, que decisões tomou, que fontes verificou e, sobretudo, se compreende aquilo que apresenta como conhecimento.
+    </p>
+
+    <p>
+      Uma universidade que reduza a integridade académica a uma caça policial à ferramenta corre o risco de confundir o sintoma com a doença.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Se a máquina resolve facilmente o exame, talvez devamos rever o exame
+    </h2>
+
+    <p>
+      A pergunta verdadeiramente desconfortável não é «como impedir o aluno de usar IA?».
+    </p>
+
+    <p>
+      É outra.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Se uma máquina consegue executar facilmente a tarefa que usamos para medir a aprendizagem, continuará essa tarefa a medir aquilo que pensamos que mede?
+      </p>
+    </div>
+
+    <p>
+      Durante décadas, grande parte da avaliação académica assentou no produto final: uma resposta, um relatório, um ensaio, um programa, uma tradução, uma apresentação. A IA tornou muitos desses produtos mais rápidos, mais baratos e, em certos casos, quase instantâneos.
+    </p>
+
+    <p>
+      Isso obriga-nos a deslocar o centro da avaliação do produto para o processo intelectual.
+    </p>
+
+    <p>
+      Em vez de perguntar apenas «qual é a resposta?», torna-se mais importante perguntar: como chegaste a esta conclusão? Que pressupostos aceitaste? Que dados consideraste? Que fontes confirmaste? Onde pode a resposta estar errada? Que argumentos existem contra a tua posição? O que mudaria se surgissem novos factos? Consegues explicar o problema sem assistência da máquina?
+    </p>
+
+    <p>
+      A investigação recente começa precisamente a separar duas realidades que durante algum tempo foram confundidas: <strong>melhor desempenho não significa necessariamente melhor aprendizagem</strong>.
+    </p>
+
+    <p>
+      A OCDE assinala no seu <em>Digital Education Outlook 2026</em> que ferramentas generalistas de IA podem melhorar a qualidade imediata de uma tarefa sem produzir ganhos equivalentes de aprendizagem. Quando o trabalho cognitivo é simplesmente transferido para o sistema, o estudante pode parecer mais competente no produto final e revelar-se menos preparado quando a assistência desaparece.
+    </p>
+
+    <p>
+      A distinção parece subtil. Não é. É provavelmente uma das questões centrais da educação na próxima década.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A IA como amplificador cognitivo
+    </h2>
+
+    <p>
+      A alternativa à proibição não é a rendição.
+    </p>
+
+    <p>
+      Usar bem inteligência artificial exige mais, não menos, cultura intelectual.
+    </p>
+
+    <p>
+      É necessário saber formular problemas, construir perguntas úteis, reconhecer respostas plausíveis mas falsas, verificar referências, identificar enviesamentos, distinguir evidência de opinião e perceber quando a máquina está apenas a produzir uma sequência linguisticamente elegante de disparates.
+    </p>
+
+    <p>
+      A IA pode explicar uma equação vinte vezes sem perder a paciência. Pode adaptar uma explicação ao nível de conhecimento de quem pergunta. Pode simular um interlocutor socrático. Pode comparar hipóteses, propor exercícios, traduzir conceitos entre domínios, gerar exemplos e permitir que um estudante explore em minutos caminhos que anteriormente exigiam horas de pesquisa preliminar.
+    </p>
+
+    <p>
+      Mas a ferramenta só se transforma num amplificador cognitivo quando existe cognição para amplificar.
+    </p>
+
+    <p>
+      Sem conhecimento, curiosidade e espírito crítico, a IA pode tornar-se apenas uma máquina de produzir respostas. Com esses elementos, pode tornar-se uma extraordinária máquina de produzir perguntas melhores.
+    </p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">
+        O QUE DEVE SER RETIDO
+      </h3>
+
+      <ul style="padding-left:22px; margin:0;">
+        <li>A IA pode aumentar o desempenho numa tarefa sem garantir aprendizagem profunda.</li>
+        <li>A integridade académica não se resolve apenas com proibições ou detectores.</li>
+        <li>A literacia de IA inclui saber verificar, contestar e rejeitar respostas da própria IA.</li>
+        <li>A avaliação terá de dar maior peso ao processo, à defesa oral, à demonstração de raciocínio e à aplicação do conhecimento.</li>
+        <li>O objectivo educativo não deve ser competir com a máquina, mas desenvolver capacidades humanas que permitam utilizá-la sem abdicar do juízo próprio.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O professor depois do monopólio da informação
+    </h2>
+
+    <p>
+      Durante muito tempo, a universidade viveu também de uma escassez. Livros difíceis de obter. Conhecimento especializado concentrado em poucos lugares. Acesso limitado a investigadores e especialistas. Bibliotecas físicas indispensáveis. Professores como principais mediadores entre o estudante e determinadas áreas do saber.
+    </p>
+
+    <p>
+      A Internet começou a destruir essa escassez. A IA acelera brutalmente o processo.
+    </p>
+
+    <p>
+      O professor já não pode justificar a sua centralidade apenas porque sabe coisas que os estudantes não sabem. Há agora sistemas capazes de explicar a mecânica quântica, uma regressão logística, um algoritmo de ordenação ou uma passagem de Kant a qualquer hora da noite, sem salário extraordinário e sem a compreensível irritação de quem já respondeu à mesma pergunta quarenta e sete vezes.
+    </p>
+
+    <p>
+      Isso não torna o professor menos importante.
+    </p>
+
+    <p>
+      Pode torná-lo muito mais importante.
+    </p>
+
+    <p>
+      O professor do futuro será menos distribuidor de informação e mais arquitecto de aprendizagem: alguém que escolhe problemas relevantes, desafia raciocínios, detecta fragilidades conceptuais, confronta certezas, estabelece critérios de qualidade, ensina métodos, exige provas e ajuda o estudante a desenvolver algo que nenhum modelo lhe pode entregar pronto: <strong>juízo próprio</strong>.
+    </p>
+
+    <p>
+      O melhor professor não será aquele que tenta competir com a IA na velocidade de resposta. Será aquele que ensina quando uma resposta não chega.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A universidade que construir muros
+    </h2>
+
+    <p>
+      Algumas instituições tentarão preservar o modelo anterior. Multiplicarão proibições, detectores, declarações de autoria e mecanismos de vigilância. Parte disso será necessária para proteger a integridade académica. Mas, usado como estratégia principal, será uma batalha contra a realidade.
+    </p>
+
+    <p>
+      Os modelos evoluem. As ferramentas tornam-se integradas nos processadores de texto, motores de pesquisa, ambientes de programação, plataformas científicas e sistemas operativos. A fronteira entre «usar software» e «usar IA» tornar-se-á progressivamente mais difícil de traçar.
+    </p>
+
+    <p>
+      As universidades que construírem moinhos farão outra coisa.
+    </p>
+
+    <p>
+      Ensinarão literacia de IA. Definirão explicitamente quando a assistência é permitida. Exigirão transparência sobre a sua utilização. Manterão avaliações presenciais quando for necessário verificar competências individuais. Darão maior peso à defesa oral, ao projecto, ao laboratório, à crítica de fontes, à resolução de problemas inéditos e à demonstração do processo de trabalho.
+    </p>
+
+    <p>
+      A OCDE publicou em Julho de 2026 um documento especificamente dedicado às políticas de adopção responsável e sistemática da IA generativa no ensino superior. O próprio enquadramento do problema já diz muito: a discussão deixou de ser se estas tecnologias entram na universidade. Elas já entraram. A discussão séria passou a ser em que condições, com que regras, com que competências e ao serviço de que objectivos educativos.
+    </p>
+
+    <p>
+      A UNESCO, por seu lado, tem defendido uma abordagem centrada no ser humano: proteger a agência humana, a privacidade, a equidade, a responsabilidade e a qualidade pedagógica. A tecnologia deve servir a educação; a educação não deve ser reorganizada apenas para servir a tecnologia.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Não competir com a máquina
+    </h2>
+
+    <p>
+      A educação do futuro cometerá um erro profundo se preparar seres humanos para competir com máquinas precisamente naquilo que as máquinas fazem melhor.
+    </p>
+
+    <p>
+      Não precisamos de estudantes treinados apenas para produzir mais rapidamente texto previsível, repetir definições ou executar mecanicamente procedimentos que um sistema automatizado realiza em segundos.
+    </p>
+
+    <p>
+      Precisamos de pessoas capazes de reconhecer problemas importantes, ligar conhecimentos distantes, formular hipóteses, avaliar consequências, compreender contextos humanos, detectar manipulação, distinguir correlação de causalidade e assumir responsabilidade pelas decisões tomadas.
+    </p>
+
+    <p>
+      A competência decisiva será saber trabalhar com inteligência artificial sem abdicar da própria inteligência.
+    </p>
+
+    <p>
+      É a diferença entre usar uma calculadora e não saber matemática. Entre usar um compilador e não compreender programação. Entre consultar uma IA e entregar-lhe a capacidade de julgamento.
+    </p>
+
+    <p>
+      Essa fronteira não poderá ser protegida apenas por regulamentos. Terá de ser construída dentro de cada estudante.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A ética não pode ser subcontratada
+    </h2>
+
+    <p>
+      Há ainda um ponto que nenhuma reforma curricular poderá ignorar.
+    </p>
+
+    <p>
+      A IA não tem responsabilidade moral pelo diploma de um estudante. Não responde perante uma ordem profissional. Não assina um projecto de engenharia. Não trata um doente. Não decide a liberdade de um cidadão num tribunal. Não enfrenta as consequências humanas de uma decisão errada.
+    </p>
+
+    <p>
+      A responsabilidade continuará a pertencer a pessoas.
+    </p>
+
+    <p>
+      Por isso, a formação superior terá de insistir cada vez mais numa ideia que a abundância tecnológica pode fazer esquecer: competência não é apenas conseguir produzir uma resposta. É compreender suficientemente o problema para poder responder por ela.
+    </p>
+
+    <p>
+      Um futuro engenheiro pode usar IA para calcular. Um médico pode usá-la para procurar padrões. Um jurista pode usá-la para analisar milhares de documentos. Um investigador pode usá-la para explorar hipóteses. Mas nenhum deles deveria poder esconder-se atrás da frase «foi a IA que disse».
+    </p>
+
+    <p>
+      A ética não pode ser subcontratada.
+    </p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Talvez o vento nos devolva a essência da universidade
+    </h2>
+
+    <p>
+      Existe, no meio desta perturbação, uma possibilidade quase irónica.
+    </p>
+
+    <p>
+      A inteligência artificial pode obrigar a universidade a regressar precisamente àquilo que deveria ter protegido sempre: pensar.
+    </p>
+
+    <p>
+      Não repetir. Não memorizar mecanicamente. Não coleccionar certificados como quem colecciona carimbos administrativos de competência presumida.
+    </p>
+
+    <p>
+      Pensar. Duvidar. Experimentar. Argumentar. Criar. Mudar de opinião quando os factos o exigem. E ter a coragem intelectual de dizer «não sei» antes de começar a procurar.
+    </p>
+
+    <p>
+      A IA não destrói automaticamente a educação. Também não a salva. É uma tecnologia extraordinariamente poderosa colocada dentro de um sistema humano, com todas as virtudes, vícios, incentivos e absurdos que isso implica.
+    </p>
+
+    <p>
+      Podemos tentar impedir o vento.
+    </p>
+
+    <p>
+      Ou podemos aprender a utilizá-lo.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Se a revolução da inteligência artificial conseguir transformar a universidade de fábrica de respostas em escola de pensamento, talvez o vento não tenha vindo destruir a universidade. Talvez tenha vindo obrigá-la, finalmente, a construir um moinho.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">
+      Nota Editorial
+    </h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+
+      <p style="text-align:left;">
+        Esta crónica é um texto de opinião e análise sobre o impacto da inteligência artificial generativa no ensino superior, na avaliação e na integridade académica.
+      </p>
+
+      <p style="text-align:left;">
+        A argumentação editorial é sustentada por documentação pública da OCDE e da UNESCO e por literatura científica publicada pelo grupo Nature. As fontes convergem num ponto essencial: a IA pode melhorar o desempenho imediato, mas a aprendizagem depende do modo como a tecnologia é integrada, do esforço cognitivo preservado, da literacia crítica e da qualidade da concepção pedagógica.
+      </p>
+
+      <p style="text-align:left; margin-bottom:0;">
+        As interpretações, metáforas, juízos e conclusões apresentados ao longo do texto pertencem ao autor. O objectivo não é defender uma adopção acrítica da IA, mas recusar a falsa alternativa entre proibição e submissão tecnológica.
+      </p>
+
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Referências credíveis
+    </h2>
+
+    <ul style="padding-left:22px;">
+      <li>
+        <a href="https://www.oecd.org/en/publications/oecd-digital-education-outlook-2026_062a7394-en.html"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          OECD — OECD Digital Education Outlook 2026: Exploring Effective Uses of Generative AI in Education
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/policies-supporting-responsible-and-systematic-genai-adoption-in-higher-education_c4e5621f-en.html"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          OECD — Policies supporting responsible and systematic GenAI adoption in higher education
+        </a>
+      </li>
+      <li>
+        <a href="https://www.unesco.org/en/articles/guidance-generative-ai-education-and-research"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          UNESCO — Guidance for Generative AI in Education and Research
+        </a>
+      </li>
+      <li>
+        <a href="https://www.nature.com/articles/s41562-024-02004-5"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Nature Human Behaviour — Promises and challenges of generative artificial intelligence for human learning
+        </a>
+      </li>
+      <li>
+        <a href="https://www.nature.com/articles/s44159-025-00467-5"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Nature Reviews Psychology — Distinguishing performance gains from learning when using generative AI
+        </a>
+      </li>
+      <li>
+        <a href="https://www.nature.com/articles/s41562-025-02124-6"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color:#ffcc66;">
+          Nature Human Behaviour — The global landscape of academic guidelines for generative AI and LLMs
+        </a>
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

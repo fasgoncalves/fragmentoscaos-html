@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Banca, a Conta e a Consciência</title>
+<meta name="description" content="A Banca, a Conta e a Consciência">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Banca, a Conta e a Consciência</h1>
+      <p class="meta">Publicado em 2026-10-08 10:06:54</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/10/file_000000002c308210ac9cb277e90ce33d_384a6c4e.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="A Banca, a Conta e a Consciência">
+      <meta itemprop="description" content="Uma crónica sobre os encargos públicos das crises bancárias, os lucros da recuperação e a obrigação ética de um Estado de direito proteger quem suportou o risco.">
+      <meta itemprop="datePublished" content="2026-10-07">
+      <meta itemprop="dateModified" content="2026-10-07">
+      <meta itemprop="author" content="Francisco António dos Santos Gonçalves">
+      <meta itemprop="author" content="Augustus Veritas — Assistente OpenAI">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/10/file_000000002c308210ac9cb277e90ce33d.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">A Banca, a Conta e a Consciência</h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">O país que suportou o risco tem o direito de exigir justiça na recuperação.</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>Esta crónica defende a responsabilidade, a reciprocidade e a dignidade dos cidadãos perante o poder financeiro. A crítica assenta em dados identificados e distingue encargos públicos, activos recuperáveis, lucros, dividendos e remunerações. Os juízos éticos e as propostas de reforma são posições editoriais dos autores.</p>
+    </div>
+
+    <p>Quando um banco entra em colapso, a crise atravessa as paredes da sua sede. Chega ao balcão onde alguém guarda as poupanças de uma vida, à empresa que precisa de pagar salários, à família que depende do crédito e ao Estado chamado a impedir que o medo se transforme numa corrida aos depósitos.</p>
+    <p>É nessa hora que o dinheiro público ganha uma urgência extraordinária. Os cidadãos são convocados, através dos recursos do Estado, para sustentar a estabilidade de um sistema de que todos dependem.</p>
+    <p>Anos depois, os resultados regressam ao verde. Os dividendos crescem. Os prémios reaparecem. E quem ajudou a suportar a emergência continua a contar o dinheiro no fim do mês.</p>
+    <p>Este desencontro exige uma resposta política e moral. A estabilidade financeira deve servir a comunidade que a tornou possível. <strong>Quem é chamado a suportar o risco merece uma contrapartida justa quando chega a recuperação.</strong></p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A factura que permanece</h2>
+    <p>O Tribunal de Contas contabilizou um saldo desfavorável de <strong>20.667 milhões de euros</strong> nos apoios públicos ao sector financeiro entre 2008 e 2025, descontadas as receitas consideradas no levantamento. No final desse período subsistiam activos financeiros com valor nominal de 9.563 milhões. O saldo de fluxos exige, portanto, distinguir perdas, participações e créditos recuperáveis. <a href="https://www.tcontas.pt/pt-pt/ProdutosTC/PareceresTribunalContas/ParecerCGE/Documents/2025/pcge2025.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[1]</a></p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">PRINCIPAIS ENCARGOS LÍQUIDOS — 2008–2025</h3>
+      <table style="width:100%; border-collapse:collapse; color:#e8eef4; font-family:inherit; font-size:0.95em; text-align:left;">
+        <thead><tr><th scope="col" style="color:#d6a542; padding:8px; border-bottom:1px solid #333; text-align:left;">Universo bancário</th><th scope="col" style="color:#d6a542; padding:8px; border-bottom:1px solid #333; text-align:right;">Milhões de euros</th></tr></thead>
+        <tbody>
+          <tr><td style="padding:8px; border-bottom:1px solid #333;">BES/Novo Banco</td><td style="padding:8px; border-bottom:1px solid #333; text-align:right;">7.974</td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid #333;">BPN</td><td style="padding:8px; border-bottom:1px solid #333; text-align:right;">5.817</td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid #333;">CGD</td><td style="padding:8px; border-bottom:1px solid #333; text-align:right;">4.855</td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid #333;">BANIF</td><td style="padding:8px; border-bottom:1px solid #333; text-align:right;">2.871</td></tr>
+          <tr><td style="padding:8px;">BPP</td><td style="padding:8px; text-align:right;">230</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-bottom:0; color:#cfcfcf; font-size:0.9em;">Fonte: Tribunal de Contas, Parecer sobre a Conta Geral do Estado de 2025, Caixa 8. Esta selecção não constitui o total do sector.</p>
+    </div>
+
+    <p>O mesmo relatório regista saldos favoráveis ao Estado de 919 milhões no BCP e 168 milhões no BPI. A verdade obriga a reconhecer essas diferenças. <a href="https://www.tcontas.pt/pt-pt/ProdutosTC/PareceresTribunalContas/ParecerCGE/Documents/2025/pcge2025.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[1]</a></p>
+    <p>Houve também recuperações posteriores: a venda do Novo Banco ao BPCE, concluída em Abril de 2026, proporcionou 1.673 milhões ao Estado e ao Fundo de Resolução. A operação foi igualmente acompanhada pela agência internacional EFE. Esse encaixe é posterior ao balanço de 2025. <a href="https://portugal.gov.pt/pt/gc25/comunicacao/comunicados/conclusao-do-processo-de-venda-do-novobanco" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[2]</a> <a href="https://efe.com/economia/2026-04-30/banco-frances-bpce-cierra-compra-portugues-novo-banco/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[13]</a></p>
+    <p>A precisão reforça a crítica. Permite discutir o que foi recuperado, o que continua comprometido e quais as decisões que explicam o resultado. Cada euro aplicado numa intervenção representa recursos que tiveram de ser financiados e que poderiam ter outros destinos. O custo de oportunidade também pertence à memória de um país.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A lei precisa de uma consciência pública</h2>
+    <p>A Constituição funda a República na dignidade da pessoa humana e compromete o Estado de direito democrático com a realização da democracia económica, social e cultural. Estes princípios dão conteúdo à exigência de justiça na gestão dos recursos públicos. <a href="https://www.parlamento.pt/Legislacao/Paginas/ConstituicaoRepublicaPortuguesa.aspx" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[11]</a></p>
+    <p>Uma decisão pode respeitar as regras aplicáveis e continuar sujeita a uma crítica ética severa. A legalidade determina o que é permitido; a responsabilidade democrática exige ainda avaliar quem ganha, quem perde e se as contrapartidas servem o interesse público.</p>
+    <p>A confiança dos cidadãos enfraquece quando a solidariedade aparece com toda a sua força no momento do prejuízo e perde vigor no momento do benefício. Uma comunidade não pode ser tratada como fiadora de emergência cuja presença se torna inconveniente quando os negócios melhoram.</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">O dinheiro público traz consigo um dever de reciprocidade. A memória desse dever deve sobreviver à emergência que justificou a sua utilização.</p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Os lucros e o mérito que lhes é atribuído</h2>
+    <p>Em 2025, o conjunto dos bancos em Portugal registou resultados líquidos de <strong>6.317 milhões de euros</strong>, segundo dados do Banco de Portugal divulgados pelo ECO. Os resultados mantiveram-se elevados apesar da redução da margem financeira, beneficiando de outros proveitos, do aumento das comissões e de menores custos agregados. <a href="https://eco.sapo.pt/2026/07/21/lucros-da-banca-sobem-ha-cinco-anos-em-2025-superaram-63-mil-milhoes/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[4]</a></p>
+    <p>O crescimento dos anos anteriores teve uma componente especialmente sensível para as famílias: a subida das taxas de juro chegou mais depressa aos empréstimos do que aos depósitos. O Banco de Portugal confirma essa assimetria e indica que, em Agosto de 2026, os novos depósitos a prazo de particulares pagavam em média 1,63% em Portugal, contra 2,18% na área do euro. <a href="https://bpstat.bportugal.pt/api/media/files/scripts/numerosquecontam/3144/PT/conteudo.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[3]</a></p>
+    <p>A imprensa internacional documentou o efeito dos juros nos resultados: em Fevereiro de 2024, a Reuters associou os lucros recorde do BCP em 2023 às taxas europeias elevadas e ao aumento da margem financeira. <a href="https://www.reuters.com/business/finance/millennium-bcps-2023-profit-hits-record-dividends-resume-2024-02-26/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[12]</a></p>
+    <p>A competência de uma administração conta. Contam também a conjuntura monetária, a estrutura dos depósitos, o risco do crédito e as escolhas dos clientes. Na nossa leitura, atribuir todo o resultado à excelência dos gestores apaga uma parte importante da explicação.</p>
+    <p>O lucro remunera capital, permite investimento e pode reforçar a segurança dos depositantes. A ética exige que a sua origem e a sua distribuição sejam escrutinadas, sobretudo quando existe uma história de apoio público. Um sistema robusto precisa de capital suficiente para enfrentar a próxima tempestade.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A escala das recompensas</h2>
+    <p>Segundo o levantamento do ECO baseado nos relatórios e contas, as administrações executivas dos cinco maiores bancos tiveram remunerações reportadas próximas de <strong>29,7 milhões de euros em 2025</strong>, mais 10% do que no ano anterior. Os cinco presidentes executivos somaram cerca de 7,4 milhões, mais 17%. No Novo Banco, a remuneração reportada de Mark Bourke aproximou-se de 2,4 milhões. Os totais incluem componentes com diferentes calendários de atribuição e pagamento. <a href="https://eco.sapo.pt/2026/04/15/ceo-da-banca-ganharam-mais-17-em-2025-saiba-quem-recebeu-mais/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[5]</a></p>
+    <p>Estas remunerações têm uma dimensão económica e outra simbólica. Para quem vive com um salário modesto, a distância entre o esforço quotidiano e a recompensa no topo torna-se uma pergunta sobre a medida do mérito e a distribuição do poder.</p>
+    <p>O próprio FMI reconheceu em 2026 que o nível de vida português continua bastante abaixo da média da União Europeia, embora a economia tenha apresentado um desempenho forte e o sistema financeiro revele resiliência. Prosperidade bancária e bem-estar social merecem ser avaliados em conjunto. <a href="https://www.imf.org/en/news/articles/2026/05/06/mcs-05062026-portugal-staff-concluding-statement-of-the-2026-article-iv-mission" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[14]</a></p>
+    <p>Quanto aos accionistas, o BCP prevê distribuições de até 90% através de dividendos e recompras de acções; em 2026 aprovou um programa de recompra de cerca de 407,5 milhões. <a href="https://ind.millenniumbcp.pt/pt/Institucional/investidores/Pages/Programa-de-Recompra-de-Acoes-Proprias-2026.aspx" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[6]</a></p>
+    <p>A CGD apresenta uma diferença essencial: o seu accionista é o Estado. O dividendo proposto de 1.250 milhões relativo aos resultados de 2025 representa uma receita pública. A avaliação deve reconhecer esse retorno e, ao mesmo tempo, discutir as remunerações, as condições oferecidas aos clientes e a missão da banca pública. <a href="https://www.cgd.pt/Institucional/Sala-de-Imprensa/2026/Pages/Atividade-Consolidada-FY2025.aspx" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[7]</a></p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Como se separa a recuperação da factura</h2>
+    <p>Os direitos do Estado dependem da forma do apoio concedido e dos contratos celebrados. Um empréstimo gera uma obrigação de reembolso; uma participação dá direitos de accionista; uma garantia ou um mecanismo de absorção de perdas tem condições próprias. O encargo histórico de uma intervenção não se transforma automaticamente numa dívida exigível ao banco actual.</p>
+    <p>Existe ainda financiamento pelo próprio sector: o Fundo de Resolução recebe contribuições da banca destinadas ao cumprimento das suas obrigações. A discussão pública deve integrar estes mecanismos de recuperação. <a href="https://www.fundoderesolucao.pt/recursos-financeiros" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[10]</a></p>
+    <p>O artigo 115.º-D do regime bancário prevê limitações às remunerações quando uma instituição beneficia de apoio financeiro público extraordinário, durante o período de intervenção. Essa delimitação temporal é decisiva. <a href="https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/1992-70072322-935894794" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[8]</a></p>
+    <p>No Novo Banco, o acordo de capitalização contingente terminou antecipadamente em Dezembro de 2024. O prospecto da instituição documenta a extinção da proibição contratual de distribuir dividendos. O fim dessa restrição e a recuperação integral dos recursos públicos são acontecimentos diferentes. <a href="https://www.novobanco.com/content/dam/novobanco-com/investors/debt-information/covered-bond/documentos/Suplemento%20ao%20Prospecto%20Base,%20datado%20de%2024%20janeiro%202025.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[9]</a></p>
+    <p>É aqui que o escrutínio político deve ser exigente: avaliar se os instrumentos escolhidos preservaram uma participação pública adequada nos ganhos da recuperação. Governar implica negociar esse futuro logo no momento em que se decide enfrentar a emergência.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Responsabilidade com nomes, decisões e consequências</h2>
+    <p>Preservar depósitos e pagamentos pode justificar uma intervenção. A qualidade dos contratos, a avaliação dos activos, os direitos mantidos pelo Estado e os incentivos estabelecidos devem continuar sujeitos a exame público.</p>
+    <p>Devem ser identificadas as decisões, as alternativas disponíveis, os riscos conhecidos e os fundamentos utilizados. A responsabilidade política por uma escolha ruinosa pode existir mesmo quando essa escolha não constitui crime. Quando houver ilícitos demonstrados, a responsabilização judicial deve alcançar os seus autores, com todas as garantias de defesa.</p>
+    <p>Também importa distinguir pessoas e épocas. Os gestores e accionistas actuais podem ser diferentes dos responsáveis pelos colapsos. A justiça exige individualizar condutas. A crítica institucional deve examinar o sistema de incentivos sem transformar suspeitas em sentenças.</p>
+    <p>A ética de um Estado de direito vive dessa dupla exigência: firmeza na responsabilização e rigor na prova. A impunidade corrói a confiança; a acusação indiscriminada corrói a justiça.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Um contrato público mais justo</h2>
+    <p>Para futuras intervenções, defendemos regras que tornem a reciprocidade concreta:</p>
+    <ul style="padding-left:22px;">
+      <li><strong>Participação na recuperação:</strong> direitos de reembolso, remuneração do risco e participação nos ganhos futuros definidos antes da concessão do apoio.</li>
+      <li><strong>Prémios e dividendos condicionados:</strong> limites proporcionais enquanto subsistir apoio extraordinário por recuperar, adequados ao instrumento utilizado e à solvabilidade da instituição.</li>
+      <li><strong>Remunerações com memória:</strong> incentivos ligados ao desempenho sustentável e mecanismos de redução ou restituição de prémios quando se comprovem condutas que tenham causado perdas.</li>
+      <li><strong>Contas públicas compreensíveis:</strong> um balanço anual por intervenção, com desembolsos, receitas, créditos, participações, custos de financiamento e estimativas de recuperação.</li>
+      <li><strong>Clientes com escolha efectiva:</strong> mais concorrência, comparabilidade de comissões e depósitos e facilidade de transferência entre instituições.</li>
+      <li><strong>Fiscalidade fundamentada:</strong> avaliação de medidas sobre ganhos extraordinários, com base legal sólida, proporcionalidade e análise dos efeitos no crédito e na estabilidade.</li>
+    </ul>
+    <p>A discussão fiscal tem precedentes internacionais. Um estudo publicado pela Direcção-Geral dos Assuntos Económicos e Financeiros da Comissão Europeia analisou as diferentes respostas dos países bálticos aos lucros bancários extraordinários. O trabalho examina tanto a justiça distributiva como as distorções possíveis. Serve de referência para discutir opções; as suas conclusões não dispensam uma avaliação própria da realidade portuguesa. <a href="https://economy-finance.ec.europa.eu/publications/taxing-bank-windfall-profits-lessons-baltics_en" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[15]</a></p>
+    <p>As reformas precisam de previsibilidade e respeito pelos direitos existentes. O Estado deve contratar melhor, regular melhor e prestar contas melhor. A defesa dos contribuintes merece instrumentos eficazes que sobrevivam ao entusiasmo de uma conferência de imprensa.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A consciência também pertence ao balanço</h2>
+    <p>Uma sociedade aceita sacrifícios quando reconhece necessidade, equidade e destino. A confiança torna-se frágil quando o esforço é partilhado e a recompensa parece reservada a uma minoria.</p>
+    <p>O cidadão que trabalha, paga impostos e cumpre os seus compromissos espera a mesma seriedade das instituições que administram milhões. Espera que o Estado se recorde dele depois da emergência. Espera que a palavra «responsabilidade» conserve o seu significado quando a conta é grande e os responsáveis são poderosos.</p>
+    <p>Portugal precisa de uma banca sólida e de instituições públicas capazes de proteger o interesse comum. Precisa também de uma cultura na qual o dinheiro público seja acompanhado por deveres duradouros, e a prosperidade permita reconstruir a confiança de quem suportou os anos difíceis.</p>
+    <p>A moral pública começa nessa fidelidade: lembrar, durante a recuperação, aqueles a quem se pediu ajuda durante a queda.</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;"><strong>Um Estado de direito honra-se quando a força da lei protege o cidadão com a mesma determinação com que protege a estabilidade do sistema.</strong><br>A conta pode fechar-se num relatório. A confiança só se reconstrói com justiça.</p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">Crónica de opinião, com informação verificada até 7 de Outubro de 2026. A defesa da ética e da moral públicas é apresentada como exigência de responsabilidade e reciprocidade, respeitando a legalidade, a presunção de inocência e os direitos de defesa.</p>
+      <p style="text-align:left;">O saldo das intervenções até 2025 é uma medida de fluxos públicos acumulados. A avaliação das perdas definitivas depende dos activos remanescentes e das recuperações posteriores. Os lucros de um exercício, os dividendos aos accionistas e as remunerações dos gestores são grandezas distintas. Os resultados agregados publicados pelas fontes podem usar perímetros diferentes, incluindo actividades internacionais dos grupos.</p>
+      <p style="text-align:left;">As referências incluem fontes primárias portuguesas, publicações do FMI e da Comissão Europeia e cobertura jornalística internacional da Reuters e da EFE. Os dados de remunerações provêm de cálculos do ECO sobre os relatórios e contas. As propostas de reforma são posições dos autores; não são atribuídas às instituições citadas. O estudo europeu sobre os países bálticos exprime as posições dos seus autores.</p>
+      <p style="text-align:left; margin-bottom:0;"><strong style="color:#d6a542;">Co-autoria editorial, investigação e verificação:</strong> Francisco António dos Santos Gonçalves e Augustus Veritas — Assistente OpenAI.</p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+    <ul style="padding-left:22px;">
+      <li><a href="https://www.tcontas.pt/pt-pt/ProdutosTC/PareceresTribunalContas/ParecerCGE/Documents/2025/pcge2025.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[1] Tribunal de Contas — Parecer sobre a Conta Geral do Estado de 2025, Caixa 8: Apoios públicos ao sector financeiro.</a></li>
+      <li><a href="https://portugal.gov.pt/pt/gc25/comunicacao/comunicados/conclusao-do-processo-de-venda-do-novobanco" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[2] Governo de Portugal — Conclusão do processo de venda do Novobanco, 30 de Abril de 2026.</a></li>
+      <li><a href="https://bpstat.bportugal.pt/api/media/files/scripts/numerosquecontam/3144/PT/conteudo.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[3] Banco de Portugal / BPstat — Análise da remuneração dos depósitos e da transmissão das taxas de juro; dados de Agosto de 2026.</a></li>
+      <li><a href="https://eco.sapo.pt/2026/07/21/lucros-da-banca-sobem-ha-cinco-anos-em-2025-superaram-63-mil-milhoes/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[4] ECO — Lucros da banca sobem há cinco anos. Em 2025 superaram 6,3 mil milhões, 21 de Julho de 2026; dados do Banco de Portugal.</a></li>
+      <li><a href="https://eco.sapo.pt/2026/04/15/ceo-da-banca-ganharam-mais-17-em-2025-saiba-quem-recebeu-mais/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[5] ECO — CEO da banca ganharam mais 17% em 2025. Saiba quem recebeu mais, 15 de Abril de 2026.</a></li>
+      <li><a href="https://ind.millenniumbcp.pt/pt/Institucional/investidores/Pages/Programa-de-Recompra-de-Acoes-Proprias-2026.aspx" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[6] Millennium BCP — Programa de Recompra de Acções Próprias 2026.</a></li>
+      <li><a href="https://www.cgd.pt/Institucional/Sala-de-Imprensa/2026/Pages/Atividade-Consolidada-FY2025.aspx" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[7] Caixa Geral de Depósitos — Resultados consolidados FY2025; dividendo proposto relativo a 2025.</a></li>
+      <li><a href="https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/1992-70072322-935894794" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[8] Diário da República — Regime Geral das Instituições de Crédito e Sociedades Financeiras, artigo 115.º-D.</a></li>
+      <li><a href="https://www.novobanco.com/content/dam/novobanco-com/investors/debt-information/covered-bond/documentos/Suplemento%20ao%20Prospecto%20Base,%20datado%20de%2024%20janeiro%202025.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[9] Novo Banco — Supplement dated 24 January 2025 to the Base Prospectus dated 14 October 2024; cessação do acordo de capitalização contingente e da proibição de dividendos.</a></li>
+      <li><a href="https://www.fundoderesolucao.pt/recursos-financeiros" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[10] Fundo de Resolução — Recursos financeiros e contribuições das instituições participantes.</a></li>
+      <li><a href="https://www.parlamento.pt/Legislacao/Paginas/ConstituicaoRepublicaPortuguesa.aspx" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[11] Assembleia da República — Constituição da República Portuguesa, artigos 1.º e 2.º.</a></li>
+      <li><a href="https://www.reuters.com/business/finance/millennium-bcps-2023-profit-hits-record-dividends-resume-2024-02-26/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[12] Reuters — Millennium bcp's 2023 profit hits record, dividends to resume, 26 de Fevereiro de 2024.</a></li>
+      <li><a href="https://efe.com/economia/2026-04-30/banco-frances-bpce-cierra-compra-portugues-novo-banco/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[13] EFE — El banco francés BPCE cierra la compra del portugués Novo Banco por 6.700 millones de euros, 30 de Abril de 2026.</a></li>
+      <li><a href="https://www.imf.org/en/news/articles/2026/05/06/mcs-05062026-portugal-staff-concluding-statement-of-the-2026-article-iv-mission" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[14] Fundo Monetário Internacional — Portugal: Staff Concluding Statement of the 2026 Article IV Mission, 6 de Maio de 2026.</a></li>
+      <li><a href="https://economy-finance.ec.europa.eu/publications/taxing-bank-windfall-profits-lessons-baltics_en" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[15] Comissão Europeia / DG ECFIN — Taxing Bank Windfall Profits: Lessons from the Baltics, European Economy Economic Brief 086, 16 de Outubro de 2025.</a></li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;"><strong style="color:#d6a542;">Francisco António dos Santos Gonçalves</strong><br>Co-autoria editorial, investigação e verificação: Augustus Veritas — Assistente OpenAI<br>Fragmentos do Caos<br>FC-Chronic-News</p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

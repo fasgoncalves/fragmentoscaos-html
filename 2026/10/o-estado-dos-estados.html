@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O Estado dos Estados</title>
+<meta name="description" content="O Estado dos Estados">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O Estado dos Estados</h1>
+      <p class="meta">Publicado em 2026-10-08 11:01:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/10/o_estado_dos_estados-4_5ec4c5cd.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="O Estado dos Estados">
+      <meta itemprop="description" content="Uma crónica crítica sobre o poder real dos Estados no século XXI: dívida, mercados, multinacionais, plataformas tecnológicas, soberania partilhada, dependências estratégicas, Estado social, vigilância, geopolítica e capacidade democrática.">
+      <meta itemprop="datePublished" content="2026-08-11">
+      <meta itemprop="dateModified" content="2026-08-11">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/10/o_estado_dos_estados-4.png">
+      <meta itemprop="mainEntityOfPage" content="https://fragmentoscaos.eu/2026/08/11/o-estado-dos-estados/">
+      <meta itemprop="inLanguage" content="pt-PT">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      O Estado dos Estados
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      Têm governos, parlamentos, fronteiras e bandeiras. Falta saber quanto poder ainda lhes pertence.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        Esta crónica parte de uma inquietação antiga sobre a "tirania dos mercados", escrita em Junho de 2013, e alarga-a ao problema contemporâneo do poder. O Estado não desapareceu. Mas, entre dívida, cadeias globais, multinacionais, plataformas digitais, bancos centrais, instituições supranacionais e dependências tecnológicas, a pergunta já não é apenas quem governa formalmente. É quem conserva capacidade efectiva para escolher.
+      </p>
+    </div>
+
+    <p>
+      Durante séculos, o Estado foi a grande máquina política da modernidade.
+    </p>
+    <p>
+      Recolhia impostos.
+    </p>
+    <p>
+      Fazia leis.
+    </p>
+    <p>
+      Construía estradas.
+    </p>
+    <p>
+      Mantinha exércitos.
+    </p>
+    <p>
+      Criava escolas.
+    </p>
+    <p>
+      Protegia fronteiras.
+    </p>
+    <p>
+      Emitia moeda.
+    </p>
+    <p>
+      Administrava justiça.
+    </p>
+    <p>
+      E, pelo menos em teoria, representava a vontade colectiva de uma comunidade política.
+    </p>
+    <p>
+      Hoje continua aparentemente no mesmo lugar.
+    </p>
+    <p>
+      Há presidentes.
+    </p>
+    <p>
+      Primeiros-ministros.
+    </p>
+    <p>
+      Parlamentos.
+    </p>
+    <p>
+      Ministérios.
+    </p>
+    <p>
+      Eleições.
+    </p>
+    <p>
+      Cerimónias.
+    </p>
+    <p>
+      Bandeiras desfraldadas com suficiente solenidade para tranquilizar qualquer patriota.
+    </p>
+    <p>
+      Mas convém fazer uma pergunta ligeiramente inconveniente:
+    </p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        <strong>quanto poder real resta ao Estado?</strong>
+      </p>
+    </div>
+    <p>
+      Porque possuir instituições não significa necessariamente possuir capacidade de decisão.
+    </p>
+    <p>
+      E talvez uma das grandes transformações políticas do nosso tempo seja precisamente esta:
+    </p>
+    <p>
+      o Estado continua visível.
+    </p>
+    <p>
+      O poder mudou parcialmente de morada.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O Estado endividado
+    </h2>
+    <p>
+      Um Estado que depende permanentemente de quem lhe empresta dinheiro possui soberania limitada.
+    </p>
+    <p>
+      Pode aprovar orçamentos.
+    </p>
+    <p>
+      Pode anunciar programas.
+    </p>
+    <p>
+      Pode prometer investimentos.
+    </p>
+    <p>
+      Mas há sempre uma pergunta silenciosa atrás de cada decisão:
+    </p>
+    <p>
+      "Como reagirão os mercados?"
+    </p>
+    <p>
+      A expressão tornou-se tão banal que quase deixou de provocar estranheza.
+    </p>
+    <p>
+      Os mercados gostaram.
+    </p>
+    <p>
+      Os mercados ficaram nervosos.
+    </p>
+    <p>
+      Os mercados penalizaram.
+    </p>
+    <p>
+      Os mercados exigem confiança.
+    </p>
+    <p>
+      Quase parecem uma divindade antiga.
+    </p>
+    <p>
+      Invisíveis.
+    </p>
+    <p>
+      Temperamentais.
+    </p>
+    <p>
+      E necessitando regularmente de sacrifícios para serem acalmados.
+    </p>
+    <p>
+      Naturalmente, Estados que pedem dinheiro emprestado têm responsabilidades.
+    </p>
+    <p>
+      A dívida não é ficção.
+    </p>
+    <p>
+      Quem empresta pretende receber.
+    </p>
+    <p>
+      O problema começa quando a disciplina financeira deixa de ser instrumento de governação e se transforma na finalidade da própria política.
+    </p>
+    <p>
+      Um país não existe para equilibrar uma folha de cálculo.
+    </p>
+    <p>
+      Uma folha de cálculo existe para ajudar um país a funcionar.
+    </p>
+    <p>
+      A ordem destas duas coisas merece ser lembrada.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A soberania terceirizada
+    </h2>
+    <p>
+      Também entregámos parcelas significativas de soberania a instituições supranacionais.
+    </p>
+    <p>
+      Em muitos casos, voluntariamente.
+    </p>
+    <p>
+      E frequentemente com boas razões.
+    </p>
+    <p>
+      Cooperação internacional.
+    </p>
+    <p>
+      Comércio.
+    </p>
+    <p>
+      Segurança.
+    </p>
+    <p>
+      Moeda comum.
+    </p>
+    <p>
+      Normas técnicas.
+    </p>
+    <p>
+      Protecção ambiental.
+    </p>
+    <p>
+      Circulação de pessoas.
+    </p>
+    <p>
+      Nenhum Estado moderno consegue viver isolado.
+    </p>
+    <p>
+      Mas cooperação e dependência são conceitos diferentes.
+    </p>
+    <p>
+      Quando decisões fundamentais passam a ser tomadas por estruturas demasiado distantes dos cidadãos, surge um problema democrático.
+    </p>
+    <p>
+      Quem decide?
+    </p>
+    <p>
+      Quem responde?
+    </p>
+    <p>
+      Quem pode ser afastado?
+    </p>
+    <p>
+      Quem assume responsabilidade quando uma política falha?
+    </p>
+    <p>
+      Uma democracia saudável necessita de uma ligação relativamente clara entre decisão e responsabilização.
+    </p>
+    <p>
+      Quando essa cadeia se fragmenta por dezenas de instituições, tratados, agências, bancos centrais, organismos internacionais e regras automáticas, acontece algo politicamente extraordinário:
+    </p>
+    <p>
+      todos participam na decisão.
+    </p>
+    <p>
+      Ninguém parece responsável pelo resultado.
+    </p>
+    <p>
+      É uma arquitectura administrativa quase perfeita.
+    </p>
+    <p>
+      Sobretudo para quem prefere nunca ser culpado.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O Estado perante as multinacionais
+    </h2>
+    <p>
+      Há depois um poder que cresceu extraordinariamente durante as últimas décadas.
+    </p>
+    <p>
+      As grandes corporações multinacionais.
+    </p>
+    <p>
+      Algumas possuem receitas superiores ao produto interno de muitos países.
+    </p>
+    <p>
+      Controlam tecnologia.
+    </p>
+    <p>
+      Comunicações.
+    </p>
+    <p>
+      Logística.
+    </p>
+    <p>
+      Energia.
+    </p>
+    <p>
+      Medicamentos.
+    </p>
+    <p>
+      Infra-estruturas digitais.
+    </p>
+    <p>
+      Informação.
+    </p>
+    <p>
+      Dados.
+    </p>
+    <p>
+      E, crescentemente, inteligência artificial.
+    </p>
+    <p>
+      Um pequeno ou médio Estado que negoceia com uma dessas empresas nem sempre negoceia de igual para igual.
+    </p>
+    <p>
+      A empresa pode mudar investimentos.
+    </p>
+    <p>
+      Transferir operações.
+    </p>
+    <p>
+      Escolher jurisdições.
+    </p>
+    <p>
+      Optimizar impostos.
+    </p>
+    <p>
+      Deslocar propriedade intelectual.
+    </p>
+    <p>
+      O cidadão não possui semelhante mobilidade.
+    </p>
+    <p>
+      Continua alegremente disponível para pagar impostos onde vive.
+    </p>
+    <p>
+      É uma das elegâncias assimétricas da globalização.
+    </p>
+    <p>
+      O capital tornou-se internacional.
+    </p>
+    <p>
+      Grande parte da tributação continuou nacional.
+    </p>
+    <p>
+      Depois os Estados competem entre si para atrair precisamente o capital que aprenderam a ter dificuldade em tributar.
+    </p>
+    <p>
+      Não deixa de ser uma magnífica construção.
+    </p>
+    <p>
+      Para alguns.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O novo senhor feudal chama-se plataforma
+    </h2>
+    <p>
+      Mas o fenómeno mais recente talvez seja ainda mais profundo.
+    </p>
+    <p>
+      Durante séculos, o Estado controlava grande parte do espaço público.
+    </p>
+    <p>
+      Hoje uma parcela crescente da comunicação social acontece dentro de infra-estruturas privadas.
+    </p>
+    <p>
+      Redes sociais.
+    </p>
+    <p>
+      Motores de pesquisa.
+    </p>
+    <p>
+      Plataformas de vídeo.
+    </p>
+    <p>
+      Aplicações de mensagens.
+    </p>
+    <p>
+      Serviços cloud.
+    </p>
+    <p>
+      Lojas de aplicações.
+    </p>
+    <p>
+      Sistemas de inteligência artificial.
+    </p>
+    <p>
+      Estas empresas não possuem apenas clientes.
+    </p>
+    <p>
+      Possuem ecossistemas.
+    </p>
+    <p>
+      Decidem regras de acesso.
+    </p>
+    <p>
+      Moderam discursos.
+    </p>
+    <p>
+      Organizam informação.
+    </p>
+    <p>
+      Recomendam conteúdos.
+    </p>
+    <p>
+      Determinam visibilidade.
+    </p>
+    <p>
+      Conhecem comportamentos.
+    </p>
+    <p>
+      E conseguem alterar algoritmos que afectam instantaneamente centenas de milhões de pessoas.
+    </p>
+    <p>
+      Nunca uma empresa de jornais teve semelhante poder.
+    </p>
+    <p>
+      Nunca uma estação de televisão teve semelhante escala.
+    </p>
+    <p>
+      Nunca um editor conheceu tão detalhadamente os hábitos de cada leitor.
+    </p>
+    <p>
+      Chamamos-lhes empresas tecnológicas.
+    </p>
+    <p>
+      Talvez seja uma descrição cada vez menos suficiente.
+    </p>
+    <p>
+      São infra-estruturas sociais privadas.
+    </p>
+    <p>
+      E os Estados ainda estão a descobrir como governar empresas que, em algumas dimensões, já governam partes da sociedade.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O Estado que sabe tudo e controla pouco
+    </h2>
+    <p>
+      Há aqui um paradoxo curioso.
+    </p>
+    <p>
+      Nunca o Estado soube tanto sobre os cidadãos.
+    </p>
+    <p>
+      Números fiscais.
+    </p>
+    <p>
+      Registos de saúde.
+    </p>
+    <p>
+      Dados laborais.
+    </p>
+    <p>
+      Transacções.
+    </p>
+    <p>
+      Propriedades.
+    </p>
+    <p>
+      Veículos.
+    </p>
+    <p>
+      Educação.
+    </p>
+    <p>
+      Movimentos administrativos.
+    </p>
+    <p>
+      E, através da digitalização, cada vez mais informação cruza sistemas anteriormente separados.
+    </p>
+    <p>
+      Ao mesmo tempo, o Estado parece frequentemente incapaz de controlar algumas das estruturas económicas das quais depende.
+    </p>
+    <p>
+      Sabe quanto o pequeno comerciante deve pagar de imposto.
+    </p>
+    <p>
+      Mas pode ter enorme dificuldade em tributar eficazmente operações internacionais de gigantes multinacionais.
+    </p>
+    <p>
+      Sabe quando um cidadão atrasou uma prestação.
+    </p>
+    <p>
+      Mas pode levar anos a compreender complexas operações financeiras.
+    </p>
+    <p>
+      A máquina pública tornou-se extraordinariamente eficiente a controlar aquilo que está perto.
+    </p>
+    <p>
+      Continua bastante menos impressionante perante aquilo que está acima dela.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O Estado administrador
+    </h2>
+    <p>
+      Há também uma transformação interna.
+    </p>
+    <p>
+      Governar deixou progressivamente de significar escolher.
+    </p>
+    <p>
+      Passou muitas vezes a significar administrar.
+    </p>
+    <p>
+      Administrar legislação existente.
+    </p>
+    <p>
+      Administrar fundos.
+    </p>
+    <p>
+      Administrar programas.
+    </p>
+    <p>
+      Administrar regulamentos.
+    </p>
+    <p>
+      Administrar crises.
+    </p>
+    <p>
+      Administrar compromissos anteriormente assumidos.
+    </p>
+    <p>
+      Administrar dívida.
+    </p>
+    <p>
+      Administrar expectativas.
+    </p>
+    <p>
+      O político transforma-se então em gestor de restrições.
+    </p>
+    <p>
+      Chega ao governo prometendo transformação.
+    </p>
+    <p>
+      Poucos meses depois explica solenemente por que razão quase tudo é impossível.
+    </p>
+    <p>
+      Há regras europeias.
+    </p>
+    <p>
+      Há contratos.
+    </p>
+    <p>
+      Há compromissos internacionais.
+    </p>
+    <p>
+      Há constrangimentos orçamentais.
+    </p>
+    <p>
+      Há mercados.
+    </p>
+    <p>
+      Há tribunais.
+    </p>
+    <p>
+      Há reguladores.
+    </p>
+    <p>
+      Há estudos.
+    </p>
+    <p>
+      Há pareceres.
+    </p>
+    <p>
+      Há sempre alguma coisa.
+    </p>
+    <p>
+      Naturalmente, muitos desses limites são legítimos.
+    </p>
+    <p>
+      O problema aparece quando a política deixa de possuir margem suficiente para escolher direcção.
+    </p>
+    <p>
+      Uma democracia sem alternativas reais pode manter eleições durante muito tempo.
+    </p>
+    <p>
+      Mas começa lentamente a perder significado.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Votar sem escolher
+    </h2>
+    <p>
+      Talvez seja este o problema central.
+    </p>
+    <p>
+      A democracia não consiste simplesmente no direito de votar.
+    </p>
+    <p>
+      Consiste na possibilidade de transformar escolhas colectivas em políticas reais.
+    </p>
+    <p>
+      Se diferentes governos conseguem alterar apenas pequenas margens enquanto estruturas económicas fundamentais permanecem intocáveis, o cidadão começa a perceber algo.
+    </p>
+    <p>
+      Pode mudar ministros.
+    </p>
+    <p>
+      Não consegue mudar mecanismos.
+    </p>
+    <p>
+      Pode substituir partidos.
+    </p>
+    <p>
+      Não consegue alterar determinadas dependências.
+    </p>
+    <p>
+      Pode rejeitar uma política.
+    </p>
+    <p>
+      Descobre que a alternativa é considerada impossível.
+    </p>
+    <p>
+      Nesse momento nasce uma doença política perigosa:
+    </p>
+    <p>
+      cinismo.
+    </p>
+    <p>
+      O cidadão deixa de acreditar.
+    </p>
+    <p>
+      Primeiro nos políticos.
+    </p>
+    <p>
+      Depois nas instituições.
+    </p>
+    <p>
+      Depois na própria democracia.
+    </p>
+    <p>
+      É então que surgem aqueles que oferecem soluções simples para problemas complexos.
+    </p>
+    <p>
+      Sempre existiram.
+    </p>
+    <p>
+      A diferença é que agora possuem redes sociais.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Estados ricos e Estados impotentes
+    </h2>
+    <p>
+      Não devemos cometer o erro de imaginar que todos os Estados perderam poder.
+    </p>
+    <p>
+      Alguns possuem mais do que nunca.
+    </p>
+    <p>
+      Grandes potências conseguem projectar força militar.
+    </p>
+    <p>
+      Controlar cadeias de abastecimento.
+    </p>
+    <p>
+      Impor sanções.
+    </p>
+    <p>
+      Subsidiar indústrias estratégicas.
+    </p>
+    <p>
+      Regular mercados gigantescos.
+    </p>
+    <p>
+      Financiar investigação.
+    </p>
+    <p>
+      Dominar tecnologias.
+    </p>
+    <p>
+      Imprimir moeda utilizada internacionalmente.
+    </p>
+    <p>
+      A globalização não eliminou o Estado.
+    </p>
+    <p>
+      Redistribuiu poder entre Estados.
+    </p>
+    <p>
+      Os grandes ganharam novas ferramentas.
+    </p>
+    <p>
+      Os pequenos adquiriram novas dependências.
+    </p>
+    <p>
+      É por isso que falar simplesmente de soberania nacional pode tornar-se enganador.
+    </p>
+    <p>
+      Uma bandeira não produz semicondutores.
+    </p>
+    <p>
+      Um hino não constrói satélites.
+    </p>
+    <p>
+      Uma constituição não garante energia.
+    </p>
+    <p>
+      A soberania moderna tornou-se profundamente material.
+    </p>
+    <p>
+      Quem controla tecnologia?
+    </p>
+    <p>
+      Quem controla energia?
+    </p>
+    <p>
+      Quem produz medicamentos?
+    </p>
+    <p>
+      Quem possui infra-estruturas?
+    </p>
+    <p>
+      Quem controla dados?
+    </p>
+    <p>
+      Quem domina comunicações?
+    </p>
+    <p>
+      Quem consegue alimentar a população?
+    </p>
+    <p>
+      Quem fabrica equipamentos de defesa?
+    </p>
+    <p>
+      Estas perguntas são hoje tão importantes como saber onde termina uma fronteira.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      A soberania tecnológica
+    </h2>
+    <p>
+      Talvez nenhuma dimensão seja actualmente mais ignorada do que esta.
+    </p>
+    <p>
+      Um Estado que depende integralmente de tecnologia estrangeira para os seus sistemas críticos possui autonomia limitada.
+    </p>
+    <p>
+      Cloud.
+    </p>
+    <p>
+      Software.
+    </p>
+    <p>
+      Processadores.
+    </p>
+    <p>
+      Telecomunicações.
+    </p>
+    <p>
+      Inteligência artificial.
+    </p>
+    <p>
+      Cibersegurança.
+    </p>
+    <p>
+      Sistemas financeiros.
+    </p>
+    <p>
+      Administração pública.
+    </p>
+    <p>
+      Se tudo isto depende de empresas sediadas noutros países, a independência política possui uma fragilidade estrutural.
+    </p>
+    <p>
+      Não significa fechar fronteiras tecnológicas.
+    </p>
+    <p>
+      Significa compreender que determinadas capacidades são estratégicas.
+    </p>
+    <p>
+      Durante décadas, muitos governos trataram tecnologia como aquisição administrativa.
+    </p>
+    <p>
+      Compra-se.
+    </p>
+    <p>
+      Instala-se.
+    </p>
+    <p>
+      Paga-se licença.
+    </p>
+    <p>
+      Repete-se no ano seguinte.
+    </p>
+    <p>
+      O resultado é dependência acumulada.
+    </p>
+    <p>
+      Depois descobrimos que mudar de fornecedor custa uma fortuna.
+    </p>
+    <p>
+      Chamamos-lhe transformação digital.
+    </p>
+    <p>
+      Por vezes é simplesmente dependência com interface moderna.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O Estado social sob pressão
+    </h2>
+    <p>
+      Existe ainda outra transformação.
+    </p>
+    <p>
+      O Estado moderno prometeu protecção social.
+    </p>
+    <p>
+      Saúde.
+    </p>
+    <p>
+      Educação.
+    </p>
+    <p>
+      Pensões.
+    </p>
+    <p>
+      Desemprego.
+    </p>
+    <p>
+      Habitação.
+    </p>
+    <p>
+      Segurança.
+    </p>
+    <p>
+      Essas conquistas representaram um dos maiores progressos políticos do século XX.
+    </p>
+    <p>
+      Mas enfrentam agora pressões simultâneas.
+    </p>
+    <p>
+      Envelhecimento populacional.
+    </p>
+    <p>
+      Baixa natalidade.
+    </p>
+    <p>
+      Crescimento económico reduzido.
+    </p>
+    <p>
+      Custos de saúde crescentes.
+    </p>
+    <p>
+      Automação.
+    </p>
+    <p>
+      Precariedade laboral.
+    </p>
+    <p>
+      Migrações.
+    </p>
+    <p>
+      Mudanças climáticas.
+    </p>
+    <p>
+      Endividamento.
+    </p>
+    <p>
+      O perigo é responder a estes desafios simplesmente reduzindo direitos.
+    </p>
+    <p>
+      Porque então criamos um ciclo perverso.
+    </p>
+    <p>
+      O Estado perde capacidade.
+    </p>
+    <p>
+      Os serviços degradam-se.
+    </p>
+    <p>
+      Os cidadãos deixam de confiar.
+    </p>
+    <p>
+      Quem pode compra alternativas privadas.
+    </p>
+    <p>
+      O serviço público perde apoio político.
+    </p>
+    <p>
+      Degrada-se ainda mais.
+    </p>
+    <p>
+      Até que alguém aparece para explicar que o Estado não funciona.
+    </p>
+    <p>
+      Depois de passar anos a assegurar que não funcionava.
+    </p>
+    <p>
+      É uma técnica política antiga.
+    </p>
+    <p>
+      Continua bastante eficaz.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Segurança em troca de liberdade
+    </h2>
+    <p>
+      Os Estados também recuperaram poder numa área específica.
+    </p>
+    <p>
+      Vigilância.
+    </p>
+    <p>
+      Terrorismo.
+    </p>
+    <p>
+      Cibercrime.
+    </p>
+    <p>
+      Pandemias.
+    </p>
+    <p>
+      Desinformação.
+    </p>
+    <p>
+      Criminalidade organizada.
+    </p>
+    <p>
+      Ameaças externas.
+    </p>
+    <p>
+      Tudo isto criou justificações legítimas para novas capacidades de controlo.
+    </p>
+    <p>
+      Mas toda a ferramenta de segurança contém uma tentação.
+    </p>
+    <p>
+      Aquilo que pode ser utilizado para proteger também pode ser utilizado para vigiar.
+    </p>
+    <p>
+      Câmaras.
+    </p>
+    <p>
+      Reconhecimento facial.
+    </p>
+    <p>
+      Bases de dados.
+    </p>
+    <p>
+      Interceptação digital.
+    </p>
+    <p>
+      Sistemas biométricos.
+    </p>
+    <p>
+      Inteligência artificial.
+    </p>
+    <p>
+      Análise comportamental.
+    </p>
+    <p>
+      Nenhuma destas tecnologias é automaticamente tirânica.
+    </p>
+    <p>
+      Mas todas exigem instituições suficientemente fortes para impedir abusos.
+    </p>
+    <p>
+      O problema é evidente:
+    </p>
+    <p>
+      estamos a construir Estados tecnologicamente capazes de conhecer cada vez mais sobre os cidadãos ao mesmo tempo que esses Estados parecem possuir cada vez menos autonomia perante algumas estruturas de poder económico.
+    </p>
+    <p>
+      É uma combinação que merece atenção.
+    </p>
+    <p>
+      Um Estado fraco perante os fortes e poderoso perante os fracos não é exactamente o ideal democrático que nos prometeram.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O regresso da geopolítica
+    </h2>
+    <p>
+      Durante algumas décadas acreditámos que a economia substituiria a geopolítica.
+    </p>
+    <p>
+      Comércio produziria paz.
+    </p>
+    <p>
+      Interdependência produziria estabilidade.
+    </p>
+    <p>
+      Mercados aproximariam países.
+    </p>
+    <p>
+      Era uma esperança elegante.
+    </p>
+    <p>
+      A história voltou a entrar pela porta sem pedir autorização.
+    </p>
+    <p>
+      Guerras.
+    </p>
+    <p>
+      Sanções.
+    </p>
+    <p>
+      Disputas comerciais.
+    </p>
+    <p>
+      Corridas tecnológicas.
+    </p>
+    <p>
+      Energia utilizada como instrumento político.
+    </p>
+    <p>
+      Semicondutores tratados como recurso estratégico.
+    </p>
+    <p>
+      Cadeias de abastecimento transformadas em questões de segurança nacional.
+    </p>
+    <p>
+      O Estado regressou.
+    </p>
+    <p>
+      Mas regressou diferente.
+    </p>
+    <p>
+      Percebeu finalmente que eficiência sem resiliência cria vulnerabilidade.
+    </p>
+    <p>
+      Produzir tudo onde é mais barato funciona magnificamente.
+    </p>
+    <p>
+      Até deixar de funcionar.
+    </p>
+    <p>
+      Nesse dia descobrimos que uma cadeia global optimizada ao cêntimo pode ser estrategicamente absurda.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O Estado necessário
+    </h2>
+    <p>
+      Apesar de todas estas críticas, seria ingénuo concluir que precisamos de menos Estado em tudo.
+    </p>
+    <p>
+      Provavelmente precisamos de melhor Estado.
+    </p>
+    <p>
+      Um Estado capaz de planear.
+    </p>
+    <p>
+      Capaz de executar.
+    </p>
+    <p>
+      Capaz de contratar conhecimento.
+    </p>
+    <p>
+      Capaz de desenvolver competências internas.
+    </p>
+    <p>
+      Capaz de resistir a capturas económicas.
+    </p>
+    <p>
+      Capaz de regular sem sufocar.
+    </p>
+    <p>
+      Capaz de proteger sem controlar excessivamente.
+    </p>
+    <p>
+      Capaz de cooperar internacionalmente sem abdicar de interesses estratégicos.
+    </p>
+    <p>
+      Capaz de dizer não.
+    </p>
+    <p>
+      Esta última capacidade tornou-se curiosamente rara.
+    </p>
+    <p>
+      Porque soberania não é gritar independência.
+    </p>
+    <p>
+      É possuir alternativas.
+    </p>
+    <p>
+      Quem depende absolutamente de um fornecedor não é soberano.
+    </p>
+    <p>
+      Quem depende absolutamente de um credor não é soberano.
+    </p>
+    <p>
+      Quem depende absolutamente de uma tecnologia externa não é soberano.
+    </p>
+    <p>
+      Quem não consegue alimentar, proteger ou comunicar com a sua própria população em situação crítica possui soberania bastante teórica.
+    </p>
+    <p>
+      A verdadeira independência não se proclama.
+    </p>
+    <p>
+      Constrói-se.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      O futuro dos Estados
+    </h2>
+    <p>
+      O século XXI talvez não assista ao desaparecimento dos Estados.
+    </p>
+    <p>
+      Assistirá à sua redefinição.
+    </p>
+    <p>
+      Alguns tornar-se-ão plataformas administrativas de poderes económicos maiores.
+    </p>
+    <p>
+      Outros recuperarão capacidades estratégicas.
+    </p>
+    <p>
+      Alguns entregarão infra-estruturas essenciais a interesses privados.
+    </p>
+    <p>
+      Outros perceberão que determinadas funções não podem ser tratadas apenas como mercados.
+    </p>
+    <p>
+      Alguns utilizarão tecnologia para ampliar cidadania.
+    </p>
+    <p>
+      Outros utilizá-la-ão para ampliar controlo.
+    </p>
+    <p>
+      A escolha continua política.
+    </p>
+    <p>
+      Ainda.
+    </p>
+    <p>
+      Porque talvez esta seja a questão decisiva do nosso tempo:
+    </p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        <strong>quem governa realmente?</strong>
+      </p>
+    </div>
+    <p>
+      O governo eleito?
+    </p>
+    <p>
+      Os credores?
+    </p>
+    <p>
+      As grandes empresas?
+    </p>
+    <p>
+      As plataformas tecnológicas?
+    </p>
+    <p>
+      Os bancos centrais?
+    </p>
+    <p>
+      Os organismos supranacionais?
+    </p>
+    <p>
+      Os mercados financeiros?
+    </p>
+    <p>
+      Ou alguma combinação opaca de todos eles?
+    </p>
+    <p>
+      Uma democracia adulta deveria conseguir responder claramente.
+    </p>
+    <p>
+      Quando já não consegue, existe um problema.
+    </p>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Recuperar o Estado sem entregar-lhe tudo
+    </h2>
+    <p>
+      A solução não pode ser regressar a nacionalismos fechados ou imaginar que cada país conseguirá viver sozinho.
+    </p>
+    <p>
+      Isso seria substituir dependência por fantasia.
+    </p>
+    <p>
+      Mas também não podemos continuar a fingir que soberania é um conceito antiquado.
+    </p>
+    <p>
+      A soberania continua essencial.
+    </p>
+    <p>
+      Apenas mudou de natureza.
+    </p>
+    <p>
+      Hoje significa capacidade de escolher.
+    </p>
+    <p>
+      Capacidade tecnológica.
+    </p>
+    <p>
+      Capacidade energética.
+    </p>
+    <p>
+      Capacidade financeira.
+    </p>
+    <p>
+      Capacidade alimentar.
+    </p>
+    <p>
+      Capacidade institucional.
+    </p>
+    <p>
+      Capacidade militar.
+    </p>
+    <p>
+      Capacidade intelectual.
+    </p>
+    <p>
+      E, acima de tudo, capacidade democrática.
+    </p>
+    <p>
+      Um Estado forte não é necessariamente aquele que controla mais.
+    </p>
+    <p>
+      É aquele que consegue proteger a liberdade colectiva de escolher um futuro.
+    </p>
+    <p>
+      Essa deveria ser a sua função essencial.
+    </p>
+    <p>
+      Não servir mercados.
+    </p>
+    <p>
+      Não servir burocracias.
+    </p>
+    <p>
+      Não servir partidos.
+    </p>
+    <p>
+      Não servir corporações.
+    </p>
+    <p>
+      Servir cidadãos.
+    </p>
+    <p>
+      Parece uma ideia extraordinariamente radical.
+    </p>
+    <p>
+      É curioso.
+    </p>
+    <p>
+      Em tempos chamávamos-lhe simplesmente democracia.
+    </p>
+    <p>
+      E talvez seja precisamente aí que devemos regressar:
+    </p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        <strong>a um Estado suficientemente forte para defender os cidadãos, suficientemente limitado para não os dominar e suficientemente soberano para não receber de outros as instruções sobre aquilo que pode desejar.</strong>
+      </p>
+    </div>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">
+        ELEMENTOS CENTRAIS
+      </h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>A dívida e o custo do financiamento condicionam a margem de escolha orçamental dos Estados, sobretudo quando a dependência de credores se torna estrutural.</li>
+        <li>A soberania contemporânea é também tecnológica, energética, financeira, alimentar, industrial, militar e informacional.</li>
+        <li>Plataformas digitais e grandes multinacionais controlam infra-estruturas, dados e ecossistemas que lhes conferem poder económico e social muito superior ao de empresas tradicionais.</li>
+        <li>A partilha de soberania através de instituições supranacionais pode limitar decisões nacionais, mas também aumentar a capacidade efectiva de pequenos e médios Estados quando cria escala, regras comuns e poder negocial.</li>
+        <li>Digitalização e vigilância aumentam a capacidade administrativa do Estado, exigindo simultaneamente mecanismos mais fortes de responsabilização, proporcionalidade e defesa das liberdades.</li>
+        <li>A qualidade do Estado depende menos da quantidade de controlo que exerce do que da capacidade para planear, executar, proteger direitos e conservar alternativas estratégicas.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">
+      Nota Editorial
+    </h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        Esta é uma crónica de opinião. A expressão "perda de soberania" não deve ser entendida como descrição de um processo único, deliberado ou universal. Em muitos domínios, os Estados decidiram voluntariamente partilhar competências através de tratados e instituições internacionais precisamente para recuperar capacidade efectiva perante problemas que já não conseguem resolver isoladamente.
+      </p>
+      <p style="text-align:left;">
+        Também os mercados financeiros não constituem uma entidade política única e centralizada. São compostos por investidores, bancos, fundos, seguradoras, fundos de pensões, instituições públicas e privadas e milhões de decisões descentralizadas. O problema democrático não é a existência dos mercados, mas a possibilidade de dependências financeiras estreitarem excessivamente o espaço de escolha pública.
+      </p>
+      <p style="text-align:left;">
+        A investigação internacional recente mostra simultaneamente vários movimentos: dívida pública elevada e pressões orçamentais; maior digitalização dos governos; crescente preocupação com dependências estratégicas em semicondutores, cloud, dados e cibersegurança; concentração da inovação em inteligência artificial; e renovado interesse por resiliência industrial, tecnológica e das cadeias de abastecimento.
+      </p>
+      <p style="text-align:left;">
+        A independência de instituições como bancos centrais, por exemplo, não deve ser confundida automaticamente com ausência de legitimidade democrática. A questão central é a combinação entre independência operacional, mandato legal, transparência e responsabilização perante instituições eleitas.
+      </p>
+      <p style="text-align:left; margin-bottom:0;">
+        A tese desta crónica é, por isso, mais restrita e mais exigente: um Estado democrático precisa de conservar capacidade material para escolher entre alternativas reais. Sem essa capacidade, a soberania pode sobreviver juridicamente enquanto se torna progressivamente ornamental.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">
+      Referências credíveis
+    </h2>
+
+    <ul style="padding-left:22px;">
+      <li>
+        <a href="https://www.imf.org/en/publications/fm" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          FMI — Fiscal Monitor, April 2026
+        </a>
+      </li>
+      <li>
+        <a href="https://openknowledge.worldbank.org/entities/publication/7c0dbf75-2bd7-4ae3-9db9-91318290c781" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Banco Mundial — International Debt Report 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          OCDE — Government at a Glance 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://www.worldbank.org/en/programs/govtech/gtmi-2025-update" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Banco Mundial — GovTech Maturity Index 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://unctad.org/publication/technology-and-innovation-report-2025" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          UNCTAD — Technology and Innovation Report 2025: Inclusive Artificial Intelligence for Development
+        </a>
+      </li>
+      <li>
+        <a href="https://unctad.org/publication/world-investment-report-2025" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          UNCTAD — World Investment Report 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://digital-strategy.ec.europa.eu/en/policies/2025-state-digital-decade-package" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Comissão Europeia — 2025 State of the Digital Decade
+        </a>
+      </li>
+      <li>
+        <a href="https://reforms-investments.ec.europa.eu/technical-support-instrument-0/flagship-technical-support-projects/tsi-2025-flagship-economic-security-technologies-and-resources_en" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Comissão Europeia — Economic Security in Technologies and Resources
+        </a>
+      </li>
+      <li>
+        <a href="https://www.enisa.europa.eu/news/etl-2025-eu-consistently-targeted-by-diverse-yet-convergent-threat-groups" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          ENISA — Threat Landscape 2025
+        </a>
+      </li>
+      <li>
+        <a href="https://www.ecb.europa.eu/press/blog/date/2025/html/ecb.blog.20251223~aad70ce537.en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Banco Central Europeu — Why central bank independence matters: lessons from the past 50 years
+        </a>
+      </li>
+      <li>
+        <a href="https://publicadministration.un.org/egovkb/en-us/reports/un-e-government-survey-2024" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Nações Unidas — UN E-Government Survey 2024
+        </a>
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

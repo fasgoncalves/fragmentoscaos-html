@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Europa de porta aberta</title>
+<meta name="description" content="A Europa de porta aberta">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Europa de porta aberta</h1>
+      <p class="meta">Publicado em 2026-10-08 10:03:39</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/10/file_00000000bf1c824386afedd5d16c1bde_a9bc13cf.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- FC-Chronic-News — crónica integral; verificação editorial de 4 de Outubro de 2026 -->
+<div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="A Europa de porta aberta">
+      <meta itemprop="description" content="Uma crónica crítica sobre a compra de influência e as vulnerabilidades das instituições europeias, distinguindo condenações, denúncias jornalísticas e conflitos de interesses.">
+      <meta itemprop="datePublished" content="2026-10-04">
+      <meta itemprop="dateModified" content="2026-10-04">
+      <meta itemprop="author" content="Francisco Gonçalves">
+      <meta itemprop="author" content="Augustus Veritas – AI Assistant">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/10/file_00000000bf1c824386afedd5d16c1bde.png">
+    </span>
+  </div>
+  <div style="max-width:900px; margin:auto; padding:10px;">
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">A Europa de porta aberta</h1>
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">Quando a influência estrangeira encontra quem lhe abra caminho</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Documento de apoio:</strong><br><a href="http://www.fragmentoscaos.eu/wp-content/uploads/2026/10/documento-de-apoio-europa-versao-revista-anotada.html" target="_blank" rel="noopener" style="color:#ffcc66;">Documento de apoio — versão revista e anotada</a><br>Consulte, no final deste artigo, a revisão do documento inicial, com as correcções, os graus de confirmação e as referências identificadas.</p>
+    </div>
+    <!-- Início da crónica integral -->
+    <p>A Europa gosta de imaginar que as ameaças à sua liberdade chegam de fora, devidamente identificadas: um tanque, um míssil, uma bandeira hostil. É uma imagem confortável. Permite apontar o inimigo à distância e continuar a trabalhar de consciência tranquila. Os casos de corrupção e espionagem obrigam, porém, a olhar para as portas que se abrem por dentro.</p>
+    <p>Uma democracia pode ser atacada através de quem tem acesso à tribuna, aos documentos, aos decisores e à confiança pública. O perigo ganha eficácia quando uma mensagem comprada aparece vestida de opinião independente. O cidadão ouve um representante; quem paga ouve o resultado do investimento.</p>
+    <p>Nathan Gill deu a esta hipótese uma realidade judicial. O antigo eurodeputado britânico admitiu oito crimes de recebimento de subornos e foi condenado, em 21 de Novembro de 2025, a dez anos e seis meses de prisão. Segundo o Ministério Público britânico, recebeu cerca de 40 mil libras entre 2018 e 2019 para apresentar iniciativas, fazer discursos e facilitar acesso mediático a pessoas ligadas a interesses pró-russos. O documento que serve de ponto de partida a esta crónica ficou pela confissão de Setembro; a sentença já veio depois. <a href="https://www.cps.gov.uk/cps/news/former-ukip-mep-jailed-taking-bribes" target="_blank" rel="noopener" style="color:#ffcc66;">[1]</a></p>
+    <p>Há aqui uma obscenidade política que dispensa adjectivos extravagantes: os eleitores concederam-lhe um mandato, e ele pôs esse mandato ao serviço de pagamentos clandestinos. O lugar era público; parte do guião tinha patrocinador. Quem compra uma intervenção parlamentar compra também a credibilidade emprestada pelos cidadãos.</p>
+    <p>Seria cómodo encerrar o assunto com a fotografia de um condenado. Teríamos um culpado, uma pena e a oportunidade de voltar ao almoço. A questão mais incómoda é perceber como se torna possível usar uma instituição democrática para dar respeitabilidade a interesses ocultos — e que fiscalização consegue detectar isso antes de a polícia chegar.</p>
+    <p>O caso do antigo dirigente social-democrata alemão Matthias Platzeck coloca um problema diferente. Uma investigação conjunta do <em>Der Spiegel</em>, da <em>Frankfurter Allgemeine Sonntagszeitung</em> e do <em>The Insider</em>, noticiada pela imprensa alemã em Julho de 2025, identificou pelo menos nove viagens a Moscovo desde o início da invasão em grande escala da Ucrânia. Platzeck defendeu que procurava conservar contactos e discutir possibilidades de pôr fim à guerra; negou ter tratado de negócios de gás ou do Nord Stream. As viagens, por si sós, não demonstram corrupção. <a href="https://www.maz-online.de/brandenburg/matthias-platzecks-moskau-reisen-ex-spd-chef-verteidigt-russland-kontakte-PBS5SFDXHFHX3BWUVLSPVIHKBI.html" target="_blank" rel="noopener" style="color:#ffcc66;">[2]</a></p>
+    <p>Ainda assim, um antigo governante conserva relações, prestígio e capacidade de influência. A sua presença tem um peso que não desaparece quando se declara cidadão privado. É legítimo exigir clareza sobre os interlocutores, os objectivos, o financiamento e os resultados destes contactos. Manter canais diplomáticos pode ser necessário. A expressão merece escrutínio quando serve para dispensar explicações.</p>
+    <p>A energia mostra como a dependência económica pode limitar a liberdade política. Em Julho de 2022, o próprio analista Sergey Vakulenko descreveu a redução do fornecimento de gás à Europa como uma provável estratégia organizada por Moscovo para exercer pressão sobre os governos europeus. É uma passagem relevante, porque o documento de trabalho o apresenta, sem demonstrar essa conclusão, como parte de uma rede que favoreceria o Kremlin. O seu passado na Gazprom Neft é público; a Carnegie indica que deixou a empresa em Fevereiro de 2022. Uma biografia merece ser conhecida, mas não substitui a análise do que alguém efectivamente escreve. <a href="https://carnegieendowment.org/russia-eurasia/politika/2022/07/what-are-the-kremlins-calculations-in-its-gas-war-with-europe" target="_blank" rel="noopener" style="color:#ffcc66;">[3]</a></p>
+    <p>O mesmo rigor deve aplicar-se aos financiamentos da investigação. O relatório anual de 2020 do Oxford Institute for Energy Studies incluiu a Gazprom Marketing and Trading entre os patrocinadores do programa de investigação sobre gás natural. Uma investigação publicada pelo <em>Democracy for Sale</em> em Abril de 2026 voltou a questionar os vínculos do instituto a interesses energéticos russos. Há matéria para exigir transparência sobre patrocinadores e possíveis conflitos de interesses. Há também uma distância que precisa de ser respeitada entre financiamento histórico, posições discutíveis e prova de actividade clandestina. <a href="https://www.oxfordenergy.org/wpcms/wp-content/uploads/2021/10/OIES-Annual-Report-2020.pdf" target="_blank" rel="noopener" style="color:#ffcc66;">[4]</a></p>
+    <p>O debate público melhora quando o leitor sabe quem financia um estudo e quais foram as relações profissionais do seu autor. Empobrece quando qualquer discordância passa a valer como prova de cumplicidade. Uma crítica que dispensa provas acaba por oferecer aos verdadeiros responsáveis a desculpa de que tudo é uma campanha de difamação.</p>
+    <p>Na Hungria, a <em>VSquare</em> publicou, em Março de 2026, uma investigação baseada em fontes de segurança de três países europeus sobre uma alegada operação russa destinada a favorecer a permanência de Viktor Orbán no poder. Segundo essa reportagem, a operação seria supervisionada por Sergei Kiriyenko e envolveria uma equipa em Budapeste. A embaixada russa contestou a notícia. Estamos perante uma denúncia jornalística que deve ser atribuída e investigada, sem a apresentar como uma condenação judicial. <a href="https://vsquare.org/putins-gru-linked-election-fixers-are-already-in-budapest-to-help-orban/" target="_blank" rel="noopener" style="color:#ffcc66;">[5]</a></p>
+    <p>Também aqui a realidade obriga a actualizar o texto inicial: Orbán perdeu as eleições de 12 de Abril de 2026, vencidas pelo Tisza de Péter Magyar. O resultado não esclarece, por si só, a extensão das operações de influência denunciadas. Mostra, contudo, que os eleitores conservaram capacidade para mudar o poder. A narrativa de uma Europa irremediavelmente capturada não pode apagar esse facto. <a href="https://www.reuters.com/world/europe/orban-ousted-after-16-years-hungarians-flock-pro-eu-rival-2026-04-12/" target="_blank" rel="noopener" style="color:#ffcc66;">[6]</a></p>
+    <p>O Qatargate alarga a questão a outros interesses estrangeiros. Eva Kaili foi destituída da vice-presidência do Parlamento Europeu em Dezembro de 2022, por 625 votos contra um. As autoridades anunciaram a apreensão de cerca de 1,5 milhões de euros no conjunto das buscas. Mas o documento dá um passo que as fontes consultadas não sustentam: apresenta Kaili como condenada. Ela negou as acusações; a decisão noticiada em Fevereiro de 2026 dizia respeito à validade da investigação, não a uma sentença sobre a sua culpa. <a href="https://www.europarl.europa.eu/pdfs/news/expert/2022/12/press_release/20221213IPR64610/20221213IPR64610_en.pdf" target="_blank" rel="noopener" style="color:#ffcc66;">[7]</a></p>
+    <p>A distinção tem consequências. Dinheiro apreendido é prova material a examinar; uma acusação é uma imputação a julgar; uma destituição é uma decisão política. Cada acto tem o seu significado. O Estado de direito exige que a indignação respeite essas diferenças, incluindo quando o acusado se torna o rosto de um escândalo.</p>
+    <p>No caso ligado ao gabinete de Maximilian Krah, a condenação confirmada foi a do seu antigo assistente Jian G.: quatro anos e nove meses de prisão, em Setembro de 2025, por actividade de espionagem para a China. O tribunal de Dresden considerou provada a recolha de informações sobre o Parlamento Europeu e sobre opositores chineses. Essa sentença diz respeito ao assistente; não autoriza a transferir automaticamente a culpa para o deputado. E diz respeito à China, pelo que não demonstra uma única conspiração dirigida por Moscovo. <a href="https://www.medienservice.sachsen.de/medien/news/1090967" target="_blank" rel="noopener" style="color:#ffcc66;">[8]</a></p>
+    <p>Estes casos revelam vulnerabilidades que merecem uma resposta política exigente: pagamentos ocultos, acesso indevido a informação, relações pouco transparentes e oportunidades para converter prestígio institucional em influência privada. Reunidos, justificam fiscalização. Não tornam todos os envolvidos equivalentes nem toda a Europa cúmplice.</p>
+    <p>A resposta começa por medidas concretas: conhecer os financiadores de estudos e organizações que procuram influenciar decisões; tornar verificáveis as declarações de interesses; controlar o acesso a informação sensível; investigar pagamentos suspeitos; aplicar consequências quando os factos o exigem. E exigir que as instituições expliquem o que corrigiram depois de cada escândalo.</p>
+    <p>Há uma responsabilidade dos adversários externos. Há outra, europeia, na forma como se protegem os cargos, os processos e a confiança dos cidadãos. Um continente que fala de soberania deve cuidar das condições que permitem exercê-la. A soberania perde substância quando o público desconhece os interesses que ajudam a escrever o discurso.</p>
+    <p>Os tribunais que condenam e os eleitores que mudam governos mostram que existem instrumentos de resistência. Merecem ser fortalecidos. A Europa precisa de menos cerimónias de indignação e de mais capacidade para identificar quem procura comprar acesso, voz e silêncio.</p>
+    <p>À porta de uma instituição democrática, a pergunta decisiva continua a ser simples: quem entra, a favor de quem trabalha e quem paga a conta?</p>
+    <!-- Fim da crónica integral -->
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;"><strong style="color:#d6a542;">Nota editorial — verificação concluída em 4 de Outubro de 2026.</strong> Esta crónica parte do documento fornecido, <em>A Captura da Europa</em>, identificado como análise independente de fontes abertas. O ficheiro não contém ligações ou referências completas que permitam conferir, passagem a passagem, a sua bibliografia genérica. Foram procuradas fontes identificáveis para as alegações principais. As conclusões políticas e as metáforas da crónica são opinião; as condenações, os contactos noticiados, as denúncias e as avaliações de serviços de informações mantêm os respectivos graus de confirmação. A lista de fontes abaixo não implica que cada órgão nela incluído tenha confirmado o documento inicial na íntegra.</p>
+      <p style="text-align:left; margin-bottom:0;">As referências com letras pertencem ao mesmo grupo documental: por exemplo, [3a] e [3b] complementam a remissão [3] do corpo da crónica. No relatório anual do Oxford Institute for Energy Studies, a passagem sobre patrocinadores foi identificada no índice de pesquisa; o acesso ao PDF integral foi bloqueado, limitação registada na conferência abaixo.</p>
+    </div>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Conferência das alegações do documento inicial</h2>
+    <div style="overflow-x:auto;">
+      <table style="width:100%; border-collapse:collapse; font-size:0.95em; line-height:1.8;">
+        <thead><tr>
+          <th scope="col" style="background:#111; color:#d6a542; border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Alegação</th>
+          <th scope="col" style="background:#111; color:#d6a542; border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Resultado da verificação e tratamento editorial</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Gill confessou em Setembro de 2025 e aguardava prisão</td>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Confirmada a confissão; informação desactualizada. Foi condenado em 21-11-2025 a dez anos e seis meses, por oito crimes de recebimento de subornos. As fontes confirmam pagamentos para favorecer interesses pró-russos; não é necessário afirmar uma transferência directa do Kremlin. [1]</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Gill foi o primeiro eurodeputado a admitir judicialmente esse tipo de suborno</td>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Não foi encontrada base suficiente para o superlativo histórico. Omitido.</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Nove viagens de Platzeck à Rússia</td>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">A imprensa alemã noticiou pelo menos nove viagens a Moscovo, com base na investigação conjunta de Spiegel, FAS e The Insider. Consultou-se o relato da Märkische Allgemeine, incluindo a defesa de Platzeck. Não foi confirmada actividade criminosa nem negociação de gás; ele negou esta última. [2]</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Isakov e Vakulenko integram uma rede de influência do Kremlin</td>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Confirmam-se elementos das carreiras, mas não a função clandestina imputada. Vakulenko trabalhou na Gazprom Neft até Fevereiro de 2022; a sua análise de Julho de 2022 descreve expressamente uma provável estratégia de pressão organizada por Moscovo. Para Isakov, as notícias de Setembro de 2026 acrescentam uma nomeação para o VEB.RF, acumulada com funções no Sberbank. Percurso profissional e crime são questões distintas. [3a–3b, 10a–10b]</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">OIES financiado pela Gazprom, portanto comprovadamente agente do Kremlin</td>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">O relatório de 2020 identifica Gazprom Marketing and Trading entre os patrocinadores do programa de gás; a respectiva passagem está indexada, mas o acesso ao PDF integral foi bloqueado. A investigação de Democracy for Sale confirma financiamento histórico e relata críticas. Isto não comprova financiamento actual nem direcção clandestina das análises. O instituto situa-se no Reino Unido. [4a–4b]</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Krah acusado de espionagem; assistente apenas detido</td>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Formulação que confunde responsabilidades e está desactualizada. A condenação aqui confirmada é a de Jian G., antigo assistente, a quatro anos e nove meses em 30-09-2025. O comunicado admitia recurso; não se afirma trânsito em julgado. A culpa do assistente não se transfere automaticamente para Krah. [8]</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Operação russa para conservar Orbán no poder em 2026</td>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Identificada a investigação original de VSquare, baseada em fontes de segurança não identificadas de três países. A embaixada russa contestou a notícia. Trata-se de informação jornalística atribuída, sem equiparação a prova judicial. Orbán perdeu as eleições de Abril de 2026, facto omitido no documento inicial. [5a–5b, 6]</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Kaili condenada no Qatargate</td>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Não confirmada. Euronews indicava em Dezembro de 2025 que aguardava julgamento e negava as acusações. A decisão de Fevereiro de 2026 validou a investigação; não foi uma condenação. A destituição em 2022 foi confirmada pelo Parlamento Europeu. [7a–7c]</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">1,5 milhões de euros de subornos atribuíveis a Kaili</td>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">As fontes relatam aproximadamente 1,5 milhões apreendidos no conjunto das buscas. Não é correcto atribuir a totalidade a Kaili nem dar por provada a origem ilícita de cada quantia antes da apreciação judicial. [7b]</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Moscovo canalizou mais de 300 milhões de dólares para influência política</td>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Confirmada a existência da avaliação norte-americana divulgada em 2022, referida também num relatório parlamentar britânico de 2026. É uma estimativa atribuída aos serviços de informações dos EUA, relativa ao período desde 2014 e a vários países; não uma auditoria pública independente de todas as transferências. Omitida do corpo da crónica para evitar acumular números com estatutos diferentes. [9]</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Citação atribuída a Metsola</td>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Identificada a intervenção oficial de 12-12-2022 contra a compra de influência por actores de países terceiros. Não se reproduziu a tradução apresentada no documento como se tivesse sido conferida palavra por palavra. [11]</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Todos os casos provam uma única captura russa da Europa</td>
+            <td style="border:1px solid #333; padding:12px; text-align:left; vertical-align:top;">Conclusão não demonstrada. Os casos ligados à China e ao Qatargate não comprovam uma direcção única por Moscovo. A crónica discute vulnerabilidades institucionais comuns, distinguindo os actores e as responsabilidades.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+    <ul style="padding-left:22px;">
+      <li><a href="https://www.cps.gov.uk/cps/news/former-ukip-mep-jailed-taking-bribes" target="_blank" rel="noopener" style="color:#ffcc66;">[1] Crown Prosecution Service — Former UKIP MEP jailed for taking bribes</a>. 21-11-2025.</li>
+      <li><a href="https://www.maz-online.de/brandenburg/matthias-platzecks-moskau-reisen-ex-spd-chef-verteidigt-russland-kontakte-PBS5SFDXHFHX3BWUVLSPVIHKBI.html" target="_blank" rel="noopener" style="color:#ffcc66;">[2] Märkische Allgemeine / Hajo von Cölln — Matthias Platzecks Moskau-Reisen: Ex-SPD-Chef verteidigt Russland-Kontakte</a>. 20-07-2025.</li>
+      <li><a href="https://carnegieendowment.org/russia-eurasia/politika/2022/07/what-are-the-kremlins-calculations-in-its-gas-war-with-europe" target="_blank" rel="noopener" style="color:#ffcc66;">[3a] Carnegie / Sergey Vakulenko — What Are the Kremlin's Calculations in Its Gas War With Europe?</a>. 27-07-2022.</li>
+      <li><a href="https://carnegieendowment.org/russia-eurasia/people/sergey-vakulenko" target="_blank" rel="noopener" style="color:#ffcc66;">[3b] Carnegie — Sergey Vakulenko — biografia institucional</a>. consultada em 04-10-2026.</li>
+      <li><a href="https://www.oxfordenergy.org/wpcms/wp-content/uploads/2021/10/OIES-Annual-Report-2020.pdf" target="_blank" rel="noopener" style="color:#ffcc66;">[4a] Oxford Institute for Energy Studies — Annual Report 2020</a>. relatório referente a 2020.</li>
+      <li><a href="https://democracyforsale.substack.com/p/the-oxford-energy-institute-kremlin-putin-oil-gas-ukraine" target="_blank" rel="noopener" style="color:#ffcc66;">[4b] Democracy for Sale / Matei Rosca e Peter Geoghegan — The Oxford energy institute with a Kremlin problem</a>. 03-04-2026; actualização de 04-04-2026.</li>
+      <li><a href="https://vsquare.org/putins-gru-linked-election-fixers-are-already-in-budapest-to-help-orban/" target="_blank" rel="noopener" style="color:#ffcc66;">[5a] VSquare / Szabolcs Panyi — Putin's GRU-linked Election Fixers Are Already in Budapest to Help Orbán</a>. 06-03-2026.</li>
+      <li><a href="https://telex.hu/english/2026/03/09/russian-embassy-denies-arrival-of-russian-intelligence-agents-to-budapest-seeking-to-influence-hungarian-election-results" target="_blank" rel="noopener" style="color:#ffcc66;">[5b] Telex — Russian embassy denies arrival of Russian intelligence agents to Budapest seeking to influence Hungarian election results</a>. 09-03-2026.</li>
+      <li><a href="https://www.reuters.com/world/europe/orban-ousted-after-16-years-hungarians-flock-pro-eu-rival-2026-04-12/" target="_blank" rel="noopener" style="color:#ffcc66;">[6] Reuters / Gergely Szakacs — Orban ousted after 16 years as Hungarians flock to pro-EU rival</a>. 12-04-2026; actualização de 13-04-2026.</li>
+      <li><a href="https://www.europarl.europa.eu/pdfs/news/expert/2022/12/press_release/20221213IPR64610/20221213IPR64610_en.pdf" target="_blank" rel="noopener" style="color:#ffcc66;">[7a] Parlamento Europeu — Eva Kaili no longer Vice-President of the European Parliament</a>. 13-12-2022.</li>
+      <li><a href="https://www.euronews.com/2025/12/12/three-years-on-former-mep-kaili-still-awaits-trial-in-case-slammed-as-belgiangate" target="_blank" rel="noopener" style="color:#ffcc66;">[7b] Euronews / Aleksandar Brezar — Three years on, former MEP Kaili still awaits trial in case slammed as 'Belgiangate'</a>. 12-12-2025.</li>
+      <li><a href="https://efe.com/euro-efe/2026-02-20/tribunal-belga-instruccion-catargate/" target="_blank" rel="noopener" style="color:#ffcc66;">[7c] EFE — Un tribunal belga confirma que la instrucción del Catargate fue imparcial y siguió la ley</a>. 20-02-2026.</li>
+      <li><a href="https://www.medienservice.sachsen.de/medien/news/1090967" target="_blank" rel="noopener" style="color:#ffcc66;">[8] Tribunal Superior Regional de Dresden / Medienservice Sachsen — Urteil im Verfahren gegen Jian G. und Jaqi X. wegen Geheimdienstlicher Agententätigkeit verkündet</a>. 30-09-2025.</li>
+      <li><a href="https://committees.parliament.uk/publications/52196/documents/290627/default/" target="_blank" rel="noopener" style="color:#ffcc66;">[9] Câmara dos Comuns, Public Administration and Constitutional Affairs Committee — Political finance and foreign influence</a>. 2026, §13.</li>
+      <li><a href="https://www.interfax.ru/amp/1112854" target="_blank" rel="noopener" style="color:#ffcc66;">[10a] Interfax — Исаков назначен главным экономистом ВЭБа — nomeação de Isakov para o VEB.RF</a>. 03-09-2026.</li>
+      <li><a href="https://www.akm.ru/eng/news/alexander-isakov-appointed-chief-economist-of-veb-rf/" target="_blank" rel="noopener" style="color:#ffcc66;">[10b] AK&amp;M — Alexander Isakov appointed Chief Economist of VEB.RF</a>. Setembro de 2026.</li>
+      <li><a href="https://www.europarl.europa.eu/doceo/document/CRE-9-2022-12-12_DE.html" target="_blank" rel="noopener" style="color:#ffcc66;">[11] Parlamento Europeu — Debate de abertura da sessão plenária; intervenção de Roberta Metsola</a>. 12-12-2022.</li>
+    </ul>
+    <div style="margin-top:45px; border-top:1px solid #333; padding-top:15px;">
+<h2 id="documento-de-apoio" style="color:#d6a542; text-align:left; margin-top:40px;">Documento de apoio — versão revista e anotada</h2>
+<div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+<h3 style="color:#d6a542; margin-top:0; text-align:left;">A Europa e as redes de influência estrangeira</h3>
+<p style="margin:0;">Revisão do documento de trabalho «A Captura da Europa» — 4 de Outubro de 2026.</p>
+</div>
+<h3 style="color:#d6a542; text-align:left; margin-top:30px;">1. Âmbito e critério de leitura</h3>
+<p>Este documento revê «A Captura da Europa», material de trabalho fornecido para a elaboração da crónica «A Europa de porta aberta». O original apresentava a autoria como «[Análise independente]», sem identificação pessoal verificável no ficheiro, e enumerava órgãos de comunicação sem referências completas. A revisão substitui essa bibliografia genérica por fontes identificáveis e separa factos judiciais, informação jornalística, avaliações de serviços de informações e interpretação política.</p>
+<p>Revisão editorial e co-autoria: Francisco Gonçalves e Augustus Veritas – AI Assistant. Data da revisão: 4 de Outubro de 2026. As indicações de estado processual referem-se às fontes datadas que foram consultadas. Não se presume uma condenação posterior, uma absolvição ou o trânsito em julgado quando não foram confirmados.</p>
+<h3 style="color:#d6a542; text-align:left; margin-top:30px;">2. Nathan Gill: subornos e condenação</h3>
+<p>Nathan Gill, antigo eurodeputado britânico, foi condenado no Old Bailey, em 21 de Novembro de 2025, a dez anos e seis meses de prisão. Admitiu oito crimes de recebimento de subornos. O Ministério Público britânico indicou pagamentos de cerca de 40 mil libras entre 2018 e 2019 para apresentar iniciativas, fazer discursos e facilitar acesso mediático a pessoas ligadas a interesses pró-russos. <a href="https://www.cps.gov.uk/cps/news/former-ukip-mep-jailed-taking-bribes" target="_blank" rel="noopener" style="color:#ffcc66;">[1]</a></p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;"><p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Anotação editorial:</strong><br>O original ficou pela confissão de Setembro de 2025 e tratou a prisão como consequência futura. A condenação veio depois. As fontes sustentam uma operação de influência através de pagamentos para beneficiar interesses pró-russos; evita-se afirmar uma transferência directa do Kremlin. Também se retira a afirmação de que foi a primeira confissão judicial de um eurodeputado neste contexto, por falta de base suficiente para esse superlativo.</p></div>
+<h3 style="color:#d6a542; text-align:left; margin-top:30px;">3. Matthias Platzeck: contactos que exigem transparência</h3>
+<p>Em Julho de 2025, a imprensa alemã relatou uma investigação conjunta de Der Spiegel, Frankfurter Allgemeine Sonntagszeitung e The Insider que identificou pelo menos nove viagens de Matthias Platzeck a Moscovo desde o início da invasão em grande escala da Ucrânia. O relato consultado da Märkische Allgemeine inclui a sua defesa: preservar contactos e discutir o fim da guerra, a título privado. Platzeck negou ter discutido negócios de gás ou o Nord Stream. <a href="https://www.maz-online.de/brandenburg/matthias-platzecks-moskau-reisen-ex-spd-chef-verteidigt-russland-kontakte-PBS5SFDXHFHX3BWUVLSPVIHKBI.html" target="_blank" rel="noopener" style="color:#ffcc66;">[2]</a></p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;"><p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Anotação editorial:</strong><br>A notícia sobre as viagens é atribuída à investigação jornalística. Não foi confirmada actividade criminosa nem a alegação de negociação de gás. O debate sobre o peso político destes contactos permanece legítimo, mas não autoriza a classificá-los automaticamente como corrupção ou traição.</p></div>
+<h3 style="color:#d6a542; text-align:left; margin-top:30px;">4. Especialistas e financiamento energético</h3>
+<p>A biografia institucional de Sergey Vakulenko confirma que trabalhou como responsável de estratégia e inovação na Gazprom Neft até Fevereiro de 2022. Na Carnegie, escreveu em Julho de 2022 que a redução de fornecimento de gás à Europa seria, provavelmente, uma estratégia organizada por Moscovo no confronto com o Ocidente. Esse texto deve ser considerado ao avaliar a imputação genérica de que favorece o Kremlin. <a href="https://carnegieendowment.org/russia-eurasia/politika/2022/07/what-are-the-kremlins-calculations-in-its-gas-war-with-europe" target="_blank" rel="noopener" style="color:#ffcc66;">[3a]</a> <a href="https://carnegieendowment.org/russia-eurasia/people/sergey-vakulenko" target="_blank" rel="noopener" style="color:#ffcc66;">[3b]</a></p>
+<p>Quanto a Alexander Isakov, as notícias consultadas confirmam ligações profissionais ao Banco da Rússia, ao VTB, à Bloomberg Economics e ao Sberbank. Em Setembro de 2026, foi noticiada a sua nomeação para economista-chefe do VEB.RF, acumulada com funções no Sberbank. Esse percurso não comprova, por si só, a função de influência clandestina que o documento inicial lhe atribui. <a href="https://www.interfax.ru/amp/1112854" target="_blank" rel="noopener" style="color:#ffcc66;">[10a]</a> <a href="https://www.akm.ru/eng/news/alexander-isakov-appointed-chief-economist-of-veb-rf/" target="_blank" rel="noopener" style="color:#ffcc66;">[10b]</a></p>
+<p>O relatório anual de 2020 do Oxford Institute for Energy Studies identifica Gazprom Marketing and Trading entre os patrocinadores do programa de investigação sobre gás natural. A investigação do Democracy for Sale, publicada em Abril de 2026, relata financiamento histórico e críticas às relações do instituto com interesses russos. O OIES situa-se no Reino Unido. <a href="https://www.oxfordenergy.org/wpcms/wp-content/uploads/2021/10/OIES-Annual-Report-2020.pdf" target="_blank" rel="noopener" style="color:#ffcc66;">[4a]</a> <a href="https://democracyforsale.substack.com/p/the-oxford-energy-institute-kremlin-putin-oil-gas-ukraine" target="_blank" rel="noopener" style="color:#ffcc66;">[4b]</a></p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;"><p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Anotação editorial:</strong><br>A passagem do relatório de 2020 sobre patrocinadores foi identificada no índice de pesquisa; o acesso ao PDF integral foi bloqueado. Não se afirma financiamento actual pela Gazprom nem direcção clandestina das análises. Emprego anterior, patrocínio histórico, possível conflito de interesses e espionagem são categorias diferentes. A crítica deve examinar as posições publicadas e os vínculos demonstrados.</p></div>
+<h3 style="color:#d6a542; text-align:left; margin-top:30px;">5. Jian G. e o gabinete de Maximilian Krah</h3>
+<p>O Tribunal Superior Regional de Dresden condenou Jian G., antigo assistente de Maximilian Krah no Parlamento Europeu, a quatro anos e nove meses de prisão em 30 de Setembro de 2025, por actividade de espionagem para a China. O tribunal considerou provada a recolha de informações sobre o Parlamento Europeu, a AfD e opositores chineses. O comunicado indicava a possibilidade de recurso. <a href="https://www.medienservice.sachsen.de/medien/news/1090967" target="_blank" rel="noopener" style="color:#ffcc66;">[8]</a></p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;"><p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Anotação editorial:</strong><br>O original limitava-se à detenção do assistente e confundia a sua situação com a responsabilidade do deputado. A condenação confirmada nesta revisão é a de Jian G.; não se transfere automaticamente a culpa para Krah, nem se afirma trânsito em julgado. Um caso ligado à China não comprova uma operação dirigida pela Rússia.</p></div>
+<h3 style="color:#d6a542; text-align:left; margin-top:30px;">6. Hungria: denúncia de ingerência e resultado eleitoral</h3>
+<p>Em 6 de Março de 2026, a VSquare publicou uma reportagem, baseada em fontes de segurança de três países europeus, sobre uma alegada equipa russa em Budapeste destinada a favorecer a permanência de Viktor Orbán no poder. A operação seria supervisionada por Sergei Kiriyenko e envolveria pessoas ligadas aos serviços militares russos. A embaixada russa contestou a notícia; a Telex registou essa resposta. <a href="https://vsquare.org/putins-gru-linked-election-fixers-are-already-in-budapest-to-help-orban/" target="_blank" rel="noopener" style="color:#ffcc66;">[5a]</a> <a href="https://telex.hu/english/2026/03/09/russian-embassy-denies-arrival-of-russian-intelligence-agents-to-budapest-seeking-to-influence-hungarian-election-results" target="_blank" rel="noopener" style="color:#ffcc66;">[5b]</a></p>
+<p>Orbán perdeu as eleições de 12 de Abril de 2026, vencidas pelo Tisza de Péter Magyar. O resultado actualiza o quadro político e impede apresentar a sua permanência no poder como um facto consumado. Não permite, isoladamente, medir a existência, a extensão ou a eficácia da operação denunciada. <a href="https://www.reuters.com/world/europe/orban-ousted-after-16-years-hungarians-flock-pro-eu-rival-2026-04-12/" target="_blank" rel="noopener" style="color:#ffcc66;">[6]</a></p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;"><p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Anotação editorial:</strong><br>Alegações atribuídas a fontes de segurança não identificadas numa reportagem não equivalem a prova judicial pública. A VSquare constitui a fonte jornalística original identificada; não se apresenta a informação como uma confirmação documental independente de todos os pormenores operacionais.</p></div>
+<h3 style="color:#d6a542; text-align:left; margin-top:30px;">7. Qatargate: investigação, apreensões e presunção de inocência</h3>
+<p>O Parlamento Europeu destituiu Eva Kaili da vice-presidência em 13 de Dezembro de 2022, por 625 votos a favor, um contra e duas abstenções. A decisão foi tomada no contexto de investigações na Bélgica. <a href="https://www.europarl.europa.eu/pdfs/news/expert/2022/12/press_release/20221213IPR64610/20221213IPR64610_en.pdf" target="_blank" rel="noopener" style="color:#ffcc66;">[7a]</a></p>
+<p>A Euronews relatou que as autoridades anunciaram aproximadamente 1,5 milhões de euros apreendidos no conjunto das buscas. Em Dezembro de 2025, Kaili permanecia acusada e negava as imputações. Em Fevereiro de 2026, a EFE noticiou uma decisão do Tribunal de Recurso de Bruxelas que validou a investigação e rejeitou pedidos da defesa sobre a admissibilidade do processo. Essa decisão não foi uma sentença sobre a culpa de Kaili. <a href="https://www.euronews.com/2025/12/12/three-years-on-former-mep-kaili-still-awaits-trial-in-case-slammed-as-belgiangate" target="_blank" rel="noopener" style="color:#ffcc66;">[7b]</a> <a href="https://efe.com/euro-efe/2026-02-20/tribunal-belga-instruccion-catargate/" target="_blank" rel="noopener" style="color:#ffcc66;">[7c]</a></p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;"><p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Anotação editorial:</strong><br>Retira-se a classificação de Kaili como condenada, que as fontes consultadas não sustentam. O montante total apreendido não é atribuído integralmente a ela, nem tratado como prova definitiva da origem ilícita de cada quantia. A investigação refere alegações de compra de influência ligadas ao Catar e a Marrocos; não comprova uma direcção russa deste caso. A declaração de Roberta Metsola em 12 de Dezembro de 2022 foi identificada no registo oficial, sem reproduzir a tradução do original como citação literalmente conferida. <a href="https://www.europarl.europa.eu/doceo/document/CRE-9-2022-12-12_DE.html" target="_blank" rel="noopener" style="color:#ffcc66;">[11]</a></p></div>
+<h3 style="color:#d6a542; text-align:left; margin-top:30px;">8. A estimativa norte-americana de 300 milhões de dólares</h3>
+<p>Um relatório parlamentar britânico de 2026 refere a avaliação dos serviços de informações dos EUA divulgada em 2022, segundo a qual a Rússia teria gasto mais de 300 milhões de dólares desde 2014 para influenciar actores políticos em vários países. <a href="https://committees.parliament.uk/publications/52196/documents/290627/default/" target="_blank" rel="noopener" style="color:#ffcc66;">[9]</a></p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;"><p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Anotação editorial:</strong><br>Confirma-se a existência da avaliação e a sua atribuição. O valor permanece uma estimativa dos serviços de informações norte-americanos; não é apresentado como resultado de uma auditoria pública independente a todas as transferências.</p></div>
+<h3 style="color:#d6a542; text-align:left; margin-top:30px;">9. Conclusão revista</h3>
+<p>Os casos examinados mostram vulnerabilidades institucionais distintas: corrupção judicialmente provada, espionagem, contactos políticos sujeitos a escrutínio, possíveis conflitos de interesses e denúncias de ingerência eleitoral. Estas categorias justificam transparência e fiscalização, sem permitir equiparar todos os intervenientes ou imputar a totalidade dos casos a uma única rede dirigida por Moscovo.</p>
+<p>A interpretação de que estas vulnerabilidades enfraquecem a autonomia europeia é uma conclusão política discutível e fundamentável. A expressão «captura criminosa da Europa», tomada como descrição factual do continente inteiro, excede o que os casos aqui conferidos demonstram.</p>
+<h3 style="color:#d6a542; text-align:left; margin-top:30px;">10. Cronologia revista</h3>
+<ul style="padding-left:22px;">
+<li><strong style="color:#d6a542;">2018–2019</strong> — Período dos pagamentos a Gill referido pelo Ministério Público britânico. <a href="https://www.cps.gov.uk/cps/news/former-ukip-mep-jailed-taking-bribes" target="_blank" rel="noopener" style="color:#ffcc66;">[1]</a></li>
+<li><strong style="color:#d6a542;">13-12-2022</strong> — Destituição de Kaili da vice-presidência do Parlamento Europeu. <a href="https://www.europarl.europa.eu/pdfs/news/expert/2022/12/press_release/20221213IPR64610/20221213IPR64610_en.pdf" target="_blank" rel="noopener" style="color:#ffcc66;">[7a]</a></li>
+<li><strong style="color:#d6a542;">Julho de 2025</strong> — Publicação das notícias sobre as viagens de Platzeck a Moscovo. <a href="https://www.maz-online.de/brandenburg/matthias-platzecks-moskau-reisen-ex-spd-chef-verteidigt-russland-kontakte-PBS5SFDXHFHX3BWUVLSPVIHKBI.html" target="_blank" rel="noopener" style="color:#ffcc66;">[2]</a></li>
+<li><strong style="color:#d6a542;">30-09-2025</strong> — Condenação de Jian G. pelo tribunal de Dresden. <a href="https://www.medienservice.sachsen.de/medien/news/1090967" target="_blank" rel="noopener" style="color:#ffcc66;">[8]</a></li>
+<li><strong style="color:#d6a542;">21-11-2025</strong> — Condenação de Nathan Gill no Old Bailey. <a href="https://www.cps.gov.uk/cps/news/former-ukip-mep-jailed-taking-bribes" target="_blank" rel="noopener" style="color:#ffcc66;">[1]</a></li>
+<li><strong style="color:#d6a542;">20-02-2026</strong> — EFE noticia a validação judicial da investigação do Qatargate. <a href="https://efe.com/euro-efe/2026-02-20/tribunal-belga-instruccion-catargate/" target="_blank" rel="noopener" style="color:#ffcc66;">[7c]</a></li>
+<li><strong style="color:#d6a542;">06-03-2026</strong> — VSquare publica a denúncia de uma alegada operação russa na Hungria. <a href="https://vsquare.org/putins-gru-linked-election-fixers-are-already-in-budapest-to-help-orban/" target="_blank" rel="noopener" style="color:#ffcc66;">[5a]</a></li>
+<li><strong style="color:#d6a542;">12-04-2026</strong> — Vitória eleitoral do Tisza e derrota de Orbán. <a href="https://www.reuters.com/world/europe/orban-ousted-after-16-years-hungarians-flock-pro-eu-rival-2026-04-12/" target="_blank" rel="noopener" style="color:#ffcc66;">[6]</a></li>
+<li><strong style="color:#d6a542;">03-09-2026</strong> — Interfax noticia a nomeação de Isakov para o VEB.RF. <a href="https://www.interfax.ru/amp/1112854" target="_blank" rel="noopener" style="color:#ffcc66;">[10a]</a></li>
+</ul>
+<h3 style="color:#d6a542; text-align:left; margin-top:30px;">11. Referências do documento de apoio</h3>
+<ul style="padding-left:22px;">
+<li><a href="https://www.cps.gov.uk/cps/news/former-ukip-mep-jailed-taking-bribes" target="_blank" rel="noopener" style="color:#ffcc66;">[1] Crown Prosecution Service — Former UKIP MEP jailed for taking bribes</a>. 21-11-2025.</li>
+<li><a href="https://www.maz-online.de/brandenburg/matthias-platzecks-moskau-reisen-ex-spd-chef-verteidigt-russland-kontakte-PBS5SFDXHFHX3BWUVLSPVIHKBI.html" target="_blank" rel="noopener" style="color:#ffcc66;">[2] Märkische Allgemeine / Hajo von Cölln — Matthias Platzecks Moskau-Reisen: Ex-SPD-Chef verteidigt Russland-Kontakte</a>. 20-07-2025.</li>
+<li><a href="https://carnegieendowment.org/russia-eurasia/politika/2022/07/what-are-the-kremlins-calculations-in-its-gas-war-with-europe" target="_blank" rel="noopener" style="color:#ffcc66;">[3a] Carnegie / Sergey Vakulenko — What Are the Kremlin's Calculations in Its Gas War With Europe?</a>. 27-07-2022.</li>
+<li><a href="https://carnegieendowment.org/russia-eurasia/people/sergey-vakulenko" target="_blank" rel="noopener" style="color:#ffcc66;">[3b] Carnegie — Sergey Vakulenko — biografia institucional</a>. consultada em 04-10-2026.</li>
+<li><a href="https://www.oxfordenergy.org/wpcms/wp-content/uploads/2021/10/OIES-Annual-Report-2020.pdf" target="_blank" rel="noopener" style="color:#ffcc66;">[4a] Oxford Institute for Energy Studies — Annual Report 2020</a>. relatório referente a 2020.</li>
+<li><a href="https://democracyforsale.substack.com/p/the-oxford-energy-institute-kremlin-putin-oil-gas-ukraine" target="_blank" rel="noopener" style="color:#ffcc66;">[4b] Democracy for Sale / Matei Rosca e Peter Geoghegan — The Oxford energy institute with a Kremlin problem</a>. 03-04-2026; actualização de 04-04-2026.</li>
+<li><a href="https://vsquare.org/putins-gru-linked-election-fixers-are-already-in-budapest-to-help-orban/" target="_blank" rel="noopener" style="color:#ffcc66;">[5a] VSquare / Szabolcs Panyi — Putin's GRU-linked Election Fixers Are Already in Budapest to Help Orbán</a>. 06-03-2026.</li>
+<li><a href="https://telex.hu/english/2026/03/09/russian-embassy-denies-arrival-of-russian-intelligence-agents-to-budapest-seeking-to-influence-hungarian-election-results" target="_blank" rel="noopener" style="color:#ffcc66;">[5b] Telex — Russian embassy denies arrival of Russian intelligence agents to Budapest seeking to influence Hungarian election results</a>. 09-03-2026.</li>
+<li><a href="https://www.reuters.com/world/europe/orban-ousted-after-16-years-hungarians-flock-pro-eu-rival-2026-04-12/" target="_blank" rel="noopener" style="color:#ffcc66;">[6] Reuters / Gergely Szakacs — Orban ousted after 16 years as Hungarians flock to pro-EU rival</a>. 12-04-2026; actualização de 13-04-2026.</li>
+<li><a href="https://www.europarl.europa.eu/pdfs/news/expert/2022/12/press_release/20221213IPR64610/20221213IPR64610_en.pdf" target="_blank" rel="noopener" style="color:#ffcc66;">[7a] Parlamento Europeu — Eva Kaili no longer Vice-President of the European Parliament</a>. 13-12-2022.</li>
+<li><a href="https://www.euronews.com/2025/12/12/three-years-on-former-mep-kaili-still-awaits-trial-in-case-slammed-as-belgiangate" target="_blank" rel="noopener" style="color:#ffcc66;">[7b] Euronews / Aleksandar Brezar — Three years on, former MEP Kaili still awaits trial in case slammed as 'Belgiangate'</a>. 12-12-2025.</li>
+<li><a href="https://efe.com/euro-efe/2026-02-20/tribunal-belga-instruccion-catargate/" target="_blank" rel="noopener" style="color:#ffcc66;">[7c] EFE — Un tribunal belga confirma que la instrucción del Catargate fue imparcial y siguió la ley</a>. 20-02-2026.</li>
+<li><a href="https://www.medienservice.sachsen.de/medien/news/1090967" target="_blank" rel="noopener" style="color:#ffcc66;">[8] Tribunal Superior Regional de Dresden / Medienservice Sachsen — Urteil im Verfahren gegen Jian G. und Jaqi X. wegen Geheimdienstlicher Agententätigkeit verkündet</a>. 30-09-2025.</li>
+<li><a href="https://committees.parliament.uk/publications/52196/documents/290627/default/" target="_blank" rel="noopener" style="color:#ffcc66;">[9] Câmara dos Comuns, Public Administration and Constitutional Affairs Committee — Political finance and foreign influence</a>. 2026, §13.</li>
+<li><a href="https://www.interfax.ru/amp/1112854" target="_blank" rel="noopener" style="color:#ffcc66;">[10a] Interfax — Исаков назначен главным экономистом ВЭБа — nomeação de Isakov para o VEB.RF</a>. 03-09-2026.</li>
+<li><a href="https://www.akm.ru/eng/news/alexander-isakov-appointed-chief-economist-of-veb-rf/" target="_blank" rel="noopener" style="color:#ffcc66;">[10b] AK&amp;M — Alexander Isakov appointed Chief Economist of VEB.RF</a>. Setembro de 2026.</li>
+<li><a href="https://www.europarl.europa.eu/doceo/document/CRE-9-2022-12-12_DE.html" target="_blank" rel="noopener" style="color:#ffcc66;">[11] Parlamento Europeu — Debate de abertura da sessão plenária; intervenção de Roberta Metsola</a>. 12-12-2022.</li>
+</ul>
+    </div>
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;"><strong style="color:#d6a542;">Francisco Gonçalves</strong><br>Co-autoria: <strong style="color:#d6a542;">Augustus Veritas – AI Assistant</strong><br>Fragmentos do Caos<br>FC-Chronic-News</p>
+    </div>
+  </div>
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
