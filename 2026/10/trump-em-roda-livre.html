@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trump em roda livre</title>
+<meta name="description" content="Trump em roda livre">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Trump em roda livre</h1>
+      <p class="meta">Publicado em 2026-10-11 10:30:54</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/10/file_00000000c4d88210894eea78fa24bb1e_6443c5cf.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="Trump em roda livre">
+      <meta itemprop="description" content="A pressão de Trump sobre a Ucrânia, as concessões à Rússia e a responsabilidade de quem pode fiscalizar e travar as decisões do presidente americano.">
+      <meta itemprop="datePublished" content="2026-10-11">
+      <meta itemprop="dateModified" content="2026-10-11">
+      <meta itemprop="author" content="Francisco António dos Santos Gonçalves e Augustus Veritas – AI Assistant">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/10/file_00000000c4d88210894eea78fa24bb1e.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">Trump em roda livre</h1>
+
+<p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">A Ucrânia e a responsabilidade de quem pode travar o presidente</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        A liberdade de acção de um presidente aumenta quando a fiscalização não produz consequências. Esta crónica examina a pressão sobre a Ucrânia e a responsabilidade de quem dispõe dos instrumentos para impor limites.
+      </p>
+    </div>
+
+    <!-- Início da crónica integral -->
+    <p><strong>Donald Trump ganha liberdade de acção sempre que uma decisão grave é recebida com protestos que não produzem consequências. O problema já ultrapassou a personalidade do presidente. A pressão sobre a Ucrânia obriga-nos a olhar para quem, nos Estados Unidos, tem autoridade para lhe exigir explicações e para limitar escolhas que comprometem a segurança dos aliados.</strong></p>
+
+    <p>Em 10 de Outubro, Trump pediu a substituição de Volodymyr Zelensky e exigiu o fim dos ataques ucranianos às refinarias russas. É uma ingerência na liderança do país invadido, exercida por quem se apresenta como mediador. <sup><a href="/#referencia-1" style="color:#ffcc66;">[1]</a></sup></p>
+
+    <p>Na véspera, anunciara um acordo de fornecimento de gasóleo russo, acompanhado de um alívio das sanções americanas sobre esse combustível. A necessidade de baixar os preços nos Estados Unidos serviu de justificação para uma concessão económica a Moscovo. <sup><a href="/#referencia-2" style="color:#ffcc66;">[2]</a></sup></p>
+
+    <p>A dificuldade está na hierarquia das prioridades. A segurança de um país atacado e o compromisso com os aliados passam a depender da conveniência económica do momento. Se este critério se consolidar, qualquer garantia americana ficará sujeita à próxima urgência doméstica. Para quem precisa de planear a defesa de cidades e de proteger milhões de pessoas, essa imprevisibilidade tem um custo.</p>
+
+    <p>Mesmo o benefício económico prometido merece escrutínio. Especialistas ouvidos pela Associated Press consideraram improvável uma redução substancial dos preços e identificaram vantagens para as receitas russas. Uma decisão com consequências estratégicas desta dimensão exige mais do que a apresentação triunfal de um negócio. <sup><a href="/#referencia-3" style="color:#ffcc66;">[3]</a></sup></p>
+
+    <p>Entretanto, segundo o relato do Kremlin, Putin não se comprometeu a retomar imediatamente as negociações e voltou a responsabilizar os ataques ucranianos pelo impasse. O alívio económico avançou sem uma contrapartida pública equivalente para a paz. <sup><a href="/#referencia-4" style="color:#ffcc66;">[4]</a></sup></p>
+
+    <p>É neste desequilíbrio que a diplomacia perde credibilidade. Um mediador deve exigir compromissos verificáveis, sobretudo à potência que iniciou a invasão. Quando a pressão se concentra sobre quem resiste, o acordo arrisca-se a tornar-se uma forma de administrar a derrota desse país. Chamar-lhe paz não resolve a ausência de segurança que fica depois da assinatura.</p>
+
+    <p>Os Estados Unidos dispõem de instrumentos para fiscalizar o Executivo. O Congresso tem poderes de supervisão e controla a legislação e o financiamento federal. Esses instrumentos, porém, precisam de ser usados por pessoas dispostas a enfrentar o presidente quando as circunstâncias o exigem. Um travão instalado e nunca accionado serve apenas para tranquilizar os passageiros. <sup><a href="/#referencia-5" style="color:#ffcc66;">[5]</a></sup></p>
+
+    <p>A responsabilidade republicana começa precisamente aqui. Um partido que sustenta um presidente conserva o dever de o questionar. Cada dirigente que justifica uma decisão prejudicial apenas por vir do seu próprio lado ajuda a reduzir o custo político da seguinte. A tolerância acumulada transforma a excepção em hábito e deixa o poder cada vez mais confortável com a sua própria arbitrariedade.</p>
+
+    <p>Existem dissidências. O congressista republicano Don Bacon criticou o acordo do gasóleo e defendeu o reforço das sanções contra a Rússia. Registar essa oposição é necessário para avaliar o partido com rigor. <sup><a href="/#referencia-1" style="color:#ffcc66;">[1]</a></sup></p>
+
+    <p>A existência de vozes críticas, contudo, não basta. O que conta é a capacidade de produzir fiscalização e decisões. Uma declaração indignada pode preservar a consciência de quem a faz; proteger os aliados exige consequências concretas. Os eleitores têm o direito de saber quais os representantes que estão preparados para transformar a discordância em acção.</p>
+
+    <p>A questão da manipulação eleitoral também merece ser levada a sério. Em Setembro de 2024, o Departamento de Justiça americano anunciou uma operação contra uma rede de propaganda atribuída ao governo russo, destinada a influenciar eleitores e a reduzir o apoio à Ucrânia. Estas acções documentam tentativas de interferência. O seu impacto preciso nos votos não fica demonstrado pela simples existência da operação. <sup><a href="/#referencia-6" style="color:#ffcc66;">[6]</a></sup></p>
+
+    <p>Por outro lado, os estudos do Pew mostraram que economia e imigração eram prioridades centrais dos apoiantes de Trump. Houve escolhas políticas assentes nessas preocupações. Reconhecê-las permite cobrar as promessas e discutir os resultados. Reduzir milhões de cidadãos a pessoas enganadas dispensaria uma parte importante da análise e da responsabilidade individual. <sup><a href="/#referencia-7" style="color:#ffcc66;">[7]</a></sup></p>
+
+    <p>Uma democracia precisa de cidadãos capazes de rever a sua escolha perante factos novos. Precisa igualmente de dirigentes que não explorem a fidelidade partidária para exigir obediência permanente. O voto autoriza o exercício de funções durante um mandato; a prestação de contas continua todos os dias.</p>
+
+    <p>Quando Marcelo Rebelo de Sousa descreveu Trump como um "activo russo", explicou que se referia ao favorecimento estratégico da Federação Russa. Essa distinção importa. A utilidade política de uma decisão para Moscovo pode ser analisada através dos seus efeitos; uma ligação clandestina aos serviços secretos exigiria provas específicas. <sup><a href="/#referencia-8" style="color:#ffcc66;">[8]</a></sup></p>
+
+    <p>Para avaliar a responsabilidade de Trump, basta começar pelo que está à vista. Uma política que enfraquece a posição negocial da Ucrânia e oferece vantagens ao invasor deve ser confrontada com os compromissos assumidos e com os riscos que cria. O escrutínio perde força quando abandona os factos para tentar adivinhar intenções.</p>
+
+    <p>A questão exige aos dirigentes republicanos uma resposta sobre os seus próprios critérios. Que valor atribuem à soberania de um aliado quando ela colide com a conveniência do presidente? Um partido perde credibilidade quando os seus princípios mudam para acompanhar cada decisão do líder. O preço dessa incoerência acaba por ser pago também por quem confiou nele.</p>
+
+    <p>É assim que o Congresso deveria responder: exigir a divulgação dos termos do acordo, esclarecer as concessões feitas e escrutinar as garantias oferecidas à Ucrânia. A fiscalização deve permitir saber quem assume cada compromisso e como será verificado. Um anúncio presidencial não pode substituir esse trabalho.</p>
+
+    <p>À Europa cabe assumir a parte da segurança que depende das suas próprias decisões. A defesa da Ucrânia exige continuidade industrial, financiamento previsível e capacidade de agir mesmo quando Washington muda de rumo. Continuar a organizar a segurança europeia em torno da disposição pessoal de um presidente americano seria aceitar uma vulnerabilidade que já está exposta.</p>
+
+    <p>Há sinais de desgaste político. Uma sondagem Reuters/Ipsos divulgada em 8 de Outubro registou 32% de aprovação da presidência de Trump. É um indicador de descontentamento, com limites próprios de uma sondagem; não antecipa, por si só, o resultado das eleições. <sup><a href="/#referencia-9" style="color:#ffcc66;">[9]</a></sup></p>
+
+    <p>A oportunidade de corrigir o rumo existe. Depende de eleitores que exijam resultados e de representantes que aceitem cumprir o seu dever mesmo quando isso contraria o líder do partido. A coragem institucional mede-se precisamente nesses momentos, quando discordar deixa de ser confortável.</p>
+
+    <p>Trump pode continuar a carregar no acelerador. Quem tem acesso aos travões terá de responder pelo que fizer com eles. Na Ucrânia, o tempo perdido nesta hesitação conta-se em vidas, casas destruídas e futuros interrompidos. Para essas pessoas, a próxima decisão americana nunca é apenas mais um episódio de televisão.</p>
+
+    <!-- Fim da crónica integral -->
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">DADOS ESSENCIAIS</h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>9 de Outubro de 2026: Trump anunciou o acordo de fornecimento de gasóleo russo. <sup><a href="/#referencia-2" style="color:#ffcc66;">[2]</a></sup></li>
+        <li>4 de Setembro de 2024: o Departamento de Justiça anunciou a operação contra a rede de influência Doppelganger. <sup><a href="/#referencia-6" style="color:#ffcc66;">[6]</a></sup></li>
+        <li>A sondagem Reuters/Ipsos divulgada em 8 de Outubro de 2026 registou 32% de aprovação presidencial. <sup><a href="/#referencia-9" style="color:#ffcc66;">[9]</a></sup></li>
+        <li>O Congresso dispõe de instrumentos de fiscalização do Executivo e de controlo dos fundos públicos. <sup><a href="/#referencia-5" style="color:#ffcc66;">[5]</a></sup></li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">Esta crónica é um texto de opinião, assente nas notícias e publicações identificadas nas referências. Os acontecimentos recentes são enquadrados na informação disponível em 11 de Outubro de 2026. As avaliações sobre a credibilidade da mediação americana e a responsabilidade republicana exprimem o juízo político dos autores.</p>
+      <p style="text-align:left; margin-bottom:0;">A expressão «activo russo» é discutida no sentido do favorecimento estratégico de Moscovo. As operações de influência referidas documentam tentativas de interferência e não permitem, por si só, determinar o seu efeito eleitoral. A crítica concentra-se nas decisões públicas e na obrigação democrática de fiscalizar o poder.</p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+    <ul style="padding-left:22px;">
+      <li id="referencia-1">[1] <a href="https://www.reuters.com/business/aerospace-defense/russian-attack-ukraines-zaporizhzhia-kills-seven-governor-says-2026-10-10/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Reuters — Trump calls for replacing Ukraine's Zelenskiy in tussle over diesel deal with Russia — 10 de Outubro de 2026</a></li>
+      <li id="referencia-2">[2] <a href="https://apnews.com/article/12baccc7aade559bf329079b0548c9da" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Associated Press — Trump strikes deal with Putin to get diesel in sharp reversal of US policy weeks before midterms — Outubro de 2026</a></li>
+      <li id="referencia-3">[3] <a href="https://apnews.com/article/trump-russia-diesel-oil-prices-8428a31b39e20a3a3f1fa3f0e15b8f99" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Associated Press — Experts skeptical about US deal for Russian diesel — Outubro de 2026</a></li>
+      <li id="referencia-4">[4] <a href="https://www.reuters.com/world/europe/kremlin-says-putin-phone-call-with-trump-downplays-immediate-ukraine-talks-2026-10-09/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Reuters — Kremlin says Putin in phone call with Trump downplays immediate Ukraine talks resumption — 9 de Outubro de 2026</a></li>
+      <li id="referencia-5">[5] <a href="https://oversight.house.gov/report/a-constitutional-obligation-congressional-oversight-of-the-executive-branch/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Câmara dos Representantes dos EUA — Supervisão do Executivo</a> — <a href="https://history.house.gov/Institution/Origins-Development/Power-of-the-Purse/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Controlo dos fundos públicos</a></li>
+      <li id="referencia-6">[6] <a href="https://www.justice.gov/archives/opa/pr/justice-department-disrupts-covert-russian-government-sponsored-foreign-malign-influence" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Departamento de Justiça dos EUA — Operação contra a rede de influência Doppelganger — 4 de Setembro de 2024</a></li>
+      <li id="referencia-7">[7] <a href="https://www.pewresearch.org/politics/2024/09/09/issues-and-the-2024-election/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Pew Research Center — Issues and the 2024 election — 9 de Setembro de 2024</a></li>
+      <li id="referencia-8">[8] <a href="https://www.rtp.pt/noticias/mundo/marcelo-diz-que-donald-trump-e-um-ativo-russo_v1679637" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">RTP/Lusa — Marcelo diz que Donald Trump é um activo russo — Agosto de 2025</a></li>
+      <li id="referencia-9">[9] <a href="https://www.reuters.com/world/us/trump-voters-are-not-pumped-about-voting-midterms-reutersipsos-poll-finds-2026-10-08/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Reuters/Ipsos — Trump voters are not pumped about voting in the midterms, Reuters/Ipsos poll finds — 8 de Outubro de 2026</a></li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco António dos Santos Gonçalves</strong><br>
+        Com a co-autoria de <strong style="color:#d6a542;">Augustus Veritas – AI Assistant</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News<br>
+        11 de Outubro de 2026
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
