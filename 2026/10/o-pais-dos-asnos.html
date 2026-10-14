@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O País dos Asnos</title>
+<meta name="description" content="O País dos Asnos">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O País dos Asnos</h1>
+      <p class="meta">Publicado em 2026-10-12 14:20:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/10/file_000000003ee481f99c3946d2494d356c_97c05738.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+<div style="display:none;">
+<span itemscope itemtype="https://schema.org/NewsArticle">
+<meta itemprop="headline" content="O País dos Asnos">
+<meta itemprop="description" content="Uma crónica crítica sobre a incapacidade institucional de definir objectivos, medir resultados, avaliar políticas públicas e transformar erros em aprendizagem.">
+<meta itemprop="datePublished" content="2026-09-01">
+<meta itemprop="dateModified" content="2026-09-01">
+<meta itemprop="author" content="Francisco Gonçalves">
+<meta itemprop="publisher" content="Fragmentos do Caos">
+<meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/09/file_000000003ee481f99c3946d2494d356c.png">
+</span>
+</div>
+
+<div style="max-width:900px; margin:auto; padding:10px;">
+
+<h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">O País dos Asnos</h1>
+
+<p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">Onde anunciar vale mais do que fazer, fazer vale mais do que medir e falhar nunca impede a próxima estratégia</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+<p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>
+Portugal não é um país de asnos. O título é uma caricatura institucional. O verdadeiro problema é mais desconfortável: pessoas inteligentes podem operar dentro de sistemas que não definem metas claras, não medem resultados, não ligam avaliações às decisões seguintes e, por isso, <strong>repetem erros sem sequer os transformar em conhecimento</strong>.</p>
+</div>
+
+<p>Portugal não é um país de asnos.</p>
+<p>Seria uma explicação demasiado simples e, provavelmente, injusta para os animais.</p>
+<p>O burro verdadeiro possui algumas qualidades respeitáveis: memória, resistência, prudência e uma saudável relutância em avançar quando percebe que o caminho é perigoso.</p>
+<p>O nosso problema institucional é bastante mais sofisticado.</p>
+<p>Conseguimos construir um sistema onde pessoas perfeitamente inteligentes podem comportar-se colectivamente como se ninguém tivesse aprendido absolutamente nada com aquilo que aconteceu ontem.</p>
+<p>É o <strong>País dos Asnos Institucionais</strong>.</p>
+<p>Não porque falte inteligência.</p>
+<p>Mas porque falta memória.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Primeiro anuncia-se</h2>
+<p>Portugal possui uma extraordinária paixão pelo futuro verbal.</p>
+<p>Vamos modernizar.</p>
+<p>Vamos reformar.</p>
+<p>Vamos transformar.</p>
+<p>Vamos simplificar.</p>
+<p>Vamos digitalizar.</p>
+<p>Vamos aumentar a produtividade.</p>
+<p>Vamos resolver a habitação.</p>
+<p>Vamos melhorar a saúde.</p>
+<p>Vamos recuperar a ferrovia.</p>
+<p>Vamos tornar a administração pública mais eficiente.</p>
+<p>O futuro português é absolutamente extraordinário.</p>
+<p>O presente é que continua a ter alguns problemas de implementação.</p>
+<p>Cada novo governo apresenta estratégias como se tivesse acabado de descobrir problemas que existem há vinte anos.</p>
+<p>Muda-se o nome.</p>
+<p>Muda-se o logótipo.</p>
+<p>Muda-se o ministro.</p>
+<p>E começa novamente a apresentação.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O anúncio tornou-se uma unidade de obra pública</h2>
+<p>Há países que medem quilómetros de ferrovia construída.</p>
+<p>Portugal mede conferências de imprensa.</p>
+<p>Há países que medem redução do tempo de espera.</p>
+<p>Nós medimos planos aprovados.</p>
+<p>Há países que medem produtividade.</p>
+<p>Nós medimos milhões investidos.</p>
+<p>Há países que perguntam:</p>
+<p><strong>"Funcionou?"</strong></p>
+<p>Nós respondemos:</p>
+<p><strong>"Foram mobilizados 300 milhões de euros."</strong></p>
+<p>Excelente.</p>
+<p>Mas funcionou?</p>
+<p><strong>"Foram apoiados 12.000 beneficiários."</strong></p>
+<p>Muito interessante.</p>
+<p>Mas melhoraram?</p>
+<p><strong>"O programa executou 94% da verba disponível."</strong></p>
+<p>Maravilhoso.</p>
+<p>Mas resolveu o problema?</p>
+<p>Silêncio administrativo.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Gastar tornou-se sinónimo de realizar</h2>
+<p>Esta é uma das grandes confusões portuguesas.</p>
+<p>Dinheiro gasto é tratado como resultado.</p>
+<p>Não é.</p>
+<p>É custo.</p>
+<p>Um Estado pode gastar mil milhões de euros e produzir rigorosamente nada.</p>
+<p>Pode até piorar a situação.</p>
+<p>O que interessa não é quanto dinheiro entrou no programa.</p>
+<p>É <strong>aquilo que saiu do outro lado</strong>.</p>
+<p>Se gastámos 500 milhões em formação:</p>
+<p>quantas pessoas ficaram mais qualificadas?</p>
+<p>quantas encontraram emprego melhor?</p>
+<p>quanto aumentaram os salários?</p>
+<p>quanto melhorou a produtividade?</p>
+<p>Se investimos mil milhões numa política de habitação:</p>
+<p>quantas casas adicionais ficaram disponíveis?</p>
+<p>quanto caiu o esforço financeiro das famílias?</p>
+<p>quanto tempo demorou cada projecto?</p>
+<p>qual foi o custo por habitação criada?</p>
+<p>Estas perguntas deveriam ser banalíssimas.</p>
+<p>Em Portugal podem provocar reacções semelhantes às de alguém que entrou numa missa e perguntou pelo balanço contabilístico do milagre.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Depois de executar, muda-se de assunto</h2>
+<p>Aqui entra a segunda fase do método.</p>
+<p>O programa foi anunciado.</p>
+<p>O dinheiro foi atribuído.</p>
+<p>A máquina administrativa movimentou-se.</p>
+<p>Alguma coisa aconteceu.</p>
+<p>Chega então o momento crucial:</p>
+<p><strong>avaliar.</strong></p>
+<p>E é precisamente nessa altura que aparece outra prioridade estratégica.</p>
+<p>Novo programa.</p>
+<p>Nova estratégia.</p>
+<p>Novo financiamento.</p>
+<p>Nova conferência.</p>
+<p>Nova fotografia.</p>
+<p>O cadáver do projecto anterior ainda está quente e já estamos a inaugurar o sucessor.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Não avaliar é uma forma extraordinariamente eficiente de nunca falhar</h2>
+<p>Porque para existir fracasso é necessário existir uma definição prévia de sucesso.</p>
+<p>Se eu disser:</p>
+<p><strong>"Vamos reduzir o tempo médio de espera de 180 para 90 dias até Dezembro de 2027"</strong></p>
+<p>há um problema.</p>
+<p>Em Janeiro de 2028 alguém pode verificar.</p>
+<p>Talvez tenhamos conseguido.</p>
+<p>Talvez não.</p>
+<p>Existe responsabilidade.</p>
+<p>Muito mais seguro é dizer:</p>
+<p><strong>"Vamos reforçar significativamente a capacidade de resposta através de uma estratégia integrada e multidimensional."</strong></p>
+<p>Isto possui uma vantagem administrativa extraordinária.</p>
+<p>É praticamente impossível provar que falhou.</p>
+<p>Pode significar qualquer coisa.</p>
+<p>E aquilo que significa qualquer coisa acaba normalmente por não significar coisa nenhuma.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A meta vaga é a melhor amiga do incompetente</h2>
+<p>Uma meta concreta é perigosa.</p>
+<p>Tem número.</p>
+<p>Tem prazo.</p>
+<p>Tem responsável.</p>
+<p>Tem comparação.</p>
+<p>Por isso aparecem frequentemente palavras muito mais confortáveis:</p>
+<p>reforçar,</p>
+<p>promover,</p>
+<p>incentivar,</p>
+<p>dinamizar,</p>
+<p>aprofundar,</p>
+<p>valorizar,</p>
+<p>potenciar.</p>
+<p>São verbos maravilhosos.</p>
+<p>Permitem publicar cinquenta páginas sem assumir praticamente nenhum compromisso verificável.</p>
+<p><strong>"Promoveremos a competitividade."</strong></p>
+<p>Quanto?</p>
+<p><strong>"Reforçaremos a inovação."</strong></p>
+<p>Como será medida?</p>
+<p><strong>"Potenciaremos a coesão territorial."</strong></p>
+<p>Excelente. O que significa?</p>
+<p>Não sejamos desagradáveis.</p>
+<p>Há uma apresentação a começar.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O erro português não produz conhecimento</h2>
+<p>Toda a organização comete erros.</p>
+<p>Empresas cometem erros.</p>
+<p>Governos cometem erros.</p>
+<p>Engenheiros cometem erros.</p>
+<p>Médicos cometem erros.</p>
+<p>Cientistas cometem erros.</p>
+<p>A diferença entre sistemas inteligentes e sistemas estúpidos não está em evitar completamente o erro.</p>
+<p>Está em <strong>transformar erro em informação</strong>.</p>
+<p>Uma organização inteligente pergunta:</p>
+<p>O que aconteceu?</p>
+<p>Porque aconteceu?</p>
+<p>Que hipótese estava errada?</p>
+<p>Que decisão produziu este efeito?</p>
+<p>Que devemos alterar?</p>
+<p>A organização portuguesa demasiado frequentemente pergunta:</p>
+<p><strong>"Quem fica mal na fotografia?"</strong></p>
+<p>E nesse momento acabou a aprendizagem.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quando o erro ameaça uma carreira, desaparece o erro</h2>
+<p>Passa a chamar-se:</p>
+<p>constrangimento.</p>
+<p>desvio.</p>
+<p>circunstância excepcional.</p>
+<p>mudança de contexto.</p>
+<p>herança anterior.</p>
+<p>dificuldade de implementação.</p>
+<p>choque exógeno.</p>
+<p>problema estrutural.</p>
+<p>Tudo pode ser verdadeiro.</p>
+<p>Mas há uma extraordinária capacidade humana para utilizar explicações verdadeiras de maneira a evitar conclusões desagradáveis.</p>
+<p>Nunca falhámos.</p>
+<p><strong>Fomos condicionados pelas circunstâncias.</strong></p>
+<p>Fantástico.</p>
+<p>Então por que razão não foram antecipadas?</p>
+<p>Silêncio.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Sem memória institucional, cada geração reinventa o fracasso</h2>
+<p>Há um aspecto particularmente caro deste modelo.</p>
+<p>Se não avaliamos seriamente políticas anteriores, quem chega depois não sabe realmente:</p>
+<p>o que funcionou,</p>
+<p>o que falhou,</p>
+<p>porquê,</p>
+<p>em que condições,</p>
+<p>a que custo.</p>
+<p>Então começa novamente.</p>
+<p>Consultoria.</p>
+<p>Diagnóstico.</p>
+<p>Estudo.</p>
+<p>Plano.</p>
+<p>Piloto.</p>
+<p>Implementação.</p>
+<p>Uns anos depois:</p>
+<p>nova consultoria.</p>
+<p>novo diagnóstico.</p>
+<p>novo estudo.</p>
+<p>novo plano.</p>
+<p>Parece o ciclo da água, mas com apresentações PowerPoint.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O país onde ninguém sabe quanto custou realmente aprender</h2>
+<p>Imagine-se uma política que falhou.</p>
+<p>Gastámos 200 milhões.</p>
+<p>Parece mau.</p>
+<p>Mas se estudarmos correctamente o fracasso e evitarmos um erro de dois mil milhões no futuro, aqueles 200 milhões compraram conhecimento.</p>
+<p>O verdadeiro desperdício acontece quando gastamos 200 milhões, falhamos e <strong>não aprendemos nada</strong>.</p>
+<p>Nesse caso não comprámos conhecimento.</p>
+<p>Comprámos apenas experiência que decidimos esquecer.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Os indicadores aparecem depois da política</h2>
+<p>Outro truque fascinante é escolher a medida depois de conhecer o resultado.</p>
+<p>O objectivo original era aumentar produtividade.</p>
+<p>Não aumentou.</p>
+<p>Mas criámos empregos.</p>
+<p>Então falamos de empregos.</p>
+<p>Os empregos duraram pouco.</p>
+<p>Mas apoiámos empresas.</p>
+<p>Então falamos do número de empresas apoiadas.</p>
+<p>Algumas fecharam.</p>
+<p>Mas executámos 97% da verba.</p>
+<p>Vitória.</p>
+<p>É estatística retrospectiva aplicada à sobrevivência política.</p>
+<p>Primeiro dispara-se a seta.</p>
+<p>Depois desenha-se o alvo à volta.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O país confunde movimento com progresso</h2>
+<p>Esta talvez seja uma das maiores doenças administrativas.</p>
+<p>Uma organização pode estar freneticamente ocupada e não avançar um centímetro.</p>
+<p>Reuniões.</p>
+<p>Emails.</p>
+<p>Pareceres.</p>
+<p>Despachos.</p>
+<p>Grupos de trabalho.</p>
+<p>Comissões.</p>
+<p>Relatórios.</p>
+<p>Plataformas.</p>
+<p>Formulários.</p>
+<p>Tudo se move.</p>
+<p>Logo parece impossível que nada esteja a acontecer.</p>
+<p>Mas acontece.</p>
+<p>Uma roda também se movimenta bastante enquanto permanece exactamente no mesmo eixo.</p>
+<p>Portugal criou demasiadas rodas administrativas e chama-lhes viagem.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O asno pelo menos aprende o caminho</h2>
+<p>É aqui que a comparação começa a tornar-se ofensiva.</p>
+<p>Para o asno.</p>
+<p>O animal aprende trajectos.</p>
+<p>Recorda obstáculos.</p>
+<p>Reconhece perigos.</p>
+<p>Se caiu num buraco ontem, existe uma probabilidade razoável de não procurar deliberadamente o mesmo buraco amanhã.</p>
+<p>O nosso sistema consegue uma façanha mais impressionante.</p>
+<p>Cai.</p>
+<p>Cria uma comissão sobre o buraco.</p>
+<p>Produz um relatório de 180 páginas.</p>
+<p>Anuncia um Plano Nacional de Prevenção de Buracos.</p>
+<p>Aloca 40 milhões.</p>
+<p>Muda o nome do organismo responsável.</p>
+<p>E cinco anos depois cai novamente no mesmo buraco.</p>
+<p>Então alguém declara:</p>
+<p><strong>"Estamos perante uma situação sem precedentes."</strong></p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A avaliação deveria começar antes da política</h2>
+<p>Uma política pública séria deveria nascer acompanhada por algo extraordinariamente aborrecido:</p>
+<p><strong>uma definição de sucesso.</strong></p>
+<p>Situação inicial.</p>
+<p>Objectivo.</p>
+<p>Indicadores.</p>
+<p>Meta.</p>
+<p>Prazo.</p>
+<p>Custo previsto.</p>
+<p>Responsável.</p>
+<p>Método de avaliação.</p>
+<p>Fonte dos dados.</p>
+<p>Momento de revisão.</p>
+<p>Critérios para continuar, alterar ou terminar.</p>
+<p>Nada particularmente revolucionário.</p>
+<p>É o equivalente institucional de medir antes de cortar.</p>
+<p>Mas medir possui um defeito enorme.</p>
+<p>Depois sabemos se cortámos mal.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">E alguém tem de assumir responsabilidade</h2>
+<p>É aqui que a coisa se complica.</p>
+<p>Se uma política possui objectivos concretos, alguém passa a poder perguntar:</p>
+<p><strong>"Quem era responsável?"</strong></p>
+<p>Não apenas politicamente.</p>
+<p>Administrativamente.</p>
+<p>Tecnicamente.</p>
+<p>Institucionalmente.</p>
+<p>Quem decidiu?</p>
+<p>Com que informação?</p>
+<p>Que riscos foram considerados?</p>
+<p>Que alertas existiam?</p>
+<p>Que resultados foram obtidos?</p>
+<p>Isto não significa procurar culpados permanentemente.</p>
+<p>Significa introduzir algo essencial:</p>
+<p><strong>responsabilidade pela decisão.</strong></p>
+<p>Sem isso, o Estado torna-se um enorme organismo onde as decisões existem mas os decisores desaparecem.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O país necessita menos de estratégias e mais de pós-mortems</h2>
+<p>Na tecnologia existe uma prática particularmente útil depois de incidentes graves.</p>
+<p>O <em>post-mortem</em>.</p>
+<p>O sistema caiu.</p>
+<p>Investiga-se.</p>
+<p>Não para encontrar imediatamente um idiota conveniente.</p>
+<p>Mas para perceber:</p>
+<p>o que falhou,</p>
+<p>que sinais existiam,</p>
+<p>porque não foram detectados,</p>
+<p>que processos permitiram o erro,</p>
+<p>como evitar repetição.</p>
+<p>Portugal precisava de transformar isto numa cultura institucional.</p>
+<p>Política falhou?</p>
+<p><strong>Post-mortem.</strong></p>
+<p>Obra ultrapassou orçamento?</p>
+<p><strong>Post-mortem.</strong></p>
+<p>Sistema informático não funciona?</p>
+<p><strong>Post-mortem.</strong></p>
+<p>Programa de apoio não produziu impacto?</p>
+<p><strong>Post-mortem.</strong></p>
+<p>E relatório público.</p>
+<p>Curto.</p>
+<p>Objectivo.</p>
+<p>Com números.</p>
+<p>Seria revolucionário.</p>
+<p>Portanto provavelmente criaríamos primeiro um grupo de trabalho para estudar a implementação do conceito.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Não medir também protege as narrativas</h2>
+<p>Porque números são criaturas desagradáveis.</p>
+<p>Têm pouca sensibilidade política.</p>
+<p>Se uma medida não funciona, o número pode insistir em não melhorar apesar de quinze discursos sobre o seu enorme sucesso.</p>
+<p>É por isso que políticas avaliadas independentemente são tão importantes.</p>
+<p>O mesmo organismo que desenhou, executou e defendeu um programa não deveria ser o único responsável por dizer se foi extraordinário.</p>
+<p>Ser juiz da própria obra possui algumas limitações metodológicas.</p>
+<p>Mesmo os pavões corporativos compreenderiam isto, depois de uma apresentação de 87 slides.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Portugal precisa de aprender a dizer: falhámos</h2>
+<p>Talvez uma das frases mais revolucionárias na política portuguesa fosse:</p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">"Tentámos. Não resultou. Sabemos porquê. Vamos mudar."</p>
+</div>
+<p>Isto não é fraqueza.</p>
+<p>É maturidade.</p>
+<p>Ciência funciona assim.</p>
+<p>Engenharia funciona assim.</p>
+<p>As melhores organizações funcionam assim.</p>
+<p>Só sistemas inseguros precisam de fingir que cada decisão anterior foi brilhante.</p>
+<p>Uma democracia adulta deveria conseguir distinguir:</p>
+<p><strong>erro reconhecido</strong></p>
+<p>de</p>
+<p><strong>incompetência persistente.</strong></p>
+<p>A primeira merece aprendizagem.</p>
+<p>A segunda merece substituição.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O verdadeiro país dos asnos</h2>
+<p>Não é um país onde as pessoas erram.</p>
+<p>Todos os países erram.</p>
+<p>É um país onde:</p>
+<p>se anuncia sem definir sucesso,</p>
+<p>se executa sem medir impacto,</p>
+<p>se gasta sem calcular retorno,</p>
+<p>se falha sem investigar causas,</p>
+<p>se muda de programa sem preservar conhecimento,</p>
+<p>e se regressa alguns anos depois ao mesmo problema convencido de que acaba de o descobrir.</p>
+<p>Isso não é falta de inteligência individual.</p>
+<p>É algo potencialmente pior.</p>
+<p><strong>É estupidez institucional produzida por pessoas inteligentes.</strong></p>
+<p>E talvez seja esta a forma mais cara de estupidez.</p>
+<p>Porque vem acompanhada de diplomas, gabinetes, consultores, estratégias e excelentes apresentações.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O burro merece melhor</h2>
+<p>Por isso talvez devamos abandonar a expressão <strong>País dos Asnos</strong>.</p>
+<p>É injusta.</p>
+<p>O burro trabalha.</p>
+<p>Aprende.</p>
+<p>Recorda.</p>
+<p>Adapta-se.</p>
+<p>E quando não quer avançar, às vezes é porque percebeu alguma coisa que o cavaleiro ainda não entendeu.</p>
+<p>Portugal possui um problema diferente.</p>
+<p>Tem conhecimento.</p>
+<p>Tem técnicos.</p>
+<p>Tem universidades.</p>
+<p>Tem dados.</p>
+<p>Tem instituições.</p>
+<p>Tem dinheiro suficiente para experimentar.</p>
+<p>Mas continua demasiadas vezes sem construir aquilo que transforma experiência em progresso:</p>
+<p><strong>memória, avaliação e consequência.</strong></p>
+<p>E enquanto isso não mudar, continuaremos a anunciar reformas como quem inaugura futuros.</p>
+<p>A executar programas como quem cumpre calendários.</p>
+<p>E a medir sucesso pela quantidade de actividade produzida.</p>
+<p>Quando deveríamos fazer uma pergunta brutalmente simples:</p>
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Depois de tudo isto, estamos efectivamente melhor?</p>
+</div>
+<p>Se não soubermos responder, então existe um problema ainda maior do que ter falhado.</p>
+<p><strong>Significa que nem sequer tivemos a inteligência de descobrir se falhámos.</strong></p>
+
+<div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+<h3 style="color:#d6a542; margin-top:0; text-align:left;">O QUE A EVIDÊNCIA INTERNACIONAL DIZ</h3>
+<ul style="padding-left:22px; margin:0;">
+<li>A OCDE publicou em 2024 um relatório especificamente sobre Portugal e concluiu que persistem obstáculos a uma abordagem sistemática da avaliação de políticas públicas: falta uma compreensão comum do que é avaliação, as responsabilidades institucionais nem sempre são claras e não existe orientação de alto nível suficientemente integrada para todo o Governo.</li>
+<li>O mesmo relatório considera difícil avaliar o impacto das avaliações em Portugal porque os resultados nem sempre são comunicados ou ligados aos processos de decisão.</li>
+<li>A OCDE observou ainda que as ligações entre avaliações e decisão permanecem frágeis em Portugal: não existem mecanismos sólidos para garantir que avaliações <em>ex post</em> entram nos processos políticos ou orçamentais, e os resultados são raramente discutidos a nível elevado.</li>
+<li>A Recomendação da OCDE sobre Avaliação de Políticas Públicas, adoptada em 2022, defende que a avaliação deve ser institucionalizada, planeada desde o início, integrada na tomada de decisão e utilizada para aprendizagem e responsabilização.</li>
+<li>O <em>Magenta Book</em> britânico, actualizado em 2026, estabelece que a avaliação deve acompanhar uma intervenção antes, durante e depois da sua implementação, procurando saber o que funcionou, para quem, porquê, a que custo e o que deve ser feito de forma diferente.</li>
+<li>As orientações de <em>Better Regulation</em> da Comissão Europeia integram avaliação ao longo do ciclo das políticas e da legislação, precisamente para que decisões futuras possam apoiar-se em evidência e não apenas em intenção.</li>
+</ul>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+<div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+<p style="text-align:left;">O título desta crónica é deliberadamente satírico. Não pretende caracterizar os portugueses, os funcionários públicos ou os responsáveis políticos como pessoas pouco inteligentes. O alvo é institucional: sistemas onde incentivos, procedimentos e ausência de mecanismos de aprendizagem podem produzir resultados colectivamente irracionais apesar de serem operados por pessoas competentes.</p>
+<p style="text-align:left;">A crítica à avaliação das políticas públicas portuguesas não assenta apenas numa impressão editorial. Em Novembro de 2024, a OCDE publicou <em>Improving decision making through policy evaluation in Portugal</em>, um relatório dedicado especificamente ao sistema português. A organização identificou obstáculos a uma abordagem sistemática, incluindo ausência de uma compreensão partilhada sobre avaliação, responsabilidades institucionais nem sempre claras e falta de orientação transversal de alto nível.</p>
+<p style="text-align:left;">A conclusão mais directamente relacionada com esta crónica surge na análise da utilização dos resultados: a OCDE afirma que o impacto das avaliações é difícil de determinar porque estas nem sempre são comunicadas ou associadas à tomada de decisão. O relatório acrescenta que não existem instrumentos sólidos para perceber se e como os resultados são utilizados, que as avaliações <em>ex post</em> não estão suficientemente integradas nos processos políticos e orçamentais e que os seus resultados são raramente discutidos a nível elevado.</p>
+<p style="text-align:left;">Isto não significa que Portugal não faça avaliações, nem que todos os programas públicos sejam executados sem indicadores. Existem organismos, avaliações sectoriais, programas financiados por fundos europeus e trabalho técnico relevante. A crítica é precisamente outra: a avaliação continua demasiado pouco institucionalizada enquanto mecanismo sistemático de aprendizagem, decisão e responsabilização transversal ao Estado.</p>
+<p style="text-align:left;">A boa prática internacional segue uma lógica muito diferente. A Recomendação da OCDE sobre Avaliação de Políticas Públicas defende que a avaliação seja pensada desde o desenho das intervenções e que os resultados sejam utilizados na decisão e no orçamento. O <em>Magenta Book</em> do Governo britânico, actualizado em Maio de 2026, vai na mesma direcção: avaliar antes, durante e depois, distinguindo implementação, impacto e relação custo-benefício.</p>
+<p style="text-align:left;">Por isso, medir não deve ser visto como mecanismo de punição. É um mecanismo de aprendizagem. Uma política que falha mas produz conhecimento verificável pode evitar erros maiores no futuro. Uma política que falha sem avaliação apenas transforma dinheiro público em experiência perdida.</p>
+<p style="text-align:left; margin-bottom:0;">A tese central da crónica é simples: um Estado moderno não deve limitar-se a anunciar, executar e arquivar. Deve definir o que espera conseguir, medir o que aconteceu, explicar as diferenças, publicar os resultados e incorporar a aprendizagem na decisão seguinte. Sem esse ciclo, o erro deixa de ser uma oportunidade de melhoria e transforma-se apenas numa tradição administrativa.</p>
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências internacionais</h2>
+<ul style="padding-left:22px;">
+<li><a href="https://www.oecd.org/en/publications/improving-decision-making-through-policy-evaluation-in-portugal_4f8ef34d-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Improving decision making through policy evaluation in Portugal, 2024</a></li>
+<li><a href="https://www.oecd.org/en/publications/implementation-toolkit-for-the-oecd-recommendation-on-public-policy-evaluation_77faa4fe-en.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Implementation Toolkit for the OECD Recommendation on Public Policy Evaluation, 2025</a></li>
+<li><a href="https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report/public-policy-evaluation_e59d50bb.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">OECD — Government at a Glance 2025: Public policy evaluation</a></li>
+<li><a href="https://www.gov.uk/government/publications/the-magenta-book/magenta-book-central-government-guidance-on-evaluation-html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">HM Treasury — Magenta Book: Central Government guidance on evaluation, actualizado em 2026</a></li>
+<li><a href="https://www.gov.uk/government/publications/the-magenta-book/test-and-learn-html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">UK Evaluation Task Force — Test and Learn, 2026</a></li>
+<li><a href="https://commission.europa.eu/law/law-making-process/better-regulation/better-regulation-guidelines-and-toolbox_en" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Comissão Europeia — Better Regulation Guidelines and Toolbox</a></li>
+</ul>
+
+<div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+<p style="color:#cfcfcf; text-align:left;"><strong style="color:#d6a542;">Francisco Gonçalves</strong><br>Fragmentos do Caos<br>FC-Chronic-News</p>
+</div>
+
+</div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

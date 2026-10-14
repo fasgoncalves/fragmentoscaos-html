@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O pirata urbano dos mil milhões</title>
+<meta name="description" content="O pirata urbano dos mil milhões">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O pirata urbano dos mil milhões</h1>
+      <p class="meta">Publicado em 2026-10-12 12:00:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/10/file_000000009ff8821093bca1fa1a8ebb22_39ed4e73.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="O pirata urbano dos mil milhões">
+      <meta itemprop="description" content="Crónica crítica sobre o caso Berardo, os créditos próximos de mil milhões de euros e a responsabilidade da banca, da supervisão e do Estado de direito.">
+      <meta itemprop="datePublished" content="2026-10-10">
+      <meta itemprop="dateModified" content="2026-10-10">
+      <meta itemprop="author" content="Francisco António dos Santos Gonçalves; co-autoria: Augustus Veritas – AI Assistant">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/10/file_000000009ff8821093bca1fa1a8ebb22.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">O pirata urbano dos mil milhões</h1>
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">Crónica sobre o caso Berardo e a responsabilidade das instituições</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>Uma crónica sobre o crédito concedido, as garantias aceites e a obrigação de prestar contas. A metáfora do pirata urbano serve para interrogar as decisões que abriram o porto e mantiveram a viagem.</p>
+    </div>
+
+    <!-- Início da crónica integral: 21 parágrafos. -->
+    <p>O pirata urbano navega por uma cidade de portas abertas. O seu mar tem balcões de banco, gabinetes de administração e salas onde uma reputação pode valer mais do que uma conta verificada. O tesouro chega por transferência. A aventura começa quando alguém assina um contrato e acredita que centenas de milhões estarão seguros porque o destinatário é um homem importante.</p>
+
+    <p>O caso Berardo oferece matéria abundante para pensar nesta figura. Os bancos concederam ao seu universo empresarial financiamentos que acabaram por originar uma disputa de cerca de mil milhões de euros. Em 2019, CGD, BCP e Novo Banco avançaram com uma acção executiva para reclamar aproximadamente 962 milhões. A dimensão do crédito impressiona. A persistência da cobrança, tantos anos depois, obriga a olhar para as instituições que o tornaram possível. <sup>[2]</sup></p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quando a reputação entra no contrato</h2>
+    <p>Na Caixa Geral de Depósitos, a documentação parlamentar regista linhas aprovadas em 2006 e 2007 até 400 milhões de euros: 350 milhões para a Fundação José Berardo e 50 milhões para a Metalgest. Eram limites de financiamento, não valores integralmente utilizados. Parte essencial da operação destinava-se à compra de acções, sobretudo do BCP, que serviam também de garantia. <sup>[1]</sup></p>
+
+    <p>A direcção de risco assinalou falta de informação económico-financeira. Entre os argumentos favoráveis surgiam o prestígio do empresário e uma fortuna pessoal estimada em 527 milhões de euros. A comissão parlamentar não recebeu suporte documental dessa avaliação. A conclusão sobre a decisão de crédito foi lapidar: "sendo legal, não foi prudente". <sup>[1]</sup></p>
+
+    <p>Vale a pena demorar nesta frase. Ela revela o espaço onde uma instituição pode cumprir formalidades e falhar na sua obrigação mais elementar: proteger o dinheiro que administra. A legalidade de uma decisão não lhe acrescenta discernimento. Um formulário preenchido não melhora a qualidade da garantia. Um nome conhecido não paga uma dívida.</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">Um nome conhecido não paga uma dívida.</p>
+    </div>
+
+    <p>A operação ficou exposta a um risco que agravava as dificuldades de cobrança: a queda das acções atingia o investimento e a garantia, enquanto uma venda maciça desses títulos poderia pressionar ainda mais o valor do BCP. A Caixa tornava-se vulnerável ao mesmo banco cuja compra de acções financiara. O relatório parlamentar criticou também a análise do Banco de Portugal. <sup>[1]</sup></p>
+
+    <p>Quem conhece o esforço de pagar uma habitação percebe imediatamente a importância de verificar rendimentos, avaliar património e exigir garantias executáveis. Quanto maior o empréstimo, maior deveria ser o rigor. É essa relação que este caso põe em causa. A dimensão do cliente deve aumentar o escrutínio, sobretudo quando a sua eventual queda pode arrastar outros.</p>
+
+    <p>E a Caixa tem uma responsabilidade acrescida. Um banco público administra recursos e confiança que pertencem a uma comunidade. Os seus dirigentes devem conseguir explicar por que aprovaram uma operação, que informação tinham e como responderam aos alertas. A mesma obrigação de explicar acompanha quem fiscaliza. A responsabilidade institucional começa no momento da decisão.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O património e os caminhos da cobrança</h2>
+    <p>Quando os créditos entram em incumprimento, descobre-se a distância entre o património associado a uma figura pública e os bens juridicamente alcançáveis pelos credores. Empresas, fundações e associações são entidades distintas. A riqueza que aparece nas fotografias pode estar longe do contrato que o banco tenta executar. Cabia ao credor compreender essa distância antes de emprestar.</p>
+
+    <p>No caso da colecção de arte, o Ministério Público sustenta que foram prestadas garantias sobre a totalidade dos títulos da Associação Colecção Berardo, no âmbito de acordos de 2008 a 2012. A acusação de Julho de 2025 descreve uma acção cível alegadamente simulada, instaurada em 2013, que teria permitido bloquear o acesso dos bancos aos títulos e ao património da associação. Berardo, dois advogados e a associação foram acusados de burla qualificada. <sup>[3]</sup></p>
+
+    <p>A acusação terá de ser provada. Essa exigência pertence à própria dignidade da justiça. Mas a crítica às decisões de crédito e às falhas de controlo já documentadas não precisa de esperar por uma condenação para existir. Há responsabilidades de gestão que devem ser apuradas com os seus próprios critérios. Confundir uma decisão imprudente com um crime seria um erro; dispensar a prestação de contas porque ainda não existe condenação seria outro.</p>
+
+    <p>Entre o crédito de 2007 e o Outono de 2026 passaram quase duas décadas. O tempo pesa de maneira diferente sobre cada participante. Para quem litiga, pode trazer novas oportunidades processuais. Para uma instituição credora, significa custos e incerteza. Para o cidadão, significa esperar por uma explicação que consiga ligar as decisões tomadas às consequências suportadas.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quanto dinheiro voltou?</h2>
+    <p>Há movimentos de cobrança. Informação publicada em Julho de 2026 apontava bens penhorados pela CGD avaliados em mais de 28,2 milhões de euros. A Relação de Lisboa permitiu também alcançar bens herdados por Berardo da mulher, numa execução de 60,27 milhões. Seria incorrecto transformar a indignação numa afirmação de que nenhum euro foi recuperado. Penhoras, avaliações e dinheiro efectivamente cobrado são grandezas diferentes. <sup>[2]</sup></p>
+
+    <p>A pergunta que merece uma resposta pública é simples: quanto foi efectivamente recuperado, por cada banco, com que custos e quanto continua por cobrar? Um balanço acessível permitiria avaliar os resultados. A sucessão de notícias sobre recursos e penhoras deixa o cidadão a tentar reconstruir uma contabilidade dispersa. A transparência exige que as instituições apresentem as contas de forma compreensível.</p>
+
+    <p>Entretanto, o Supremo Tribunal Administrativo confirmou a extinção da Fundação José Berardo em Maio de 2026 e rejeitou depois uma reclamação. Em Agosto, foi noticiado um recurso para o Tribunal Constitucional. Cada decisão tem um alcance próprio. A extinção de uma entidade, a cobrança de uma dívida e a apreciação de uma acusação criminal seguem caminhos diferentes. Nenhum deles deve ser anunciado como solução automática dos restantes. <sup>[4]</sup></p>
+
+    <p>A história inclui uma inversão que parece escrita para uma sátira financeira. O relatório do BCP confirma que Berardo e a fundação pediram aos bancos, numa acção de 2022, pelo menos 800 milhões de euros por prejuízos e mais 100 milhões por danos morais. A sua argumentação atribui aos bancos responsabilidade por não terem vendido atempadamente as acções dadas em garantia. São pedidos em tribunal, não indemnizações concedidas. <sup>[5]</sup></p>
+
+    <p>O direito de apresentar essa acção deve ser respeitado. A crítica dirige-se ao sistema que colocou credores e devedores nesta teia: quem reclama empréstimos por pagar enfrenta também um pedido de indemnização de dimensão semelhante. O cidadão tem motivos para exigir uma explicação clara sobre as escolhas que produziram tal resultado.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quem guardava o porto?</h2>
+    <p>O pirata urbano desta crónica é uma metáfora para uma relação perigosa entre poder económico e instituições. A sua embarcação precisa de quem lhe abra o porto, aprove o financiamento e aceite a garantia. Uma investigação séria deve percorrer essa cadeia inteira. O rosto mais conhecido do caso nunca poderá substituir o exame das decisões de todos os intervenientes.</p>
+
+    <p>Há perguntas que continuam a exigir respostas. Quem decidiu avançar perante informação insuficiente? Que condições de risco foram alteradas? Como foram acompanhadas as garantias? Que alternativas de cobrança foram ponderadas? Que perdas se poderiam ter evitado? As respostas precisam de documentos, datas e responsáveis identificados. A memória vaga de uma reunião não serve para explicar uma decisão de centenas de milhões.</p>
+
+    <p>Um Estado de direito deve assegurar a defesa de quem é acusado e exigir contas a quem exerceu poder. Deve recuperar o que for devido e distinguir, com prova, erro de gestão, incumprimento e crime. Essa precisão fortalece a crítica, porque impede que os responsáveis se escondam atrás das imprecisões de quem os contesta.</p>
+
+    <p>O país precisa de saber quanto dinheiro voltou e quem respondeu pelo que aconteceu. Até lá, o pirata urbano continua a ser uma imagem incómoda: alguém conseguiu navegar num oceano de crédito cuja profundidade as instituições tinham a obrigação de medir. A pergunta final fica nas mãos de quem guardava o porto: como se autorizou a partida e por que continua tão difícil fechar as contas da viagem?</p>
+
+    <!-- Fim da crónica integral. -->
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">DADOS ESSENCIAIS</h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>2019: três bancos reclamaram aproximadamente 962 milhões de euros. <sup>[2, 7]</sup></li>
+        <li>2026: a informação consultada identifica mais de 28,2 milhões de euros em bens penhorados pela CGD; uma penhora não equivale a dinheiro cobrado. <sup>[2]</sup></li>
+        <li>2025: o Ministério Público deduziu uma acusação de burla qualificada, sujeita a apreciação judicial. <sup>[3]</sup></li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">Crónica de opinião baseada em documentação parlamentar, comunicados do Ministério Público e informação pública sobre os litígios. A expressão pirata urbano é uma metáfora editorial. As acusações criminais são apresentadas como acusações, sem antecipar decisões judiciais. O montante próximo de mil milhões refere-se à disputa de créditos do universo Berardo, não a uma perda pública líquida integralmente apurada. Não se afirma recuperação nula: os elementos consultados documentam penhoras e não permitem estabelecer um total consolidado do dinheiro efectivamente recuperado pelos três bancos. Pesquisa e actualização editorial em 10 de Outubro de 2026.</p>
+      <p style="text-align:left; margin-bottom:0;">As referências da Reuters e do The Art Newspaper documentam a cobertura internacional de 2019 e 2021. São fontes de contexto histórico, não um balanço actualizado da cobrança nem uma decisão sobre as acusações. Os desenvolvimentos de 2025 e 2026 são apresentados com as respectivas fontes e datas. O texto segue a grafia portuguesa anterior ao Acordo Ortográfico de 1990. <sup>[6, 7, 8]</sup></p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+    <ul style="padding-left:22px;">
+      <li><strong>[1]</strong> <a href="https://www.parlamento.pt/sites/COM/XIIILeg/IICPIRCGDGB/Paginas/RelatoriosActividade.aspx" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Assembleia da República — Inquérito parlamentar à gestão e recapitalização da CGD</a>. 2019. Relatórios e documentação parlamentar; capítulo sobre o grupo Berardo e conclusões de gestão e supervisão.</li>
+      <li><strong>[2]</strong> <a href="https://eco.sapo.pt/2026/07/06/cgd-penhora-quase-15-mil-euros-em-reembolsos-do-irs-a-joe-berardo/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">ECO — CGD penhora quase 15 mil euros em reembolsos do IRS a Joe Berardo</a>. 6 de Julho de 2026. Informação sobre as execuções e o valor dos bens penhorados.</li>
+      <li><strong>[3]</strong> <a href="https://dciap.ministeriopublico.pt/destaque/burla-qualificada-acusacao-0" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">DCIAP / Ministério Público — Burla qualificada. Acusação</a>. 17 de Julho de 2025. Comunicado sobre a acusação deduzida no dia anterior.</li>
+      <li><strong>[4]</strong> <a href="https://eco.sapo.pt/2026/08/11/supremo-da-nova-nega-a-berardo-e-confirma-extincao-da-fundacao/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">ECO — Supremo dá nova nega a Berardo e confirma extinção da fundação</a>. 11 de Agosto de 2026. Inclui informação sobre o recurso para o Tribunal Constitucional.</li>
+      <li><strong>[5]</strong> <a href="https://ind.millenniumbcp.pt/pt/Institucional/investidores/Documents/RelatorioContas/2026/RCBCP1T2026.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Millennium BCP — Relatório e Contas 1T 2026</a>. Páginas 189–190: acção proposta em 2022 por Berardo e pela fundação contra os bancos.</li>
+      <li><strong>[6]</strong> <a href="https://www.reuters.com/world/europe/portuguese-millionaire-art-collector-detained-tax-fraud-probe-2021-06-29/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">Reuters — Portuguese millionaire art collector detained in tax fraud probe</a>. Catarina Demony, 29 de Junho de 2021. Cobertura internacional da detenção e da investigação; contexto histórico dos créditos bancários.</li>
+      <li><strong>[7]</strong> <a href="https://www.theartnewspaper.com/2019/05/30/portuguese-saatchi-in-hot-water-over-alleged-euro1bn-debt" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">The Art Newspaper — 'Portuguese Saatchi' in hot water over alleged €1bn debt</a>. Gareth Harris, 30 de Maio de 2019. Notícia da acção dos três bancos para reclamar cerca de 962 milhões de euros.</li>
+      <li><strong>[8]</strong> <a href="https://www.theartnewspaper.com/2021/07/01/portuguese-collector-joe-berardodetained-for-tax-fraudalso-investigated-for-other-crimes" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">The Art Newspaper — Portuguese collector Joe Berardo—detained for tax fraud—also investigated for other crimes</a>. Gareth Harris, 1 de Julho de 2021. Cobertura histórica da investigação e do enquadramento da colecção de arte.</li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco António dos Santos Gonçalves</strong><br>
+        Co-autoria: Augustus Veritas – AI Assistant<br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
