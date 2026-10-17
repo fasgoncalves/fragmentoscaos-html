@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bancos falidos e a factura opaca dos contribuintes</title>
+<meta name="description" content="Bancos falidos e a factura opaca dos contribuintes">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Bancos falidos e a factura opaca dos contribuintes</h1>
+      <p class="meta">Publicado em 2026-10-16 09:05:38</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/10/file_000000006d848210b088f5fc14095bbd_3cbae273.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- FC-Chronic-News canonical v1.0 | Fragmentos do Caos | pt-PT pré-AO90 -->
+<div lang="pt-PT" style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="Bancos falidos e a factura opaca dos contribuintes">
+      <meta itemprop="description" content="Os encargos dos bancos falidos exigem uma prestação de contas consolidada sobre o dinheiro público entregue, recuperado e definitivamente perdido.">
+      <meta itemprop="datePublished" content="2026-10-16">
+      <meta itemprop="dateModified" content="2026-10-16">
+      <meta itemprop="author" content="Francisco António dos Santos Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/10/file_000000006d848210b088f5fc14095bbd.png">
+    </span>
+  </div>
+  <div style="max-width:900px; margin:auto; padding:10px;">
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">Bancos falidos e a factura opaca dos contribuintes</h1>
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">Os bancos desaparecem das ruas, mas os seus encargos continuam a chegar a quem paga impostos.</p>
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>Uma intervenção pública no sistema financeiro exige uma explicação que permita seguir a conta desde o dinheiro entregue até às recuperações e perdas finais. O escrutínio deve acompanhar todo esse percurso.</p>
+    </div>
+    <!-- Início do artigo integral -->
+    <p>Os contribuintes portugueses têm o direito de saber quanto lhes custaram os bancos que o Estado resgatou, quanto desse dinheiro regressou e quanto se perdeu definitivamente. Uma obrigação que atravessa sucessivos orçamentos exige uma explicação igualmente persistente. Cobrar impostos é um poder do Estado; prestar contas sobre o seu destino é um dever democrático.</p>
+    <p>A notícia de que o Governo pede autorização ao Parlamento para gastar 334 milhões de euros em 2027 com os legados do Bpn e do Banif volta a expor esta ferida. Os bancos deixaram de existir nas suas antigas formas, mas os encargos sobrevivem nos documentos orçamentais e reaparecem na vida dos cidadãos como uma herança que ninguém lhes perguntou se queriam receber. <sup style="color:#cfcfcf;">[1]</sup></p>
+    <p>O número merece escrutínio rigoroso. Uma autorização de despesa não equivale necessariamente a um pagamento realizado, e nenhum destes conceitos coincide automaticamente com uma nova perda ou com um agravamento do défice. Uma análise séria tem de separar financiamento, amortizações, juros e custos de funcionamento. Precisamente por isso, cabe ao Governo apresentar a decomposição da verba e explicar o seu efeito real nas contas públicas.</p>
+    <p>A complexidade contabilística aumenta a obrigação de explicar. Quando o cidadão recebe apenas um montante acompanhado de uma sigla, fica sem os elementos necessários para avaliar a decisão. A democracia perde qualidade quando quem paga consegue identificar a cobrança, mas dificilmente consegue reconstruir a conta.</p>
+    <p>Seria incorreto afirmar que não existe informação pública. A Parvalorem publica relatórios e contas, incluindo o de 2025, e mantém informação institucional sobre a sua liquidação. O problema que importa discutir é a distância entre disponibilizar documentos e prestar contas de forma compreensível. Um arquivo de relatórios técnicos pode cumprir obrigações formais e continuar a deixar o contribuinte sem uma visão clara do conjunto. <sup style="color:#cfcfcf;">[2]</sup></p>
+    <p>O caso da Parvalorem, que gere activos herdados do Bpn, mostra a dimensão do problema. O relatório de 2025 indica activos líquidos de cerca de 464,3 milhões de euros perante um passivo de aproximadamente 5.330,7 milhões. A diferença revela um profundo desequilíbrio patrimonial. O valor que ainda será recuperado dependerá das cobranças, das vendas e do destino dos activos remanescentes. <sup style="color:#cfcfcf;">[3]</sup></p>
+    <p>Estes números também exigem prudência: o passivo de uma sociedade pública não pode ser tratado, sem análise, como uma futura transferência adicional do mesmo montante pelos contribuintes. Parte do esforço público já ocorreu, e as relações financeiras entre entidades do Estado exigem consolidação. Somar tudo indiscriminadamente pode contar a mesma realidade mais de uma vez. O rigor torna a crítica mais exigente.</p>
+    <p>Também deve ser reconhecido o dinheiro devolvido. A Parvalorem amortizou 80 milhões de euros de um empréstimo em 2025 e informa que, entre 2020 e 2025, não precisou de contratar novos financiamentos junto da entidade pública financiadora. Estes dados ajudam a distinguir a recuperação de recursos da entrada de dinheiro novo. Merecem integrar a explicação pública tanto como os prejuízos. <sup style="color:#cfcfcf;">[3]</sup></p>
+    <p>A questão política permanece: quanto do esforço inicial e dos encargos posteriores ficará efectivamente por recuperar? Qual é a melhor estimativa disponível, com que pressupostos e com que margem de incerteza? O contribuinte precisa de conseguir acompanhar a resposta ao longo dos anos e perceber por que motivo ela muda.</p>
+    <p>O Bpn foi nacionalizado em 2008. Entretanto, houve tempo para uma geração chegar à idade adulta. A duração deste legado torna especialmente difícil aceitar que o debate continue dependente de notícias avulsas, de rubricas dispersas e de explicações que exigem conhecimento especializado para serem relacionadas entre si. <sup style="color:#cfcfcf;">[4]</sup></p>
+    <p>A liquidação da Parvalorem está prevista para terminar até 31 de dezembro de 2027. A própria sociedade admite preparar o destino dos activos que não conseguir alienar ou recuperar durante esse período. Por isso, o encerramento da empresa terá de ser acompanhado de uma explicação sobre o património transferido, as responsabilidades remanescentes e as perdas reconhecidas. A mudança de entidade não pode interromper o rasto público do dinheiro. <sup style="color:#cfcfcf;">[4]</sup></p>
+    <p>Há ainda o custo das oportunidades perdidas. Recursos públicos absorvidos por prejuízos financeiros reduzem, em condições comparáveis, a margem para outros usos ou para diminuir dívida. Isso tem consequências para um país com necessidades de habitação, saúde e investimento. Seria pouco sério converter automaticamente cada euro de uma operação financeira num euro disponível para contratar profissionais ou construir casas. É perfeitamente sério exigir que se explique o esforço público e as escolhas que ele condiciona.</p>
+    <p>A estabilidade do sistema financeiro é um interesse colectivo. Proteger depósitos e evitar perturbações graves nos pagamentos pode justificar intervenções públicas em determinadas circunstâncias. Mas uma intervenção deve poder ser avaliada pelas alternativas disponíveis na altura, pelos riscos assumidos e pelo custo que acabou por produzir. Invocar a emergência inicial não dispensa essa avaliação anos depois.</p>
+    <p>A protecção dos cidadãos tem de incluir os cidadãos que financiaram a intervenção. Os trabalhadores que descontam sobre salários modestos e os pequenos empresários que suportam as suas próprias perdas também integram o interesse público. É razoável que perguntem como se distribuíram os riscos, quem suportou os prejuízos e que mecanismos existem para recuperar valores junto dos responsáveis, quando houver fundamento legal.</p>
+    <p>O padrão exigível deveria ser simples de enunciar: um balanço público consolidado, actualizado todos os anos, que acompanhasse cada intervenção desde o início. Esse balanço deveria mostrar os montantes efectivamente entregues pelo Estado, as recuperações realizadas, os custos de financiamento e de gestão, as garantias ainda em vigor e a estimativa de perda final. Deveria explicar as revisões e permitir consultar os dados em formato reutilizável.</p>
+    <p>Seria necessário esclarecer o perímetro de cada cálculo. Estão incluídos juros? As transferências entre entidades públicas foram eliminadas para evitar duplicações? Um reembolso resultou da venda de um activo ou de financiamento obtido noutra entidade do mesmo universo? São perguntas concretas, essenciais para que duas cifras divulgadas em anos diferentes possam ser comparadas honestamente.</p>
+    <p>O Parlamento deveria fazer desta informação uma condição efectiva do escrutínio de novas autorizações. Cada verba teria de vir acompanhada da sua finalidade, dos beneficiários institucionais, das recuperações previstas e de um calendário. Os desvios deveriam ser explicados publicamente. Uma votação orçamental ganha sentido quando permite conhecer as obrigações que autoriza e verificar depois o que foi executado.</p>
+<div style="max-width:900px; margin:30px auto;">
+  <iframe
+    width="900"
+    height="506"
+    src="https://www.youtube.com/embed/_KjC6VQPHMg?start=33&amp;playsinline=1"
+    title="Vídeo do YouTube a partir dos 33 segundos"
+    style="display:block; width:100%; height:auto; aspect-ratio:16 / 9; min-height:200px; border:0;"
+    loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen>
+  </iframe>
+
+  <p style="text-align:center; margin-top:12px;">
+    <a href="https://www.youtube.com/watch?v=_KjC6VQPHMg&amp;t=33s"
+       target="_blank"
+       rel="noopener noreferrer"
+       style="color:#ffcc66;">
+      Paulo Otero, A crise e o Direito, FDUNL, 22 5 2012
+    </a>
+  </p>
+</div>
+    <p>A prestação de contas financeira deve ainda ser acompanhada de informação sobre a responsabilização, respeitando a independência dos tribunais e a presunção de inocência. É possível distinguir erros de gestão, falhas de supervisão e condutas ilícitas, indicar o estado dos processos e apresentar os montantes efectivamente recuperados por essas vias. A existência de um prejuízo não prova, por si só, um crime. Também não encerra a avaliação das decisões que o produziram.</p>
+    <p>A protecção de dados e o segredo legal podem limitar a divulgação de elementos individuais. Essas limitações devem ser identificadas e fundamentadas. Permanecem amplas possibilidades de publicar totais, critérios, custos e resultados sem expor informação protegida. O cidadão pode compreender o destino dos seus impostos sem receber acesso irrestrito a processos bancários ou judiciais.</p>
+    <p>Depois de tantos anos, a confiança depende da possibilidade de seguir a conta até ao fim. Quando uma dívida muda de entidade, quando um activo é vendido ou quando uma perda é reconhecida, essa alteração deve continuar visível no balanço público. O encerramento administrativo de uma sociedade não pode tornar mais difícil perceber o resultado económico da intervenção.</p>
+    <p>Os contribuintes continuarão sujeitos às obrigações legalmente assumidas pelo Estado. Em contrapartida, o Estado tem de assumir plenamente a obrigação de lhes explicar quanto custou, o que conseguiu recuperar e o que considera perdido. Uma democracia que exige rigor aos cidadãos deve aceitar o mesmo rigor sobre o dinheiro que lhes cobra.</p>
+    <!-- Fim do artigo integral -->
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">DADOS ESSENCIAIS</h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>334 milhões de euros: autorização de despesa para 2027 anunciada pelo Diário de Notícias. [1]</li>
+        <li>Parvalorem em 2025: activos líquidos de cerca de 464,3 milhões de euros e passivo de aproximadamente 5.330,7 milhões. [3]</li>
+        <li>80 milhões de euros: amortização de um empréstimo pela Parvalorem em 2025. [3]</li>
+        <li>31 de Dezembro de 2027: data prevista para a conclusão da liquidação da Parvalorem. [4]</li>
+      </ul>
+    </div>
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">Artigo de opinião com informação consultada em 16 de Outubro de 2026. Os 334 milhões de euros correspondem ao montante anunciado pelo Diário de Notícias para uma autorização de despesa no Oe2027. Uma autorização, um pagamento e uma perda económica são realidades distintas; este artigo não apresenta aquela verba como uma nova perda integral. Os dados patrimoniais da Parvalorem referem-se ao final de 2025. A conclusão da liquidação em Dezembro de 2027 é uma previsão. [1, 3, 4]</p>
+      <p style="text-align:left;">A crítica incide na necessidade de uma prestação de contas consolidada, inteligível e acompanhável pelos cidadãos. Reconhece-se a existência de relatórios públicos. A divulgação de dados deve respeitar as limitações legais aplicáveis, sem impedir o escrutínio dos custos agregados, das recuperações e das responsabilidades.</p>
+      <p style="text-align:left; margin-bottom:0;">O enquadramento internacional apoia-se no Código de Transparência Orçamental do Fmi, que contempla a exposição do Estado ao sector financeiro, no Oecd Budget Transparency Toolkit e na publicação da Ocde The People and the Budget, de 2026. Estas referências sustentam os princípios de divulgação de riscos, clareza da comunicação e participação pública; não constituem avaliações específicas destes 334 milhões de euros nem decisões sobre os casos Bpn e Banif. [5, 6, 7]</p>
+    </div>
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+    <ul style="padding-left:22px;">
+      <li id="referencia-1"><a href="https://www.dn.pt/economia/governo-pede-ao-parlamento-para-gastar-334-milhes-de-euros-com-bancos-falidos" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[1] Diário de Notícias — Governo pede ao Parlamento para gastar 334 milhões de euros com bancos falidos</a>. 15 de outubro de 2026</li>
+      <li id="referencia-2"><a href="https://www.parvalorem.pt/institucionalparvalorem/relatorios-e-informacao-financeira" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[2] Parvalorem — Relatórios e Informação Financeira</a>. Consultado em 16 de outubro de 2026</li>
+      <li id="referencia-3"><a href="https://www.parvalorem.pt/sites/default/files/2026-05/relatorio_e_contas_parvalorem_2025.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[3] Parvalorem — Relatório e Contas 2025</a>. Em especial páginas 6 e 7</li>
+      <li id="referencia-4"><a href="https://www.parvalorem.pt/institucionalparvalorem/institucional" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[4] Parvalorem — Institucional</a>. Historial e informação sobre a liquidação</li>
+      <li id="referencia-5"><a href="https://www.imf.org/external/np/fad/trans/Code2019.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[5] Fundo Monetário Internacional — The Fiscal Transparency Code</a>. 2019. Enquadramento internacional para a divulgação e gestão de riscos orçamentais, incluindo a exposição ao sector financeiro.</li>
+      <li id="referencia-6"><a href="https://www.oecd.org/content/dam/oecd/en/publications/reports/2017/10/oecd-budget-transparency-toolkit_g1g82a3c/9789264282070-en.pdf" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[6] OCDE — OECD Budget Transparency Toolkit — Practical Steps for Supporting Openness, Integrity and Accountability in Public Financial Management</a>. 2017. Orientações sobre transparência, escrutínio parlamentar e informação orçamental acessível aos cidadãos. Doi 10.1787/9789264282070-en.</li>
+      <li id="referencia-7"><a href="https://www.oecd.org/en/publications/the-people-and-the-budget_81674d37-en/full-report/foreword_bbba3ed7.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[7] OCDE — The People and the Budget — Empowering Public Understanding of Public Finances</a>. 27 de Maio de 2026. Comunicação das finanças públicas, compreensão dos orçamentos e participação dos cidadãos. Doi 10.1787/81674d37-en.</li>
+    </ul>
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;"><strong style="color:#d6a542;">Francisco António dos Santos Gonçalves</strong><br>Fragmentos do Caos<br>FC-Chronic-News</p>
+    </div>
+  </div>
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
