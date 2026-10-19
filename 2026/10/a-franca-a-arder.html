@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A França a arder</title>
+<meta name="description" content="A França a arder">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A França a arder</h1>
+      <p class="meta">Publicado em 2026-10-18 18:45:47</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/10/file_000000001fb08210ab1f32f0ff8544e2_08c295eb.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="A França a arder">
+      <meta itemprop="description" content="Crónica sobre a violência em França, a resposta de Macron, a protecção das populações e a responsabilidade do Estado numa crise com consequências europeias.">
+      <meta itemprop="datePublished" content="2026-10-18">
+      <meta itemprop="dateModified" content="2026-10-18">
+      <meta itemprop="author" content="Francisco">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/10/file_000000001fb08210ab1f32f0ff8544e2.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">A França a arder</h1>
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">Crónica sobre a violência e a responsabilidade do Estado</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        Crónica de opinião sobre os acontecimentos de 17 e 18 de Outubro de 2026. A protecção das pessoas, a responsabilização pelos crimes e a resposta ao descontentamento social exigem decisões claras.
+      </p>
+    </div>
+
+    <!-- INICIO DA CRONICA INTEGRAL -->
+    <p>
+      Há uma hora em que uma democracia tem de conseguir proteger a rua onde se manifesta. A liberdade perde terreno quando alguém deixa de poder abrir uma loja, regressar a casa ou trabalhar num edifício público sem recear um incêndio. A França chegou a uma dessas horas difíceis, em que a autoridade do Estado se mede pela segurança concreta que consegue devolver às pessoas.
+    </p>
+
+    <p>
+      As notícias de 17 e 18 de Outubro são graves. A Reuters relata saques e ataques a edifícios públicos em várias cidades, a destruição de grande parte da câmara municipal de Limoges por um incêndio e, segundo o ministro do Interior, mais de dois mil detidos e mais de seiscentos polícias feridos. São balanços provisórios de uma crise ainda em desenvolvimento. [1]
+    </p>
+
+    <p>
+      Caen também foi atingida. O Ouest-France noticia vinte e oito detenções e oito polícias feridos, além de episódios de violência que perturbaram a manifestação. A dimensão nacional da crise ganha outro significado quando chega à cidade onde vivem familiares e amigos, às ruas por onde passam todos os dias. A inquietação deixa de caber no ecrã da televisão. [2]
+    </p>
+
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A factura deixada aos cidadãos</h2>
+    <p>
+      Quem destrói património público deixa uma conta aos seus concidadãos. O edifício queimado terá de ser reconstruído com dinheiro que poderia melhorar uma escola ou prestar cuidados de saúde. O comércio saqueado pode significar salários em risco e o esforço de uma família perdido numa tarde. Há uma crueldade particular em invocar o povo enquanto se arruínam os lugares de que esse mesmo povo depende.
+    </p>
+
+    <p>
+      A dimensão da violência obriga também a preservar a verdade sobre a mobilização. A Associated Press regista cerca de 550 mil participantes segundo as autoridades e 800 mil segundo os organizadores, numa jornada contra o custo de vida e em apoio às reivindicações dos estudantes. Centenas de milhares de pessoas procuravam fazer ouvir problemas reais. A acção dos grupos violentos abafou muitas dessas vozes. [3]
+    </p>
+
+    <p>
+      O Governo francês atribui os ataques a grupos da esquerda radical e a indivíduos que aproveitaram os distúrbios para saquear. Essa atribuição deve ser acompanhada de investigação e prova. A responsabilidade criminal pertence a quem praticou, organizou ou auxiliou os crimes. A justiça precisa de identificar essas pessoas com rigor, sem transformar uma multidão inteira num suspeito colectivo. [1]
+    </p>
+
+    <p>
+      Os dirigentes políticos e os organizadores das manifestações têm, entretanto, uma obrigação imediata: condenar os ataques sem procurar utilidade partidária nas chamas. A tolerância ambígua oferece espaço a quem deseja apropriar-se da contestação. Quando uma montra partida ocupa toda a atenção pública, o trabalhador que pediu melhores salários acaba por perder a palavra.
+    </p>
+
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A responsabilidade de Macron</h2>
+    <p>
+      Macron enfrenta uma responsabilidade que ultrapassa a gestão policial da noite. Um presidente tem de escutar as razões pelas quais tanta gente considera necessário sair à rua. O custo de vida, as condições de ensino e a confiança nos serviços públicos exigem respostas que possam ser verificadas na vida quotidiana. A protecção das cidades e a resposta ao descontentamento social têm de avançar em conjunto.
+    </p>
+
+    <p>
+      O primeiro gesto deve ser um apelo claro ao país, capaz de reconhecer as reivindicações pacíficas e de explicar as medidas de segurança. Deve pedir o fim dos ataques e permitir que quem quer afastar-se dos confrontos o faça em condições seguras. A palavra presidencial terá valor se conseguir orientar comportamentos e se for acompanhada por decisões compreensíveis.
+    </p>
+
+    <p>
+      Depois, é necessário agir com determinação. Proteger os locais ameaçados, garantir o acesso dos bombeiros e dos socorristas, interromper os saques e deter os responsáveis identificados. A população precisa de saber que existe uma autoridade capaz de chegar a tempo. A rapidez dessa resposta deve servir para reduzir o perigo e evitar que mais pessoas sejam arrastadas para os confrontos.
+    </p>
+
+    <p>
+      A permanência na rua, por si só, não permite identificar um incendiário. Há moradores, trabalhadores e jornalistas, além de pessoas que podem ficar encurraladas. Uma intervenção eficaz exige comando competente e capacidade de distinguir situações. O uso da força deve acompanhar a ameaça concreta, cessando quando essa ameaça termina. É assim que a firmeza mantém a sua legitimidade.
+    </p>
+
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A hipótese de intervenção militar</h2>
+    <p>
+      A hipótese de recorrer às Forças Armadas merece ser avaliada com seriedade. França dispõe já de uma Gendarmerie de natureza militar, cuja componente móvel é especializada na manutenção da ordem. Se os meios disponíveis forem insuficientes, o apoio de outras forças militares pode tornar-se necessário. A doutrina francesa prevê esse recurso em condições de insuficiência, indisponibilidade, inadequação ou inexistência dos meios civis. [4][5]
+    </p>
+
+    <p>
+      Nesse cenário, importa definir a missão: proteger instalações essenciais ou assegurar apoio logístico pode libertar forças especializadas para enfrentar os distúrbios. A decisão deve indicar quem dirige a operação, com que limites e durante quanto tempo. A presença militar precisa de responder a uma necessidade demonstrada e de produzir um resultado concreto na protecção das pessoas.
+    </p>
+
+    <p>
+      O Governo terá também de explicar o que falhou na preparação e na resposta. É necessário apurar se havia informação suficiente, se os meios foram bem distribuídos e se os reforços chegaram a tempo. As eventuais ilegalidades cometidas por agentes do Estado devem ser investigadas. Exigir responsabilidade a quem exerce autoridade ajuda a preservar a confiança de que essa autoridade necessita.
+    </p>
+
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O que esta crise significa para a Europa</h2>
+    <p>
+      Há ainda uma consequência europeia. Uma crise francesa prolongada pode consumir recursos e reduzir a disponibilidade política para os desafios de segurança do continente. É nesse sentido que a imagem de Putin a rir-se exprime um receio compreensível: o Kremlin poderá encontrar vantagem numa Europa absorvida pelas suas fraturas internas. Trata-se de uma leitura estratégica, não de um facto sobre a reacção russa a estes acontecimentos.
+    </p>
+
+    <p>
+      A resposta europeia começa também nas condições de vida que sustentam a confiança na democracia. Uma família que consegue pagar a casa, uma escola capaz de ensinar e serviços públicos que funcionam dão conteúdo à promessa de pertença. Os governantes têm de mostrar que a participação pacífica produz resultados. Cada problema sistematicamente adiado facilita o discurso de quem apresenta a destruição como saída.
+    </p>
+
+    <p>
+      A França precisa de voltar a oferecer segurança a quem sai de casa e esperança a quem sente que o futuro se fechou. Macron será julgado pela capacidade de cumprir essas duas tarefas. Amanhã, quando as ruas forem limpas, haverá comerciantes a levantar os estores e funcionários a tentar reabrir serviços. É à porta dessas pessoas que a República tem de comparecer.
+    </p>
+
+    <!-- FIM DA CRONICA INTEGRAL -->
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">DADOS ESSENCIAIS</h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>Mobilização nacional: cerca de 550 mil participantes segundo as autoridades e 800 mil segundo os organizadores, de acordo com a Associated Press. [3]</li>
+        <li>Caen: vinte e oito detenções e oito polícias feridos, segundo o Ouest-France. [2]</li>
+        <li>A manutenção da ordem constitui a missão principal da Gendarmerie mobile. [4]</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        Texto de opinião baseado na informação disponível em 18 de Outubro de 2026. A descrição dos acontecimentos assenta nas fontes identificadas; as propostas de intervenção e a avaliação das responsabilidades políticas exprimem análise editorial.
+      </p>
+      <p style="text-align:left;">
+        Os balanços de detenções e feridos são provisórios. As diferenças entre as contagens noticiadas reflectem momentos distintos de actualização. A atribuição da violência a determinados grupos é apresentada como posição das autoridades francesas e exige apuramento individual das responsabilidades.
+      </p>
+      <p style="text-align:left; margin-bottom:0;">
+        A referência a uma possível vantagem estratégica para o Kremlin constitui uma hipótese de análise. A consideração de apoio militar depende de necessidade demonstrada, missões delimitadas e enquadramento legal. A defesa da segurança pública acompanha a preservação do direito de manifestação pacífica.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+    <ul style="padding-left:22px;">
+      <li id="referencia-1">
+        <a href="https://www.reuters.com/world/europe/france-faces-aftermath-worst-unrest-years-2026-10-18/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[1] Reuters — France counts the cost of worst unrest in years as tensions flare again in Paris</a> — 18 de Outubro de 2026.
+      </li>
+      <li id="referencia-2">
+        <a href="https://www.ouest-france.fr/societe/manifestation/manifestations-a-caen-28-interpellations-huit-fonctionnaires-de-police-blesses-ca98e682-cad9-11f1-ad87-e24a1a2986e9" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[2] Ouest-France — Violences du 17 octobre à Caen 28 interpellations et plusieurs blessés en marge de la manifestation</a> — 18 de Outubro de 2026.
+      </li>
+      <li id="referencia-3">
+        <a href="https://apnews.com/article/france-protests-violence-looting-f5ce07c2ef46ad0c02c6ff7018532a59" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[3] Associated Press — Macron to address nation after riots and looting lead to 1800 arrests across France</a> — 18 de Outubro de 2026.
+      </li>
+      <li id="referencia-4">
+        <a href="https://www.gendarmerie.interieur.gouv.fr/presentation/les-missions-de-la-gendarmerie-nationale" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[4] Gendarmerie nationale — Les missions de la Gendarmerie nationale</a> — consulta em 18 de Outubro de 2026.
+      </li>
+      <li id="referencia-5">
+        <a href="https://www.ihemi.fr/articles/le-commandement-terre-pour-le-territoire-national-une-construction-originale" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[5] IHEMI — Le commandement Terre pour le territoire national une construction originale</a> — consulta em 18 de Outubro de 2026.
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
