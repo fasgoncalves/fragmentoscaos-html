@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Escola do Futuro: aprender a pensar, aprender a ser</title>
+<meta name="description" content="A Escola do Futuro: aprender a pensar, aprender a ser">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Escola do Futuro: aprender a pensar, aprender a ser</h1>
+      <p class="meta">Publicado em 2026-10-24 18:48:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/10/file_000000007a50821087d504e6b219afb6_53422f0b.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- FC-CHRONIC-NEWS CANONICAL -->
+
+<style>
+.fc-shell{width:100%;margin:0;padding:1px 0 28px;background:#090d12}
+.fc-chronic-news{
+  --fc-panel:#151b23;--fc-panel-soft:#111720;--fc-text:#e6edf3;--fc-muted:#a8b3bf;
+  --fc-gold:#d59a2a;--fc-gold-soft:#f0bd57;--fc-line:rgba(213,154,42,.34);--fc-link:#f0bd57;
+  box-sizing:border-box;width:min(calc(100% - 20px),920px);margin:24px auto 44px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);border-radius:22px;background:#0d1117;color:var(--fc-text);
+  box-shadow:0 26px 80px rgba(0,0,0,.38);font-family:Georgia,'Times New Roman',serif;line-height:1.78
+}
+.fc-chronic-news *{box-sizing:border-box}
+.fc-chronic-news a{color:var(--fc-link);text-underline-offset:.2em;overflow-wrap:anywhere}
+.fc-chronic-news a:hover{color:#ffd47d}
+.fc-chronic-news .fc-hero{
+  padding:clamp(34px,7vw,76px) clamp(22px,7vw,72px) 42px;border-bottom:1px solid var(--fc-line);
+  background:radial-gradient(circle at 84% 14%,rgba(92,120,190,.14),transparent 30%),
+             linear-gradient(145deg,rgba(213,154,42,.11),transparent 56%)
+}
+.fc-chronic-news .fc-kicker{color:var(--fc-gold-soft);font:700 .76rem/1.4 system-ui,sans-serif;letter-spacing:.16em}
+.fc-chronic-news h1,.fc-chronic-news h2{font-family:Georgia,'Times New Roman',serif}
+.fc-chronic-news h1{max-width:850px;margin:16px 0 18px;color:var(--fc-gold);font-size:clamp(2.3rem,7vw,5.05rem);line-height:1.01;letter-spacing:-.045em}
+.fc-chronic-news .fc-deck{max-width:800px;margin:0;color:#d8dee6;font-size:clamp(1.08rem,2.4vw,1.35rem);line-height:1.55}
+.fc-chronic-news .fc-meta{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:25px;color:var(--fc-muted);font:500 .88rem/1.5 system-ui,sans-serif}
+.fc-chronic-news .fc-opening-note,.fc-chronic-news .fc-editorial-note,.fc-chronic-news .fc-references{
+  margin:34px clamp(18px,6vw,64px);padding:clamp(20px,4vw,34px);background:var(--fc-panel);
+  border:1px solid rgba(255,255,255,.08);border-left:4px solid var(--fc-gold);border-radius:14px
+}
+.fc-chronic-news .fc-opening-note .fc-label{display:block;color:var(--fc-gold-soft);font:800 .72rem/1 system-ui,sans-serif;letter-spacing:.15em}
+.fc-chronic-news .fc-opening-note p{margin:12px 0 0;font-size:1.12rem}
+.fc-chronic-news .fc-content{padding:5px clamp(22px,7vw,76px) 18px}
+.fc-chronic-news .fc-content h2{margin:2.05em 0 .75em;padding-left:.55em;border-left:4px solid var(--fc-gold);color:var(--fc-gold);font-size:clamp(1.55rem,4vw,2.25rem);line-height:1.18}
+.fc-chronic-news .fc-content p{margin:0 0 1.25em;font-size:clamp(1.04rem,2.2vw,1.18rem)}
+.fc-chronic-news .fc-content > p:first-child::first-letter{float:left;margin:.08em .12em 0 0;color:var(--fc-gold);font-size:4.6em;font-weight:700;line-height:.78}
+.fc-chronic-news .fc-emphasis{margin:2rem 0!important;padding:1.15rem 1.3rem;border:1px solid var(--fc-line);border-radius:12px;background:rgba(213,154,42,.08);color:#fff0c2;font-size:1.23rem!important;font-style:italic}
+.fc-chronic-news blockquote{margin:1.7rem 0;padding:1.15rem 1.35rem;background:var(--fc-panel-soft);border:1px solid rgba(255,255,255,.07);border-left:5px solid var(--fc-gold);border-radius:10px;color:#f4ead1;font-size:1.14rem;font-style:italic}
+.fc-chronic-news blockquote p{margin:0}
+.fc-chronic-news .fc-pullquote{margin:44px 0;padding:36px clamp(22px,8vw,88px);border-top:1px solid var(--fc-line);border-bottom:1px solid var(--fc-line);background:rgba(213,154,42,.07);text-align:center}
+.fc-chronic-news .fc-pullquote p{margin:0;color:var(--fc-gold-soft);font-size:clamp(1.45rem,4vw,2.35rem);font-style:italic;line-height:1.35}
+.fc-chronic-news .fc-editorial-note h2,.fc-chronic-news .fc-references h2{margin:0 0 18px;color:var(--fc-gold);font-size:clamp(1.45rem,3.5vw,2rem)}
+.fc-chronic-news .fc-editorial-note p{margin:0 0 1em}
+.fc-chronic-news .fc-signature{margin-top:30px!important;padding-top:20px;border-top:1px solid var(--fc-line);color:var(--fc-gold-soft)}
+.fc-chronic-news .fc-reference-intro{color:var(--fc-muted)}
+.fc-chronic-news .fc-references ol{margin:22px 0 0;padding-left:1.4rem}
+.fc-chronic-news .fc-references li{margin:0 0 1.15rem;padding-left:.35rem}
+.fc-chronic-news .fc-references li>a{font-size:1.04rem}
+.fc-chronic-news .fc-references li>span{display:block;margin-top:2px;color:var(--fc-muted);font:700 .82rem/1.5 system-ui,sans-serif}
+.fc-chronic-news .fc-references li p{margin:4px 0 0;color:#c8d0d9;font-size:.94rem}
+.fc-chronic-news .fc-article-footer{padding:28px clamp(22px,6vw,64px) 38px;border-top:1px solid rgba(255,255,255,.08);color:var(--fc-muted);text-align:center;font:.88rem/1.6 system-ui,sans-serif}
+.fc-chronic-news .fc-article-footer p{margin:4px 0}
+.fc-chronic-news .fc-canonical{overflow-wrap:anywhere}
+@media(max-width:640px){
+  .fc-chronic-news{width:min(calc(100% - 10px),920px);margin-top:10px;border-radius:14px}
+  .fc-chronic-news .fc-hero{padding-left:22px;padding-right:22px}
+  .fc-chronic-news .fc-opening-note,.fc-chronic-news .fc-editorial-note,.fc-chronic-news .fc-references{margin-left:14px;margin-right:14px}
+  .fc-chronic-news .fc-content{padding-left:22px;padding-right:22px}
+  .fc-chronic-news .fc-meta{display:grid;gap:3px}
+  .fc-chronic-news h1{font-size:clamp(2.15rem,12vw,3.35rem)}
+  .fc-chronic-news .fc-content h2{margin-top:1.65em}
+}
+@media print{
+  .fc-shell{background:#fff}.fc-chronic-news{max-width:none;margin:0;border:0;box-shadow:none;background:#fff;color:#111}
+  .fc-chronic-news p,.fc-chronic-news li,.fc-chronic-news .fc-deck{color:#111}
+  .fc-chronic-news h1,.fc-chronic-news h2,.fc-chronic-news strong,.fc-chronic-news a{color:#111!important}
+  .fc-chronic-news .fc-opening-note,.fc-chronic-news blockquote,.fc-chronic-news .fc-editorial-note,.fc-chronic-news .fc-references{background:#fff;color:#111}
+}
+</style>
+
+
+<main class="fc-shell">
+<article class="fc-chronic-news fc-chronic-news--canonical" itemscope itemtype="https://schema.org/NewsArticle" data-fc-version="canonical-2026">
+  <meta itemprop="mainEntityOfPage" content="https://fragmentoscaos.eu/2026/09/14/a-escola-do-futuro-aprender-a-pensar-aprender-a-ser/">
+  <meta itemprop="datePublished" content="2026-09-14T18:48:00+01:00">
+  <meta itemprop="dateModified" content="2026-09-14T18:48:00+01:00">
+  <meta itemprop="inLanguage" content="pt-PT">
+  <meta itemprop="image" content="INSERIR_URL_DA_IMAGEM_AQUI">
+
+  <header class="fc-hero">
+    <div class="fc-kicker">EDUCAÇÃO · FILOSOFIA · PENSAMENTO CRÍTICO · INTELIGÊNCIA ARTIFICIAL · FUTURO</div>
+    <h1 itemprop="headline">A Escola do Futuro: aprender a pensar, aprender a ser</h1>
+    <p class="fc-deck" itemprop="description">Uma reflexão filosófica sobre a escola do futuro a partir de Jean Piaget, Agostinho da Silva e Paulo Freire — e sobre o que muda quando a Inteligência Artificial torna a informação abundante.</p>
+    <div class="fc-meta">
+      <span>Por <strong itemprop="author">Francisco Gonçalves</strong></span>
+      <span>14 de Setembro de 2026</span>
+      <span>Leitura: 12 min</span>
+    </div>
+  </header>
+
+  <aside class="fc-opening-note" aria-label="Ideia central">
+    <span class="fc-label">IDEIA CENTRAL</span>
+    <p>Piaget ajuda-nos a compreender como o conhecimento se constrói; Agostinho da Silva lembra-nos que educar sem liberdade pode transformar-se em domesticação; Paulo Freire insiste que aprender exige diálogo, consciência e capacidade de interrogar o mundo. A Inteligência Artificial não torna estes princípios obsoletos: torna-os mais urgentes.</p>
+  </aside>
+
+  <section class="fc-content" itemprop="articleBody">
+    <p>Há qualquer coisa de profundamente contraditório no sistema educativo contemporâneo.</p>
+    <p>Nunca tivemos tantas escolas, tantos professores qualificados, tantos recursos tecnológicos, tanto conhecimento disponível e tantos anos de escolaridade obrigatória.</p>
+    <p>E, apesar disso, continuamos frequentemente a organizar a escola segundo um modelo concebido para um mundo que já praticamente desapareceu.</p>
+    <p>Um mundo onde a informação era escassa.</p>
+    <p>Onde o professor possuía o conhecimento e o aluno precisava de o receber.</p>
+    <p>Onde memorizar era uma competência fundamental porque aquilo que não estivesse na memória dificilmente estaria disponível quando fosse necessário.</p>
+    <p>Esse mundo terminou.</p>
+    <p>Hoje uma criança transporta no bolso acesso a mais conhecimento do que aquele que estaria disponível numa das maiores bibliotecas do mundo há poucas décadas.</p>
+    <p>E agora, com a Inteligência Artificial, surgiu algo ainda mais perturbador para o modelo tradicional: já não temos apenas máquinas capazes de armazenar informação.</p>
+    <p>Temos máquinas capazes de a reorganizar, explicar, traduzir, resumir, relacionar e, em muitos casos, resolver problemas.</p>
+    <p>Perante isto, talvez a pergunta decisiva deixe de ser:</p>
+    <blockquote><p><strong>Como devemos melhorar a escola?</strong></p></blockquote>
+    <p>E passe a ser uma pergunta bastante mais incómoda:</p>
+    <blockquote><p><strong>Para que deve existir a escola?</strong></p></blockquote>
+
+    <h2>A escola nasceu para um determinado mundo</h2>
+    <p>A escola moderna foi extraordinariamente eficaz naquilo para que foi concebida.</p>
+    <p>Massificou a alfabetização.</p>
+    <p>Criou uma linguagem cultural comum.</p>
+    <p>Transmitiu conhecimentos científicos fundamentais.</p>
+    <p>Preparou milhões de pessoas para participar numa sociedade industrial e administrativa que precisava de trabalhadores alfabetizados, disciplinados, pontuais e capazes de seguir procedimentos.</p>
+    <p>Até a arquitetura das escolas denuncia essa origem.</p>
+    <p>Salas semelhantes. Carteiras alinhadas. Horários fragmentados. Campainhas. Disciplinas separadas. Alunos agrupados essencialmente pela idade. Programas iguais para todos. Um professor perante várias dezenas de alunos.</p>
+    <p class="fc-emphasis">Há alguma coisa de fábrica nesta organização.</p>
+    <p>A matéria-prima entra com seis anos e deve atravessar sucessivas linhas de montagem até sair, muitos anos depois, certificada por exames, classificações e diplomas.</p>
+    <p>O problema não está em esta escola ter sido necessariamente má.</p>
+    <p>O problema está em continuarmos a reproduzir a mesma lógica quando o mundo à nossa volta mudou radicalmente.</p>
+
+    <h2>Piaget: ninguém aprende verdadeiramente por procuração</h2>
+    <p>Jean Piaget deixou uma das ideias mais importantes para qualquer reflexão sobre educação: <strong>o conhecimento não é simplesmente transmitido; é construído.</strong></p>
+    <p>Uma criança não compreende realmente uma ideia porque um adulto lha explicou.</p>
+    <p>Compreende quando consegue integrá-la naquilo que já sabe, confrontá-la com a realidade, experimentar, errar, corrigir e reorganizar o seu próprio pensamento.</p>
+    <p>Esta diferença é enorme.</p>
+    <p>Num caso, temos transmissão.</p>
+    <p>No outro, temos aprendizagem.</p>
+    <p>E são coisas muito diferentes.</p>
+    <p>Podemos ensinar durante horas sem que ninguém verdadeiramente aprenda.</p>
+    <p>Qualquer professor sabe isto intuitivamente. Também qualquer aluno.</p>
+    <p>Há matérias que decorámos para um exame e que desapareceram da memória algumas semanas depois.</p>
+    <p>Obtivemos talvez quinze valores. Mas não ficou conhecimento.</p>
+    <p>Ficou apenas uma memória transitória suficientemente resistente para sobreviver até ao teste.</p>
+    <p>Piaget obriga-nos portanto a abandonar uma ilusão confortável: a ideia de que ensinar é equivalente a aprender.</p>
+    <p>Não é.</p>
+    <blockquote><p><strong>O professor pode abrir uma porta. Mas é o cérebro do aluno que precisa de atravessá-la.</strong></p></blockquote>
+
+    <h2>Agostinho da Silva: talvez educar seja libertar</h2>
+    <p>Agostinho da Silva levaria provavelmente a pergunta ainda mais longe.</p>
+    <p>O problema não seria apenas <strong>como ensinar</strong>. Seria perceber <strong>por que razão queremos ensinar aquilo que ensinamos</strong>.</p>
+    <p>Há na sua visão da educação uma ideia profundamente libertadora: cada ser humano transporta possibilidades que nenhuma instituição deveria esmagar em nome da normalização.</p>
+    <p>A escola deveria ajudar a revelar essas possibilidades. Não produzir cópias.</p>
+    <p>A educação torna-se então menos semelhante a moldar barro e mais semelhante a cuidar de uma planta.</p>
+    <p>Não determinamos aquilo em que ela se deve transformar. Criamos condições para que possa crescer.</p>
+    <p>Esta ideia parece simples. Mas aplicada seriamente seria revolucionária.</p>
+    <p>Porque significaria admitir que crianças diferentes podem precisar de percursos diferentes.</p>
+    <p>Que aprender depressa não significa necessariamente aprender melhor.</p>
+    <p>Que inteligência matemática não é equivalente a inteligência humana.</p>
+    <p>Que curiosidade pode ser mais importante do que obediência.</p>
+    <p>Que uma criança que faz demasiadas perguntas talvez não tenha um problema disciplinar.</p>
+    <p class="fc-emphasis"><strong>Talvez tenha precisamente aquilo que a escola deveria tentar preservar.</strong></p>
+    <p>Agostinho desconfiava profundamente de uma sociedade que educasse pessoas apenas para desempenharem funções económicas.</p>
+    <p>Porque o ser humano não nasceu para ser exclusivamente trabalhador.</p>
+    <p>Nasceu também para contemplar, criar, amar, imaginar, descobrir, brincar, duvidar e procurar sentido.</p>
+    <p>Uma escola verdadeiramente humana teria de se lembrar disso.</p>
+
+    <h2>Paulo Freire: ensinar não é depositar conhecimento</h2>
+    <p>Paulo Freire encontrou uma expressão extraordinariamente poderosa para criticar determinado tipo de educação: <strong>educação bancária</strong>.</p>
+    <p>O professor deposita. O aluno recebe. Mais tarde, no exame, devolve parte do depósito. O sistema chama-lhe avaliação.</p>
+    <p>Freire propôs outra coisa: diálogo.</p>
+    <p>Conhecimento construído através da relação entre pessoas e entre as pessoas e o mundo.</p>
+    <p>Isto não significa transformar a escola numa conversa interminável onde todas as opiniões possuem o mesmo valor.</p>
+    <p>Conhecimento científico continua a exigir rigor, método, evidência e competência.</p>
+    <p>Mas significa reconhecer algo essencial:</p>
+    <blockquote><p><strong>compreender não é obedecer intelectualmente.</strong></p></blockquote>
+    <p>Uma pessoa educada deveria conseguir perguntar: Como sabemos isto? Que evidência existe? Que alternativas foram consideradas? Quem beneficia desta explicação? Que pressupostos contém? Poderá estar errada?</p>
+    <p>É aqui que aparece uma das funções mais importantes da escola democrática: formar cidadãos difíceis de manipular.</p>
+    <p>Talvez esta seja uma função ainda mais importante no século XXI do que ensinar determinadas matérias.</p>
+    <p>Porque entrámos numa época em que a dificuldade já não é encontrar informação.</p>
+    <p><strong>É sobreviver intelectualmente ao excesso dela.</strong></p>
+
+    <h2>Três pensadores, uma escola possível</h2>
+    <p>Se juntarmos estas três tradições, começa a surgir uma escola bastante diferente.</p>
+    <p>Piaget dir-nos-ia: <strong>deixem o aluno construir.</strong></p>
+    <p>Agostinho da Silva acrescentaria: <strong>deixem o aluno descobrir quem pode ser.</strong></p>
+    <p>Paulo Freire insistiria: <strong>ensinem-no a interrogar o mundo.</strong></p>
+    <p>Há aqui três dimensões fundamentais: <strong>conhecimento, liberdade e consciência.</strong></p>
+    <p>Não deveriam competir entre si. Deveriam formar os três pilares de uma educação moderna.</p>
+    <p>A escola não abandonaria Matemática, Física, História, Literatura, Filosofia ou Biologia.</p>
+    <p>Pelo contrário. Estudá-las-ia talvez com maior profundidade.</p>
+    <p>Mas deixaria progressivamente de confundir aprender uma disciplina com memorizar temporariamente o seu manual.</p>
+
+    <h2>E então chegou a Inteligência Artificial</h2>
+    <p>A Inteligência Artificial introduziu nesta discussão algo absolutamente novo.</p>
+    <p>Durante décadas defendemos ensino personalizado sabendo perfeitamente que era quase impossível oferecê-lo a milhões de alunos.</p>
+    <p>Um professor com vinte ou trinta estudantes não consegue acompanhar permanentemente o ritmo cognitivo individual de cada um.</p>
+    <p>Agora começa a tornar-se tecnicamente possível.</p>
+    <p>Um aluno poderá ter um tutor que explique uma ideia dez vezes de dez maneiras diferentes sem perder a paciência.</p>
+    <p>Poderá pedir exemplos. Criar simulações. Resolver problemas. Receber exercícios adaptados às dificuldades que demonstrou cinco minutos antes. Explorar assuntos laterais despertados pela curiosidade. Programar experiências. Comparar hipóteses.</p>
+    <p>Tudo isso pode acontecer.</p>
+    <p>Mas existe um perigo monumental.</p>
+    <p>Podemos utilizar a IA para transformar radicalmente a educação.</p>
+    <p>Ou podemos utilizá-la simplesmente para tornar <strong>mais eficiente o velho sistema</strong>.</p>
+    <p>Automatizar fichas. Produzir testes. Corrigir exercícios. Vigiar alunos. Gerar resumos. Medir produtividade escolar.</p>
+    <p class="fc-emphasis">Seria uma ironia magnífica: possuir finalmente uma tecnologia capaz de libertar a aprendizagem e utilizá-la para aperfeiçoar a fábrica.</p>
+
+    <h2>O professor não desaparece</h2>
+    <p>Há quem imagine que a Inteligência Artificial tornará o professor desnecessário.</p>
+    <p>Penso precisamente o contrário.</p>
+    <p>Tornará progressivamente desnecessária uma determinada função do professor: <strong>ser principalmente transmissor de informação.</strong></p>
+    <p>Mas poderá tornar muito mais importante o professor enquanto mentor intelectual.</p>
+    <p>Alguém capaz de observar uma criança e perceber aquilo que nenhum algoritmo identifica facilmente.</p>
+    <p>Desânimo. Entusiasmo. Medo. Talento. Curiosidade. Persistência. Solidão. Paixão por determinado assunto.</p>
+    <blockquote><p><strong>O professor do futuro talvez ensine menos matérias e ensine mais pessoas.</strong></p></blockquote>
+    <p>E essa poderá ser uma das maiores mudanças de sempre na profissão.</p>
+
+    <h2>A arte de fazer perguntas</h2>
+    <p>Talvez a competência fundamental da escola futura seja uma competência muito antiga.</p>
+    <p><strong>Saber perguntar.</strong></p>
+    <p>Durante séculos avaliámos sobretudo respostas.</p>
+    <p>Mas numa sociedade onde máquinas conseguem produzir respostas razoáveis em segundos, a qualidade intelectual poderá depender cada vez mais da capacidade de formular boas perguntas.</p>
+    <p>Uma pergunta inteligente contém já parte do pensamento necessário para encontrar uma resposta inteligente.</p>
+    <p>Que problema estamos realmente a tentar resolver? Que informação nos falta? Que hipótese poderia contrariar aquilo em que acreditamos? Como distinguir correlação de causalidade? Que consequências não intencionais poderá produzir esta decisão?</p>
+    <p>Estas perguntas pertencem simultaneamente à ciência, à filosofia e à vida.</p>
+    <p>E nenhuma máquina deveria dispensar-nos de as fazer.</p>
+
+    <h2>Aprender a errar</h2>
+    <p>Há ainda outra mudança necessária.</p>
+    <p>A escola tradicional penaliza frequentemente o erro.</p>
+    <p>Mas praticamente toda a descoberta humana nasceu dele.</p>
+    <p>Ciência é uma longa história de hipóteses erradas corrigidas. Tecnologia é uma sucessão de protótipos que falharam antes de funcionar.</p>
+    <p>Aprender exige errar.</p>
+    <p>Uma escola realmente orientada para descoberta teria portanto de transformar o erro.</p>
+    <p>De prova de incompetência em instrumento de investigação.</p>
+    <p>Em vez de: <strong>"Erraste."</strong></p>
+    <p>Talvez devêssemos perguntar:</p>
+    <blockquote><p><strong>"Porque pensaste assim?"</strong></p></blockquote>
+    <p>Essa pequena mudança contém uma revolução pedagógica.</p>
+    <p>Porque o erro deixa de ser apenas algo a eliminar. Passa a revelar o caminho que o pensamento percorreu.</p>
+
+    <h2>Educar para um futuro imprevisível</h2>
+    <p>Existe finalmente uma dificuldade que nenhuma geração enfrentou exatamente desta forma.</p>
+    <p>Não sabemos quais serão muitas das profissões relevantes daqui a vinte anos.</p>
+    <p>Não sabemos que tarefas a Inteligência Artificial executará.</p>
+    <p>Não sabemos que novos sectores económicos surgirão.</p>
+    <p>Não sabemos sequer com precisão que competências técnicas permanecerão valorizadas.</p>
+    <p>Então talvez seja absurdo tentar preparar crianças exclusivamente para profissões específicas.</p>
+    <p>Precisamos prepará-las para algo muito mais difícil: <strong>adaptarem-se ao desconhecido.</strong></p>
+    <p>Curiosidade. Pensamento crítico. Capacidade de aprender. Conhecimento científico fundamental. Criatividade. Cooperação. Autonomia. Responsabilidade. Capacidade de distinguir evidência de propaganda.</p>
+    <p>Essas competências envelhecem muito mais lentamente do que qualquer linguagem de programação ou ferramenta tecnológica.</p>
+
+    <h2>Talvez a escola seja isto</h2>
+    <p>Depois de Piaget, Agostinho e Freire, talvez consigamos finalmente formular de maneira diferente aquilo que deveria ser uma escola.</p>
+    <p>Não uma fábrica de certificados.</p>
+    <p>Não um armazém de crianças enquanto os adultos trabalham.</p>
+    <p>Não uma máquina de preparação para exames.</p>
+    <p>Não apenas uma antecâmara do mercado de trabalho.</p>
+    <p>Mas um lugar onde seres humanos aprendem progressivamente três coisas extraordinariamente difíceis:</p>
+    <blockquote><p><strong>compreender o mundo, compreender os outros e compreender-se a si próprios.</strong></p></blockquote>
+    <p>Piaget ensinou-nos que o conhecimento se constrói.</p>
+    <p>Freire lembrou-nos que compreender implica questionar.</p>
+    <p>Agostinho da Silva recordou-nos que nenhuma educação merece esse nome se destruir a liberdade interior daquele que pretende educar.</p>
+    <p>Talvez a escola do futuro tenha finalmente condições para juntar os três.</p>
+    <p>E talvez a Inteligência Artificial, paradoxalmente, nos obrigue a recuperar aquilo que há de mais humano na educação.</p>
+    <p>Porque quando uma máquina consegue recordar quase tudo, calcular quase tudo e responder quase imediatamente, sobra-nos uma pergunta maravilhosa:</p>
+    <p class="fc-emphasis"><strong>O que queremos fazer com a nossa inteligência humana?</strong></p>
+    <p>Essa talvez seja a verdadeira disciplina fundamental.</p>
+    <p>E ainda não inventámos exame para ela.</p>
+
+    <p class="fc-signature">
+      <strong>Autoria de Francisco Gonçalves</strong><br>
+      <strong>Co-autoria editorial e investigação por Augustus Veritas um Assistente de OpenAI</strong>
+    </p>
+  </section>
+
+  <aside class="fc-pullquote" aria-label="Citação em destaque">
+    <p>"Quanto mais inteligentes forem as máquinas, menos sentido fará educarmos seres humanos como se fossem máquinas."</p>
+  </aside>
+
+  <section class="fc-editorial-note" aria-labelledby="nota-editorial">
+    <h2 id="nota-editorial">Nota editorial</h2>
+    <p>Esta crónica é uma reflexão filosófica e pedagógica. Não pretende reduzir Jean Piaget, Agostinho da Silva ou Paulo Freire a um programa único, nem afirmar que as suas tradições são equivalentes. Usa-os como três eixos complementares: construção do conhecimento, liberdade de desenvolvimento e consciência crítica.</p>
+    <p>A investigação contemporânea reforça algumas intuições centrais desta proposta, mas recomenda prudência. A OCDE coloca a <em>student agency</em>, as competências, os valores e a capacidade de navegar contextos desconhecidos no centro do seu <em>Learning Compass 2030</em>; o seu <em>Teaching Compass</em> defende igualmente professores como agentes e coautores da mudança curricular.</p>
+    <p>A UNESCO, na orientação global sobre IA generativa na educação, propõe uma abordagem centrada no ser humano, que preserve agência, inclusão e finalidade pedagógica. Isto é particularmente importante porque a simples presença de IA não produz automaticamente aprendizagem profunda.</p>
+    <p>A evidência empírica recente é promissora, mas ainda desigual. Um ensaio controlado publicado em <em>Scientific Reports</em> em 2025 encontrou ganhos superiores com um tutor de IA cuidadosamente desenhado face a uma aula de aprendizagem ativa em contexto universitário específico; por outro lado, uma análise em <em>Nature Reviews Psychology</em> alerta para a necessidade de distinguir ganhos imediatos de desempenho de verdadeira aprendizagem cognitiva e metacognitiva.</p>
+    <p>A tese editorial é, portanto, deliberadamente exigente: <strong>a tecnologia deve servir uma teoria humana da educação, e não substituir a ausência dela.</strong></p>
+  </section>
+
+  <section class="fc-references" aria-labelledby="referencias">
+    <h2 id="referencias">Referências e publicações internacionais</h2>
+    <p class="fc-reference-intro">Obras de enquadramento filosófico e investigação internacional recente sobre agência, aprendizagem, professores e Inteligência Artificial na educação.</p>
+    <ol>
+      <li>
+        <a href="https://www.bloomsbury.com/us/pedagogy-of-the-oppressed-9781501314131/" target="_blank" rel="noopener noreferrer"><strong>Paulo Freire — Pedagogy of the Oppressed, 50th Anniversary Edition</strong></a>
+        <span>Bloomsbury Academic · 2018; obra original publicada em português em 1968</span>
+        <p>Referência central para a crítica à "educação bancária", para a pedagogia dialógica e para a educação entendida como prática de liberdade e consciência crítica.</p>
+      </li>
+      <li>
+        <strong>Jean Piaget — The Origins of Intelligence in Children</strong>
+        <span>International Universities Press · edição inglesa clássica, 1952</span>
+        <p>Uma das obras fundamentais do desenvolvimento cognitivo de Piaget, base da ideia de que o conhecimento é construído pela atividade do sujeito em interação com o meio.</p>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/data/tools/oecd-learning-compass-2030.html" target="_blank" rel="noopener noreferrer"><strong>The OECD Learning Compass 2030</strong></a>
+        <span>OECD · Future of Education and Skills 2030</span>
+        <p>Quadro internacional centrado em agência do aluno, bem-estar, conhecimento, competências, atitudes e valores para navegar contextos futuros e incertos.</p>
+      </li>
+      <li>
+        <a href="https://www.oecd.org/en/publications/oecd-teaching-compass_8297a24a-en.html" target="_blank" rel="noopener noreferrer"><strong>OECD Teaching Compass: Reimagining teachers as agents of curriculum changes</strong></a>
+        <span>OECD Education Policy Perspectives No. 123 · 2025</span>
+        <p>Propõe professores como agentes, co-designers da aprendizagem e profissionais capazes de liderar mudança curricular, incluindo o uso responsável de ferramentas de IA.</p>
+      </li>
+      <li>
+        <a href="https://www.unesco.org/en/articles/guidance-generative-ai-education-and-research?hub=67098" target="_blank" rel="noopener noreferrer"><strong>Guidance for Generative AI in Education and Research</strong></a>
+        <span>UNESCO · Fengchun Miao &amp; Wayne Holmes · 2023, atualização 2026</span>
+        <p>Primeira orientação global da UNESCO sobre IA generativa na educação, defendendo uma abordagem centrada no ser humano e na preservação da agência, inclusão, equidade e finalidade pedagógica.</p>
+      </li>
+      <li>
+        <a href="https://www.nature.com/articles/s41598-025-97652-6" target="_blank" rel="noopener noreferrer"><strong>AI tutoring outperforms in-class active learning: an RCT introducing a novel research-based design in an authentic educational setting</strong></a>
+        <span>Scientific Reports · 2025 · Kestin, Miller, Klales et al.</span>
+        <p>Ensaio controlado em contexto universitário que encontrou ganhos de aprendizagem superiores e em menos tempo com um tutor de IA cuidadosamente estruturado, salientando a importância do desenho pedagógico.</p>
+      </li>
+      <li>
+        <a href="https://www.nature.com/articles/s44159-025-00467-5" target="_blank" rel="noopener noreferrer"><strong>Distinguishing performance gains from learning when using generative AI</strong></a>
+        <span>Nature Reviews Psychology · 2025 · Yan, Greiff, Lodge et al.</span>
+        <p>Alerta para a distinção entre melhorar a execução de tarefas com IA e promover processamento cognitivo e metacognitivo suficientemente profundo para produzir aprendizagem duradoura.</p>
+      </li>
+      <li>
+        <a href="https://www.nature.com/articles/s41539-025-00320-7" target="_blank" rel="noopener noreferrer"><strong>A systematic review of AI-driven intelligent tutoring systems in K-12 education</strong></a>
+        <span>npj Science of Learning · 2025</span>
+        <p>Revisão sistemática de 28 estudos e 4.597 alunos; encontra resultados geralmente positivos, mas também limitações metodológicas e necessidade de investigação mais longa, diversificada e eticamente informada.</p>
+      </li>
+    </ol>
+  </section>
+
+  <footer class="fc-article-footer">
+    <p><strong>Fragmentos do Caos</strong> · Pensamento crítico, tecnologia, ciência e sociedade.</p>
+    <p class="fc-canonical">URL canónica: <a href="https://fasgoncalves.github.io/fragmentoscaos-html/2026/09/a-escola-do-futuro-aprender-a-pensar-aprender-a-ser.html">https://fasgoncalves.github.io/fragmentoscaos-html/2026/09/a-escola-do-futuro-aprender-a-pensar-aprender-a-ser.html</a></p>
+  </footer>
+</article>
+</main>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": "A Escola do Futuro: aprender a pensar, aprender a ser",
+  "description": "Uma reflexão filosófica sobre a escola do futuro a partir de Jean Piaget, Agostinho da Silva e Paulo Freire — e sobre o que muda quando a Inteligência Artificial torna a informação abundante.",
+  "image": [
+    "INSERIR_URL_DA_IMAGEM_AQUI"
+  ],
+  "datePublished": "2026-09-14T18:48:00+01:00",
+  "dateModified": "2026-09-14T18:48:00+01:00",
+  "inLanguage": "pt-PT",
+  "author": {
+    "@type": "Person",
+    "name": "Francisco Gonçalves"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Fragmentos do Caos"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://fragmentoscaos.eu/2026/09/14/a-escola-do-futuro-aprender-a-pensar-aprender-a-ser/"
+  },
+  "keywords": [
+    "educação",
+    "escola do futuro",
+    "Jean Piaget",
+    "Agostinho da Silva",
+    "Paulo Freire",
+    "Inteligência Artificial",
+    "pensamento crítico",
+    "aprendizagem",
+    "agência do aluno",
+    "filosofia da educação"
+  ]
+}
+</script>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
