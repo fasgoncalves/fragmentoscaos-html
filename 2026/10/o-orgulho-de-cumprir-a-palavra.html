@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O orgulho de cumprir a palavra</title>
+<meta name="description" content="O orgulho de cumprir a palavra">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O orgulho de cumprir a palavra</h1>
+      <p class="meta">Publicado em 2026-10-26 09:17:02</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/10/file_0000000013408211aff557e50251d8a3_09ed4e54.jpg" alt=""></figure>
+      <div class="post-content">
+        <div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+
+      <meta itemprop="headline" content="O orgulho de cumprir a palavra">
+
+      <meta itemprop="description" content="Uma crónica pessoal sobre a palavra dada, a responsabilidade profissional e o orgulho de cumprir, com uma reflexão sobre a excelência como prática quotidiana.">
+
+      <meta itemprop="datePublished" content="2026-10-26">
+
+      <meta itemprop="dateModified" content="2026-10-26">
+
+      <meta itemprop="author" content="Francisco Gonçalves">
+
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/10/file_0000000013408211aff557e50251d8a3.png">
+
+    </span>
+
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+<h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">O orgulho de cumprir a palavra</h1>
+
+<p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">O valor de uma vida profissional constrói-se na confiança que a palavra cumprida deixa nos outros.</p>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+
+<p style="margin:0; text-align:left;"><strong style="color:#d6a542;">Nota de abertura:</strong><br>Há um orgulho que amadurece com os anos: reconhecer que a confiança depositada em nós encontrou resposta no trabalho entregue. Esta é uma reflexão pessoal sobre esse compromisso e sobre a vontade de continuar a aprender e a construir.</p>
+
+</div>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">«Nós somos o que fazemos repetidamente. A excelência, então, não é um acto, mas um hábito.»</p>
+<p style="color:#cfcfcf; margin:12px 0 0 0; text-align:left;">Will Durant, ao sintetizar o pensamento de Aristóteles em The Story of Philosophy (1926). Tradução portuguesa. <a href="https://archive.org/details/THESTORYOFPHILOSOPHY1TheLivesAndOpinionswillDurant1926" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[fonte]</a></p>
+</div>
+<img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/10/file_00000000dde4820cbb4ec1c094d32696_710e8fbe.jpg">
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Quando a palavra se transforma em trabalho</h2>
+
+<p>Ao longo da minha vida profissional, a palavra dada representou sempre uma responsabilidade concreta. Quando assumia um compromisso, alguém passava a contar comigo. Essa confiança tinha consequências, e sempre entendi que me competia honrá-la. Hoje, ao olhar para o percurso feito, posso dizê-lo com orgulho: realizei aquilo que prometi e, muitas vezes, fui mais longe.</p>
+
+<p>Na informática, esta convicção encontra depressa uma prova bastante exigente. Podemos explicar um projecto com entusiasmo, desenhar uma arquitectura elegante e apresentar um calendário irrepreensível. Depois chega o momento em que alguém carrega numa tecla e espera uma resposta. Nesse instante, toda a eloquência do mundo fica dependente de uma coisa muito simples: aquilo funcionar.</p>
+
+<p>As máquinas têm esta qualidade pedagógica. Recebem com a mesma indiferença um discurso de administração e um erro de sintaxe. Um computador pode ter muitos defeitos, mas ainda não aprendeu a considerar um problema resolvido por ter sido criada uma comissão para o acompanhar.</p>
+
+<p>Por detrás dessa exigência técnica estão pessoas. Há quem precise de concluir o seu trabalho, quem tenha dados para consultar, quem dependa de um serviço para manter uma actividade. Um sistema que funciona devolve-lhes tempo e tranquilidade. Foi sempre esse o sentido que atribuí ao meu trabalho: construir alguma coisa de que outros pudessem servir-se com confiança.</p>
+
+<p>Uma promessa profissional começa, por isso, antes de ser pronunciada. Começa no estudo do problema, na avaliação dos meios disponíveis e na coragem de reconhecer aquilo que ainda é preciso aprender. A frase «tenho de analisar melhor» pode parecer pouco espectacular numa reunião. Evita, porém, muitas reuniões posteriores, quase sempre mais desagradáveis.</p>
+
+<p>Depois vem o trabalho que raramente cabe na apresentação inicial. A solução precisa de ser testada, surgem dificuldades, uma hipótese revela-se insuficiente. É preciso voltar atrás e corrigir. A responsabilidade acompanha esse caminho inteiro. A pessoa que confiou em nós deve poder perceber o que está a acontecer, incluindo os obstáculos e a forma de os ultrapassar.</p>
+
+<p>Cumprir exige esta disponibilidade para responder pelo resultado. A perfeição permanece uma ambição exigente; o trabalho concreto pede atenção e capacidade de revisão. Um erro reconhecido a tempo permite continuar a construir. Uma dificuldade escondida cresce à custa da confiança de todos.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">A excelência pratica-se</h2>
+
+<div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+<p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">«Tornamo-nos justos praticando actos justos.»</p>
+<p style="color:#cfcfcf; margin:12px 0 0 0; text-align:left;">Aristóteles, Ética a Nicómaco, Livro II, capítulo 1. Tradução portuguesa a partir de W. D. Ross. <a href="https://classics.mit.edu/Aristotle/nicomachaen.2.ii.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[fonte]</a></p>
+</div>
+
+<p>Aristóteles associa a formação do carácter ao exercício das acções e, no mesmo Livro II, sublinha que a virtude envolve conhecimento e escolha. Leio nesta ideia uma exigência que reconheço na profissão: voltar a fazer bem implica conservar o discernimento, rever procedimentos e perceber o efeito das nossas decisões. <a href="https://classics.mit.edu/Aristotle/nicomachaen.2.ii.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[1]</a></p>
+
+<p>A investigação contemporânea ajuda a compreender uma parte deste processo. Na revisão <em>Psychology of Habit</em>, Wendy Wood e Dennis Rünger descrevem como a repetição de respostas em contextos recorrentes contribui para formar hábitos. A qualidade ética do que fazemos continua a exigir uma avaliação própria; a minha leitura é que o hábito de verificar e corrigir pode ajudar a sustentar o cuidado profissional. <a href="https://www.annualreviews.org/content/journals/10.1146/annurev-psych-122414-033417" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[4]</a></p>
+
+<p>Richard Sennett oferece outra aproximação a esta experiência: o compromisso com a qualidade do trabalho e a aprendizagem do ofício. Na apresentação de <em>The Craftsman</em>, a Yale University Press inclui expressamente o programador informático entre os seus exemplos. Reconheço essa disposição no cuidado com uma solução que alguém irá utilizar depois de terminada a nossa intervenção. <a href="https://yalebooks.yale.edu/2008/03/18/sennetts-the-craftsman-in-print-blogs-and-air-waves/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[6]</a></p>
+
+<p>E há ocasiões em que se consegue ir mais longe do que o combinado. Uma melhoria torna a utilização mais simples, uma precaução evita um problema futuro, uma explicação permite a alguém ganhar autonomia. Nesses pormenores também se reconhece o cuidado de quem fez. A qualidade de um trabalho vive muito para além da lista de funções que o descreve.</p>
+
+<p>Esse cuidado precisa de condições para durar. O descanso, o respeito pelos próprios limites e uma relação justa entre quem pede e quem executa ajudam a preservar a capacidade de fazer bem. A competência merece ser respeitada, inclusive por quem a possui. Uma vida de responsabilidade também se constrói aprendendo a dar ao esforço a medida que ele pode sustentar.</p>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">O valor de reconhecer o caminho percorrido</h2>
+
+<p>Ao fim de décadas, o orgulho ganha uma forma particular. Consigo olhar para o trabalho realizado e reconhecer nele os princípios que defendo. A memória guarda o esforço de compreender e a satisfação de encontrar uma solução. Saber que a palavra dada chegou a transformar-se em alguma coisa útil permite fazer as pazes com muitas horas difíceis.</p>
+
+<p>Reconhecer esse valor em nós próprios é um exercício de honestidade. Trabalhámos, aprendemos, assumimos responsabilidades. Temos o direito de dar significado ao que fizemos. A modéstia pode conviver perfeitamente com a consciência do próprio mérito; até lhe faz bem alguma companhia.</p>
+
+<p>Quando a apresentação de uma intenção recebe o aplauso de uma obra concluída, sinto falta desta exigência elementar. Gostava que perguntássemos mais vezes o que ficou feito, quem passou a viver ou a trabalhar melhor e como se manteve aquilo que foi entregue. Estas perguntas servem uma empresa, uma instituição pública e a nossa própria consciência.</p>
+
+<p>As grandes coisas começam muitas vezes à escala de um problema concreto. Resolver bem aquilo que nos foi confiado pode ter uma importância que nunca chegaremos a conhecer por inteiro. Para quem ficou com o problema resolvido, o benefício tem um nome e uma utilidade. Essa dimensão basta para justificar o cuidado.</p>
+
+<p>É também por isso que faço questão de falar no presente. A experiência acumulada continua disponível para novas perguntas. A curiosidade ainda me leva a aprender e a procurar soluções. O passado dá profundidade ao que faço hoje, enquanto cada novo compromisso volta a pedir trabalho e atenção.</p>
+
+<p>Tenho orgulho no que fui e no que ainda sou. Esse orgulho acompanha-me quando me sento diante de um problema e começo a procurar uma maneira de o resolver. Ainda há muito para aprender e coisas úteis para construir. <strong>A palavra que dou continua a levar o meu nome.</strong></p>
+
+<div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+
+<h3 style="color:#d6a542; margin-top:0; text-align:left;">A EXCELÊNCIA E AS SUAS FONTES</h3>
+
+<ul style="padding-left:22px; margin:0;">
+
+<li>A formulação sobre a excelência como hábito pertence a Will Durant, numa síntese da ética aristotélica.</li>
+
+<li>Aristóteles relaciona o carácter com a prática das acções e com a escolha consciente, no Livro II da <em>Ética a Nicómaco</em>.</li>
+
+<li>O trabalho de Richard Sennett estende a ideia de artífice a profissões como a programação informática.</li>
+
+</ul>
+
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+
+<div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+
+<p style="text-align:left;">Esta crónica preserva integralmente o testemunho pessoal de Francisco Gonçalves sobre a responsabilidade profissional e a palavra dada. O seu ponto de partida é a coerência entre o compromisso assumido e o resultado entregue, bem como o direito de reconhecer com orgulho um percurso de trabalho exigente.</p>
+
+<p style="text-align:left;">Por rigor de atribuição, a frase «Nós somos o que fazemos repetidamente. A excelência, então, não é um acto, mas um hábito» é apresentada como uma formulação de Will Durant, em <em>The Story of Philosophy</em>, obra originalmente publicada em 1926. É uma síntese do pensamento de Aristóteles, frequentemente divulgada como se fosse uma citação literal do filósofo grego. A segunda citação corresponde a uma passagem do Livro II, capítulo 1, da <em>Ética a Nicómaco</em>, em tradução portuguesa a partir da versão de W. D. Ross. <a href="https://blogs.umb.edu/quoteunquote/2012/05/08/its-a-much-more-effective-quotation-to-attribute-it-to-aristotle-rather-than-to-will-durant/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[3]</a></p>
+
+<p style="text-align:left; margin-bottom:0;">As referências internacionais enquadram a reflexão em três planos: a formação do carácter na filosofia, o estudo dos hábitos na psicologia e a aprendizagem do trabalho bem feito. A ligação destes contributos à experiência profissional constitui uma interpretação ensaística. A exigência que atravessa o texto mantém-se aberta ao futuro, em cada novo problema que merece atenção e em cada pessoa que volta a confiar.</p>
+
+</div>
+
+<h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+
+<ul style="padding-left:22px;">
+
+<li><a href="https://classics.mit.edu/Aristotle/nicomachaen.2.ii.html" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[1] Aristóteles — Ética a Nicómaco, Livro II, capítulos 1 e 4</a><br>Texto primário, em tradução inglesa de W. D. Ross, disponibilizado pelo Internet Classics Archive do MIT. A formação do carácter pela prática e a importância da escolha consciente.</li>
+
+<li><a href="https://archive.org/details/THESTORYOFPHILOSOPHY1TheLivesAndOpinionswillDurant1926" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[2] Will Durant — The Story of Philosophy, capítulo II, secção VII, Ethics and the Nature of Happiness</a><br>Obra originalmente publicada em 1926; exemplar digital de uma reedição disponível no Internet Archive. Origem da formulação sobre a excelência como hábito.</li>
+
+<li><a href="https://blogs.umb.edu/quoteunquote/2012/05/08/its-a-much-more-effective-quotation-to-attribute-it-to-aristotle-rather-than-to-will-durant/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[3] Frank Herron — It's a MUCH More Effective Quotation to Attribute It to Aristotle, Rather than to Will Durant</a><br>Publicação de 8 de Maio de 2012, alojada na University of Massachusetts Boston, que documenta a atribuição da frase a Durant e a sua relação com Aristóteles.</li>
+
+<li><a href="https://www.annualreviews.org/content/journals/10.1146/annurev-psych-122414-033417" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[4] Wendy Wood e Dennis Rünger — Psychology of Habit</a><br>Annual Review of Psychology, volume 67, 2016, pp. 289–314. Revisão científica sobre a formação de hábitos pela repetição de respostas em contextos recorrentes. DOI: 10.1146/annurev-psych-122414-033417.</li>
+
+<li><a href="https://www.theguardian.com/books/2008/feb/02/featuresreviews.guardianreview14" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[5] Richard Sennett — Labours of love</a><br>The Guardian, 2 de Fevereiro de 2008. Ensaio do próprio autor sobre o compromisso com a qualidade, a aprendizagem e o respeito por si próprio que pode nascer do trabalho bem feito.</li>
+
+<li><a href="https://yalebooks.yale.edu/2008/03/18/sennetts-the-craftsman-in-print-blogs-and-air-waves/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">[6] Yale University Press — Sennett's The Craftsman in print, blogs, and air waves</a><br>Apresentação editorial de 18 de Março de 2008 da obra The Craftsman, incluindo o programador informático entre os exemplos contemporâneos do trabalho de artífice.</li>
+
+</ul>
+
+<div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+
+<p style="color:#cfcfcf; text-align:left;"><strong style="color:#d6a542;">Francisco Gonçalves</strong><br>Fragmentos do Caos<br>FC-Chronic-News</p>
+
+</div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
