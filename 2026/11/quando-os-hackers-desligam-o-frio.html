@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quando os hackers desligam o frio: a irresponsabilidade tecnológica que ameaça os supermercados europeus</title>
+<meta name="description" content="Quando os hackers desligam o frio: a irresponsabilidade tecnológica que ameaça os supermercados europeus">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Quando os hackers desligam o frio: a irresponsabilidade tecnológica que ameaça os supermercados europeus</h1>
+      <p class="meta">Publicado em 2026-11-03 11:00:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/11/file_00000000e0508210bdcd72491271b368_e5ad39a4.jpg" alt=""></figure>
+      <div class="post-content">
+        <style>.fc-news{font-family:system-ui,Arial,sans-serif;line-height:1.8;color:#202b36;max-width:850px;margin:auto}.fc-news h2{color:#173b56;margin-top:2em}.fc-news .lead{font-size:1.18em}.fc-news .note{border-left:4px solid #b58a44;padding:15px 20px;background:#f6f5f1}.fc-news figure{margin:28px 0;padding:18px;background:#f3f6f8;border-radius:12px}.fc-news figcaption{font-size:.85em;color:#52606c;margin-top:12px}.fc-news .barrow{display:grid;grid-template-columns:125px 1fr 50px;gap:10px;align-items:center;margin:10px 0;font-size:.9em}.fc-news .bar{height:22px;background:#dce7ef;border-radius:4px;overflow:hidden}.fc-news .fill{height:100%;background:#28658a}.fc-news .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}.fc-news .node{border:2px solid #57778b;border-radius:7px;padding:12px;text-align:center;background:white;min-width:115px;flex:1}.fc-news .safe{border-color:#2e8065}.fc-news .danger{border-color:#bc654b}.fc-news .arrow{font-weight:bold;color:#8b5e39}.fc-news a{overflow-wrap:anywhere}.fc-news .small{font-size:.85em;color:#5b6770}.fc-news blockquote{border-left:4px solid #28658a;margin:26px 0;padding:8px 20px;font-size:1.15em;font-weight:600}</style><article class="fc-news"><p class="lead">A Europa descobriu que um ataque informático já não precisa de roubar dados ou bloquear computadores para causar prejuízos. Basta alterar a temperatura de uma arca frigorífica. E quando centenas de estabelecimentos dependem de sistemas remotos vulneráveis, a modernização transforma-se numa fragilidade coletiva.</p>
+<h2>O dia em que o frio deixou de ser garantido</h2>
+<p>Em outubro de 2026, centenas de estabelecimentos franceses viram equipamentos de refrigeração sobreaquecer, com perdas de mercadoria. No início de novembro, novas perturbações atingiram supermercados e outros operadores alimentares em vários países europeus. Portugal não ficou de fora: o grupo Mosqueteiros confirmou incidentes em sete lojas Intermarché, aparentemente relacionados com um prestador externo de gestão da refrigeração.</p>
+<p>As notícias referem manipulação remota de temperaturas, descongelação e inutilização de produtos. Há indícios de sistemas antigos e controladores expostos à Internet, mas a cadeia exata de intrusão e a identidade dos responsáveis não estão estabelecidas para todos os incidentes. Não é legítimo transformar suspeitas em certezas.</p>
+<h2>Um retrato da dimensão — sem confundir números com certezas</h2>
+<p>O gráfico seguinte representa <strong>contagens comunicadas para algumas cadeias na vaga de novembro</strong>, não um inventário europeu completo. Os números podem ter sido atualizados posteriormente e não devem ser somados como total definitivo.</p>
+<figure role="img" aria-label="Gráfico de barras com lojas afetadas reportadas: Delhaize cerca de 40, Carrefour Bélgica 15, SuperValu Irlanda 13, Intermarché Portugal 7 e Spar Colruyt Bélgica cerca de 5."><strong>Lojas afetadas comunicadas — exemplos, novembro de 2026</strong><div class="barrow"><span>Delhaize*</span><div class="bar"><div class="fill" style="width:100%"></div></div><b>~40</b></div><div class="barrow"><span>Carrefour BE</span><div class="bar"><div class="fill" style="width:37.5%"></div></div><b>15</b></div><div class="barrow"><span>SuperValu IE</span><div class="bar"><div class="fill" style="width:32.5%"></div></div><b>13</b></div><div class="barrow"><span>Intermarché PT</span><div class="bar"><div class="fill" style="width:17.5%"></div></div><b>7</b></div><div class="barrow"><span>Spar Colruyt BE</span><div class="bar"><div class="fill" style="width:12.5%"></div></div><b>~5</b></div><figcaption>Valores aproximados e comunicados em momentos diferentes; *Delhaize inclui lojas na Bélgica e no Luxemburgo. Fontes: BleepingComputer (2/11/2026) e AFP (3/11/2026). Não representa perdas financeiras nem incidência relativa por cadeia.</figcaption></figure>
+<h2>A porta que nunca deveria ter ficado aberta</h2>
+<p>Uma rede de supermercado não é apenas uma rede informática. É também uma instalação industrial: compressores, sensores, controladores, alarmes, câmaras de conservação e cadeias de frio. A gestão remota tem vantagens reais — manutenção mais rápida, telemetria e eficiência energética — mas cada ligação cria uma dependência que precisa de ser governada.</p>
+<p>Quando o mesmo percurso de acesso remoto permite observar temperaturas e alterar parâmetros críticos sem barreiras adequadas, o problema deixa de ser apenas de informática. Passa a ser de segurança operacional e alimentar.</p>
+<figure><strong>Diagrama 1 — Cadeia de exposição possível (ilustrativa, não reconstrução forense)</strong><div class="flow"><div class="node danger">Acesso remoto vulnerável</div><span class="arrow">→</span><div class="node danger">Controlador exposto</div><span class="arrow">→</span><div class="node danger">Parâmetros alterados</div><span class="arrow">→</span><div class="node danger">Quebra da cadeia de frio</div></div><figcaption>O desenho mostra um cenário plausível de risco; não atribui este percurso técnico a todos os ataques noticiados.</figcaption></figure>
+<h2>Modernizar não pode significar abolir a autonomia</h2>
+<p>Há um erro de engenharia particularmente perigoso: retirar autonomia a um sistema físico para o tornar dependente de serviços centrais, ligações permanentes ou fornecedores externos. Se um servidor, uma credencial ou uma interface exposta conseguem comprometer simultaneamente dezenas de instalações, criámos um ponto único de falha em escala industrial.</p>
+<p>Uma infraestrutura robusta deve admitir que a intrusão é possível e, ainda assim, limitar o dano. Os controladores locais devem impor limites físicos de operação e as proteções de segurança devem ser independentes dos canais de administração remota. Um alerta de temperatura não deve depender exclusivamente da mesma plataforma que pode ser atacada.</p>
+<figure><strong>Diagrama 2 — Arquitetura de contenção recomendada</strong><div class="flow"><div class="node">Internet / fornecedor</div><span class="arrow">→</span><div class="node safe">Acesso autenticado e temporário</div><span class="arrow">→</span><div class="node safe">Zona intermédia / firewall</div><span class="arrow">→</span><div class="node safe">Rede OT segmentada</div></div><div class="flow" style="margin-top:12px"><div class="node safe">Controlador local com limites seguros</div><div class="node safe">Sensor e alarme independentes</div><div class="node safe">Operação local e resposta humana</div></div><figcaption>Defesa em profundidade: separar redes, controlar acessos e preservar proteção física independente. Base conceptual: NIST SP 800-82 Rev. 3 e recomendações CISA para ICS.</figcaption></figure>
+<h2>O que deveria mudar amanhã de manhã</h2>
+<ol><li><strong>Inventariar:</strong> identificar todos os controladores, versões de firmware, ligações móveis, contas de manutenção e fornecedores com acesso.</li><li><strong>Eliminar exposição direta:</strong> nenhum controlador de refrigeração deve ficar acessível indiscriminadamente pela Internet; usar ligações mediadas e políticas de negação por defeito.</li><li><strong>Separar IT de OT:</strong> segmentação, firewalls industriais, zonas intermédias e permissões estritamente necessárias.</li><li><strong>Proteger credenciais:</strong> eliminar palavras-passe de fábrica, exigir autenticação multifator nos acessos remotos e registar sessões.</li><li><strong>Atualizar com segurança:</strong> aplicar correções e substituir equipamentos sem suporte, após validação em ambiente apropriado para não interromper a refrigeração.</li><li><strong>Impor limites locais:</strong> interbloqueios e proteções que impeçam comandos perigosos; testar os modos de funcionamento degradado.</li><li><strong>Medir por via independente:</strong> sensores, alertas e escalonamento humano fora do mesmo domínio de falha.</li><li><strong>Ensaiar incidentes:</strong> simular perda de conectividade, manipulação de parâmetros e indisponibilidade do fornecedor; testar resposta e reposição.</li></ol>
+<h2>A conta económica da imprevidência</h2>
+<p>Os custos não se resumem à mercadoria perdida: incluem interrupções, transporte, reposição, horas extraordinárias, investigação, perda de confiança e eventual responsabilidade contratual. Não existe, contudo, um valor único e verificado para todos os incidentes europeus, e seria incorreto inventá-lo.</p>
+<blockquote>Uma boa arquitetura de segurança não promete que ninguém entra. Garante que uma entrada indevida não se transforma facilmente numa catástrofe.</blockquote>
+<p>É este o ponto essencial: a segurança não pode ser um acessório comprado depois de instalar o sistema. Tem de fazer parte da arquitetura desde a primeira linha do projeto. Quando a poupança imediata vence a engenharia responsável, a fatura aparece mais tarde — e, desta vez, pode chegar numa arca frigorífica cheia de alimentos inutilizados.</p>
+<h2>Nota editorial</h2><aside class="note"><p>Esta crónica é uma análise crítica de engenharia e política de segurança, publicada em 3 de novembro de 2026. Distingue factos comunicados, hipóteses técnicas e recomendações. Não atribui responsabilidades criminais ou negligência específica sem investigação concluída. Os gráficos são esquemáticos e utilizam números públicos aproximados, não auditorias independentes.</p></aside>
+<h2>Referências internacionais</h2><ol>
+<li><a href="https://www.afp.com/pt/node/3850765">AFP, 3/11/2026 — Fridge cyberattack hits supermarkets across Europe</a>.</li>
+<li><a href="https://www.lemonde.fr/en/economy/article/2026/10/13/a-disastrous-day-for-french-supermarkets-after-massive-cyberattack-targets-refrigeration-systems_6758535_19.html">Le Monde, 13/10/2026 — A disastrous day for French supermarkets</a>.</li>
+<li><a href="https://www.bleepingcomputer.com/news/security/hackers-disrupt-refrigeration-systems-at-european-supermarkets/">BleepingComputer, 2/11/2026 — Hackers disrupt refrigeration systems</a>.</li>
+<li><a href="https://www.reuters.com/world/europe/european-supermarkets-rush-patch-vulnerabilities-after-region-wide-fridge-hack-2026-11-03/">Reuters, 3/11/2026 — European supermarkets rush to patch vulnerabilities</a>.</li>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/82/r3/final">NIST — Guide to Operational Technology Security, SP 800-82 Rev. 3</a>.</li>
+<li><a href="https://www.cisa.gov/sites/default/files/publications/Cybersecurity_Best_Practices_for_Industrial_Control_Systems.pdf">CISA — Cybersecurity Best Practices for Industrial Control Systems</a>.</li>
+<li><a href="https://www.enisa.europa.eu/publications/enisa-threat-landscape-2025">ENISA — Threat Landscape 2025</a>.</li></ol><p class="small">Fragmentos do Caos · Crónica de tecnologia e sociedade · 3 de novembro de 2026</p>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+</article>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
