@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Escola do Conhece-te a Ti Próprio</title>
+<meta name="description" content="A Escola do Conhece-te a Ti Próprio">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">A Escola do Conhece-te a Ti Próprio</h1>
+      <p class="meta">Publicado em 2026-11-07 10:02:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/11/file_000000005acc8243adfc71d7eae0d739_3e9e6af1.jpg" alt=""></figure>
+      <div class="post-content">
+        <!--
+FC-CHRONIC-NEWS
+Título: A Escola do Conhece-te a Ti Próprio
+Autor: Francisco António dos Santos Gonçalves
+Publicação: Fragmentos do Caos
+Data editorial: 2026-08-12
+Idioma: Português de Portugal, grafia anterior ao AO90
+-->
+
+<div style="background:#0b0b0b; color:#e8eef4; font-family:Georgia, 'Times New Roman', serif; line-height:2.2; padding:10px; text-align:left;">
+
+  <div style="display:none;">
+    <span itemscope itemtype="https://schema.org/NewsArticle">
+      <meta itemprop="headline" content="A Escola do Conhece-te a Ti Próprio">
+      <meta itemprop="description" content="Uma crónica sobre a necessidade de uma democracia madura incluir na educação a metacognição, o pensamento crítico, a literacia mediática e o conhecimento dos próprios mecanismos mentais.">
+      <meta itemprop="datePublished" content="2026-08-12">
+      <meta itemprop="dateModified" content="2026-08-12">
+      <meta itemprop="author" content="Francisco António dos Santos Gonçalves">
+      <meta itemprop="publisher" content="Fragmentos do Caos">
+      <meta itemprop="image" content="http://www.fragmentoscaos.eu/wp-content/uploads/2026/11/file_000000005acc8243adfc71d7eae0d739.png">
+    </span>
+  </div>
+
+  <div style="max-width:900px; margin:auto; padding:10px;">
+
+    <h1 style="color:#d6a542; text-align:center; font-size:2.2em; line-height:1.4; margin-bottom:20px;">
+      A Escola do Conhece-te a Ti Próprio
+    </h1>
+
+    <p style="text-align:center; color:#cfcfcf; font-size:1.1em; font-style:italic; margin-bottom:35px;">
+      Antes de ensinar o homem a compreender o mundo, talvez devêssemos ensiná-lo a compreender o instrumento com que o interpreta: a própria mente.
+    </p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:18px 22px; margin:30px 0; color:#f2f2f2;">
+      <p style="margin:0; text-align:left;">
+        <strong style="color:#d6a542;">Nota de abertura:</strong><br>
+        Uma democracia não se torna adulta apenas porque possui eleições, instituições e cidadãos escolarizados. Torna-se mais resistente quando forma pessoas capazes de observar o próprio pensamento, reconhecer os seus limites e distinguir convicção de evidência.
+      </p>
+    </div>
+
+    <p>Há uma estranha contradição no modo como educamos os seres humanos.</p>
+
+    <p>Passamos anos a ensinar-lhes o mundo.</p>
+
+    <p>Mostramos-lhes continentes, equações, átomos, impérios, funções, poemas, algoritmos e leis da física. Ensinamo-los a medir distâncias entre estrelas, a calcular probabilidades, a interpretar textos, a programar máquinas.</p>
+
+    <p>Mas quase nunca lhes ensinamos a conhecer o instrumento através do qual irão interpretar tudo isso.</p>
+
+    <p>A própria mente.</p>
+
+    <p>E talvez seja essa uma das maiores falhas das democracias modernas.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A disciplina esquecida</h2>
+
+    <p>Há mais de dois mil anos, uma máxima atravessou a filosofia ocidental:</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Conhece-te a ti próprio.
+      </p>
+    </div>
+
+    <p>A frase parece simples.</p>
+
+    <p>Não é.</p>
+
+    <p>Conhecer-se implica reconhecer medos, desejos, impulsos, vaidades, preconceitos, necessidades de pertença, automatismos emocionais e aquela extraordinária capacidade humana para transformar convicções frágeis em certezas absolutas.</p>
+
+    <p>É precisamente por isso que conhecer-se é difícil.</p>
+
+    <p>É muito mais confortável analisar os erros dos outros.</p>
+
+    <p>O cérebro humano possui uma habilidade quase artística para descobrir irracionalidade no vizinho e uma cegueira igualmente notável perante a sua própria.</p>
+
+    <p>E, no entanto, uma democracia depende exactamente de indivíduos capazes de pensar sobre aquilo que pensam.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A democracia começa dentro da cabeça</h2>
+
+    <p>Costumamos ensinar que democracia significa eleições, separação de poderes, liberdade de expressão, Constituição e direitos fundamentais.</p>
+
+    <p>Tudo verdadeiro.</p>
+
+    <p>Mas incompleto.</p>
+
+    <p>Porque nenhuma instituição democrática funciona plenamente se os cidadãos forem facilmente manipuláveis pelo medo, pela propaganda, pelo tribalismo ou pela necessidade de pertencer ao grupo.</p>
+
+    <p>Uma urna não transforma automaticamente um impulso emocional numa decisão racional.</p>
+
+    <p>Um boletim de voto não contém nenhum mecanismo secreto capaz de neutralizar preconceitos.</p>
+
+    <p>A democracia pressupõe uma coisa de que raramente falamos:</p>
+
+    <p><strong>uma determinada qualidade cognitiva do cidadão.</strong></p>
+
+    <p>Não exige génios.</p>
+
+    <p>Exige pessoas capazes de duvidar.</p>
+
+    <p>Capazes de ouvir.</p>
+
+    <p>Capazes de distinguir factos de opiniões.</p>
+
+    <p>Capazes de reconhecer quando não sabem.</p>
+
+    <p>Capazes, sobretudo, de mudar de posição quando a evidência muda.</p>
+
+    <p>E isso não nasce espontaneamente aos dezoito anos, juntamente com o direito de voto.</p>
+
+    <p>Tem de ser aprendido.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Ensinar a pensar sobre o pensamento</h2>
+
+    <p>Talvez uma escola verdadeiramente moderna devesse possuir uma área central dedicada àquilo que poderíamos chamar educação da consciência.</p>
+
+    <p>Não seria psicoterapia escolar.</p>
+
+    <p>Nem doutrinação moral.</p>
+
+    <p>Seria aprendizagem sobre o funcionamento da própria mente.</p>
+
+    <p>Uma criança deveria descobrir cedo que a memória não é uma gravação perfeita.</p>
+
+    <p>Que a percepção pode enganar.</p>
+
+    <p>Que emoções alteram julgamentos.</p>
+
+    <p>Que grupos exercem pressão.</p>
+
+    <p>Que repetir uma afirmação muitas vezes não a torna verdadeira.</p>
+
+    <p>Que tendemos a procurar informações que confirmam aquilo em que já acreditamos.</p>
+
+    <p>Que podemos confundir confiança com competência.</p>
+
+    <p>Que uma multidão pode estar errada.</p>
+
+    <p>E que estar sozinho não significa necessariamente estar certo, para não transformarmos pensamento crítico numa variante adolescente de narcisismo. A humanidade já tem fornecimento suficiente desse produto.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A pergunta mais importante</h2>
+
+    <p>Imagine-se uma escola onde, perante uma opinião forte, o professor não perguntasse apenas:</p>
+
+    <p>"Qual é a resposta?"</p>
+
+    <p>Mas:</p>
+
+    <p><strong>"Como chegaste a essa conclusão?"</strong></p>
+
+    <p>Depois:</p>
+
+    <p>"Que evidência utilizaste?"</p>
+
+    <p>"O que poderia demonstrar que estás errado?"</p>
+
+    <p>"Consegues explicar a posição contrária sem a caricaturar?"</p>
+
+    <p>"Estás a defender uma ideia ou a defender a tua identidade?"</p>
+
+    <p>Aqui começaria uma educação realmente revolucionária.</p>
+
+    <p>Porque o aluno deixaria de aprender apenas conteúdos.</p>
+
+    <p>Começaria a estudar o próprio processo de construção das suas certezas.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">A liberdade interior</h2>
+
+    <p>Falamos muito de liberdade política.</p>
+
+    <p>Devemos fazê-lo.</p>
+
+    <p>Mas existe outra liberdade menos visível.</p>
+
+    <p>A liberdade perante os próprios automatismos.</p>
+
+    <p>Um homem pode viver num país democrático, votar livremente, publicar aquilo que quiser e, ainda assim, permanecer intelectualmente prisioneiro do medo, da propaganda ou do grupo a que pertence.</p>
+
+    <p>Pode acreditar que decidiu autonomamente quando apenas repetiu aquilo que ouviu centenas de vezes.</p>
+
+    <p>Pode chamar convicção àquilo que é conformismo.</p>
+
+    <p>Pode chamar pensamento ao eco.</p>
+
+    <p>Por isso, talvez exista uma condição anterior à verdadeira liberdade democrática:</p>
+
+    <p><strong>algum grau de liberdade interior.</strong></p>
+
+    <p>A capacidade de interromper o impulso e perguntar:</p>
+
+    <p>"Porque estou a pensar isto?"</p>
+
+    <p>Esse pequeno intervalo entre estímulo e resposta talvez seja um dos territórios mais importantes da civilização.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O cidadão antes do eleitor</h2>
+
+    <p>Temos dedicado enorme esforço a formar trabalhadores.</p>
+
+    <p>Engenheiros.</p>
+
+    <p>Médicos.</p>
+
+    <p>Advogados.</p>
+
+    <p>Economistas.</p>
+
+    <p>Programadores.</p>
+
+    <p>Gestores.</p>
+
+    <p>Mas uma democracia precisa também de formar cidadãos.</p>
+
+    <p>E um cidadão não é apenas alguém que conhece os seus direitos.</p>
+
+    <p>É alguém capaz de exercer julgamento.</p>
+
+    <p>A escola deveria, portanto, preparar o indivíduo não apenas para conseguir emprego, mas para participar intelectualmente numa sociedade complexa.</p>
+
+    <p>Deveria ensinar argumentação.</p>
+
+    <p>Pensamento probabilístico.</p>
+
+    <p>Literacia científica.</p>
+
+    <p>Literacia mediática.</p>
+
+    <p>Reconhecimento de manipulação.</p>
+
+    <p>Compreensão básica das emoções.</p>
+
+    <p>Técnicas de debate.</p>
+
+    <p>Distinção entre correlação e causalidade.</p>
+
+    <p>Reconhecimento de falácias.</p>
+
+    <p>Capacidade de dizer:</p>
+
+    <p><strong>"Não sei."</strong></p>
+
+    <p>Duas palavras extraordinariamente sofisticadas, apesar da pouca popularidade pública que conquistaram.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Redes sociais: a aula que chegou tarde</h2>
+
+    <p>Nunca esta educação foi tão necessária.</p>
+
+    <p>Durante grande parte da história, a desinformação propagava-se à velocidade da voz, do papel ou da rádio.</p>
+
+    <p>Hoje move-se à velocidade de um dedo.</p>
+
+    <p>Cada cidadão transporta no bolso uma máquina capaz de lhe fornecer permanentemente informação seleccionada para capturar atenção.</p>
+
+    <p>Indignação.</p>
+
+    <p>Medo.</p>
+
+    <p>Escândalo.</p>
+
+    <p>Confirmação.</p>
+
+    <p>Pertencimento.</p>
+
+    <p>O cérebro humano não evoluiu para lidar com milhares de estímulos sociais por dia produzidos por sistemas optimizados para maximizar envolvimento.</p>
+
+    <p>Entregámos uma tecnologia extraordinariamente sofisticada a uma arquitectura emocional muito mais antiga.</p>
+
+    <p>Depois observamos as consequências com ar surpreendido.</p>
+
+    <p>Talvez devêssemos ter incluído o manual de instruções.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Não ensinar no que acreditar</h2>
+
+    <p>Aqui existe, porém, um risco enorme.</p>
+
+    <p>Uma disciplina destinada ao pensamento crítico pode tornar-se precisamente o contrário se o Estado decidir utilizá-la para transmitir uma visão oficial do mundo.</p>
+
+    <p>Seria uma fraude.</p>
+
+    <p>O objectivo não pode ser ensinar às crianças <strong>aquilo em que devem acreditar</strong>.</p>
+
+    <p>Tem de ser ensinar-lhes <strong>como avaliar aquilo em que acreditam</strong>.</p>
+
+    <p>Uma escola democrática não fabrica consenso.</p>
+
+    <p>Fabrica independência intelectual.</p>
+
+    <p>Não entrega conclusões políticas.</p>
+
+    <p>Entrega instrumentos.</p>
+
+    <p>Não ensina quem tem razão.</p>
+
+    <p>Ensina como procurar razões.</p>
+
+    <p>Esta distinção é absolutamente fundamental.</p>
+
+    <p>Caso contrário, a disciplina da liberdade transformar-se-ia rapidamente na disciplina da conformidade, o que seria uma proeza burocrática perfeitamente compatível com a história humana.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">O espelho antes da janela</h2>
+
+    <p>Talvez devêssemos reorganizar simbolicamente a própria ideia de educação.</p>
+
+    <p>Primeiro o espelho.</p>
+
+    <p>Depois a janela.</p>
+
+    <p>Antes de perguntar "Como funciona o mundo?", aprender também a perguntar:</p>
+
+    <p>"Como funciona aquele que está a observar o mundo?"</p>
+
+    <p>Porque nunca vemos a realidade de forma completamente neutra.</p>
+
+    <p>Levamos connosco história, emoções, expectativas, cultura, identidade e memória.</p>
+
+    <p>Conhecer esses filtros não os elimina.</p>
+
+    <p>Mas torna-os visíveis.</p>
+
+    <p>E aquilo que conseguimos observar em nós próprios deixa de nos controlar inteiramente às escondidas.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Uma nova educação para uma nova espécie</h2>
+
+    <p>O grande desafio do século XXI talvez não seja produzir mais informação.</p>
+
+    <p>Já temos informação em excesso.</p>
+
+    <p>Nem sequer produzir mais inteligência.</p>
+
+    <p>Estamos a começar a fabricá-la artificialmente.</p>
+
+    <p>O desafio poderá ser formar seres humanos capazes de utilizar inteligência, humana ou artificial, com discernimento.</p>
+
+    <p>Pessoas intelectualmente autónomas.</p>
+
+    <p>Emocionalmente conscientes.</p>
+
+    <p>Capazes de cooperar sem obedecer cegamente.</p>
+
+    <p>Capazes de discordar sem odiar.</p>
+
+    <p>Capazes de viver com incerteza.</p>
+
+    <p>Capazes de reconhecer manipulação.</p>
+
+    <p>Capazes de corrigir-se.</p>
+
+    <p>Talvez este seja o verdadeiro salto educativo de que necessitamos.</p>
+
+    <p>Não uma escola que produza apenas indivíduos mais instruídos.</p>
+
+    <p>Uma escola que ajude a produzir indivíduos mais conscientes.</p>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Conhece-te a ti próprio</h2>
+
+    <p>A antiga máxima regressa então com uma força inesperadamente moderna.</p>
+
+    <div style="border-left:4px solid #d6a542; background:#151515; padding:20px 24px; margin:35px 0; color:#f2f2f2;">
+      <p style="font-size:1.15em; font-style:italic; margin:0; text-align:left;">
+        Conhece-te a ti próprio.
+      </p>
+    </div>
+
+    <p>Antes de tentares compreender o mundo.</p>
+
+    <p>Antes de tentares governar os outros.</p>
+
+    <p>Antes de tentares convencer uma sociedade.</p>
+
+    <p>Antes até de teres absoluta certeza acerca daquilo que pensas.</p>
+
+    <p>Talvez uma democracia verdadeiramente evoluída devesse colocar esta frase à entrada das escolas.</p>
+
+    <p>Não numa placa decorativa.</p>
+
+    <p>Não como homenagem arqueológica à filosofia grega.</p>
+
+    <p>Mas como princípio educativo.</p>
+
+    <p>Porque talvez o cidadão livre não seja apenas aquele que pode dizer aquilo que pensa.</p>
+
+    <p>Talvez seja, sobretudo, aquele que aprendeu a perguntar:</p>
+
+    <p><strong>porque penso aquilo que penso?</strong></p>
+
+    <p>Quando uma sociedade conseguir ensinar seriamente essa pergunta às suas crianças, talvez tenha começado finalmente a formar algo mais ambicioso do que trabalhadores, consumidores e eleitores.</p>
+
+    <p>Talvez tenha começado a formar seres humanos capazes de governar-se a si próprios.</p>
+
+    <p>E talvez seja precisamente aí que começa a democracia adulta.</p>
+
+    <div style="border:1px solid #333; background:#111; padding:20px; margin:35px 0;">
+      <h3 style="color:#d6a542; margin-top:0; text-align:left;">O QUE A INVESTIGAÇÃO PERMITE DEFENDER</h3>
+      <ul style="padding-left:22px; margin:0;">
+        <li>A metacognição envolve monitorizar e regular os próprios processos cognitivos e desempenha um papel relevante na aprendizagem.</li>
+        <li>A aprendizagem auto-regulada integra dimensões cognitivas, metacognitivas, motivacionais, comportamentais e emocionais.</li>
+        <li>Há evidência acumulada de que intervenções educativas podem melhorar competências e disposições de pensamento crítico.</li>
+        <li>Maior deliberação analítica está associada, em vários estudos, a melhor discernimento perante informação falsa.</li>
+        <li>Intervenções de literacia mediática e de inoculação psicológica podem aumentar a resistência a técnicas comuns de desinformação.</li>
+        <li>Confiança subjectiva elevada não garante precisão de julgamento, uma razão adicional para ensinar dúvida, verificação e revisão de crenças.</li>
+      </ul>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:50px;">Nota Editorial</h2>
+
+    <div style="background:#151515; border-left:4px solid #d6a542; padding:24px 28px; margin:25px 0 40px 0; color:#f2f2f2;">
+      <p style="text-align:left;">
+        Esta crónica apresenta uma proposta filosófica e cívica: integrar de forma estruturada no percurso educativo o conhecimento dos próprios processos mentais, o pensamento crítico, a auto-regulação e a literacia mediática. Não pretende reduzir a democracia a uma questão psicológica, nem defender que exista um modelo estatal de «pensamento correcto».
+      </p>
+      <p style="text-align:left;">
+        Pelo contrário, o princípio essencial é o da independência intelectual. Ensinar metacognição não significa ensinar ao aluno em que deve acreditar; significa fornecer-lhe instrumentos para observar como aprende, como julga, onde pode enganar-se e como pode rever uma conclusão perante melhor evidência. A investigação educacional e cognitiva oferece suporte empírico para vários destes mecanismos e para a possibilidade de os treinar.
+      </p>
+      <p style="text-align:left;">
+        Também importa evitar uma promessa excessiva: nenhuma disciplina abolirá preconceitos, tribalismo, manipulação ou irracionalidade. A formação para o pensamento crítico melhora competências; não produz cidadãos infalíveis. E a própria investigação sobre desinformação mostra que intervenções aparentemente intuitivas podem ter efeitos limitados ou inesperados quando aplicadas fora do contexto adequado.
+      </p>
+      <p style="text-align:left; margin-bottom:0;">
+        A tese editorial é, portanto, mais modesta e ao mesmo tempo mais ambiciosa: uma democracia que pretende cidadãos livres deveria considerar insuficiente ensinar apenas conhecimentos sobre o mundo. Deve também criar oportunidades para que cada pessoa aprenda a interrogar o mecanismo com que conhece esse mundo. O velho «conhece-te a ti próprio» pode assim deixar de ser apenas uma herança filosófica e tornar-se uma competência moderna de cidadania.
+      </p>
+    </div>
+
+    <h2 style="color:#d6a542; text-align:left; margin-top:40px;">Referências credíveis</h2>
+
+    <ul style="padding-left:22px;">
+      <li style="margin-bottom:12px;">
+        <a href="https://journals.sagepub.com/doi/10.3102/0034654314551063" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Review of Educational Research — Abrami et al. (2015), Strategies for Teaching Students to Think Critically: A Meta-Analysis
+        </a>
+      </li>
+      <li style="margin-bottom:12px;">
+        <a href="https://www.nature.com/articles/s41539-021-00089-5" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          npj Science of Learning — Fleur, Bredeweg &amp; van den Bos (2021), Metacognition: ideas and insights from neuro
+        </a>
+      </li>
+      <li style="margin-bottom:12px;">
+        <a href="https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2017.00422/full" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Frontiers in Psychology — Panadero (2017), A Review of Self-regulated Learning: Six Models and Four Directions for Research
+        </a>
+      </li>
+      <li style="margin-bottom:12px;">
+        <a href="https://pubmed.ncbi.nlm.nih.gov/29935897/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Cognition / PubMed — Pennycook &amp; Rand (2019), Lazy, not biased: Susceptibility to partisan fake news is better explained by lack of reasoning than by motivated reasoning
+        </a>
+      </li>
+      <li style="margin-bottom:12px;">
+        <a href="https://pubmed.ncbi.nlm.nih.gov/31916834/" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Journal of Experimental Psychology: General / PubMed — Bago, Rand &amp; Pennycook (2020), Fake news, fast and slow: Deliberation reduces belief in false (but not true) news headlines
+        </a>
+      </li>
+      <li style="margin-bottom:12px;">
+        <a href="https://www.pnas.org/doi/10.1073/pnas.1920498117" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          PNAS — Guess et al. (2020), A digital media literacy intervention increases discernment between mainstream and false news in the United States and India
+        </a>
+      </li>
+      <li style="margin-bottom:12px;">
+        <a href="https://www.science.org/doi/10.1126/sciadv.abo6254" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          Science Advances — Roozenbeek et al. (2022), Psychological inoculation improves resilience against misinformation on social media
+        </a>
+      </li>
+      <li style="margin-bottom:12px;">
+        <a href="https://www.pnas.org/doi/10.1073/pnas.2409329121" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          PNAS — Sultan et al. (2024), Susceptibility to online misinformation: A systematic meta-analysis
+        </a>
+      </li>
+      <li style="margin-bottom:12px;">
+        <a href="https://www.pnas.org/doi/10.1073/pnas.2019527118" target="_blank" rel="noopener noreferrer" style="color:#ffcc66;">
+          PNAS — Lyons et al. (2021), Overconfidence in news judgments is associated with false news susceptibility
+        </a>
+      </li>
+    </ul>
+
+    <div style="margin-top:45px; padding-top:25px; border-top:1px solid #333;">
+      <p style="color:#cfcfcf; text-align:left;">
+        <strong style="color:#d6a542;">Francisco António dos Santos Gonçalves</strong><br>
+        Fragmentos do Caos<br>
+        FC-Chronic-News
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
