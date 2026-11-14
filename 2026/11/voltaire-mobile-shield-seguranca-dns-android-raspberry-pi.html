@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voltaire Mobile Shield: um escudo DNS inteligente para proteger os Androids da rede doméstica</title>
+<meta name="description" content="Voltaire Mobile Shield: um escudo DNS inteligente para proteger os Androids da rede doméstica">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Voltaire Mobile Shield: um escudo DNS inteligente para proteger os Androids da rede doméstica</h1>
+      <p class="meta">Publicado em 2026-11-12 19:03:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/11/file_000000003c70820abb8a4ec59571faf6_0af361ee.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- FC-Chronic-News Canonical v1.0 | Artigo técnico | estilos exclusivamente inline -->
+<article class="fc-chronic-news fc-chronic-news--canonical" itemscope itemtype="https://schema.org/NewsArticle" lang="pt-PT" style="font-family:Georgia,'Times New Roman',serif;color:#ececec;background:#101a24;max-width:980px;margin:0 auto;padding:clamp(20px,4vw,48px);border:1px solid #344452;border-radius:14px;box-sizing:border-box;">
+<meta itemprop="headline" content="Voltaire Mobile Shield: um escudo DNS inteligente para proteger os Androids da rede doméstica"/>
+<meta itemprop="description" content="O Voltaire Mobile Shield combina filtragem DNS selectiva, inteligência de ameaças, actualizações com reversão e monitorização NiceGUI. Um caso prático de engenharia defensiva, com 263 249 domínios distintos na configuração testada e uma versão autónoma preparada para Raspberry Pi."/>
+<meta itemprop="datePublished" content="2026-11-12T19:03:00+00:00"/>
+<meta itemprop="dateModified" content="2026-11-12T19:03:00+00:00"/>
+<meta itemprop="inLanguage" content="pt-PT"/>
+<meta itemprop="articleSection" content="Tecnologia e Cibersegurança"/>
+<div itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Francisco Gonçalves"/></div>
+<div itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="Fragmentos do Caos"/></div>
+<header style="background:linear-gradient(135deg,#182838,#0f1925);border:1px solid #425366;border-radius:12px;padding:26px 25px;margin-bottom:28px;">
+<p style="color:#f2c66d;font-size:12px;letter-spacing:2px;text-transform:uppercase;margin:0 0 13px;font-family:Arial,sans-serif;font-weight:700;">FC · CHRONIC NEWS / CANONICAL · ENGENHARIA &amp; CIBERSEGURANÇA</p>
+<h2 itemprop="name" style="font-size:clamp(29px,4vw,43px);line-height:1.2;letter-spacing:-0.6px;color:#ffdf95;margin:0 0 18px 0;">Voltaire Mobile Shield: um escudo DNS inteligente para proteger os Androids da rede doméstica</h2>
+<p style="font-size:19px;line-height:1.65;color:#dbe7ef;margin:0 0 17px 0;">Como construímos um sistema modular de defesa DNS com dnsmasq, Threat Intelligence, Quad9 e um centro de controlo NiceGUI — e por que razão a arquitectura importa mais do que a dimensão do hardware.</p>
+<p style="font-family:Arial,sans-serif;font-size:13px;color:#a8b9c7;margin:0;">12 de Novembro de 2026 · Francisco Gonçalves · Fragmentos do Caos</p>
+</header>
+<aside style="margin:25px 0;padding:18px 22px;border-left:4px solid #f2c66d;background:#17212b;border-radius:0 10px 10px 0;"><p style="font-size:16px;font-weight:700;color:#f2c66d;margin:0 0 9px;">NOTA DE ABERTURA</p><p style="font-size:15px;line-height:1.75;color:#dfe5eb;margin:0;">Este artigo documenta uma implementação real e os resultados observados em 12 de Novembro de 2026. Não é publicidade, nem uma promessa de invulnerabilidade: descreve a arquitectura, as decisões de engenharia, os testes e as limitações de uma solução de defesa DNS. Os endereços privados apresentados pertencem ao contexto técnico do ensaio e não são endereços públicos.</p></aside>
+<div style="margin:24px 0 29px;background:#152431;border:1px solid #48606e;border-radius:12px;padding:21px 23px;">
+<p style="font-family:Arial,sans-serif;color:#f2c66d;font-size:12px;letter-spacing:1.5px;font-weight:700;margin:0 0 12px;">FICHA DE FACTOS · INSTALAÇÃO VALIDADA</p>
+<p style="font-family:Arial,sans-serif;font-size:14px;color:#dce8ed;line-height:1.6;margin:5px 0;"><strong style="color:#ffdf95;">Solução:</strong> Voltaire Mobile Shield 3.0 + Dashboard NiceGUI 1.0 (hotfix 1.0.1)</p>
+<p style="font-family:Arial,sans-serif;font-size:14px;color:#dce8ed;line-height:1.6;margin:5px 0;"><strong style="color:#ffdf95;">Motor DNS:</strong> dnsmasq dedicado em 192.168.10.19:53</p>
+<p style="font-family:Arial,sans-serif;font-size:14px;color:#dce8ed;line-height:1.6;margin:5px 0;"><strong style="color:#ffdf95;">Inteligência local:</strong> Phishing Army + HaGeZi TIF Mini</p>
+<p style="font-family:Arial,sans-serif;font-size:14px;color:#dce8ed;line-height:1.6;margin:5px 0;"><strong style="color:#ffdf95;">Resolução externa:</strong> Quad9 (9.9.9.9 / 149.112.112.112)</p>
+<p style="font-family:Arial,sans-serif;font-size:14px;color:#dce8ed;line-height:1.6;margin:5px 0;"><strong style="color:#ffdf95;">Domínios distintos na versão testada:</strong> 263 249</p>
+<p style="font-family:Arial,sans-serif;font-size:14px;color:#dce8ed;line-height:1.6;margin:5px 0;"><strong style="color:#ffdf95;">Observabilidade:</strong> NiceGUI + journald + SQLite (retenção aplicacional de 7 dias)</p>
+<p style="font-family:Arial,sans-serif;font-size:14px;color:#dce8ed;line-height:1.6;margin:5px 0;"><strong style="color:#ffdf95;">Nova plataforma:</strong> Raspberry Pi Edition 1.0 preparada; instalação ARM ainda por validar</p>
+</div>
+<h3 style="font-family:Georgia,serif;font-size:26px;line-height:1.34;color:#f2c66d;margin:37px 0 15px 0;font-weight:700;">1. O problema: os telemóveis são computadores — e os ataques começam frequentemente por um nome</h3>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">Um smartphone é hoje um terminal bancário, um arquivo de correspondência, uma carteira digital e uma plataforma de autenticação. A maior parte das aplicações comunica com serviços remotos através de nomes de domínio. Antes de estabelecer muitas dessas ligações, o sistema precisa de transformar um nome legível num endereço IP: é essa a função do <em>Domain Name System</em> (DNS).</p>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">Se um domínio está associado a phishing, distribuição de malware ou infra-estruturas de comando e controlo, bloquear a sua resolução pode impedir determinadas ligações antes de o tráfego chegar ao destino. É uma camada de prevenção simples, mas útil. Não substitui o sistema de segurança do Android, nem garante que uma ameaça desconhecida seja detectada.</p>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">O ponto de partida do projecto foi rigoroso: <strong style="color:#ffdf95;">proteger apenas os smartphones da casa</strong>, sem alterar o DNS normal do servidor, as máquinas virtuais, o WordPress ou a rede de câmaras IP. O desafio era, por isso, menos «instalar uma lista negra» e mais desenhar um serviço autónomo, controlável e reversível.</p>
+<h3 style="font-family:Georgia,serif;font-size:26px;line-height:1.34;color:#f2c66d;margin:37px 0 15px 0;font-weight:700;">2. Uma decisão de arquitectura: separar para não perturbar</h3>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">O servidor Ubuntu Voltaire já prestava vários serviços. Em vez de aplicar bloqueios globalmente à resolução DNS, foi configurado um segundo endereço de serviço no mesmo segmento de rede. O DNS original manteve-se em <code>192.168.10.18</code>; a instância protegida passou a escutar em <code>192.168.10.19:53</code>.</p>
+<pre style="background:#09131b;border:1px solid #334454;border-radius:10px;padding:16px 18px;margin:15px 0 25px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6;font-size:13px;color:#bcf4dc;font-family:Consolas,Monaco,monospace;"><code>TELEMÓVEIS ANDROID (clientes autorizados)
+                 |
+                 v
+       DNS dedicado: 192.168.10.19
+           dnsmasq / Shield 3.0
+              |          |
+              |          +--&gt; domínio nas listas --&gt; 0.0.0.0 / ::
+              |
+              +--&gt; domínio permitido --&gt; Quad9 --&gt; resposta DNS
+
+COMPUTADORES / SERVIÇOS DO VOLTAIRE
+                 |
+                 v
+       DNS normal: 192.168.10.18
+       (sem as listas locais do Shield)</code></pre>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">A independência das duas instâncias evita efeitos colaterais difíceis de diagnosticar. O UFW limita o acesso ao DNS protegido aos IPs autorizados; os telemóveis que devem ser protegidos apontam explicitamente para esse resolvedor. O isolamento por IP do cliente é uma política de acesso e não uma imposição universal de DNS: dispositivos ou aplicações que escolham outro caminho poderão contornar a filtragem.</p>
+<aside style="margin:25px 0;padding:18px 22px;border-left:4px solid #9bdac3;background:#17212b;border-radius:0 10px 10px 0;"><p style="font-size:16px;font-weight:700;color:#9bdac3;margin:0 0 9px;">DECISÃO CRÍTICA</p><p style="font-size:15px;line-height:1.75;color:#dfe5eb;margin:0;">O Mobile Shield não efectua alterações automáticas ao DHCP do router, ao Netplan, à ponte das câmaras ou à configuração de outros servidores. A protecção é selectiva e a transição para um novo equipamento pode ser feita por dispositivo.</p></aside>
+<h3 style="font-family:Georgia,serif;font-size:26px;line-height:1.34;color:#f2c66d;margin:37px 0 15px 0;font-weight:700;">3. A inteligência de ameaças: combinar fontes sem somar ilusões</h3>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">A versão 2.4.2 continha uma lista focada em phishing. Na versão 3.0, o motor conserva a <a href="https://phishing.army/downloads/" target="_blank" rel="noopener noreferrer" style="color:#9ed6ff;text-decoration:underline;text-underline-offset:3px;">Phishing Army</a> e acrescenta a <a href="https://github.com/hagezi/dns-blocklists" target="_blank" rel="noopener noreferrer" style="color:#9ed6ff;text-decoration:underline;text-underline-offset:3px;">HaGeZi Threat Intelligence Feeds — Mini</a>. Esta última procura cobrir domínios relacionados com malware, fraude, phishing, cryptojacking e infra-estruturas maliciosas. O resolvedor externo escolhido é o <a href="https://docs.quad9.net/services/" target="_blank" rel="noopener noreferrer" style="color:#9ed6ff;text-decoration:underline;text-underline-offset:3px;">Quad9 Secure</a>, que também aplica políticas de bloqueio de ameaças conhecidas.</p>
+<div style="overflow-x:auto;margin:18px 0 28px;"><table style="width:100%;border-collapse:collapse;font-size:15px;line-height:1.6;color:#e6edf3;">
+<thead><tr><th scope="col" style="background:#243340;color:#f2c66d;text-align:left;padding:12px;border:1px solid #42505e;">Fonte / conjunto</th><th scope="col" style="background:#243340;color:#f2c66d;text-align:left;padding:12px;border:1px solid #42505e;">Entradas reportadas na execução de 12/11/2026</th></tr></thead>
+<tbody>
+<tr><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;">Phishing Army</td><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;">142 968 domínios</td></tr>
+<tr><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;">HaGeZi TIF Mini</td><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;">185 987 domínios</td></tr>
+<tr><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;">União após normalização e remoção de duplicados</td><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;"><strong style="color:#ffffff;font-weight:700;">263 249 domínios distintos</strong></td></tr>
+</tbody></table></div>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">Os dois feeds partilhavam, naquela execução, <strong>65 706 domínios</strong>. A contagem correcta não é, portanto, a soma aritmética das listas. Também não deve ser interpretada como «263 mil ataques impedidos»: representa nomes sujeitos a política de filtragem, não incidentes de segurança observados.</p>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">A selecção privilegia fontes orientadas para ameaças. Não foram acrescentadas, por defeito, listas agressivas de publicidade e rastreamento. Essa contenção ajuda a reduzir falsos positivos e interrupções em aplicações legítimas, como redes sociais, serviços de autenticação ou plataformas de trabalho.</p>
+<h3 style="font-family:Georgia,serif;font-size:26px;line-height:1.34;color:#f2c66d;margin:37px 0 15px 0;font-weight:700;">4. O mecanismo: bloquear A e AAAA sem inspeccionar comunicações</h3>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">O gestor normaliza os domínios, verifica a integridade básica dos feeds, gera regras locais do <code>dnsmasq</code> e aplica-as de modo controlado. A sintaxe de bloqueio usada é <code>address=/dominio/#</code>, compatível com a versão do dnsmasq utilizada no Voltaire: as consultas A recebem <code>0.0.0.0</code> e as AAAA recebem <code>::</code>. O <a href="https://dnsmasq.org/docs/dnsmasq-man.html" target="_blank" rel="noopener noreferrer" style="color:#9ed6ff;text-decoration:underline;text-underline-offset:3px;">manual oficial do dnsmasq</a> documenta o comportamento dos endereços locais e do registo de consultas.</p>
+<pre style="background:#09131b;border:1px solid #334454;border-radius:10px;padding:16px 18px;margin:15px 0 25px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6;font-size:13px;color:#bcf4dc;font-family:Consolas,Monaco,monospace;"><code>address=/dominio-malicioso.example/#
+
+# Comportamento pretendido:
+# A    -&gt; 0.0.0.0
+# AAAA -&gt; ::</code></pre>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">Os domínios permitidos são enviados ao Quad9 através de DNS convencional, segundo a configuração actual. Este processo não faz inspecção TLS, não examina ficheiros descarregados e não lê o conteúdo das páginas HTTPS. A defesa actua sobre a resolução do nome, não sobre todos os pacotes do dispositivo.</p>
+<h3 style="font-family:Georgia,serif;font-size:26px;line-height:1.34;color:#f2c66d;margin:37px 0 15px 0;font-weight:700;">5. Robustez operacional: actualizar, testar e, se necessário, recuar</h3>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">Um filtro DNS que arranque mal pode interromper o acesso à Internet. Por isso, a actualização não consiste simplesmente em substituir um ficheiro e esperar pelo melhor. O processo de instalação e actualização do Shield 3.0 incorpora várias salvaguardas:</p>
+<ul style="padding-left:25px;margin:12px 0 24px 0;">
+<li style="font-size:16px;line-height:1.8;color:#e8e8e8;margin:9px 0;"><strong>Pré-visualização:</strong> descarregamento e validação das fontes sem alterar as regras activas.</li>
+<li style="font-size:16px;line-height:1.8;color:#e8e8e8;margin:9px 0;"><strong>Normalização e deduplicação:</strong> rejeição de entradas inválidas e geração de um conjunto consistente.</li>
+<li style="font-size:16px;line-height:1.8;color:#e8e8e8;margin:9px 0;"><strong>Substituição atómica:</strong> preparação de novo ficheiro de regras e troca controlada.</li>
+<li style="font-size:16px;line-height:1.8;color:#e8e8e8;margin:9px 0;"><strong>Validação de sintaxe:</strong> execução do teste do dnsmasq antes da aceitação da nova configuração.</li>
+<li style="font-size:16px;line-height:1.8;color:#e8e8e8;margin:9px 0;"><strong>Testes DNS após aplicação:</strong> bloqueio A/AAAA e resolução normal de um domínio legítimo.</li>
+<li style="font-size:16px;line-height:1.8;color:#e8e8e8;margin:9px 0;"><strong>Reversão:</strong> tentativa de reposição da lista anterior quando uma etapa falha, com sinalização explícita se a recuperação também falhar.</li>
+<li style="font-size:16px;line-height:1.8;color:#e8e8e8;margin:9px 0;"><strong>Agendamento:</strong> actualizações automáticas através de uma unidade <code>systemd timer</code>.</li>
+</ul>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">O serviço protegido pode ser reiniciado sem reiniciar o DNS principal nem os restantes componentes do Voltaire. Essa fronteira de falha, deliberadamente estreita, é uma das características mais importantes da solução.</p>
+<h3 style="font-family:Georgia,serif;font-size:26px;line-height:1.34;color:#f2c66d;margin:37px 0 15px 0;font-weight:700;">6. A prova experimental: tráfego real, não apenas um serviço «activo»</h3>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">Na sessão de validação, primeiro foi confirmada a resolução distinta dos dois DNS. Depois, com um Android a utilizar a instância protegida, o <code>tcpdump</code> registou consultas A e AAAA dirigidas a <code>192.168.10.19</code>. O teste de bloqueio do domínio <code>amiprotected.it</code>, presente na lista nessa data, produziu as respostas esperadas:</p>
+<pre style="background:#09131b;border:1px solid #334454;border-radius:10px;padding:16px 18px;margin:15px 0 25px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6;font-size:13px;color:#bcf4dc;font-family:Consolas,Monaco,monospace;"><code>$ dig @192.168.10.19 amiprotected.it A +short
+0.0.0.0
+
+$ dig @192.168.10.19 amiprotected.it AAAA +short
+::
+
+$ dig @192.168.10.19 linkedin.com A +short
+130.211.32.14
+
+$ systemctl is-active voltaire-mobile-shield-android
+active</code></pre>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">A captura real mostrou ainda o pedido do telemóvel e a resposta de bloqueio do Shield na mesma transacção DNS. O resultado demonstra que <strong>aquele cliente usou o DNS filtrado e recebeu o bloqueio esperado</strong>. Não demonstra que toda a actividade futura do Android seja forçada a passar pelo mesmo caminho.</p>
+<aside style="margin:25px 0;padding:18px 22px;border-left:4px solid #f2c66d;background:#17212b;border-radius:0 10px 10px 0;"><p style="font-size:16px;font-weight:700;color:#f2c66d;margin:0 0 9px;">INTERPRETAÇÃO CORRECTA DOS TESTES</p><p style="font-size:15px;line-height:1.75;color:#dfe5eb;margin:0;">Receber <code>0.0.0.0</code> e <code>::</code> prova o bloqueio de respostas IPv4/IPv6 emitidas pelo resolvedor testado. Não prova, isoladamente, que consultas efectuadas através de DNS-over-HTTPS, DNS privado, outro servidor IPv6 ou dados móveis tenham sido bloqueadas.</p></aside>
+<h3 style="font-family:Georgia,serif;font-size:26px;line-height:1.34;color:#f2c66d;margin:37px 0 15px 0;font-weight:700;">7. NiceGUI: um centro de controlo que não compromete o DNS</h3>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">A segunda fase do projecto acrescentou um <em>Dashboard</em> em Python e <a href="https://nicegui.io/documentation" target="_blank" rel="noopener noreferrer" style="color:#9ed6ff;text-decoration:underline;text-underline-offset:3px;">NiceGUI</a>. A interface apresenta o estado do serviço DNS, fontes e contagens, actualizações, histórico de consultas, bloqueios observados, clientes e gestão de excepções. A recolha usa <code>log-queries=extra</code> do dnsmasq e correlação por identificador de transacção para não confundir uma consulta com várias linhas de registo.</p>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">Os dados de observabilidade são guardados localmente em SQLite, com retenção aplicacional de sete dias. O <code>journald</code> conserva os seus próprios registos segundo a política do sistema — um pormenor importante para quem procura gerir a privacidade e o espaço em disco. Uma consulta DNS bloqueada é um evento técnico, não uma prova de que alguém tentou atacar o utilizador.</p>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">Para reduzir a superfície de ataque, o dashboard escuta apenas em <code>127.0.0.1:8097</code>, exige autenticação e recomenda acesso através de túnel SSH. A versão corrigida utiliza um auxiliar de operações restritas por <em>socket Unix</em>, em vez de tentar escalar privilégios directamente dentro do processo web. Um erro no dashboard não deve derrubar a resolução DNS dos Androids.</p>
+<pre style="background:#09131b;border:1px solid #334454;border-radius:10px;padding:16px 18px;margin:15px 0 25px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6;font-size:13px;color:#bcf4dc;font-family:Consolas,Monaco,monospace;"><code># Exemplo de acesso remoto privado ao dashboard
+ssh -N -L 18097:127.0.0.1:8097 utilizador@servidor-voltaire
+
+# Abrir no navegador local:
+http://127.0.0.1:18097</code></pre>
+<h3 style="font-family:Georgia,serif;font-size:26px;line-height:1.34;color:#f2c66d;margin:37px 0 15px 0;font-weight:700;">8. Excepções e falsos positivos: segurança sem sacrificar a utilização</h3>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">Nenhuma lista de ameaças é infalível. Serviços legítimos podem aparecer indevidamente numa fonte, ou uma aplicação pode depender de subdomínios que partilham infra-estrutura com conteúdos suspeitos. O Shield permite manter uma <em>allowlist</em> e aplicá-la através do gestor, com validação posterior.</p>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">A regra operacional é simples: libertar apenas o domínio estritamente necessário, depois de confirmar que se trata de um falso positivo. Uma excepção local também não garante que o Quad9 autorize o mesmo domínio: a política do resolvedor externo é independente. A depuração não se faz apagando o escudo inteiro à primeira dificuldade.</p>
+<h3 style="font-family:Georgia,serif;font-size:26px;line-height:1.34;color:#f2c66d;margin:37px 0 15px 0;font-weight:700;">9. Raspberry Pi Edition: a segurança passa a ter uma máquina própria</h3>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">O passo seguinte consiste em separar fisicamente a função DNS, instalando-a num Raspberry Pi com Ubuntu 20.04. Foi preparado um pacote autónomo com dnsmasq, gestor de feeds, timer, dashboard NiceGUI, telemetria e utilitários de diagnóstico e desinstalação. A edição para Raspberry utiliza uma versão do NiceGUI compatível com o Python 3.8 normalmente fornecido pelo Ubuntu 20.04; o pacote distingue arquitecturas ARM e verifica conflitos na porta 53 antes de instalar.</p>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">À data deste artigo, <strong>a edição Raspberry Pi estava preparada e sujeita a testes locais de código, mas ainda não tinha sido instalada e validada em hardware ARM real</strong>. A migração planeada é faseada: instalar, testar os bloqueios no Pi, transferir os DNS dos smartphones e só depois desligar a instância protegida no Voltaire. O DNS normal permanece intacto.</p>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">O Ubuntu 20.04 já ultrapassou o seu período de suporte standard. Para uma implementação permanente, deve utilizar-se suporte de segurança alargado ou planear a actualização do sistema operativo. Um equipamento de segurança com software desactualizado seria uma contradição pouco elegante.</p>
+<h3 style="font-family:Georgia,serif;font-size:26px;line-height:1.34;color:#f2c66d;margin:37px 0 15px 0;font-weight:700;">10. O que o Mobile Shield não faz — e por que razão importa dizê-lo</h3>
+<div style="overflow-x:auto;margin:18px 0 28px;"><table style="width:100%;border-collapse:collapse;font-size:15px;line-height:1.6;color:#e6edf3;">
+<thead><tr><th scope="col" style="background:#243340;color:#f2c66d;text-align:left;padding:12px;border:1px solid #42505e;">Protege ou observa</th><th scope="col" style="background:#243340;color:#f2c66d;text-align:left;padding:12px;border:1px solid #42505e;">Não assegura por si só</th></tr></thead>
+<tbody>
+<tr><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;">Bloqueio DNS de domínios presentes nas fontes locais</td><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;">Análise de ficheiros, aplicações ou conteúdos HTTPS</td></tr>
+<tr><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;">Bloqueio adicional de domínios conhecidos pelo Quad9</td><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;">Detecção de ameaças inéditas ou de todos os ataques de ransomware</td></tr>
+<tr><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;">Respostas A/AAAA locais filtradas</td><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;">Obrigar clientes a usar o DNS local em vez de DoH/DoT ou DNS IPv6 alternativo</td></tr>
+<tr><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;">Registos de consultas e de bloqueios observados</td><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;">Provar infecção, tentativa de ataque ou identidade do utilizador apenas pelo DNS</td></tr>
+<tr><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;">Restrições UFW aos clientes autorizados</td><td style="vertical-align:top;border:1px solid #35434f;padding:11px 12px;">Bloquear automaticamente ligações directas a endereços IP</td></tr>
+</tbody></table></div>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">O Android continua a precisar de actualizações, autenticação multifactor, permissões bem geridas, cuidados com aplicações instaladas e protecção contra engenharia social. O Shield é uma camada complementar no modelo de <em>defesa em profundidade</em>, não um substituto para todas as outras.</p>
+<h3 style="font-family:Georgia,serif;font-size:26px;line-height:1.34;color:#f2c66d;margin:37px 0 15px 0;font-weight:700;">11. O verdadeiro produto: uma arquitectura pequena, independente e verificável</h3>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">O projecto cresceu por evolução incremental: uma instância DNS selectiva, a expansão das fontes de ameaça, a automatização com rollback, a observabilidade NiceGUI e, por fim, a distribuição para Raspberry Pi. Cada incremento teve testes concretos e critérios de reversão. Houve também correcções necessárias no arranque da interface e na separação de privilégios — precisamente o género de problemas que uma engenharia honesta deve documentar, e não esconder.</p>
+<p style="font-size:17px;line-height:1.88;color:#e8e8e8;margin:0 0 19px 0;">O interesse do Voltaire Mobile Shield não está em competir com grandes plataformas comerciais de cibersegurança. Está em mostrar que Linux, Python, software livre e boas decisões de isolamento podem produzir um componente de protecção transparente, auditável e adaptável a uma rede doméstica ou a um pequeno laboratório.</p>
+<div style="margin:33px 0;padding:22px 24px;border:1px solid #866e42;background:#1a2833;border-radius:12px;">
+<p style="font-family:Arial,sans-serif;letter-spacing:1.5px;color:#f2c66d;font-size:12px;margin:0 0 12px;font-weight:700;">EPÍLOGO</p>
+<p style="font-size:21px;line-height:1.65;color:#f7ead1;margin:0;">Na cibersegurança, não é a grandiosidade do equipamento que inspira confiança. É a clareza das fronteiras, a qualidade das verificações e a capacidade de recuperar quando alguma coisa falha. O futuro da defesa digital também se constrói em pequenos sistemas que sabemos compreender.</p>
+</div>
+<h3 id="referencias" style="font-family:Georgia,serif;font-size:26px;line-height:1.34;color:#f2c66d;margin:37px 0 15px 0;font-weight:700;">Referências técnicas e documentação</h3>
+<ol style="padding-left:25px;margin:10px 0 25px;">
+<li style="font-size:16px;line-height:1.8;color:#e8e8e8;margin:9px 0;"><a href="https://dnsmasq.org/docs/dnsmasq-man.html" target="_blank" rel="noopener noreferrer" style="color:#9ed6ff;text-decoration:underline;text-underline-offset:3px;">dnsmasq — manual oficial</a> <span style="color:#b9c5ce;">— Directivas de filtragem local, encaminhamento e log-queries=extra.</span></li>
+<li style="font-size:16px;line-height:1.8;color:#e8e8e8;margin:9px 0;"><a href="https://phishing.army/downloads/" target="_blank" rel="noopener noreferrer" style="color:#9ed6ff;text-decoration:underline;text-underline-offset:3px;">Phishing Army — downloads oficiais</a> <span style="color:#b9c5ce;">— Lista de domínios e formatos de distribuição para filtros DNS.</span></li>
+<li style="font-size:16px;line-height:1.8;color:#e8e8e8;margin:9px 0;"><a href="https://github.com/hagezi/dns-blocklists" target="_blank" rel="noopener noreferrer" style="color:#9ed6ff;text-decoration:underline;text-underline-offset:3px;">HaGeZi — DNS Blocklists</a> <span style="color:#b9c5ce;">— Threat Intelligence Feeds e variantes Mini.</span></li>
+<li style="font-size:16px;line-height:1.8;color:#e8e8e8;margin:9px 0;"><a href="https://docs.quad9.net/services/" target="_blank" rel="noopener noreferrer" style="color:#9ed6ff;text-decoration:underline;text-underline-offset:3px;">Quad9 — endereços e serviços</a> <span style="color:#b9c5ce;">— Resolvedores Secure, DNS tradicional, DoT e DoH.</span></li>
+<li style="font-size:16px;line-height:1.8;color:#e8e8e8;margin:9px 0;"><a href="https://www.quad9.org/service/threat-blocking/" target="_blank" rel="noopener noreferrer" style="color:#9ed6ff;text-decoration:underline;text-underline-offset:3px;">Quad9 — Threat Blocking</a> <span style="color:#b9c5ce;">— Modelo de protecção por inteligência de domínios maliciosos.</span></li>
+<li style="font-size:16px;line-height:1.8;color:#e8e8e8;margin:9px 0;"><a href="https://nicegui.io/documentation" target="_blank" rel="noopener noreferrer" style="color:#9ed6ff;text-decoration:underline;text-underline-offset:3px;">NiceGUI — documentação</a> <span style="color:#b9c5ce;">— Interface web e dashboards em Python.</span></li>
+<li style="font-size:16px;line-height:1.8;color:#e8e8e8;margin:9px 0;"><a href="https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html" target="_blank" rel="noopener noreferrer" style="color:#9ed6ff;text-decoration:underline;text-underline-offset:3px;">systemd — documentação</a> <span style="color:#b9c5ce;">— Agendamento de tarefas por timers.</span></li>
+<li style="font-size:16px;line-height:1.8;color:#e8e8e8;margin:9px 0;"><a href="https://ubuntu.com/about/release-cycle" target="_blank" rel="noopener noreferrer" style="color:#9ed6ff;text-decoration:underline;text-underline-offset:3px;">Ubuntu — ciclo de suporte</a> <span style="color:#b9c5ce;">— Períodos de manutenção das versões Ubuntu LTS.</span></li>
+</ol>
+<aside style="margin:25px 0;padding:18px 22px;border-left:4px solid #9ed6ff;background:#17212b;border-radius:0 10px 10px 0;"><p style="font-size:16px;font-weight:700;color:#9ed6ff;margin:0 0 9px;">NOTA EDITORIAL E METODOLÓGICA</p><p style="font-size:15px;line-height:1.75;color:#dfe5eb;margin:0;">Texto técnico elaborado para o Fragmentos do Caos com base na implementação e nos ensaios operacionais do Voltaire realizados em 12 de Novembro de 2026, complementados pela documentação pública dos projectos referenciados. A contagem de 263 249 domínios corresponde a uma execução específica e altera-se com os feeds. Os resultados apresentados são testes funcionais de DNS, não uma avaliação independente da eficácia global contra malware. Autoria: Francisco Gonçalves. Apoio de redacção e sistematização técnica: Augustus Veritas (assistência de IA).</p></aside>
+<footer style="border-top:1px solid #435261;padding-top:22px;margin-top:28px;">
+<p style="font-size:17px;font-weight:700;color:#ffdf95;margin:0 0 7px;">Francisco Gonçalves</p>
+<p style="font-family:Arial,sans-serif;font-size:13px;color:#aebec9;margin:0 0 8px;">Crónica tecnológica · Fragmentos do Caos · 12 de Novembro de 2026</p>
+<p style="font-family:Arial,sans-serif;font-size:12px;color:#91a3b3;margin:0;">Formato editorial: FC-Chronic-News Canonical v1.0 · Categoria: Tecnologia / Cibersegurança · Grafia PT-PT pré-AO90</p>
+</footer>
+</article>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O País dos Irresponsáveis</title>
+<meta name="description" content="O País dos Irresponsáveis">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">O País dos Irresponsáveis</h1>
+      <p class="meta">Publicado em 2026-11-13 10:55:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/11/file_000000005bb48210b5d6da4a0b1c9fe3_f9de997b.jpg" alt=""></figure>
+      <div class="post-content">
+        <article class="fc-chronic-news canonical" lang="pt-PT" itemscope itemtype="https://schema.org/NewsArticle" style="box-sizing:border-box;max-width:900px;margin:0 auto;padding:34px 26px 40px;background:#101822;color:#ece7dd;border:1px solid #2b3744;border-radius:10px;font-family:Georgia,'Times New Roman',serif;">
+<header style="border-bottom:1px solid #3f4851;padding-bottom:29px;margin-bottom:32px;">
+<p style="font:700 11px/1.4 Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#d9b56d;margin:0 0 13px;">FRAGMENTOS DO CAOS · FC-CHRONIC-NEWS · CANONICAL</p>
+<h1 itemprop="headline" style="font-size:42px;line-height:1.16;color:#f1cd82;margin:0 0 14px;font-weight:700;">O País dos Irresponsáveis</h1>
+<p itemprop="description" style="font-size:21px;line-height:1.52;color:#cfd8d9;margin:0 0 17px;font-style:italic;">Crónica de uma república onde as contas chegam aos cidadãos e a culpa se perde nos corredores do poder</p>
+<p style="font:13px/1.65 Arial,sans-serif;color:#aab6bf;margin:0;">12 de Novembro de 2026 &nbsp;·&nbsp; Crónica &nbsp;·&nbsp; <span itemprop="author" itemscope itemtype="https://schema.org/Person"><span itemprop="name">Augustus Veritas</span></span></p>
+</header>
+<aside style="padding:22px 24px;margin:0 0 34px;border-left:4px solid #d7ae61;background:#1a2631;">
+<p style="margin:0;color:#f4e4c2;font-size:20px;line-height:1.62;font-style:italic;">«Quando a factura é pública, a responsabilidade costuma tornar-se privada — tão privada que ninguém consegue encontrá-la.»</p>
+</aside>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Portugal descobriu, nas últimas décadas, uma extraordinária inovação administrativa: a <strong>responsabilidade sem responsável</strong>. É uma espécie de energia renovável da política nacional. Produz-se em abundância, distribui-se por toda a parte e, no momento de identificar quem a gerou, desaparece sem deixar rasto.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Há responsáveis pelas finanças, responsáveis pela economia, responsáveis pela supervisão, responsáveis pelos bancos, responsáveis pela fiscalização dos responsáveis. Mas, quando a factura chega, o único nome que se lê com nitidez é o do contribuinte.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">É um país prodigioso. Nele, os erros são colectivos, os cargos são individuais e os prejuízos são hereditários.</p>
+<h2 style="font-family:Georgia,'Times New Roman',serif;font-size:25px;line-height:1.35;color:#e6bf72;margin:44px 0 18px;font-weight:700;">I. A bancarrota que não foi bancarrota</h2>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Em Abril de 2011, Portugal pediu assistência financeira externa. O programa acordado com a União Europeia e o Fundo Monetário Internacional envolvia <strong>78 mil milhões de euros</strong> de financiamento. Não se tratou, juridicamente, de uma declaração de falência do Estado; foi uma crise de financiamento soberano, suficientemente grave para entregar parte substancial da política económica à disciplina de um programa de ajustamento.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Convém também não confundir esses 78 mil milhões com dinheiro simplesmente desaparecido: eram, sobretudo, empréstimos a reembolsar. A precisão não torna a experiência menos amarga. O crédito chegou com condições; as condições chegaram aos salários, aos impostos, às pensões e às empresas; e as empresas, em muitos casos, já nem tinham emprego para oferecer.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">O país descobriu então que uma crise podia ter origens internacionais, antecedentes nacionais, responsabilidades repartidas por vários governos e, apesar disso, uma execução notavelmente personalizada: a do cidadão a quem se pedia mais sacrifício. <em>De preferência com patriotismo. E sem reclamar demasiado.</em></p>
+<h2 style="font-family:Georgia,'Times New Roman',serif;font-size:25px;line-height:1.35;color:#e6bf72;margin:44px 0 18px;font-weight:700;">II. O reformado como reserva estratégica do Orçamento</h2>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Quando se tornou necessário encontrar dinheiro, alguém terá reparado numa classe perigosíssima para as contas públicas: os reformados. Pessoas que, depois de décadas de descontos, ainda alimentavam a extravagante expectativa de receber aquilo que lhes tinha sido prometido.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">O Orçamento do Estado para 2012 suspendeu, em determinados termos, os subsídios de férias e de Natal de trabalhadores públicos e pensionistas. Em Julho desse ano, o <strong>Tribunal Constitucional declarou essas normas inconstitucionais por violação do princípio da igualdade</strong>, mas limitou os efeitos da decisão, mantendo os cortes relativos a 2012 por razões excepcionais de interesse público.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Eis uma das grandes subtilezas do nosso constitucionalismo de emergência: a norma era incompatível com a Constituição, mas a carteira do reformado continuou a sentir a sua aplicação nesse ano. A legalidade foi defendida; o dinheiro não regressou automaticamente.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Ao reformado exigiu-se responsabilidade até ao último cêntimo. Ao decisor político exigiu-se, sobretudo, uma conferência de imprensa explicativa. As rugas pagaram a factura; os discursos receberam a legenda "medida inevitável".</p>
+<h2 style="font-family:Georgia,'Times New Roman',serif;font-size:25px;line-height:1.35;color:#e6bf72;margin:44px 0 18px;font-weight:700;">III. A juventude com bilhete de ida</h2>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Em 2013, os dados do Instituto Nacional de Estatística apontavam para cerca de <strong>855 mil desempregados</strong>, numa taxa anual superior a 16%. Atrás de cada estatística havia uma pessoa e, frequentemente, uma família inteira a aprender a fazer contas com o que já não recebia.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Entretanto, a emigração voltava a transformar-se em política económica involuntária. Formámos engenheiros, enfermeiros, cientistas e técnicos; depois oferecemos-lhes uma escolha de enorme sofisticação estratégica: partir ou esperar. Chamámos a isso mobilidade europeia. Nas despedidas do aeroporto, porém, ninguém confundia mobilidade com prosperidade.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Os jovens saíram com diplomas; muitos pais ficaram com prestações da casa e silêncios ao jantar. Nas estatísticas, isso cabia numa coluna. Na mesa de família, sobrava uma cadeira vazia.</p>
+<h2 style="font-family:Georgia,'Times New Roman',serif;font-size:25px;line-height:1.35;color:#e6bf72;margin:44px 0 18px;font-weight:700;">IV. Os bancos: privatizar a glória, socializar o susto</h2>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Antes, durante e depois do resgate, a banca ofereceu-nos uma sucessão de episódios que qualquer romancista consideraria excessivos. O <strong>BPN foi nacionalizado em 2008</strong>. O <strong>Banco Espírito Santo foi sujeito a uma medida de resolução em 2014</strong>; a capitalização inicial do Novo Banco envolveu <strong>4,9 mil milhões de euros</strong> do Fundo de Resolução, financiado em larga medida com apoio público. O <strong>Banif teve uma resolução em 2015</strong>, com um pacote anunciado de <strong>2,255 mil milhões de euros</strong>.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Estes números referem operações e montantes de apoio em momentos concretos; <strong>não representam, por si só, o custo líquido final de cada caso</strong>. Há recuperações, empréstimos, activos, encargos e processos que exigem contabilidade própria. Precisamente por isso, a prestação de contas deveria ser uma obrigação pública permanente — não uma caça ao tesouro reservada a peritos.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Quando tudo corria bem, éramos convidados a admirar o génio financeiro, a solidez das instituições e a respeitabilidade dos conselhos de administração. Quando tudo corria mal, aprendíamos uma nova disciplina: o sistema financeiro era demasiado importante para o deixarmos cair. O aforrador, o accionista ou o detentor de certos produtos financeiros podia descobrir, subitamente, que a palavra "segurança" vinha acompanhada de asteriscos.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Importa reconhecer que a resolução bancária também procurou proteger depósitos e evitar danos sistémicos. Mas proteger o sistema não dispensa a pergunta que o cidadão tem direito a fazer: <strong>quem assumiu os riscos, quem recebeu os benefícios, quem suportou as perdas e quem foi efectivamente responsabilizado?</strong></p>
+<h2 style="font-family:Georgia,'Times New Roman',serif;font-size:25px;line-height:1.35;color:#e6bf72;margin:44px 0 18px;font-weight:700;">V. O departamento nacional de explicações</h2>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">No nosso país existe uma notável cadeia de desresponsabilização. O governante remete para as circunstâncias. O antigo governante remete para o sucessor. O sucessor remete para a herança. O supervisor remete para as informações de que dispunha. O gestor remete para os mercados. Os mercados, esses monstros sem morada, não atendem chamadas.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Depois chega a comissão de inquérito. Há audições, pastas, declarações, indignações solenes e uma coreografia de dedos apontados. A opinião pública recebe uma biblioteca de explicações e continua à procura de uma resposta curta: quem decidiu, quando, porquê, com que informação e com que consequências?</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Não se pretende que uma má decisão política seja automaticamente crime. Seria perigoso para a liberdade democrática confundir erro de governação com delito penal. <strong>Mas também é perigoso para a democracia transformar o carácter não criminal de uma decisão em imunidade à prestação de contas.</strong></p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Um país adulto não precisa de culpados escolhidos por aplausómetro. Precisa de auditorias inteligíveis, de responsabilidades identificadas, de reparações quando a lei as impõe e de memória pública capaz de resistir à próxima campanha eleitoral.</p>
+<h2 style="font-family:Georgia,'Times New Roman',serif;font-size:25px;line-height:1.35;color:#e6bf72;margin:44px 0 18px;font-weight:700;">VI. O tempo judicial e a eternidade administrativa</h2>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Os processos judiciais de grande dimensão arrastam-se, por vezes, durante anos. Há garantias de defesa que não podem ser sacrificadas à pressa de condenar; há também um interesse público evidente em que os factos sejam apurados num prazo razoável. A Justiça não pode ser substituída por manchetes — nem pode oferecer a passagem do tempo como sucedâneo de uma decisão.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">José Sócrates, enquanto antigo chefe de Governo, responde politicamente pelo período em que governou; quanto a acusações criminais, só um tribunal, com respeito pelas garantias de defesa, pode estabelecer culpa. O mesmo princípio vale para qualquer banqueiro, ministro ou supervisor. A crítica à actuação pública não é uma sentença penal, e uma sentença penal não substitui o exame da actuação pública.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Entretanto, a memória colectiva paga juros. A cada ano que passa, o cidadão sabe menos sobre quem decidiu e ouve mais explicações sobre a dificuldade de decidir quem decidiu. É a burocracia aplicada à própria responsabilidade: um processo que tem sempre despacho, mas raramente destinatário.</p>
+<h2 style="font-family:Georgia,'Times New Roman',serif;font-size:25px;line-height:1.35;color:#e6bf72;margin:44px 0 18px;font-weight:700;">VII. Quem assina a factura?</h2>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">O cidadão comum não beneficia da mesma capacidade de dissolver consequências numa conferência de imprensa. Se falha a prestação da casa, aparece a carta. Se não paga o imposto, surge a execução. Se atrasa uma conta, os juros chegam pontuais, como funcionários exemplares de uma República que só falha nas coisas grandes.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Seria injusto dizer que ninguém foi investigado, julgado ou condenado nos escândalos financeiros. Houve processos e decisões judiciais. Seria igualmente falso reduzir a crise a um único primeiro-ministro, a um único partido ou a um único banco. A história é mais incómoda: responsabilidades de natureza diferente distribuíram-se por administrações, governos, supervisores e instituições internacionais, e nem todas receberam respostas equivalentes.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">A pergunta que sobra é por isso mais difícil, e mais séria, do que um insulto: <strong>como pode uma democracia exigir sacrifícios concretos a milhões de pessoas sem produzir uma contabilidade igualmente concreta das decisões que os tornaram necessários?</strong></p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Talvez um dia se crie em Portugal o Ministério da Responsabilidade. Terá edifício próprio, secretários de Estado, comissão consultiva e orçamento anual. A sua primeira medida será certamente nomear um grupo de trabalho para estudar quem deve assumir a responsabilidade pelo Ministério.</p>
+<p style="font-size:18px;line-height:1.88;margin:0 0 22px;color:#e9e5da;">Até lá, continuaremos a viver neste prodígio administrativo: <strong>o país onde ninguém tem culpa de nada, mas todos conhecem alguém que pagou por tudo.</strong></p>
+<section aria-label="Nota editorial" style="background:#192531;border:1px solid #475363;border-radius:7px;padding:21px 24px;margin:40px 0 32px;">
+<h2 style="font:bold 17px/1.5 Arial,sans-serif;letter-spacing:.5px;color:#e6bf72;margin:0 0 12px;">NOTA EDITORIAL</h2>
+<p style="font:15px/1.76 Arial,sans-serif;color:#d2dbe0;margin:0 0 10px;">Esta crónica é uma peça de sátira e opinião sobre a responsabilidade política, económica, financeira e institucional em Portugal. Os dados, datas e decisões judiciais referidos estão documentados nas fontes abaixo. As imagens retóricas — «factura», «saque», «irresponsáveis» — exprimem crítica social, não constituem imputações penais individualizadas.</p>
+<p style="font:15px/1.76 Arial,sans-serif;color:#d2dbe0;margin:0;">A responsabilidade política deve ser escrutinada; a responsabilidade civil e criminal exige os respectivos pressupostos e prova. O financiamento de 78 mil milhões de euros não equivale a uma perda líquida; os montantes identificados para intervenções bancárias não representam automaticamente custos finais. Textos e fontes consultados até 12 de Novembro de 2026.</p>
+</section>
+<section aria-label="Fontes e referências" style="margin:30px 0 28px;">
+<h2 style="font:bold 19px/1.45 Arial,sans-serif;color:#e6bf72;margin:0 0 18px;">FONTES E REFERÊNCIAS DOCUMENTAIS E INTERNACIONAIS</h2>
+<ol style="padding-left:22px;margin:0;">
+<li style="font:14px/1.68 Arial,sans-serif;color:#d1dce0;margin:0 0 11px;"><strong>Comissão Europeia</strong> — <a href="https://economy-finance.ec.europa.eu/eu-financial-assistance/euro-area-countries/financial-assistance-portugal_en" target="_blank" rel="noopener noreferrer" style="color:#e5c17e;text-decoration:underline;">Financial assistance to Portugal — programa de assistência de 2011–2014 (consulta em Novembro de 2026)</a>.</li>
+<li style="font:14px/1.68 Arial,sans-serif;color:#d1dce0;margin:0 0 11px;"><strong>Fundo Monetário Internacional</strong> — <a href="https://www.imf.org/en/countries/prt/portugal-lending-case-study" target="_blank" rel="noopener noreferrer" style="color:#e5c17e;text-decoration:underline;">Portugal Lending Case Study — origens, desenho e consequências do programa</a>.</li>
+<li style="font:14px/1.68 Arial,sans-serif;color:#d1dce0;margin:0 0 11px;"><strong>Tribunal Constitucional</strong> — <a href="https://www.tribunalconstitucional.pt/tc/imprensa0200-bd1859.html" target="_blank" rel="noopener noreferrer" style="color:#e5c17e;text-decoration:underline;">Acórdão n.º 353/2012 — suspensão dos subsídios e modulação de efeitos</a>.</li>
+<li style="font:14px/1.68 Arial,sans-serif;color:#d1dce0;margin:0 0 11px;"><strong>Instituto Nacional de Estatística</strong> — <a href="https://www.ine.pt/ine_novidades/PN2013/files/assets/basic-html/page-19.html" target="_blank" rel="noopener noreferrer" style="color:#e5c17e;text-decoration:underline;">Portugal em Números 2013 — emprego e desemprego (série publicada à época)</a>.</li>
+<li style="font:14px/1.68 Arial,sans-serif;color:#d1dce0;margin:0 0 11px;"><strong>Reuters</strong> — <a href="https://www.brecorder.com/news/269140/portugal-sells-banif-to-santander-to-inject-over-22bn-euros" target="_blank" rel="noopener noreferrer" style="color:#e5c17e;text-decoration:underline;">Portugal sells Banif to Santander, to inject over 2.2bn euros (Dezembro de 2015; republicação)</a>.</li>
+<li style="font:14px/1.68 Arial,sans-serif;color:#d1dce0;margin:0 0 11px;"><strong>The Guardian</strong> — <a href="https://www.theguardian.com/business/2014/aug/04/banco-espirito-santo-bailout-eu-cash-portugal" target="_blank" rel="noopener noreferrer" style="color:#e5c17e;text-decoration:underline;">Portugal uses EU bailout cash to shore up troubled Banco Espírito Santo (Agosto de 2014)</a>.</li>
+<li style="font:14px/1.68 Arial,sans-serif;color:#d1dce0;margin:0 0 11px;"><strong>El País</strong> — <a href="https://english.elpais.com/elpais/2012/09/17/inenglish/1347881470_982453.html" target="_blank" rel="noopener noreferrer" style="color:#e5c17e;text-decoration:underline;">Portugal's middle classes face harsh new realities (Setembro de 2012)</a>.</li>
+<li style="font:14px/1.68 Arial,sans-serif;color:#d1dce0;margin:0 0 11px;"><strong>The Guardian</strong> — <a href="https://www.theguardian.com/world/2013/apr/13/portugal-slides-into-reverse" target="_blank" rel="noopener noreferrer" style="color:#e5c17e;text-decoration:underline;">Portugal's fed-up youth pack and go as their nation slides into reverse (Abril de 2013)</a>.</li>
+<li style="font:14px/1.68 Arial,sans-serif;color:#d1dce0;margin:0 0 11px;"><strong>Fundo Monetário Internacional</strong> — <a href="https://www.elibrary.imf.org/view/journals/002/2016/301/article-A002-en.xml" target="_blank" rel="noopener noreferrer" style="color:#e5c17e;text-decoration:underline;">Portugal: Selected Issues — custos e configuração das resoluções BES e Banif (2016)</a>.</li>
+<li style="font:14px/1.68 Arial,sans-serif;color:#d1dce0;margin:0 0 11px;"><strong>Yale — Journal of Financial Crises</strong> — <a href="https://elischolar.library.yale.edu/journal-of-financial-crises/vol6/iss1/16/" target="_blank" rel="noopener noreferrer" style="color:#e5c17e;text-decoration:underline;">Portugal: Banco Espírito Santo Restructuring, 2014 (2024)</a>.</li>
+<li style="font:14px/1.68 Arial,sans-serif;color:#d1dce0;margin:0 0 11px;"><strong>Jornal de Negócios</strong> — <a href="https://www.jornaldenegocios.pt/empresas/detalhe/bpn-como-um-banco-pequeno-criou-um-problema-gigante" target="_blank" rel="noopener noreferrer" style="color:#e5c17e;text-decoration:underline;">BPN: Como um banco pequeno criou um problema gigante (Novembro de 2023)</a>.</li>
+<li style="font:14px/1.68 Arial,sans-serif;color:#d1dce0;margin:0 0 11px;"><strong>Eurofound</strong> — <a href="https://www.eurofound.europa.eu/en/publications/all/protests-force-government-shelve-hike-social-security-contributions" target="_blank" rel="noopener noreferrer" style="color:#e5c17e;text-decoration:underline;">Protests force government to shelve hike in social security contributions (Novembro de 2012)</a>.</li>
+</ol></section>
+<footer style="margin-top:30px;padding-top:22px;border-top:1px solid #404a55;">
+<p style="margin:0 0 7px;font:italic 18px/1.5 Georgia,serif;color:#e9c27c;">Augustus Veritas</p>
+<p style="margin:0;font:12px/1.7 Arial,sans-serif;color:#aeb8be;">Crónica para <strong>Fragmentos do Caos</strong> · Formato FC-Chronic-News Canonical v1.0 · Grafia portuguesa anterior ao Acordo Ortográfico.</p>
+</footer></article>
+
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
