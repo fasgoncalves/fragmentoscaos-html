@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crescer sem convergir</title>
+<meta name="description" content="Crescer sem convergir">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">Crescer sem convergir</h1>
+      <p class="meta">Publicado em 2026-11-21 10:49:00</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/11/file_0000000022dc81f4b5650052b2f11a86_9db081f5.jpg" alt=""></figure>
+      <div class="post-content">
+        <!-- wp:html -->
+<article class="fc-chronic-news" lang="pt-PT" itemscope itemtype="https://schema.org/NewsArticle" style="box-sizing:border-box;background:#0b0b0b;color:#e8eef4;font-family:Georgia,serif;line-height:1.85;padding:clamp(1rem,4vw,2.65rem);text-align:left;overflow-wrap:break-word;">
+<div style="max-width:46rem;margin:0 auto;">
+<header style="margin:0 0 1.5em;text-align:center;">
+<p style="color:#ffcc66;font-size:.76rem;letter-spacing:.12em;margin:0 0 .7em;">FRAGMENTOS DO CAOS · FC-CHRONIC-NEWS · CRÓNICA</p>
+<h2 itemprop="headline" style="color:#ffcc66;font-size:clamp(2.15rem,6.5vw,3.55rem);line-height:1.1;margin:0 0 .26em;">Crescer sem convergir</h2>
+<p itemprop="alternativeHeadline" style="color:#c9d1da;font-size:1.13rem;line-height:1.5;margin:0 0 .8em;">Portugal em 2026: uma economia que cresce, um país que não chega lá, e uma democracia posta à prova</p>
+<p style="margin:0;color:#c9d1da;font-size:.88rem;"><time datetime="2026-11-20" itemprop="dateCreated">Lisboa, novembro de 2026</time></p>
+</header>
+<aside style="margin:1.45em 0;padding:.9em 1.05em;background:#171717;border-left:3px solid #b88a3d;" aria-labelledby="fc-convergir-nota">
+<h3 id="fc-convergir-nota" style="color:#ffcc66;font-size:1.05rem;margin:0 0 .3em;">Nota editorial</h3>
+<p style="margin:0;font-size:.94rem;">Crónica de análise e opinião sobre a economia, a habitação e a qualidade democrática em Portugal. Os indicadores reportam-se aos períodos identificados no texto e no quadro. As fontes são apresentadas no final, conforme o documento original.</p>
+</aside>
+<div itemprop="articleBody">
+<p style="margin:0 0 1.25em;font-size:1.12rem;line-height:1.75;border-left:3px solid #ffcc66;padding-left:.9em;">Há dois retratos de Portugal a circular ao mesmo tempo, e ambos são verdadeiros. No primeiro, o país foi considerado pela The Economist a "economia do ano" de 2025, cresce acima da média europeia, tem o desemprego no nível mais baixo desde 2011, contas públicas próximas do equilíbrio e uma dívida a descer para menos de 90% do PIB. No segundo, milhares de pessoas montaram tendas no Rossio e na Praça D. João I porque não conseguem pagar uma casa, a polícia desmontou os acampamentos à bastonada, e as sondagens mostram um povo insatisfeito e pessimista com a sua democracia.</p>
+<p style="margin:0 0 1em;">Esta crónica tenta explicar porque é que os dois retratos coexistem. A resposta curta é que Portugal cresce, mas não converge: a distância para a Europa rica não fecha, os salários continuam presos perto do mínimo, e o custo da habitação come o pouco que se ganha. Sobre esse chão económico assenta uma crise de confiança política que já se vê nas instituições, nas urnas e na rua.</p>
+<h3 style="color:#ffcc66;font-size:1.32rem;line-height:1.32;margin:1.8em 0 .55em;">1. O atraso que teima em não fechar</h3>
+<p style="margin:0 0 1em;">Quase quarenta anos depois da adesão à então CEE, e depois de sucessivos quadros comunitários e do Plano de Recuperação e Resiliência, o indicador que melhor resume o nível de vida — o PIB per capita em paridades de poder de compra — continua a colocar Portugal no terço inferior da União. Em 2024 o país chegou a 82,4% da média europeia; as estimativas preliminares do Eurostat para 2025 apontam para 81%, um ligeiro recuo, mantendo Portugal na 18.ª posição entre 27, três lugares abaixo do que ocupava em 2000.</p>
+<p style="margin:0 0 1em;">E o número pode ser pior. Quando o INE reviu em alta a população residente para cerca de 11,4 milhões, o ECO refez as contas e chegou a cerca de 76% da média europeia. Mais gente a dividir a mesma riqueza dá menos riqueza por pessoa. Pelo caminho, a maioria das economias de Leste — que entraram muito depois e receberam muito menos fundos — ultrapassou Portugal.</p>
+<p style="margin:0 0 1em;">A raiz está na produtividade. O próprio Ministério do Trabalho reconhece que a produtividade por hora ficou, em 2025, 28% abaixo da média da UE, e os salários 35% abaixo. Sem produzir mais valor por hora, o país não consegue pagar melhor de forma sustentada. A isto soma-se uma geografia desigual: a Grande Lisboa tem um PIB per capita acima da média europeia (128,9%), enquanto o Tâmega e Sousa fica pelos 53%. Há, na prática, vários Portugais dentro de Portugal.</p>
+<div role="region" aria-labelledby="fc-convergir-quadro" tabindex="0" style="max-width:100%;overflow-x:auto;margin:1.5em 0 .6em;-webkit-overflow-scrolling:touch;">
+<table style="width:100%;min-width:36rem;border-collapse:collapse;table-layout:fixed;font-size:.91rem;line-height:1.55;text-align:left;">
+<caption id="fc-convergir-quadro" style="caption-side:top;text-align:left;color:#ffcc66;font-weight:bold;font-size:1.14rem;padding:0 0 .7em;">Portugal em números</caption>
+<colgroup><col style="width:36%"><col style="width:39%"><col style="width:25%"></colgroup>
+<thead><tr>
+<th scope="col" style="vertical-align:top;padding:.75em .7em;background:#29241b;color:#ffcc66;border-bottom:2px solid #b88a3d;">Indicador</th>
+<th scope="col" style="vertical-align:top;padding:.75em .7em;background:#29241b;color:#ffcc66;border-bottom:2px solid #b88a3d;">Portugal</th>
+<th scope="col" style="vertical-align:top;padding:.75em .7em;background:#29241b;color:#ffcc66;border-bottom:2px solid #b88a3d;">Referência</th>
+</tr></thead><tbody>
+<tr style="background:#171717;">
+<th scope="row" style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;font-weight:normal;">PIB per capita em PPC (2025)</th>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">81% da média UE (estimativa Eurostat); ~76% com a nova população</td>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">UE = 100</td>
+</tr>
+<tr style="background:#111111;">
+<th scope="row" style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;font-weight:normal;">Produtividade por hora (2025)</th>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">28% abaixo da média UE</td>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">UE = 100</td>
+</tr>
+<tr style="background:#171717;">
+<th scope="row" style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;font-weight:normal;">Salários face à UE</th>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">35% abaixo</td>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">UE = 100</td>
+</tr>
+<tr style="background:#111111;">
+<th scope="row" style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;font-weight:normal;">Trabalhadores com salário base ≤ 1.000 € brutos (nov. 2025)</th>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">55,9%</td>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">—</td>
+</tr>
+<tr style="background:#171717;">
+<th scope="row" style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;font-weight:normal;">Salário mínimo / salário mediano (2025)</th>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">91%</td>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">—</td>
+</tr>
+<tr style="background:#111111;">
+<th scope="row" style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;font-weight:normal;">Preço das casas (2015 → 1.º sem. 2026)</th>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">× 2,9</td>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">Rendimento líquido: +60%</td>
+</tr>
+<tr style="background:#171717;">
+<th scope="row" style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;font-weight:normal;">Risco de pobreza antes / depois de transferências (2024)</th>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">40,7% / 15,4%</td>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">—</td>
+</tr>
+<tr style="background:#111111;">
+<th scope="row" style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;font-weight:normal;">Índice de Perceção da Corrupção (2025)</th>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">56 pontos, pior registo de sempre</td>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">0–100</td>
+</tr>
+<tr style="background:#171717;">
+<th scope="row" style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;font-weight:normal;">Taxa de desemprego (2.º trim. 2026)</th>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">5,3%, mínimo desde 2011</td>
+<td style="vertical-align:top;padding:.75em .7em;border-bottom:1px solid #464137;">—</td>
+</tr>
+</tbody></table></div>
+<p style="margin:.6em 0 1.6em;color:#c9d1da;font-size:.85rem;line-height:1.6;"><em>Fontes: Eurostat, INE, Ministério do Trabalho, CGTP (dados da Segurança Social), Banco de Portugal, Transparência Internacional. Valores arredondados.</em></p>
+<h3 style="color:#ffcc66;font-size:1.32rem;line-height:1.32;margin:1.8em 0 .55em;">2. Salários que não chegam ao fim do mês</h3>
+<p style="margin:0 0 1em;">O salário médio bruto subiu para 1.694 euros em 2025, e o Governo sublinha, com razão, que os salários reais cresceram mais de 3%. Mas a média engana. Segundo um estudo da CGTP com base nas declarações à Segurança Social, mais de metade dos trabalhadores (55,9%) recebia, em novembro de 2025, no máximo 1.000 euros de salário base bruto. O salário mediano anda entre 1.000 e 1.050 euros e o salário mínimo, agora de 920 euros, já equivale a 91% dele.</p>
+<p style="margin:0 0 1em;">Isto significa que o salário mínimo deixou de ser um patamar de entrada para se tornar o salário típico. É uma conquista de quem defende a sua subida — a desigualdade salarial diminuiu —, mas é também o sinal de uma estrutura salarial esmagada, em que trabalhar mais anos ou ter mais qualificações compensa pouco. Não admira que tantos jovens qualificados emigrem.</p>
+<h3 style="color:#ffcc66;font-size:1.32rem;line-height:1.32;margin:1.8em 0 .55em;">3. A casa como linha da fronteira</h3>
+<p style="margin:0 0 1em;">Se há um dado que explica o mal-estar dos últimos anos, é este: entre 2015 e o primeiro semestre de 2026, o rendimento líquido das famílias subiu cerca de 60%, e o preço das casas subiu 194%. As casas ficaram quase três vezes mais caras. Em 2025 a subida foi de 17,6%, a maior de que há registo no INE e uma das mais altas da União Europeia; em 2026 o ritmo mantém-se perto dos 18%. As rendas dos novos contratos subiram 9,1% no início do ano.</p>
+<p style="margin:0 0 1em;">As causas são conhecidas e discutidas: oferta de construção que não acompanha a procura, crescimento da população, procura externa, turismo e alojamento local, licenciamento lento. As soluções dividem os partidos — mais construção e menos impostos para uns, controlo de rendas e habitação pública para outros —, mas o diagnóstico é partilhado: com salários de mil euros e rendas de mil euros, a conta não fecha.</p>
+<h3 style="color:#ffcc66;font-size:1.32rem;line-height:1.32;margin:1.8em 0 .55em;">4. A rede que segura o país</h3>
+<p style="margin:0 0 1em;">Os números da pobreza mostram até que ponto o Estado social segura a sociedade portuguesa. Segundo o INE, sem qualquer transferência social, 40,7% da população estaria em risco de pobreza. As pensões fazem descer esse valor para perto de 21%, e os restantes apoios — doença, incapacidade, família, desemprego, inclusão — para 15,4%.</p>
+<p style="margin:0 0 1em;">Há boas notícias aqui: a pobreza desceu três anos seguidos e o coeficiente de Gini caiu para 30,9% em 2024. Mas há também um aviso. Uma economia em que o mercado de trabalho, por si só, deixaria dois em cada cinco residentes abaixo do limiar de pobreza é uma economia em que trabalhar não basta. E as estimativas para 2025 sugerem que a descida da pobreza parou.</p>
+<h3 style="color:#ffcc66;font-size:1.32rem;line-height:1.32;margin:1.8em 0 .55em;">5. A política do cansaço</h3>
+<p style="margin:0 0 1em;">É sobre este chão que assenta a crise política. Em pouco mais de três anos, Portugal teve três governos e três eleições legislativas antecipadas. O Governo de António Costa caiu em 2023 no meio da Operação Influencer; o primeiro Governo de Luís Montenegro caiu em 2025 por causa das dúvidas sobre a empresa familiar Spinumviva. Montenegro voltou a vencer e governa em minoria, enquanto o Chega se consolidou como grande força parlamentar.</p>
+<p style="margin:0 0 1em;">Os indicadores internacionais registam a erosão. O International IDEA concluiu que Portugal foi o país da UE que mais caiu nos índices de qualidade democrática entre 2020 e 2025. No Índice de Perceção da Corrupção da Transparência Internacional, o país obteve 56 pontos em 2025, o pior resultado de sempre. A Comissão Europeia, no relatório sobre o Estado de Direito, aponta a falta de progresso na eficiência da justiça e os atrasos nas investigações de corrupção de alto nível, com risco de prescrições.</p>
+<p style="margin:0 0 1em;">O Governo contesta a leitura mais sombria: lembra a Agenda Anticorrupção, com 42 medidas e boa parte já concluída, e argumenta que os índices refletem perceções e períodos anteriores. Investigadores como Tiago Fernandes, do V-Dem, falam de uma erosão "ligeira" e "não alarmante", num país que continua a ser uma democracia liberal. Mas a perceção conta: numa sondagem de abril, apenas 14,4% dos portugueses achavam que a democracia iria melhorar.</p>
+<h3 style="color:#ffcc66;font-size:1.32rem;line-height:1.32;margin:1.8em 0 .55em;">6. A rua, os tribunais e os limites</h3>
+<p style="margin:0 0 1em;">O outono de 2026 juntou as duas crises numa só imagem. Os acampamentos pela habitação, iniciados no Porto a 10 de outubro e alargados a Lisboa, foram desmantelados pela PSP em várias madrugadas, com detenções e um número de feridos que a polícia e os organizadores contam de forma muito diferente. O primeiro-ministro defendeu que a atuação respeitou os princípios da necessidade e da proporcionalidade; constitucionalistas como Jorge Reis Novais e Teresa Violante consideraram o direito de manifestação "violado de forma ostensiva". A IGAI e o Ministério Público abriram inquéritos, e a Provedora de Justiça pediu explicações.</p>
+<p style="margin:0 0 1em;">Ao mesmo tempo, os contrapesos institucionais mostraram que funcionam. O Tribunal Constitucional travou partes da revisão da Lei da Nacionalidade e chumbou, por duas vezes, a perda de nacionalidade como pena acessória. Os tribunais cíveis obrigaram André Ventura a retirar cartazes sobre a comunidade cigana, considerados discriminatórios. Na segunda volta das presidenciais, os eleitores escolheram António José Seguro. Para uns, isto prova que a democracia resiste; para outros, que o sistema se fecha a quem o contesta. Ambas as leituras circulam, e essa divisão é, em si mesma, um dado do momento.</p>
+<h3 style="color:#ffcc66;font-size:1.32rem;line-height:1.32;margin:1.8em 0 .55em;">Conclusão: o que separa os dois retratos</h3>
+<p style="margin:0 0 1em;">Portugal não está em colapso, e é desonesto descrevê-lo assim: cresce, emprega, paga as dívidas e mantém instituições que funcionam. Mas também é desonesto fingir que está tudo bem quando a maioria de quem trabalha ganha perto do mínimo, as casas triplicaram de preço e a justiça demora anos a julgar os casos que mais minam a confiança pública.</p>
+<p style="margin:0 0 1em;">O descontentamento não nasce do nada nem é apenas fruto de discursos populistas; tem uma base material bem concreta. A questão para os próximos anos é saber se o sistema político consegue transformar o crescimento em convergência real — mais produtividade, melhores salários, mais casas, justiça mais rápida — antes que a paciência dos portugueses se esgote. É essa a corrida que está em jogo, e não há índice que a ganhe sozinho.</p>
+</div>
+<section style="margin:2em 0 0;padding-top:.8em;border-top:1px solid #464137;" aria-labelledby="fc-convergir-fontes">
+<h3 id="fc-convergir-fontes" style="color:#ffcc66;font-size:1.2rem;margin:.3em 0 .65em;">Principais fontes</h3>
+<ul style="padding-left:1.5em;font-size:.94rem;color:#c9d1da;margin:0;">
+<li id="fc-convergir-fonte-1" style="margin:0 0 .7em;">Eurostat e INE — PIB per capita em PPC (2024–2025); ECO, "Mais residentes, menos PIB per capita" (jun. 2026)</li>
+<li id="fc-convergir-fonte-2" style="margin:0 0 .7em;">Ministério do Trabalho, Solidariedade e Segurança Social — produtividade e salários face à UE (fev. 2026)</li>
+<li id="fc-convergir-fonte-3" style="margin:0 0 .7em;">INE — Inquérito às Condições de Vida e Rendimento 2025; Índice de Preços da Habitação; estatísticas de rendas (2026)</li>
+<li id="fc-convergir-fonte-4" style="margin:0 0 .7em;">CGTP — estudo sobre salários com base na Segurança Social (fev. 2026); Banco de Portugal — salário mínimo vs. mediano</li>
+<li id="fc-convergir-fonte-5" style="margin:0 0 .7em;">Banco de Portugal — Boletim Económico (out. 2026); Randstad Research / INE — Inquérito ao Emprego (ago. 2026)</li>
+<li id="fc-convergir-fonte-6" style="margin:0 0 .7em;">International IDEA — Global State of Democracy 2026; V-Dem — Democracy Report 2026</li>
+<li id="fc-convergir-fonte-7" style="margin:0 0 .7em;">Transparência Internacional — Índice de Perceção da Corrupção 2025; Comissão Europeia — Relatório sobre o Estado de Direito 2026</li>
+<li id="fc-convergir-fonte-8" style="margin:0 0 .7em;">Reuters, Lusa, RTP, Público, Observador, DN e ECO — cobertura dos protestos pela habitação (out.–nov. 2026), da Lei da Nacionalidade e do caso dos cartazes</li>
+</ul>
+</section>
+<footer style="margin:1.8em 0 0;padding-top:.8em;border-top:1px solid #464137;">
+<p style="margin:0;"><strong itemprop="author" itemscope itemtype="https://schema.org/Person"><span itemprop="name">Francisco Gonçalves</span></strong></p>
+<p style="margin:0;color:#c9d1da;font-size:.91rem;">Crónica para <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><span itemprop="name">Fragmentos do Caos</span></span>.<br>Preparação editorial e conversão digital com Augustus Veritas, assistente da OpenAI.</p>
+</footer>
+
+</div>
+</article>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+<!-- /wp:html -->
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
