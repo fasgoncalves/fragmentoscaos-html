@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SoftBancada: uma bancada de ferramentas para programadores, toda no telemóvel</title>
+<meta name="description" content="SoftBancada: uma bancada de ferramentas para programadores, toda no telemóvel">
+<link rel="icon" type="image/png" href="https://fasgoncalves.github.io/fragmentoscaos-img/images/F-logo.png">
+  <meta property="og:title" content="Fragmentos do Caos">
+  <meta property="og:description" content="A verdade nasce onde o pensamento é livre. Um espaço de reflexão, crítica e luz no caos.">
+  <meta property="og:image" content="https://fasgoncalves.github.io/fragmentoscaos-html/images/F-logo.png">
+  <meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #141414;
+  --muted: #6b7280;
+  --link: #1a56db;
+  --card: #ffffff;
+  --ring: rgba(26,86,219,0.15);
+  --maxw: 800px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+body { font: 16.5px/1.75 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 28px 80px; /* margem extra à esquerda e direita */
+}
+.post {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-align: left; /* alinha conteúdo à esquerda */
+}
+
+/* Título/meta/thumbnail centrados */
+.post-title, .meta, .post-thumb { text-align: center; }
+
+.post-title {
+  font-family: "Merriweather", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+  line-height: 1.15;
+  margin: 0 0 8px 0;
+}
+.meta { margin: 0 0 18px; color: var(--muted); font-size: 0.95rem; }
+
+.post-thumb, .post-content figure { margin: 18px auto; text-align: center; }
+.post-thumb img { max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+.post-content {
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  text-align: left; /* texto do artigo à esquerda */
+}
+
+/* Corrige alinhamentos vindos do WP que forçam centrado */
+.post-content .has-text-align-center:not(figure):not(.wp-block-image):not(img) { text-align: left !important; }
+.post-content p[style*="text-align:center"],
+.post-content h1[style*="text-align:center"],
+.post-content h2[style*="text-align:center"],
+.post-content h3[style*="text-align:center"],
+.post-content h4[style*="text-align:center"],
+.post-content h5[style*="text-align:center"],
+.post-content h6[style*="text-align:center"] { text-align: left !important; }
+
+.post-content img,
+.post-content .wp-block-image img,
+.post-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 16px auto; /* imagens continuam centradas visualmente */
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* --- Quebras e scroll horizontal quando necessário --- */
+.post, .post-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.post-content pre,
+.post-content .wp-block-code,
+.post-content .wp-block-preformatted {
+  white-space: pre; /* mantém formatação de código */
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch; /* scroll fluido no iOS */
+  max-width: 100%;
+}
+
+.post-content code {
+  white-space: break-spaces; /* inline code não estoura para fora */
+}
+
+.post-content table,
+.post-content .wp-block-table {
+  display: block; /* permite overflow-x */
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal quando necessário */
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .wp-block-embed,
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  overflow: hidden; /* evita estoiro do container */
+}
+
+blockquote {
+  border-left: 4px solid var(--ring);
+  padding: 0.1em 1em;
+  margin: 1.2em 0;
+  color: #374151;
+  background: rgba(0,0,0,0.02);
+  border-radius: 6px;
+}
+
+/* Mais largura útil no telemóvel */
+@media (max-width: 640px) {
+  .wrap { 
+    padding: 18px 10px 64px; /* menos padding lateral (40px → 10px) = mais largura útil */
+  }
+  .post {
+    padding: 12px; /* era 28px; mais área para o texto */
+  }
+  .post-content {
+    font-size: 1.06rem; /* ligeiro ajuste de leitura */
+  }
+}
+
+@media (max-width: 640px) {
+  /* Faixas com scroll para conteúdo largo no mobile */
+  .post-content pre,
+  .post-content .wp-block-code,
+  .post-content table,
+  .post-content .wp-block-table {
+    margin-left: -6px;  /* encosta à margem para ganhar largura útil */
+    margin-right: -6px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root { --maxw: 1000px; }
+}
+
+/* 📱 Ajuste de margens para telemóveis - modo imersivo */
+@media (max-width: 1000px) {
+  main, .site-content, .post, .entry-content {
+    max-width: 100%;
+    padding-left: 5px !important;   /* margem esquerda reduzida */
+    padding-right: 5px !important;  /* margem direita reduzida */
+    padding-top: 22px;              /* espaço no topo */
+    padding-bottom: 22px;           /* espaço no fundo */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f12; --fg:#e8e8ea; --muted:#9aa2ad; --card:#12141a; --link:#7aa2ff; --ring: rgba(122,162,255,0.25);
+  }
+  .post { border-color: rgba(255,255,255,0.06); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+  blockquote { color:#cfd6df; background: rgba(255,255,255,0.03); }
+}
+
+/* Tables */
+
+ .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+    min-width: 800px;
+  }
+
+  th, td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    color: #ffcc66 !important;
+    background-color: #111;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #181818;
+  }
+
+  tr:hover {
+    background-color: #222;
+  }
+/* Espaçamento generoso entre parágrafos */
+p {
+  margin-top: 1.2em !important;
+  margin-bottom: 1.4em !important;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* Opcional: ligeiro recuo na primeira linha de cada parágrafo */
+p + p {
+  text-indent: 1.5em;
+}
+
+
+/* --- Animação de brilho partilhada --- */
+    @keyframes brilho-suave {
+      0% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+      50% { opacity: 1; text-shadow: 0 0 14px #ffcc66; }
+      100% { opacity: 0.4; text-shadow: 0 0 4px #ffcc66; }
+    }
+
+    /* --- Banner de topo --- */
+    .banner-fc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 10px 0 5px;
+      font-family: 'Segoe UI', sans-serif;
+      border-bottom: 2px solid #ffcc66;
+      z-index: 9999;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+    }
+
+    .banner-fc img {
+      height: 55px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .banner-fc h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .banner-fc p {
+      font-size: 15px;
+      font-style: italic;
+      color: #ffdd88;
+      margin-top: 4px;
+      animation: brilho-suave 4s ease-in-out infinite;
+    }
+
+    .content-wrapper {
+      text-align: center;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-top: 130px; 
+    }
+
+    a {
+      color: #ffcc66;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ffee99;
+    }
+
+    /* --- Rodapé --- */
+    .footer-fc {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #000;
+      color: #ffcc66;
+      text-align: center;
+      padding: 14px 10px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 14px;
+      border-top: 2px solid #ffcc66;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
+    }
+
+    .footer-fc span {
+      color: #ffdd88;
+      font-style: italic;
+      animation: brilho-suave 5s ease-in-out infinite;
+    }
+</style>
+
+</head>
+
+<body>
+<!-- Banner de topo -->
+  <div class="banner-fc">
+    <img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/F-logo.png" alt="Logótipo Fragmentos do Caos">
+    <div class="content-wrapper">
+      <h1>Blogue Fragmentos do Caos</h1>
+      <p>A verdade nasce onde o pensamento é livre.</p>
+    </div>
+  </div>
+<main>
+
+  <div class="wrap">
+    <article class="post">
+      <h1 class="post-title">SoftBancada: uma bancada de ferramentas para programadores, toda no telemóvel</h1>
+      <p class="meta">Publicado em 2026-11-27 19:58:55</p>
+      <figure class="post-thumb"><img src="https://fasgoncalves.github.io/fragmentoscaos-img/imagens/2026/11/softbancada-ilustracao_80fd39c5.jpg" alt=""></figure>
+      <div class="post-content">
+        <article class="fc-chronic-news" data-fc-format="canonical" lang="pt-PT">
+<p class="fc-cn-kicker">Android · Ferramentas</p>
+<p class="fc-cn-dek"><strong>Cliente HTTP e WebSocket, Git, SQLite, JWT, cron, SemVer, estruturas de dados e dados de teste numa só app Android, sem contas, sem nuvem e sem telemetria.</strong></p>
+<div class="fc-cn-body">
+<p class="fc-cn-lede"><em>Há dias em que um programador abre seis separadores, duas apps e um terminal só para ver se um JWT expirou, se uma expressão cron dispara às 3 da manhã de domingo, ou que commit mudou aquele ficheiro. A SoftBancada junta essas pequenas ferramentas numa só app Android, que corre no telemóvel e no tablet, sem contas, sem nuvem e sem telemetria.</em></p>
+
+<p>Este é o relato técnico de como foi feita: as doze ferramentas, as decisões menos óbvias (porque escrevi um cliente HTTP e um leitor de Git de raiz) e os limites que convém conhecer antes de confiar nela.</p>
+
+<!--more-->
+
+<aside class="fc-cn-cta fc-cn-cta--top" style="border:3px dashed #1f7a5c;background:#eefaf4;padding:16px 20px;margin:24px 0;border-radius:6px;">
+<p style="margin:0 0 8px 0;"><strong>⬇ Obter a SoftBancada na loja de apps (Android 10 ou superior)</strong></p>
+<p style="margin:0;"><a class="fc-cn-cta-link" href="https://www.softelabs.pt/apps/index-en.html" rel="noopener"><strong>[LINK DA LOJA DE APPS]</strong></a></p>
+</aside>
+
+<section class="fc-cn-section">
+<h2>O problema</h2>
+
+<p>As ferramentas de bolso para programadores costumam ter um de dois defeitos. Ou são sites que pedem para colar lá um token, um esquema de base de dados ou uma resposta de API com dados de clientes, ou são apps que querem uma conta, sincronizam tudo e enviam estatísticas de uso para algum lado. Para quem trabalha com dados reais, nenhuma das duas serve.</p>
+
+<p>A regra de partida da SoftBancada foi: <strong>tudo é calculado no aparelho, e a rede só é usada quando o utilizador a pede</strong>, por exemplo para enviar um pedido HTTP ou abrir um repositório por SFTP. Não há IA, não há serviços externos, e os resultados são <strong>determinísticos</strong>: os mesmos dados de entrada dão sempre o mesmo resultado.</p>
+</section>
+
+<aside class="fc-cn-factbox" aria-label="Ficha técnica" style="border-left:4px solid #1f7a5c;background:#f6f7f8;padding:12px 18px;margin:24px 0;">
+<h2 class="fc-cn-factbox-title">Ficha técnica</h2>
+<dl>
+<dt>App</dt><dd>SoftBancada 1.0.0 (SofteLabs)</dd>
+<dt>Plataforma</dt><dd>Android 10 ou superior, telemóvel e tablet</dd>
+<dt>Ferramentas</dt><dd>12, em 4 grupos: API, Git, Estruturas, Dados</dd>
+<dt>Permissões</dt><dd>Só Internet, usada a pedido</dd>
+<dt>Dados</dt><dd>Locais, cifrados (AES-256-GCM)</dd>
+<dt>Idiomas</dt><dd>Português e inglês</dd>
+<dt>Contas e telemetria</dt><dd>Nenhumas</dd>
+</dl>
+</aside>
+
+<section class="fc-cn-section">
+<h2>Doze ferramentas, quatro grupos</h2>
+
+<h3>API</h3>
+<ul>
+<li><strong>Cliente HTTP / REST.</strong> GET, POST, PUT, PATCH, DELETE, HEAD e OPTIONS, com cabeçalhos, corpo JSON/XML/texto/formulário validado antes de enviar, resposta formatada e <strong>tempos por fase</strong>: DNS, ligação, TLS e primeiro byte. Ambientes com <code>{{variáveis}}</code>, coleções exportáveis em JSON e histórico.</li>
+<li><strong>Cliente WebSocket.</strong> <code>ws://</code> e <code>wss://</code>, mensagens de texto e binárias, ping e registo de tudo o que passa.</li>
+<li><strong>JSON · SQL · cron.</strong> Erros com linha e coluna, formatar e minificar; SQL verificado pelo próprio SQLite; cron com descrição em linguagem corrente e próximas execuções no fuso escolhido; modelos JSON/SQL com variáveis e filtros.</li>
+<li><strong>JWT · Base64 · URL · tempo.</strong> Descodificação local de JWT e verificação de assinaturas HS256/384/512, codificações, hashes e conversão de timestamps Unix/ISO-8601 entre fusos.</li>
+</ul>
+
+<h3>Git</h3>
+<ul>
+<li><strong>Explorador Git</strong>, só de leitura, sobre uma pasta do aparelho ou um servidor SFTP: histórico, ramos, etiquetas, diffs por ficheiro, estado da árvore de trabalho e navegação nos ficheiros.</li>
+<li><strong>.gitignore · .editorconfig · licenças</strong> para Kotlin/Android, Python, C/C++, Rust, Shell e SQLite, com verificação de consistência entre vários repositórios.</li>
+<li><strong>SemVer · changelog.</strong> Próxima versão, intervalos ao estilo npm e Maven, e <code>CHANGELOG.md</code> no formato «Keep a Changelog» a partir de mensagens Conventional Commits ou de entradas manuais.</li>
+</ul>
+
+<h3>Estruturas</h3>
+<ul>
+<li><strong>Estruturas de dados e grafos</strong> passo a passo: árvores BST e AVL, heaps, tabelas de hash, filas, pilhas, BFS, DFS, Dijkstra e ordenação topológica.</li>
+<li><strong>Máquinas de estados</strong> escritas com setas, JSON ou YAML, simuladas com guardas e variáveis, com deteção de estados inalcançáveis, becos sem saída e transições ambíguas; exportação para Mermaid, DOT ou Kotlin, e conversão de NFA em DFA.</li>
+<li><strong>Cores · unidades · 2D.</strong> HEX/RGB/HSL, contraste WCAG, px/dp/sp por densidade de ecrã e matrizes de transformação.</li>
+</ul>
+
+<h3>Dados</h3>
+<ul>
+<li><strong>Explorador SQLite:</strong> esquema, índices, triggers, consultas só de leitura e exportação para CSV, JSON ou Markdown.</li>
+<li><strong>Analisador estático:</strong> TODO/FIXME/NOTE, linhas, funções, complexidade, blocos duplicados e cabeçalhos de licença, com relatório em Markdown.</li>
+<li><strong>Dados sintéticos</strong> com semente fixa, casos limite e NIF português válido, em CSV, JSON, JSONL ou SQL.</li>
+</ul>
+</section>
+
+<section class="fc-cn-section">
+<h2>Por dentro: decisões que não são as óbvias</h2>
+
+<h3>Um cliente HTTP escrito sobre sockets</h3>
+
+<p>O <code>HttpURLConnection</code> do Android não aceita PATCH sem truques e não diz quanto tempo demorou cada fase do pedido. Por isso a SoftBancada tem um cliente HTTP/1.1 próprio, sobre sockets: resolve o nome, liga, faz o aperto de mão TLS e lê a resposta, medindo cada passo. Trata <code>chunked</code>, gzip, redirecionamentos e respostas grandes (que são cortadas a partir de um limite, com aviso).</p>
+
+<p>Para servidores caseiros com certificados próprios há <strong>fixação de certificados</strong>: quando o sistema não confia no certificado, a app mostra a impressão digital SHA-256 e o utilizador decide se a aceita para aquele anfitrião. Não há nenhum botão «ignorar todos os erros de TLS». O tráfego <code>http://</code> em claro é permitido, porque muitas APIs de desenvolvimento correm em <code>localhost</code> ou na rede local.</p>
+
+<h3>Um leitor de Git próprio, em vez de JGit</h3>
+
+<p>O JGit espera um sistema de ficheiros normal. Numa app Android moderna, as pastas do utilizador chegam pelo Storage Access Framework (SAF), e um repositório num servidor chega por SFTP. Em vez de copiar repositórios inteiros, escrevi um leitor só de leitura sobre uma interface mínima (<code>stat</code>, <code>list</code>, <code>read</code> com posição e tamanho), que funciona da mesma forma nas duas origens.</p>
+
+<p>Lê objetos soltos e <em>packfiles</em> (índices v1 e v2, deltas <code>OFS_DELTA</code> e <code>REF_DELTA</code>), referências e <code>packed-refs</code>, o índice nas versões 2, 3 e 4, e repositórios SHA-1 ou SHA-256. Os diffs de linhas usam o algoritmo de Myers, com blocos ao estilo <code>git diff</code>. Uma cache LRU de objetos evita ler o mesmo pacote vezes sem conta por SFTP.</p>
+
+<h3>Deixar o SQLite validar o SQL</h3>
+
+<p>Escrever um analisador de SQL completo seria trabalho para meses e daria sempre respostas ligeiramente diferentes das do motor real. A solução é mais simples: a app <strong>prepara a instrução numa base SQLite vazia, em memória</strong>, opcionalmente depois de criar o esquema do utilizador. Se o SQLite aceita, a sintaxe está certa; se não, a mensagem de erro é a dele. No explorador de bases, uma guarda lexical garante que só passam instruções de leitura, e o ficheiro é aberto a partir de uma cópia, para nunca tocar no original.</p>
+
+<h3>Dados de teste que se repetem</h3>
+
+<p>Os dados sintéticos usam um gerador SplitMix64 com uma semente por campo, derivada da semente global e do nome do campo. Assim, acrescentar uma coluna nova não muda os valores das outras, e a mesma semente gera exatamente as mesmas linhas hoje, amanhã e noutro aparelho. É o tipo de pormenor que torna um teste reproduzível.</p>
+
+<h3>Motores em Kotlin puro</h3>
+
+<p>Toda a lógica (Git, HTTP, WebSocket, cron, SemVer, máquinas de estados, estruturas, dados sintéticos, cifra) vive em Kotlin puro, sem depender do Android, e é testada numa JVM com <strong>47 testes</strong>. Os testes do Git comparam o leitor com o <code>git</code> real, e os da rede correm contra servidores HTTP, TLS, WebSocket e SFTP embebidos no próprio teste.</p>
+</section>
+
+<section class="fc-cn-section">
+<h2>Privacidade e segurança</h2>
+
+<table class="fc-cn-table" style="border-collapse:collapse;width:100%;">
+<thead>
+<tr><th>O quê</th><th>Como</th></tr>
+</thead>
+<tbody>
+<tr><td>Rede</td><td>Só a permissão <code>INTERNET</code>, usada apenas quando o utilizador envia um pedido ou abre um servidor. Sem contas, sem nuvem, sem telemetria.</td></tr>
+<tr><td>Dados guardados</td><td>Ficheiro JSON cifrado com AES-256-GCM, chave por ficheiro derivada com HKDF a partir de um segredo protegido pelo Android Keystore.</td></tr>
+<tr><td>TLS</td><td>Só certificados do sistema ou fixados pelo utilizador, por SHA-256 e por anfitrião.</td></tr>
+<tr><td>SFTP</td><td>Chave do servidor fixada na primeira ligação; se mudar, a app recusa e avisa.</td></tr>
+<tr><td>Bloqueio</td><td>No telemóvel, biometria ou credencial do aparelho ao abrir e após 30 s em segundo plano. No tablet, sem bloqueio próprio. Capturas de ecrã bloqueadas em ambos.</td></tr>
+<tr><td>Cópia entre aparelhos</td><td>Ficheiro <code>.slb</code> cifrado com palavra-passe (AES-256-GCM, PBKDF2 com 200 000 iterações). As palavras-passe SFTP nunca são exportadas.</td></tr>
+</tbody>
+</table>
+
+<p>Os dados ficam num ficheiro JSON cifrado em vez de numa base SQLite/Room. É um desvio consciente, comum a todas as apps SofteLabs: para o volume de dados de uma app destas, um ficheiro cifrado por inteiro é mais simples e não deixa nada em claro.</p>
+</section>
+
+<section class="fc-cn-section">
+<h2>A pilha técnica</h2>
+
+<ul>
+<li>Kotlin 2.0.21, Jetpack Compose com Material 3 (BOM 2025.04.01)</li>
+<li>Android 10 (API 29) ou superior, compilado para a API 36; telemóvel e tablet na mesma app, com barra inferior ou barra lateral conforme o ecrã</li>
+<li>JSch 0.2.20 para SFTP; tudo o resto sem bibliotecas de terceiros</li>
+<li>Interface bilingue, português e inglês, segundo o idioma do sistema</li>
+<li>Documentação de utilizador e técnica dentro da app, nas duas línguas</li>
+</ul>
+</section>
+
+<section class="fc-cn-section">
+<h2>Limites, ditos às claras</h2>
+
+<blockquote class="fc-cn-pullquote">
+<p>A SoftBancada é uma bancada de consulta e verificação, não um IDE nem um cliente Git completo.</p>
+</blockquote>
+
+<ul>
+<li>O Git é só de leitura: não faz commits, push nem pull. Não lê o formato reftable nem aplica <code>autocrlf</code> ou filtros.</li>
+<li>O cliente HTTP fala apenas HTTP/1.1.</li>
+<li>O explorador SQLite lê uma cópia sem o ficheiro <code>-wal</code>, por isso alterações ainda não consolidadas não aparecem.</li>
+<li>O analisador estático é lexical: contagens de funções e complexidade são aproximações.</li>
+<li>As licenças longas (Apache, GPL, LGPL, MPL) aparecem como aviso com o endereço oficial, não com o texto completo.</li>
+<li>Pastas e repositórios vêm do aparelho ou de SFTP; SMB não é suportado.</li>
+</ul>
+</section>
+
+<section class="fc-cn-section">
+<h2>Para terminar</h2>
+
+<p>A SoftBancada nasceu de uma irritação pequena e repetida: ter de confiar dados de trabalho a sites e serviços só para fazer contas que um telemóvel faz sozinho. O resultado é uma app que não precisa de saber quem é o utilizador, não tem para onde enviar nada e dá sempre a mesma resposta à mesma pergunta.</p>
+
+<p>Se experimentar e alguma ferramenta falhar, ou faltar uma que usa todos os dias, diga-me. É assim que a bancada cresce.</p>
+</section>
+
+<aside class="fc-cn-cta fc-cn-cta--bottom" style="border:3px dashed #1f7a5c;background:#eefaf4;padding:16px 20px;margin:24px 0;border-radius:6px;">
+<p style="margin:0 0 8px 0;"><strong>⬇ Obter a SoftBancada</strong></p>
+<p style="margin:0;"><a class="fc-cn-cta-link" href="https://www.softelabs.pt/apps/index-en.html" rel="noopener"><strong>[LINK DA LOJA DE APPS]</strong></a></p>
+</aside>
+
+<p class="fc-cn-note"><small>SoftBancada é uma app da SofteLabs. Usa JSch (licença BSD) para SFTP. Sem anúncios, contas nem recolha de dados.</small></p>
+
+</div>
+</article>
+
+  <div style="
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    padding:10px;
+    background:#0b0b0b;
+    border:1px solid #444;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.40);
+  ">
+
+    <a href="https://fasgoncalves.github.io/fragmentoscaos-html/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#0b0b0b;
+         background:#ffcc66;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.35);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.45)'; this.style.background='#ffd98a';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.35)'; this.style.background='#ffcc66';"
+    >
+      ☁️ GitHub Pages
+    </a>
+
+    <a href="https://fgoncalves.codeberg.page/fragmentoscaos/"
+       target="_blank" rel="noopener noreferrer"
+       style="
+         display:inline-flex;
+         align-items:center;
+         gap:8px;
+         padding:12px 16px;
+         font-family: Georgia, serif;
+         font-size:16px;
+         line-height:1;
+         color:#ffcc66;
+         background:transparent;
+         border:1px solid #ffcc66;
+         border-radius:12px;
+         text-decoration:none;
+         box-shadow:0 6px 16px rgba(0,0,0,0.25);
+         transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+       "
+       onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 10px 22px rgba(0,0,0,0.35)'; this.style.background='rgba(255,204,102,0.10)';"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.25)'; this.style.background='transparent';"
+    >
+      🛰️ CodeBerg Pages
+    </a>
+
+  </div>
+
+
+<!-- FC | Rodapé Mini (HTML puro) -->
+<div role="contentinfo" aria-label="Fragmentos do Caos — links relacionados"
+     style="all:revert;box-sizing:border-box;max-width:900px;margin:28px auto 0;padding:12px 16px;
+            font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;
+            background:linear-gradient(135deg,#111627,#1e244a);color:#ffffff;border-radius:12px;
+            text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.3);">
+  <span style="font-weight:700;margin-right:8px;">🌌 Fragmentos do Caos:</span>
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Blogue
+  </a> •
+  <a href="https://fasgoncalves.github.io/hugo.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Ebooks
+  </a> •
+  <a href="https://fasgoncalves.github.io/indice.fragmentoscaos" target="_blank" rel="noopener"
+     style="color:#90caf9;text-decoration:none;margin:0 8px;border-bottom:1px dotted rgba(144,202,249,.6);">
+     Carrossel
+  </a>
+  <div style=" padding: 14px 15px; border-radius: 8px; color:7f9020; width: fit-content; box-shadow: 2px 2px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif; font-size: 14px;">
+  👁️ Esta página foi visitada <span id="visitas" style="font-weight: bold; color: #9fd030;">...</span> vezes.
+</div>
+
+<script>
+  // Extrair apenas o nome da página atual (sem caminho nem extensão)
+  const path = window.location.pathname;
+  const pagina = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+
+  fetch(`https://snd.softelabs.pt/api/visitas/${pagina}`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitas').innerText = data.visitas;
+    })
+    .catch(err => {
+      console.error('Erro no contador:', err);
+      document.getElementById('visitas').innerText = 'erro';
+    });
+</script>
+<!-- Botão de Contactos -->
+<div class="flex justify-center mt-10 mb-6">
+  <a href="https://fasgoncalves.github.io/fragmentoscaos-html/Paginas/contactos-blog-fragmentos-do-caos.html" target="_blank"
+     class="px-6 py-3 bg-purple-600 text-white text-lg font-semibold rounded-2xl shadow-lg hover:bg-purple-700 hover:scale-105 transition-transform duration-300">
+    Contactos
+  </a>
+</div>
+
+<!-- Link para Tailwind CSS caso não esteja incluído -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+</div>
+
+      </div>
+    </article>
+  </div>
+  <div id="translate-button" onclick="document.getElementById('google_translate_element').style.display = 'block'">🌐 Translate</div>
+  <div id="google_translate_element" style="display:none; position:fixed; top:60px; right:20px; background:#fff; padding:8px; border-radius:8px; z-index:10000;"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'pt', includedLanguages: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <style>
+    #translate-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1a56db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+  </style>
+  </div>
+</main>
+<div class="footer-fc">
+    © Fragmentos do Caos — <span>A Luz entre as Sombras</span>
+  </div>
+</body></html>
